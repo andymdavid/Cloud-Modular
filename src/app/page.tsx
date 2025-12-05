@@ -1,65 +1,344 @@
+import Link from "next/link";
 import Image from "next/image";
+import { buttonVariants } from "@/components/ui/button";
+import { SectionHeading } from "@/components/section-heading";
+import { FAQ } from "@/components/faq";
+import { ProjectCard } from "@/components/project-card";
+import { cn } from "@/lib/utils";
+import {
+  audienceSegments,
+  credibilityStats,
+  faqItems,
+  featureHighlights,
+  heroMetrics,
+  homeProjects,
+  processOverview,
+  valuePropositions,
+} from "@/content/site";
+import { CapabilitiesSection } from "@/components/capabilities";
+
+const heroHighlights = [
+  {
+    title: "Design governance",
+    body: "Coordinated architecture, engineering, and compliance reviews keep every module on brief before production starts.",
+  },
+  {
+    title: "Factory telemetry",
+    body: "Live manufacturing data keeps developers informed on QA status, delivery windows, and install sequencing.",
+  },
+  {
+    title: "Site readiness",
+    body: "Sequenced logistics and install playbooks reduce crane time and on-site disruption for faster turnovers.",
+  },
+  {
+    title: "Lifecycle insight",
+    body: "Post-install reviews capture lessons for the next project, making each delivery smarter than the last.",
+  },
+];
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+    <>
+      <section className="bg-[#0a0a0a] text-white">
+        <div className="grid min-h-[calc(150vh-4rem)] grid-rows-[minmax(50vh,0.35fr)_minmax(100vh,0.65fr)] pt-16">
+          <div className="flex min-h-[50vh] items-end px-6 pb-12 pt-24 text-center sm:pt-28 sm:pb-16 lg:px-20">
+            <div className="mx-auto w-full max-w-4xl">
+              <h1 className="hero-heading text-[40px] leading-[52px] text-[#d5d5d5] sm:text-[52px] sm:leading-[60px] lg:text-[65px] lg:leading-[68px]">
+                Premium modular spaces, built in weeks, not years.
+              </h1>
+              <p className="mx-auto mt-5 w-full font-sans text-lg text-white/70 sm:max-w-[90%]">
+                We deliver architecturally crafted modular buildings, combining global offsite manufacturing with
+                rigorous engineering certification to ensure faster delivery and genuine certainty.
+              </p>
+              <div className="mt-5 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+                <Link
+                  href="/partner-with-us"
+                  className={cn(
+                    buttonVariants({ variant: "primary", size: "sm" }),
+                    "px-5 text-sm font-semibold bg-white text-forest hover:bg-warm-white",
+                  )}
+                >
+                  Partner With Us
+                </Link>
+                <Link
+                  href="/our-work"
+                  className="inline-flex items-center justify-center gap-2 text-sm font-semibold text-white/80 transition hover:text-white"
+                >
+                  View Our Work
+                  <span aria-hidden className="text-base">&gt;</span>
+                </Link>
+              </div>
+            </div>
+          </div>
+          <div className="relative min-h-[100vh]">
             <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+              src="/hero-background.png"
+              alt="Modern modular building exterior"
+              fill
+              priority
+              className="object-cover"
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            <div
+              className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#0a0a0a_0%,rgba(10,10,10,0.6)_12%,transparent_35%,transparent_65%,rgba(10,10,10,0.6)_88%,#0a0a0a_100%)]"
+              aria-hidden
+            />
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+
+      <section className="bg-[#050505] text-white">
+        <div className="section-container flex min-h-screen flex-col justify-center gap-12 py-20 lg:flex-row lg:items-center">
+          <div className="space-y-6 text-center lg:max-w-xl lg:text-left">
+            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/40">Modular advantage</p>
+            <h2 className="text-4xl text-white lg:text-5xl">
+              A controlled delivery window from first briefing to handover
+            </h2>
+            <p className="text-base text-white/70">
+              Every engagement follows a predictable rhythm: governance upfront, live telemetry through production, and
+              structured installs backed by lifecycle feedback. It means fewer unknowns and faster commercial outcomes.
+            </p>
+          </div>
+          <div className="grid w-full gap-6 sm:grid-cols-2">
+            {heroHighlights.map((item) => (
+              <div
+                key={item.title}
+                className="rounded-2xl border border-white/5 bg-white/5 p-6 text-left text-white/80 backdrop-blur-sm"
+              >
+                <p className="text-sm uppercase tracking-[0.3em] text-white/60">{item.title}</p>
+                <p className="mt-3 text-base text-white/80">{item.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <CapabilitiesSection />
+
+      <section className="min-h-screen bg-warm-white py-24 md:py-32">
+        <div className="section-container">
+          <SectionHeading
+            label="Why Cloud Modular"
+            title="Precision, speed, and sustainability in every project"
+            align="center"
+          />
+          <div className="mt-16 grid gap-10 md:grid-cols-3">
+            {valuePropositions.map((item) => (
+              <div key={item.title} className="space-y-4">
+                <h3 className="text-2xl text-forest">{item.title}</h3>
+                <p className="text-base text-mid-gray">{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="min-h-screen bg-white py-24 md:py-32">
+        <div className="section-container grid gap-16 lg:grid-cols-2 lg:items-center">
+          <div>
+            <p className="section-label">Credibility & Scale</p>
+            <h2 className="mt-6 text-4xl leading-tight text-charcoal md:text-5xl">
+              Precision-engineered in a factory, built with high-quality materials, designed for scale.
+            </h2>
+            <p className="mt-6 text-lg text-mid-gray">
+              Cloud Modular is backed by China Construction&rsquo;s 450,000+ square meters of dedicated facilities, with
+              successful project delivery spanning Shenzhen, Hong Kong, Melbourne, Saipan, and Auckland.
+            </p>
+            <div className="mt-10 grid grid-cols-2 gap-6">
+              {credibilityStats.map((stat) => (
+                <div key={stat.label}>
+                  <p className="text-3xl font-serif text-forest">{stat.value}</p>
+                  <p className="text-sm uppercase tracking-[0.2em] text-mid-gray">
+                    {stat.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="relative h-[520px] w-full overflow-hidden">
+            <Image
+              src="https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=900&q=80"
+              alt="High-tech modular factory"
+              fill
+              className="object-cover"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="min-h-screen bg-white">
+        {featureHighlights.map((feature) => {
+          if (feature.alignment === "overlay" || feature.alignment === "overlay-left") {
+            return (
+              <div key={feature.title} className="relative min-h-[500px]">
+                <Image
+                  src={feature.image}
+                  alt={feature.imageAlt}
+                  fill
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 bg-black/40" />
+                <div
+                  className={cn(
+                    "relative z-10 flex h-full items-center",
+                    feature.alignment === "overlay-left" ? "justify-start" : "justify-center",
+                  )}
+                >
+                  <div className="section-container text-white lg:max-w-2xl">
+                    <h3 className="text-3xl leading-tight md:text-4xl">
+                      {feature.title}
+                    </h3>
+                    <p className="mt-4 text-lg text-white/90">{feature.body}</p>
+                  </div>
+                </div>
+              </div>
+            );
+          }
+
+          const isImageLeft = feature.alignment === "left";
+          return (
+            <div
+              key={feature.title}
+              className="grid gap-0 lg:grid-cols-2"
+            >
+              <div className={cn("relative min-h-[420px]", !isImageLeft && "order-last") }>
+                <Image
+                  src={feature.image}
+                  alt={feature.imageAlt}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="section-container flex items-center bg-white py-16">
+                <div className="space-y-4">
+                  <h3 className="text-3xl text-charcoal">{feature.title}</h3>
+                  <p className="text-lg text-mid-gray">{feature.body}</p>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </section>
+
+      <section className="min-h-screen bg-white py-24 md:py-32">
+        <div className="section-container text-center">
+          <SectionHeading
+            label="Process"
+            title="A streamlined process from concept to completion"
+            align="center"
+          />
+          <div className="mt-16 grid gap-10 md:grid-cols-3">
+            {processOverview.map((step) => (
+              <div key={step.step} className="space-y-4">
+                <p className="text-6xl font-serif text-forest/30">{step.step}</p>
+                <h3 className="text-2xl text-charcoal">{step.title}</h3>
+                <p className="text-base text-mid-gray">{step.description}</p>
+              </div>
+            ))}
+          </div>
+          <Link
+            href="/partner-with-us#process"
+            className={cn(
+              buttonVariants({ variant: "secondary", size: "md" }),
+              "mt-12 inline-flex",
+            )}
+          >
+            See Our Process in Detail
+          </Link>
+        </div>
+      </section>
+
+      <section className="min-h-screen bg-warm-white py-24 md:py-32">
+        <div className="section-container-wide">
+          <SectionHeading
+            label="Projects"
+            title="Delivering excellence across the Asia-Pacific"
+            align="center"
+          />
+          <div className="mt-16 grid gap-8 md:grid-cols-2">
+            {homeProjects.map((project) => (
+              <ProjectCard key={project.location} {...project} />
+            ))}
+          </div>
+          <div className="mt-12 text-center">
+            <Link
+              href="/our-work"
+              className={buttonVariants({ variant: "primary", size: "lg" })}
+            >
+              View All Projects
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="min-h-screen bg-white py-24 md:py-32">
+        <div className="section-container">
+          <SectionHeading
+            label="Who we work with"
+            title="Built for builders and developers"
+            description="Whether you&rsquo;re planning residential estates, commercial developments, or mixed-use projects, Cloud Modular delivers the speed, quality, and scale you need to succeed."
+            align="center"
+          />
+          <div className="mt-16 grid gap-10 md:grid-cols-2">
+            {audienceSegments.map((segment) => (
+              <div key={segment.title} className="rounded-sm border border-light-gray p-8">
+                <h3 className="text-2xl text-forest">{segment.title}</h3>
+                <ul className="mt-6 space-y-3 text-mid-gray">
+                  {segment.benefits.map((benefit) => (
+                    <li key={benefit} className="flex gap-3">
+                      <span className="text-forest">—</span>
+                      <span>{benefit}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="min-h-screen bg-warm-white py-24 md:py-32">
+        <div className="section-container">
+          <SectionHeading
+            label="FAQ"
+            title="Frequently Asked Questions"
+            align="center"
+          />
+          <div className="mx-auto mt-12 max-w-3xl">
+            <FAQ items={faqItems} />
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-forest py-24 text-white">
+        <div className="section-container text-center">
+          <h2 className="text-4xl leading-tight md:text-5xl">
+            Ready to transform your next development?
+          </h2>
+          <p className="mt-6 text-xl text-white/80">
+            Let&rsquo;s discuss how Cloud Modular can deliver your project faster, more cost-effectively, and sustainably.
+          </p>
+          <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+            <Link
+              href="/partner-with-us"
+              className={cn(
+                buttonVariants({ variant: "primary", size: "lg" }),
+                "bg-white text-forest hover:bg-warm-white",
+              )}
+            >
+              Partner With Us
+            </Link>
+            <Link
+              href="/our-work"
+              className={cn(
+                buttonVariants({ variant: "secondary", size: "lg" }),
+                "border-white text-white hover:bg-white/10",
+              )}
+            >
+              View Our Work
+            </Link>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }

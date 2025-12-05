@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cloud Modular Web
 
-## Getting Started
+Marketing site for Cloud Modular, built with Next.js 16 (App Router), TypeScript, and Tailwind CSS to match the requirements outlined in `../Design-Docs`.
 
-First, run the development server:
+## Tech Stack
+- Next.js 16 with the App Router (static export)
+- TypeScript
+- Tailwind CSS 3
+- Form submissions via Formspree (client-side POST)
 
+## Local Development
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+The site is available at http://localhost:3000. Page structure and content follow the design docs inside `../Design-Docs`.
+
+## Building & Static Export
+Static HTML export is enabled via `next.config.ts` (`output: 'export'`). Running
+```bash
+npm run build
+```
+produces the `/out` directory that GitHub Pages will serve.
+
+## Environment Variables
+Copy `.env.example` to `.env.local` and update the Formspree endpoint once it is provisioned:
+```
+NEXT_PUBLIC_FORMSPREE_ENDPOINT=https://formspree.io/f/your-form-id
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Assets & Content To-Do
+- Replace Unsplash placeholders with the ~20 optimized images referenced in `Design-Docs/00 - Project Brief.md`.
+- Provide final FAQ answers, project descriptions, confirmed phone number, and business hours once available.
+- Drop in the real Formspree endpoint (and production email/analytics IDs) before launch.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deployment (GitHub Pages)
+The repository root contains `.github/workflows/deploy.yml`, which:
+1. Installs dependencies inside `/web`
+2. Runs `npm run build` to create `/web/out`
+3. Publishes the static export to GitHub Pages with the included `public/CNAME` (`cloudmodular.com.au`).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Push to `main` (or run the workflow manually) to deploy. Update DNS per `Design-Docs/07 - GitHub Pages Hosting Guide.md`.
