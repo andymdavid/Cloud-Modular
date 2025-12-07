@@ -43,8 +43,8 @@ export default function Home() {
         <div className="grid min-h-[calc(150vh-4rem)] grid-rows-[minmax(50vh,0.35fr)_minmax(100vh,0.65fr)] pt-16">
           <div className="flex min-h-[50vh] items-end px-6 pb-12 pt-24 text-center sm:pt-28 sm:pb-16 lg:px-20">
             <div className="mx-auto w-full max-w-4xl">
-              <h1 className="hero-heading text-[40px] leading-[52px] text-[#d5d5d5] sm:text-[52px] sm:leading-[60px] lg:text-[65px] lg:leading-[68px]">
-                Premium modular spaces, built in weeks, not years.
+              <h1 className="hero-heading text-[37px] leading-[48px] text-[#f7f8f8] sm:text-[48px] sm:leading-[55px] lg:text-[60px] lg:leading-[63px]">
+                Premium modular spaces,<br />built in weeks, not years.
               </h1>
               <p className="mx-auto mt-5 w-full font-sans text-lg text-white/70 sm:max-w-[90%]">
                 We deliver architecturally crafted modular buildings, combining global offsite manufacturing with
@@ -103,30 +103,101 @@ export default function Home() {
         <div className="w-[80%] border-b border-white/5"></div>
       </section>
 
-      <section className="bg-[#080a0a] text-white">
-        <div className="section-container flex min-h-screen flex-col justify-center gap-12 py-20 lg:flex-row lg:items-center">
-          <div className="space-y-6 text-center lg:max-w-xl lg:text-left">
+      <section className="bg-[#080a0a] text-white min-h-[130vh] flex flex-col justify-center pt-20 pb-0">
+        <div className="section-container">
+          <div className="space-y-6 text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/40">Modular advantage</p>
-            <h2 className="text-4xl text-white lg:text-5xl">
-              A controlled delivery window from first briefing to handover
+            <h2 className="text-[30px] leading-[33px] text-white lg:text-[40px] lg:leading-[40px]">
+              Our system blends leading architecture and offsite manufacturing delivering projects that meet Australian standards with speed and precision.
             </h2>
-            <p className="text-base text-white/70">
-              Every engagement follows a predictable rhythm: governance upfront, live telemetry through production, and
-              structured installs backed by lifecycle feedback. It means fewer unknowns and faster commercial outcomes.
-            </p>
-          </div>
-          <div className="grid w-full gap-6 sm:grid-cols-2">
-            {heroHighlights.map((item) => (
-              <div
-                key={item.title}
-                className="rounded-2xl border border-white/5 bg-white/5 p-6 text-left text-white/80 backdrop-blur-sm"
-              >
-                <p className="text-sm uppercase tracking-[0.3em] text-white/60">{item.title}</p>
-                <p className="mt-3 text-base text-white/80">{item.body}</p>
-              </div>
-            ))}
           </div>
         </div>
+
+        <div className="mt-16 w-full overflow-x-auto">
+          <div className="flex gap-2 pl-6 pr-6 pb-8">
+              <div className="group relative min-w-[420px] max-w-[420px] h-[580px] rounded-[24px] border border-white/5 bg-white/5 overflow-hidden cursor-pointer">
+                <Image
+                  src="/Card1.png"
+                  alt="Card background"
+                  fill
+                  className="object-cover brightness-50 transition-all duration-300 group-hover:brightness-[0.65]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <div className="absolute bottom-0 left-0 right-0 p-6 flex items-end justify-between gap-4">
+                  <div>
+                    <p className="text-xs font-medium uppercase tracking-wider text-white/60">Category Label</p>
+                    <h3 className="mt-1 text-xl font-semibold text-white">Card Title Here</h3>
+                  </div>
+                  <button className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 backdrop-blur-sm text-white transition-all duration-300 group-hover:bg-white/30 group-hover:border-white/40">
+                    <span className="text-lg">&gt;</span>
+                  </button>
+                </div>
+              </div>
+
+              <div className="group relative min-w-[420px] max-w-[420px] h-[580px] rounded-[24px] border border-white/5 bg-white/5 overflow-hidden cursor-pointer">
+                <Image
+                  src="/Card2.png"
+                  alt="Card background"
+                  fill
+                  className="object-cover brightness-50 transition-all duration-300 group-hover:brightness-[0.65]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <div className="absolute bottom-0 left-0 right-0 p-6 flex items-end justify-between gap-4">
+                  <div>
+                    <p className="text-xs font-medium uppercase tracking-wider text-white/60">Category Label</p>
+                    <h3 className="mt-1 text-xl font-semibold text-white">Card Title Here</h3>
+                  </div>
+                  <button className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 backdrop-blur-sm text-white transition-all duration-300 group-hover:bg-white/30 group-hover:border-white/40">
+                    <span className="text-lg">&gt;</span>
+                  </button>
+                </div>
+              </div>
+
+              <div className="group relative min-w-[420px] max-w-[420px] h-[580px] rounded-[24px] border border-white/5 bg-white/5 overflow-hidden cursor-pointer">
+                <Image
+                  src="/Card3.png"
+                  alt="Card background"
+                  fill
+                  className="object-cover brightness-50 transition-all duration-300 group-hover:brightness-[0.65]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <div className="absolute bottom-0 left-0 right-0 p-6 flex items-end justify-between gap-4">
+                  <div>
+                    <p className="text-xs font-medium uppercase tracking-wider text-white/60">Category Label</p>
+                    <h3 className="mt-1 text-xl font-semibold text-white">Card Title Here</h3>
+                  </div>
+                  <button className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 backdrop-blur-sm text-white transition-all duration-300 group-hover:bg-white/30 group-hover:border-white/40">
+                    <span className="text-lg">&gt;</span>
+                  </button>
+                </div>
+              </div>
+
+              <div className="group relative min-w-[420px] max-w-[420px] h-[580px] rounded-[24px] border border-white/5 bg-white/5 overflow-hidden cursor-pointer">
+                <Image
+                  src="/Card4.png"
+                  alt="Card background"
+                  fill
+                  className="object-cover brightness-50 transition-all duration-300 group-hover:brightness-[0.65]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <div className="absolute bottom-0 left-0 right-0 p-6 flex items-end justify-between gap-4">
+                  <div>
+                    <p className="text-xs font-medium uppercase tracking-wider text-white/60">Category Label</p>
+                    <h3 className="mt-1 text-xl font-semibold text-white">Card Title Here</h3>
+                  </div>
+                  <button className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 backdrop-blur-sm text-white transition-all duration-300 group-hover:bg-white/30 group-hover:border-white/40">
+                    <span className="text-lg">&gt;</span>
+                  </button>
+                </div>
+              </div>
+              <div className="min-w-[24px]"></div>
+            </div>
+          </div>
+        <div className="w-[80%] mx-auto mt-20 border-b border-white/5"></div>
+      </section>
+
+      <section className="min-h-[100vh] bg-[#080a0a]">
+        {/* Blank section - 100vh */}
       </section>
 
       <CapabilitiesSection />
