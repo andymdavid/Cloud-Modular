@@ -125,8 +125,8 @@ export default function Home() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
                 <div className="absolute bottom-0 left-0 right-0 p-6 flex items-end justify-between gap-4">
                   <div>
-                    <p className="text-xs font-medium uppercase tracking-wider text-white/60">Category Label</p>
-                    <h3 className="mt-1 text-xl font-semibold text-white">Card Title Here</h3>
+                    <p className="text-xs font-medium uppercase tracking-wider text-white/60">Compliance</p>
+                    <h3 className="mt-1 text-xl font-semibold text-white whitespace-nowrap">Certified to Australian standards</h3>
                   </div>
                   <button className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 backdrop-blur-sm text-white transition-all duration-300 group-hover:bg-white/30 group-hover:border-white/40">
                     <span className="text-lg">&gt;</span>
@@ -144,8 +144,8 @@ export default function Home() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
                 <div className="absolute bottom-0 left-0 right-0 p-6 flex items-end justify-between gap-4">
                   <div>
-                    <p className="text-xs font-medium uppercase tracking-wider text-white/60">Category Label</p>
-                    <h3 className="mt-1 text-xl font-semibold text-white">Card Title Here</h3>
+                    <p className="text-xs font-medium uppercase tracking-wider text-white/60">Speed</p>
+                    <h3 className="mt-1 text-xl font-semibold text-white whitespace-nowrap">Offsite manufacturing is faster</h3>
                   </div>
                   <button className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 backdrop-blur-sm text-white transition-all duration-300 group-hover:bg-white/30 group-hover:border-white/40">
                     <span className="text-lg">&gt;</span>
@@ -163,8 +163,8 @@ export default function Home() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
                 <div className="absolute bottom-0 left-0 right-0 p-6 flex items-end justify-between gap-4">
                   <div>
-                    <p className="text-xs font-medium uppercase tracking-wider text-white/60">Category Label</p>
-                    <h3 className="mt-1 text-xl font-semibold text-white">Card Title Here</h3>
+                    <p className="text-xs font-medium uppercase tracking-wider text-white/60">Quality</p>
+                    <h3 className="mt-1 text-xl font-semibold text-white whitespace-nowrap">Precision and consistency</h3>
                   </div>
                   <button className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 backdrop-blur-sm text-white transition-all duration-300 group-hover:bg-white/30 group-hover:border-white/40">
                     <span className="text-lg">&gt;</span>
@@ -182,8 +182,46 @@ export default function Home() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
                 <div className="absolute bottom-0 left-0 right-0 p-6 flex items-end justify-between gap-4">
                   <div>
-                    <p className="text-xs font-medium uppercase tracking-wider text-white/60">Category Label</p>
-                    <h3 className="mt-1 text-xl font-semibold text-white">Card Title Here</h3>
+                    <p className="text-xs font-medium uppercase tracking-wider text-white/60">Flexibility</p>
+                    <h3 className="mt-1 text-xl font-semibold text-white whitespace-nowrap">Tailored to specifications</h3>
+                  </div>
+                  <button className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 backdrop-blur-sm text-white transition-all duration-300 group-hover:bg-white/30 group-hover:border-white/40">
+                    <span className="text-lg">&gt;</span>
+                  </button>
+                </div>
+              </div>
+
+              <div className="group relative min-w-[420px] max-w-[420px] h-[580px] rounded-[24px] border border-white/5 bg-white/5 overflow-hidden cursor-pointer">
+                <Image
+                  src="/Card5.png"
+                  alt="Card background"
+                  fill
+                  className="object-cover brightness-50 transition-all duration-300 group-hover:brightness-[0.65]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <div className="absolute bottom-0 left-0 right-0 p-6 flex items-end justify-between gap-4">
+                  <div>
+                    <p className="text-xs font-medium uppercase tracking-wider text-white/60">Cost Effectiveness</p>
+                    <h3 className="mt-1 text-xl font-semibold text-white whitespace-nowrap">Significant cost savings</h3>
+                  </div>
+                  <button className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 backdrop-blur-sm text-white transition-all duration-300 group-hover:bg-white/30 group-hover:border-white/40">
+                    <span className="text-lg">&gt;</span>
+                  </button>
+                </div>
+              </div>
+
+              <div className="group relative min-w-[420px] max-w-[420px] h-[580px] rounded-[24px] border border-white/5 bg-white/5 overflow-hidden cursor-pointer">
+                <Image
+                  src="/Card6.png"
+                  alt="Card background"
+                  fill
+                  className="object-cover brightness-50 transition-all duration-300 group-hover:brightness-[0.65]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <div className="absolute bottom-0 left-0 right-0 p-6 flex items-end justify-between gap-4">
+                  <div>
+                    <p className="text-xs font-medium uppercase tracking-wider text-white/60">Sustainability</p>
+                    <h3 className="mt-1 text-xl font-semibold text-white whitespace-nowrap">Reduced environmental impact</h3>
                   </div>
                   <button className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 backdrop-blur-sm text-white transition-all duration-300 group-hover:bg-white/30 group-hover:border-white/40">
                     <span className="text-lg">&gt;</span>
