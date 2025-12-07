@@ -16,6 +16,7 @@ import {
   valuePropositions,
 } from "@/content/site";
 import { CapabilitiesSection } from "@/components/capabilities";
+import { AdvantageCard } from "@/components/advantage-card";
 
 const heroHighlights = [
   {
@@ -33,6 +34,69 @@ const heroHighlights = [
   {
     title: "Lifecycle insight",
     body: "Post-install reviews capture lessons for the next project, making each delivery smarter than the last.",
+  },
+];
+
+const advantageCards = [
+  {
+    image: "/Card1.png",
+    label: "Compliance",
+    title: "Certified to Australian standards",
+    content: [
+      "Every module meets Australian Building Codes and state regulations before leaving the factory.",
+      "Pre-certified structural engineering reduces approvals risk and speeds consent timelines.",
+      "Third-party inspections during production ensure quality control at every stage."
+    ],
+  },
+  {
+    image: "/Card2.png",
+    label: "Speed",
+    title: "Offsite manufacturing is faster",
+    content: [
+      "Concurrent site prep and factory production cut total project time by months.",
+      "Weather-independent assembly keeps schedules predictable year-round.",
+      "Rapid on-site installation minimises disruption and accelerates handover."
+    ],
+  },
+  {
+    image: "/Card3.png",
+    label: "Quality",
+    title: "Precision and consistency",
+    content: [
+      "Controlled factory environments eliminate variability and reduce defects.",
+      "Standardised processes ensure consistent quality across every module.",
+      "Built-in quality checkpoints catch issues before they reach site."
+    ],
+  },
+  {
+    image: "/Card4.png",
+    label: "Flexibility",
+    title: "Tailored to specifications",
+    content: [
+      "Modular design adapts to unique site constraints and spatial requirements.",
+      "Configurable layouts suit residential, commercial, and mixed-use needs.",
+      "Scalable solutions grow with your project demands and budget."
+    ],
+  },
+  {
+    image: "/Card5.png",
+    label: "Cost Effectiveness",
+    title: "Significant cost savings",
+    content: [
+      "Factory efficiency reduces labour costs and material waste by up to 20%.",
+      "Shorter timelines mean lower financing costs and faster revenue generation.",
+      "Predictable pricing with fewer on-site surprises protects your margins."
+    ],
+  },
+  {
+    image: "/Card6.png",
+    label: "Sustainability",
+    title: "Reduced environmental impact",
+    content: [
+      "Offsite construction generates 70% less landfill than traditional builds.",
+      "Optimised material usage and recycling programs minimise waste.",
+      "Energy-efficient manufacturing processes reduce the carbon footprint of every module."
+    ],
   },
 ];
 
@@ -115,122 +179,12 @@ export default function Home() {
 
         <div className="mt-16 w-full overflow-x-auto">
           <div className="flex gap-2 pl-6 pr-6 pb-8">
-              <div className="group relative min-w-[420px] max-w-[420px] h-[580px] rounded-[24px] border border-white/5 bg-white/5 overflow-hidden cursor-pointer">
-                <Image
-                  src="/Card1.png"
-                  alt="Card background"
-                  fill
-                  className="object-cover brightness-50 transition-all duration-300 group-hover:brightness-[0.65]"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                <div className="absolute bottom-0 left-0 right-0 p-6 flex items-end justify-between gap-4">
-                  <div>
-                    <p className="text-xs font-medium uppercase tracking-wider text-white/60">Compliance</p>
-                    <h3 className="mt-1 text-xl font-semibold text-white whitespace-nowrap">Certified to Australian standards</h3>
-                  </div>
-                  <button className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 backdrop-blur-sm text-white transition-all duration-300 group-hover:bg-white/30 group-hover:border-white/40">
-                    <span className="text-lg">&gt;</span>
-                  </button>
-                </div>
-              </div>
-
-              <div className="group relative min-w-[420px] max-w-[420px] h-[580px] rounded-[24px] border border-white/5 bg-white/5 overflow-hidden cursor-pointer">
-                <Image
-                  src="/Card2.png"
-                  alt="Card background"
-                  fill
-                  className="object-cover brightness-50 transition-all duration-300 group-hover:brightness-[0.65]"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                <div className="absolute bottom-0 left-0 right-0 p-6 flex items-end justify-between gap-4">
-                  <div>
-                    <p className="text-xs font-medium uppercase tracking-wider text-white/60">Speed</p>
-                    <h3 className="mt-1 text-xl font-semibold text-white whitespace-nowrap">Offsite manufacturing is faster</h3>
-                  </div>
-                  <button className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 backdrop-blur-sm text-white transition-all duration-300 group-hover:bg-white/30 group-hover:border-white/40">
-                    <span className="text-lg">&gt;</span>
-                  </button>
-                </div>
-              </div>
-
-              <div className="group relative min-w-[420px] max-w-[420px] h-[580px] rounded-[24px] border border-white/5 bg-white/5 overflow-hidden cursor-pointer">
-                <Image
-                  src="/Card3.png"
-                  alt="Card background"
-                  fill
-                  className="object-cover brightness-50 transition-all duration-300 group-hover:brightness-[0.65]"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                <div className="absolute bottom-0 left-0 right-0 p-6 flex items-end justify-between gap-4">
-                  <div>
-                    <p className="text-xs font-medium uppercase tracking-wider text-white/60">Quality</p>
-                    <h3 className="mt-1 text-xl font-semibold text-white whitespace-nowrap">Precision and consistency</h3>
-                  </div>
-                  <button className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 backdrop-blur-sm text-white transition-all duration-300 group-hover:bg-white/30 group-hover:border-white/40">
-                    <span className="text-lg">&gt;</span>
-                  </button>
-                </div>
-              </div>
-
-              <div className="group relative min-w-[420px] max-w-[420px] h-[580px] rounded-[24px] border border-white/5 bg-white/5 overflow-hidden cursor-pointer">
-                <Image
-                  src="/Card4.png"
-                  alt="Card background"
-                  fill
-                  className="object-cover brightness-50 transition-all duration-300 group-hover:brightness-[0.65]"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                <div className="absolute bottom-0 left-0 right-0 p-6 flex items-end justify-between gap-4">
-                  <div>
-                    <p className="text-xs font-medium uppercase tracking-wider text-white/60">Flexibility</p>
-                    <h3 className="mt-1 text-xl font-semibold text-white whitespace-nowrap">Tailored to specifications</h3>
-                  </div>
-                  <button className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 backdrop-blur-sm text-white transition-all duration-300 group-hover:bg-white/30 group-hover:border-white/40">
-                    <span className="text-lg">&gt;</span>
-                  </button>
-                </div>
-              </div>
-
-              <div className="group relative min-w-[420px] max-w-[420px] h-[580px] rounded-[24px] border border-white/5 bg-white/5 overflow-hidden cursor-pointer">
-                <Image
-                  src="/Card5.png"
-                  alt="Card background"
-                  fill
-                  className="object-cover brightness-50 transition-all duration-300 group-hover:brightness-[0.65]"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                <div className="absolute bottom-0 left-0 right-0 p-6 flex items-end justify-between gap-4">
-                  <div>
-                    <p className="text-xs font-medium uppercase tracking-wider text-white/60">Cost Effectiveness</p>
-                    <h3 className="mt-1 text-xl font-semibold text-white whitespace-nowrap">Significant cost savings</h3>
-                  </div>
-                  <button className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 backdrop-blur-sm text-white transition-all duration-300 group-hover:bg-white/30 group-hover:border-white/40">
-                    <span className="text-lg">&gt;</span>
-                  </button>
-                </div>
-              </div>
-
-              <div className="group relative min-w-[420px] max-w-[420px] h-[580px] rounded-[24px] border border-white/5 bg-white/5 overflow-hidden cursor-pointer">
-                <Image
-                  src="/Card6.png"
-                  alt="Card background"
-                  fill
-                  className="object-cover brightness-50 transition-all duration-300 group-hover:brightness-[0.65]"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                <div className="absolute bottom-0 left-0 right-0 p-6 flex items-end justify-between gap-4">
-                  <div>
-                    <p className="text-xs font-medium uppercase tracking-wider text-white/60">Sustainability</p>
-                    <h3 className="mt-1 text-xl font-semibold text-white whitespace-nowrap">Reduced environmental impact</h3>
-                  </div>
-                  <button className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 backdrop-blur-sm text-white transition-all duration-300 group-hover:bg-white/30 group-hover:border-white/40">
-                    <span className="text-lg">&gt;</span>
-                  </button>
-                </div>
-              </div>
-              <div className="min-w-[24px]"></div>
-            </div>
+            {advantageCards.map((card) => (
+              <AdvantageCard key={card.label} {...card} />
+            ))}
+            <div className="min-w-[24px]"></div>
           </div>
+        </div>
         <div className="w-[80%] mx-auto mt-20 border-b border-white/5"></div>
       </section>
 
