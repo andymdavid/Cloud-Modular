@@ -39,7 +39,7 @@ const heroHighlights = [
 export default function Home() {
   return (
     <>
-      <section className="bg-[#0a0a0a] text-white">
+      <section className="bg-[#080a0a] text-white">
         <div className="grid min-h-[calc(150vh-4rem)] grid-rows-[minmax(50vh,0.35fr)_minmax(100vh,0.65fr)] pt-16">
           <div className="flex min-h-[50vh] items-end px-6 pb-12 pt-24 text-center sm:pt-28 sm:pb-16 lg:px-20">
             <div className="mx-auto w-full max-w-4xl">
@@ -86,7 +86,24 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-[#050505] text-white">
+      <section className="min-h-[65vh] bg-[#080a0a] flex flex-col items-center justify-center">
+        <div className="section-container text-center flex-1 flex flex-col items-center justify-center">
+          <h2 className="hero-heading text-[21px] text-white">
+            Partnering with leading architectural, engineering, and procurement teams.
+          </h2>
+          <p className="hero-heading -mt-1 text-[21px] text-[#8e939c]">
+            Delivering fully compliant and thoughtfully designed projects.
+          </p>
+          <div className="mt-12 flex items-center justify-center gap-8 md:gap-12">
+            <div className="flex h-16 w-32 items-center justify-center text-white/50">Dec</div>
+            <div className="flex h-16 w-32 items-center justify-center text-white/50">Arc</div>
+            <div className="flex h-16 w-32 items-center justify-center text-white/50">CP</div>
+          </div>
+        </div>
+        <div className="w-[80%] border-b border-white/5"></div>
+      </section>
+
+      <section className="bg-[#080a0a] text-white">
         <div className="section-container flex min-h-screen flex-col justify-center gap-12 py-20 lg:flex-row lg:items-center">
           <div className="space-y-6 text-center lg:max-w-xl lg:text-left">
             <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/40">Modular advantage</p>
