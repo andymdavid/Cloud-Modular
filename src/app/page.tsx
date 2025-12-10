@@ -188,8 +188,31 @@ export default function Home() {
         <div className="w-[80%] mx-auto mt-20 border-b border-white/5"></div>
       </section>
 
-      <section className="min-h-[100vh] bg-[#080a0a]">
-        {/* Blank section - 100vh */}
+      <section className="min-h-[100vh] bg-[#080a0a] text-white flex flex-col items-center justify-center">
+        <div className="section-container">
+          <div className="text-center">
+            <div className="space-y-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/40">What we do</p>
+              <h2 className="text-[30px] leading-[33px] text-white lg:text-[40px] lg:leading-[40px]">
+                Design-informed, precisely manufactured modular<br />buildings built to Australian standards.
+              </h2>
+            </div>
+            <p className="mx-auto mt-5 w-full text-lg text-white/70 sm:max-w-[65%]">
+              Our system adapts to different sites, budgets and requirements, giving clients more certainty in how their projects are delivered.
+            </p>
+            <div className="mt-5">
+              <Link
+                href="/partner-with-us"
+                className={cn(
+                  buttonVariants({ variant: "primary", size: "sm" }),
+                  "bg-white text-forest hover:bg-warm-white",
+                )}
+              >
+                Partner With Us
+              </Link>
+            </div>
+          </div>
+        </div>
       </section>
 
       <CapabilitiesSection />
