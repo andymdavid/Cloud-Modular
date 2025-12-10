@@ -167,29 +167,8 @@ export default function Home() {
         <div className="w-[80%] border-b border-white/5"></div>
       </section>
 
-      <section className="bg-[#080a0a] text-white min-h-[130vh] flex flex-col justify-center pt-20 pb-0">
-        <div className="section-container">
-          <div className="space-y-6 text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/40">Modular advantage</p>
-            <h2 className="text-[30px] leading-[33px] text-white lg:text-[40px] lg:leading-[40px]">
-              Our system blends leading architecture and offsite manufacturing delivering projects that meet Australian standards with speed and precision.
-            </h2>
-          </div>
-        </div>
-
-        <div className="mt-16 w-full overflow-x-auto">
-          <div className="flex gap-2 pl-6 pr-6 pb-8">
-            {advantageCards.map((card) => (
-              <AdvantageCard key={card.label} {...card} />
-            ))}
-            <div className="min-w-[24px]"></div>
-          </div>
-        </div>
-        <div className="w-[80%] mx-auto mt-20 border-b border-white/5"></div>
-      </section>
-
-      <section className="min-h-[150vh] bg-[#080a0a] text-white flex flex-col items-center justify-start pt-24">
-        <div className="section-container">
+      <section className="min-h-[150vh] bg-[#080a0a] text-white flex flex-col pt-24">
+        <div className="section-container flex-1">
           <div className="text-center">
             <div className="space-y-6">
               <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/40">What we do</p>
@@ -308,6 +287,28 @@ export default function Home() {
             </div>
           </div>
         </div>
+        <div className="w-[80%] mx-auto border-b border-white/5"></div>
+      </section>
+
+      <section className="bg-[#080a0a] text-white min-h-[130vh] flex flex-col justify-center pt-20 pb-0">
+        <div className="section-container">
+          <div className="space-y-6 text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/40">Modular advantage</p>
+            <h2 className="text-[30px] leading-[33px] text-white lg:text-[40px] lg:leading-[40px]">
+              Our system blends leading architecture and offsite manufacturing delivering projects that meet Australian standards with speed and precision.
+            </h2>
+          </div>
+        </div>
+
+        <div className="mt-16 w-full overflow-x-auto">
+          <div className="flex gap-2 pl-6 pr-6 pb-8">
+            {advantageCards.map((card) => (
+              <AdvantageCard key={card.label} {...card} />
+            ))}
+            <div className="min-w-[24px]"></div>
+          </div>
+        </div>
+        <div className="w-[80%] mx-auto mt-20 border-b border-white/5"></div>
       </section>
 
       <CapabilitiesSection />
