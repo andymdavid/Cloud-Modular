@@ -16,7 +16,7 @@ export function FAQ({ items }: FAQProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <div className="divide-y divide-light-gray">
+    <div className="divide-y divide-white/10">
       {items.map((item, index) => {
         const isOpen = openIndex === index;
         return (
@@ -26,12 +26,12 @@ export function FAQ({ items }: FAQProps) {
               onClick={() => setOpenIndex(isOpen ? null : index)}
               aria-expanded={isOpen}
             >
-              <span className="text-lg font-medium text-charcoal">
+              <span className="text-lg font-medium text-white">
                 {item.question}
               </span>
               <span
                 className={cn(
-                  "text-forest transition-transform",
+                  "text-white transition-transform",
                   isOpen && "rotate-45",
                 )}
               >
@@ -40,11 +40,11 @@ export function FAQ({ items }: FAQProps) {
             </button>
             <div
               className={cn(
-                "grid overflow-hidden text-mid-gray transition-all duration-300",
+                "grid overflow-hidden text-white/70 transition-all duration-300",
                 isOpen ? "grid-rows-[1fr] pb-6" : "grid-rows-[0fr]",
               )}
             >
-              <div className="text-base leading-relaxed">{item.answer}</div>
+              <div className="overflow-hidden text-base leading-relaxed min-h-0">{item.answer}</div>
             </div>
           </div>
         );

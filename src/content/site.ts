@@ -197,44 +197,59 @@ export const audienceSegments = [
 
 export const faqItems = [
   {
-    question: "What types of projects are suitable for modular construction?",
+    question: "How do your modules comply with Australian standards?",
     answer:
-      "Cloud Modular is ideal for residential estates, apartment buildings, commercial developments, mixed-use projects, and social infrastructure like schools or healthcare facilities. The system adapts to most building types that need speed, quality, and scale.",
+      "All modules are engineered to Australian standards and certified before leaving the factory. We provide full documentation and drawings for building surveyors and local authorities.",
   },
   {
-    question: "How long does the manufacturing process take?",
+    question: "Where are the modules built?",
     answer:
-      "Manufacturing typically takes 4-8 weeks depending on project size and complexity. Multiple modules are fabricated concurrently, significantly reducing total timelines.",
+      "Modules are manufactured in controlled factory environments offshore, where the process is stable, repeatable and closely audited for accuracy and consistency.",
   },
   {
-    question: "What's the installation timeline?",
+    question: "How do you ensure quality when manufacturing offshore?",
     answer:
-      "On-site installation usually ranges from 1-4 weeks. Because modules arrive largely complete, installation is rapid and minimally disruptive.",
+      "We use controlled factory settings, third-party inspections and engineering sign-off at key points in the process. Nothing ships until it meets structural, architectural and compliance requirements.",
   },
   {
-    question: "Are designs customizable?",
+    question: "What's the advantage of modular over traditional construction?",
     answer:
-      "Yes. We collaborate on layouts, finishes, and configurations to match your project while retaining the efficiencies of modular construction.",
+      "Most of the build happens offsite, which shortens timelines, reduces site disruption and improves cost certainty.",
   },
   {
-    question: "How do building approvals work?",
+    question: "Can modular buildings be customised to my project?",
     answer:
-      "We provide the documentation and certifications required to meet Australian building codes and assist you throughout the approval process.",
+      "Yes. Modules are designed to suit site constraints, planning requirements and spatial needs. We adapt layouts and configurations based on project intent.",
   },
   {
-    question: "What's included in the cost?",
+    question: "What types of buildings do you deliver?",
     answer:
-      "Pricing covers design and engineering, manufacturing, delivery, and installation support. Detailed quotes outline each phase from concept to completion.",
+      "We work across commercial, multi-residential, health and aged care, education, community, infrastructure and accommodation projects.",
   },
   {
-    question: "What areas in WA do you service?",
+    question: "What's the typical project timeline?",
     answer:
-      "We currently serve all of Western Australia and can coordinate logistics for both metropolitan and regional projects.",
+      "Timelines vary by scale and complexity, but offsite manufacturing means construction and site works can run concurrently, significantly reducing the overall program.",
   },
   {
-    question: "How does quality compare to traditional construction?",
+    question: "How are modules transported and installed?",
     answer:
-      "Factory-controlled production, consistent conditions, and rigorous quality checks often lead to higher quality than site-built construction.",
+      "Modules are shipped, unloaded and craned into position using established lifting and transport methods. We coordinate with local contractors for foundations, services and final works.",
+  },
+  {
+    question: "Do modular buildings have the same lifespan as traditional buildings?",
+    answer:
+      "Yes. Modules are engineered as permanent structures and use materials and systems comparable to traditional builds.",
+  },
+  {
+    question: "What are the cost benefits?",
+    answer:
+      "Factory production reduces waste, labour time and rework, providing more cost certainty and a more predictable project budget.",
+  },
+  {
+    question: "Can modular buildings meet sustainability targets?",
+    answer:
+      "Yes. Controlled production reduces waste, and the precision of the process supports higher-performing building envelopes and reduced embodied carbon depending on specification.",
   },
 ];
 
