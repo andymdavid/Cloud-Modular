@@ -15,7 +15,7 @@ export function AdvantageCard({ image, label, title, content }: AdvantageCardPro
 
   return (
     <div
-      className="group relative min-w-[420px] max-w-[420px] h-[580px] rounded-[24px] border border-white/5 overflow-hidden cursor-pointer"
+      className="group relative min-w-[362px] max-w-[362px] h-[500px] rounded-[24px] border border-white/5 overflow-hidden cursor-pointer"
       onClick={() => setIsExpanded(!isExpanded)}
       style={{
         backgroundColor: isExpanded ? "#0f1111" : "rgba(255, 255, 255, 0.05)",
@@ -55,12 +55,12 @@ export function AdvantageCard({ image, label, title, content }: AdvantageCardPro
           <p className="text-xs font-medium uppercase tracking-wider text-white/60">
             {label}
           </p>
-          <h3 className="mt-1 text-xl font-semibold text-white whitespace-nowrap">
+          <h3 className="mt-1 text-lg font-semibold text-white whitespace-nowrap">
             {title}
           </h3>
         </div>
-        <button className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 backdrop-blur-sm text-white transition-all duration-300 group-hover:bg-white/30 group-hover:border-white/40">
-          <span className="text-lg">&gt;</span>
+        <button className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 backdrop-blur-sm text-white transition-all duration-300 group-hover:bg-white/30 group-hover:border-white/40">
+          <span className="text-sm leading-none flex items-center justify-center">&gt;</span>
         </button>
       </div>
     </div>
