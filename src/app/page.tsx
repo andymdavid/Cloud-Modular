@@ -184,7 +184,7 @@ export default function Home() {
                 href="/partner-with-us"
                 className={cn(
                   buttonVariants({ variant: "primary", size: "sm" }),
-                  "bg-white text-forest hover:bg-warm-white",
+                  "px-5 text-sm font-semibold bg-white text-forest hover:bg-warm-white",
                 )}
               >
                 Partner With Us
@@ -309,6 +309,65 @@ export default function Home() {
           </div>
         </div>
         <div className="w-[80%] mx-auto mt-20 border-b border-white/5"></div>
+      </section>
+
+      <section className="min-h-[140vh] bg-[#080a0a] flex items-center">
+        <div className="section-container">
+          <div className="max-w-2xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/40">Quality, Compliance & Assurance</p>
+            <h2 className="mt-6 text-[30px] leading-[33px] text-white lg:text-[37px] lg:leading-[40px]">
+              Factory-controlled production and verified engineering ensure full compliance with Australian standards.
+            </h2>
+            <p className="mt-6 text-lg text-white/70">
+              This process gives clients confidence in the accuracy, reliability and compliance of every module before it reaches site.
+            </p>
+          </div>
+
+          <div className="mt-12 grid grid-cols-3 border-t border-b border-white/10">
+            <div className="border-r border-white/10 pt-12 pb-12 px-6">
+              <h3 className="text-xl font-semibold text-white">Engineering & Compliance</h3>
+              <p className="mt-3 text-sm text-white/60 leading-relaxed">
+                Each module is certified by qualified engineers and designed to meet all required Australian standards.
+              </p>
+              <div className="mt-6 rounded-lg bg-[#0d0e0f] border border-white/5 overflow-hidden min-h-[450px] relative">
+                <Image
+                  src="/pillar1.png"
+                  alt="Engineering & Compliance"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </div>
+            <div className="border-r border-white/10 pt-12 pb-12 px-6">
+              <h3 className="text-xl font-semibold text-white">Factory-Controlled Production</h3>
+              <p className="mt-3 text-sm text-white/60 leading-relaxed">
+                Modules are built in a stable, repeatable environment that supports consistent quality and precise manufacturing.
+              </p>
+              <div className="mt-6 rounded-lg bg-[#0d0e0f] border border-white/5 overflow-hidden min-h-[450px] relative">
+                <Image
+                  src="/pillar2.png"
+                  alt="Factory-Controlled Production"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </div>
+            <div className="pt-12 pb-12 px-6">
+              <h3 className="text-xl font-semibold text-white">Independent Quality Checks</h3>
+              <p className="mt-3 text-sm text-white/60 leading-relaxed">
+                Inspections at key stages verify accuracy, workmanship and readiness before modules leave the factory.
+              </p>
+              <div className="mt-6 rounded-lg bg-[#0d0e0f] border border-white/5 overflow-hidden min-h-[450px] relative">
+                <Image
+                  src="/pillar3.png"
+                  alt="Independent Quality Checks"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       <CapabilitiesSection />
