@@ -91,8 +91,14 @@ export default function AboutPage() {
           </div>
           <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
             <div className="space-y-4">
-              <div className="rounded-lg bg-white px-10 py-12 text-center text-[#0a0a0a]">
-                <span className="text-2xl font-semibold">Accel</span>
+              <div className="rounded-lg bg-white px-10 py-12 text-center text-[#0a0a0a] flex min-h-[160px] items-center justify-center">
+                <Image
+                  src="/Prism-Logo.png"
+                  alt="Prism Design Studio logo"
+                  width={200}
+                  height={80}
+                  className="max-h-16 w-auto"
+                />
               </div>
               <div>
                 <p className="text-base font-semibold text-white">Prism Design Studio</p>
@@ -100,8 +106,14 @@ export default function AboutPage() {
               </div>
             </div>
             <div className="space-y-4">
-              <div className="rounded-lg bg-white px-10 py-12 text-center text-[#0a0a0a]">
-                <span className="text-2xl font-semibold tracking-[0.2em]">SEQUOIA</span>
+              <div className="rounded-lg bg-white px-10 py-12 text-center text-[#0a0a0a] flex min-h-[160px] items-center justify-center">
+                <Image
+                  src="/Decobu-Logo.png"
+                  alt="Decobu logo"
+                  width={200}
+                  height={80}
+                  className="max-h-16 w-auto"
+                />
               </div>
               <div>
                 <p className="text-base font-semibold text-white">Decobu</p>
@@ -109,8 +121,14 @@ export default function AboutPage() {
               </div>
             </div>
             <div className="space-y-4">
-              <div className="rounded-lg bg-white px-10 py-12 text-center text-[#0a0a0a]">
-                <span className="text-2xl font-semibold whitespace-nowrap">Founders Fund</span>
+              <div className="rounded-lg bg-white px-10 py-12 text-center text-[#0a0a0a] flex min-h-[160px] items-center justify-center">
+                <Image
+                  src="/Cloud1.png"
+                  alt="Cloud Procurement logo"
+                  width={600}
+                  height={220}
+                  className="max-h-32 w-auto object-contain"
+                />
               </div>
               <div>
                 <p className="text-base font-semibold text-white">Cloud Procurement</p>
