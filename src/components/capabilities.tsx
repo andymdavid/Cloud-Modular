@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 
 export function CapabilitiesSection() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const cardRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const cardRefs = useRef<Array<HTMLElement | null>>([]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
