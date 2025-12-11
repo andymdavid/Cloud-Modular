@@ -22,7 +22,7 @@ export function Navigation() {
       <div className="pointer-events-auto border-b border-white/5 bg-[#0a0a0a]/85 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4 sm:px-6">
           <Link href="/" className="flex shrink-0 items-center" onClick={closeMenu}>
-            <Image src="/Logo.png" alt="Cloud Modular" width={140} height={140} />
+            <Image src="/logo.png" alt="Cloud Modular" width={140} height={140} />
           </Link>
           <nav
             className="hidden flex-1 items-center justify-center gap-8 text-sm font-medium text-white/70 md:flex"
