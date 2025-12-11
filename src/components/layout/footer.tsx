@@ -5,6 +5,7 @@ import { contactDetails, footerLinks } from "@/content/site";
 export function Footer() {
   return (
     <footer className="bg-[#080a0a] text-white">
+      <div className="w-[80%] mx-auto border-t border-white/5"></div>
       <div className="section-container grid gap-10 py-16 md:grid-cols-[40%_1fr_1fr_1fr]">
         {/* Logo and Tagline - 40% width */}
         <div>
@@ -49,7 +50,7 @@ export function Footer() {
           <ul className="mt-4 space-y-3 text-white/70">
             <li>
               <Link
-                href="/contact"
+                href="/partner-with-us"
                 className="transition-colors hover:text-white"
               >
                 Contact Us

@@ -28,20 +28,35 @@ export function Navigation() {
             className="hidden flex-1 items-center justify-center gap-8 text-sm font-medium text-white/70 md:flex"
             aria-label="Main navigation"
           >
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={cn(
-                  "transition-colors",
-                  isActive(link.href)
-                    ? "text-white"
-                    : "text-white/60 hover:text-white",
-              )}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isDisabled = link.label === "Projects" || link.label === "What We Do";
+
+              if (isDisabled) {
+                return (
+                  <span
+                    key={link.href}
+                    className="text-white/40 cursor-not-allowed"
+                  >
+                    {link.label}
+                  </span>
+                );
+              }
+
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    "transition-colors",
+                    isActive(link.href)
+                      ? "text-white"
+                      : "text-white/60 hover:text-white",
+                  )}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </nav>
           <div className="ml-auto flex items-center gap-4">
             <Link
@@ -89,21 +104,36 @@ export function Navigation() {
         )}
       >
         <nav className="space-y-4 text-base font-medium text-white/80" aria-label="Mobile navigation">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={cn(
-                "block",
-                isActive(link.href)
-                  ? "text-white"
-                  : "text-white/70 hover:text-white",
-              )}
-              onClick={closeMenu}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            const isDisabled = link.label === "Projects" || link.label === "What We Do";
+
+            if (isDisabled) {
+              return (
+                <span
+                  key={link.href}
+                  className="block text-white/40 cursor-not-allowed"
+                >
+                  {link.label}
+                </span>
+              );
+            }
+
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={cn(
+                  "block",
+                  isActive(link.href)
+                    ? "text-white"
+                    : "text-white/70 hover:text-white",
+                )}
+                onClick={closeMenu}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
           <Link
             href={contactHref}
             className="inline-flex w-full items-center justify-center rounded-sm bg-white px-6 py-3 text-center text-base font-semibold text-forest"
