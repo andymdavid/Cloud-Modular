@@ -1,14 +1,14 @@
 export const navLinks = [
-  { label: "About Us", href: "/" },
+  { label: "About Us", href: "/about" },
   { label: "Projects", href: "/our-work" },
   { label: "What We Do", href: "/partner-with-us" },
 ];
 
 export const footerLinks = [
   { label: "Home", href: "/" },
-  { label: "Our Work", href: "/our-work" },
-  { label: "Partner With Us", href: "/partner-with-us" },
-  { label: "Privacy Policy (coming soon)", href: "#" },
+  { label: "About Us", href: "/about" },
+  { label: "Projects", href: "/our-work" },
+  { label: "What We Do", href: "/partner-with-us" },
 ];
 
 export const contactDetails = {
