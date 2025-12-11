@@ -73,7 +73,7 @@ export function CapabilitiesSection() {
               {capabilityCards.map((card, index) => (
                 <article
                   key={card.title}
-                  ref={(el) => (cardRefs.current[index] = el)}
+                  ref={(el) => { cardRefs.current[index] = el; }}
                   data-index={index}
                   className="rounded-3xl border border-slate-200 bg-white p-8 shadow-xl transition-shadow hover:shadow-2xl"
                   style={{ marginTop: `${index * 1.5}rem` }}
