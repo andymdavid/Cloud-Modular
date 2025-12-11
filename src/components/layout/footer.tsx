@@ -5,7 +5,8 @@ import { contactDetails, footerLinks } from "@/content/site";
 export function Footer() {
   return (
     <footer className="bg-[#080a0a] text-white">
-      <div className="section-container grid gap-10 py-16 md:grid-cols-3">
+      <div className="section-container grid gap-10 py-16 md:grid-cols-[40%_1fr_1fr_1fr]">
+        {/* Logo and Tagline - 40% width */}
         <div>
           <Link href="/" className="inline-block">
             <Image
@@ -17,12 +18,14 @@ export function Footer() {
             />
           </Link>
           <p className="mt-4 max-w-sm text-lg leading-relaxed text-white/70">
-            Precision-engineered modular construction for Western Australia.
+            Thoughtful design, precise manufacturing and dependable delivery.
           </p>
         </div>
+
+        {/* Discover - Site Links */}
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/40">
-            Quick Links
+            Discover
           </p>
           <ul className="mt-4 space-y-3 text-white/70">
             {footerLinks.map((link) => (
@@ -37,43 +40,56 @@ export function Footer() {
             ))}
           </ul>
         </div>
+
+        {/* Connect - Contact and LinkedIn */}
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/40">
-            Contact
+            Connect
           </p>
           <ul className="mt-4 space-y-3 text-white/70">
             <li>
-              <span className="block text-xs uppercase tracking-[0.4em] text-white/40">
-                Email
-              </span>
-              <a
-                href={`mailto:${contactDetails.email}`}
-                className="text-white transition-colors hover:text-warm-white"
+              <Link
+                href="/contact"
+                className="transition-colors hover:text-white"
               >
-                {contactDetails.email}
+                Contact Us
+              </Link>
+            </li>
+            <li>
+              <a
+                href="https://www.linkedin.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-colors hover:text-white"
+              >
+                LinkedIn
               </a>
             </li>
-            <li>
-              <span className="block text-xs uppercase tracking-[0.4em] text-white/40">
-                Phone
-              </span>
-              <span className="text-white">
-                {contactDetails.phone} (to be confirmed)
-              </span>
-            </li>
-            <li>
-              <span className="block text-xs uppercase tracking-[0.4em] text-white/40">
-                Location
-              </span>
-              <span>{contactDetails.location}</span>
-            </li>
-            <li>
-              <span className="block text-xs uppercase tracking-[0.4em] text-white/40">
-                Business Hours
-              </span>
-              <span>{contactDetails.hours}</span>
-            </li>
           </ul>
+        </div>
+
+        {/* Address */}
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/40">
+            Address
+          </p>
+          <div className="mt-4 space-y-4">
+            <div>
+              <p className="text-sm font-semibold text-white/60 mb-2">
+                Perth, Australia
+              </p>
+              <p className="text-white/70">Loftus St, North Perth</p>
+              <p className="text-white/70">Western Australia, 6006</p>
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-white/60 mb-2">
+                Foshan, China
+              </p>
+              <p className="text-white/70">3F, 48L, No.26 Lang Bao West Road</p>
+              <p className="text-white/70">Foshan City, Guangdong Province</p>
+              <p className="text-white/70">China</p>
+            </div>
+          </div>
         </div>
       </div>
       <div className="border-t border-white/5 py-6 text-center text-sm text-white/40">
