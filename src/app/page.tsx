@@ -327,7 +327,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="mt-12 grid grid-cols-3 border-t border-b border-white/10">
+          <div className="mt-12 hidden md:grid grid-cols-3 border-t border-b border-white/10">
             <div className="border-r border-white/10 pt-12 pb-12 px-6">
               <h3 className="text-xl font-semibold text-white">Engineering & Compliance</h3>
               <p className="mt-3 text-sm text-white/60 leading-relaxed">
@@ -386,6 +386,69 @@ export default function Home() {
               </div>
             </div>
           </div>
+
+          <div className="mt-12 w-full overflow-x-auto md:hidden">
+            <div className="flex gap-6 pl-6 pr-6 pb-8">
+              <div className="min-w-[85vw] border border-white/10 rounded-[16px] pt-12 pb-12 px-6">
+                <h3 className="text-xl font-semibold text-white">Engineering & Compliance</h3>
+                <p className="mt-3 text-sm text-white/60 leading-relaxed">
+                  Each module is certified by qualified engineers and designed to meet all required Australian standards.
+                </p>
+                <div className="mt-8 rounded-[24px] bg-[#0d0e0f] overflow-hidden min-h-[440px] relative">
+                  <Image
+                    src="/pillar1.png"
+                    alt="Engineering & Compliance"
+                    fill
+                    className="object-cover brightness-[0.65]"
+                  />
+                  <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={pillarCardOverlay}
+                    aria-hidden="true"
+                  ></div>
+                </div>
+              </div>
+              <div className="min-w-[85vw] border border-white/10 rounded-[16px] pt-12 pb-12 px-6">
+                <h3 className="text-xl font-semibold text-white">Factory-Controlled Production</h3>
+                <p className="mt-3 text-sm text-white/60 leading-relaxed">
+                  Modules are built in a stable, repeatable environment that supports consistent quality and precise manufacturing.
+                </p>
+                <div className="mt-8 rounded-[24px] bg-[#0d0e0f] overflow-hidden min-h-[440px] relative">
+                  <Image
+                    src="/pillar2.png"
+                    alt="Factory-Controlled Production"
+                    fill
+                    className="object-cover brightness-[0.65]"
+                  />
+                  <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={pillarCardOverlay}
+                    aria-hidden="true"
+                  ></div>
+                </div>
+              </div>
+              <div className="min-w-[85vw] border border-white/10 rounded-[16px] pt-12 pb-12 px-6">
+                <h3 className="text-xl font-semibold text-white">Independent Quality Checks</h3>
+                <p className="mt-3 text-sm text-white/60 leading-relaxed">
+                  Inspections at key stages verify accuracy, workmanship and readiness before modules leave the factory.
+                </p>
+                <div className="mt-8 rounded-[24px] bg-[#0d0e0f] overflow-hidden min-h-[440px] relative">
+                  <Image
+                    src="/pillar3.png"
+                    alt="Independent Quality Checks"
+                    fill
+                    className="object-cover brightness-[0.65]"
+                  />
+                  <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={pillarCardOverlay}
+                    aria-hidden="true"
+                  ></div>
+                </div>
+              </div>
+              <div className="min-w-[24px]"></div>
+            </div>
+          </div>
         </div>
         <div className="w-[80%] mx-auto mt-20 border-b border-white/5"></div>
       </section>
@@ -410,7 +473,7 @@ export default function Home() {
             <div>
               <div className="space-y-6">
                 <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/40">About Us</p>
-                <h2 className="text-[35px] leading-[38px] text-white">
+                <h2 className="text-[27px] leading-[31px] text-white md:text-[35px] md:leading-[38px]">
                   Cloud Modular offers clarity and certainty to a changing construction landscape.
                 </h2>
               </div>
@@ -428,7 +491,7 @@ export default function Home() {
             </div>
 
             <div>
-              <p className="text-lg text-white/70 leading-relaxed mt-[42px]">
+              <p className="text-lg text-white/70 leading-relaxed mt-2 lg:mt-[42px]">
                 Construction is becoming harder to deliver predictably - labour shortages, rising costs and tighter compliance all add pressure to traditional methods.
               </p>
               <p className="text-lg text-white/70 leading-relaxed mt-6">
