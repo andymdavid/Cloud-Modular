@@ -108,11 +108,11 @@ export default function Home() {
   return (
     <>
       <section className="bg-[#080a0a] text-white">
-        <div className="grid min-h-[calc(150vh-4rem)] grid-rows-[minmax(50vh,0.35fr)_minmax(100vh,0.65fr)] pt-16">
-          <div className="flex min-h-[50vh] items-end px-6 pb-12 pt-24 text-center sm:pt-28 sm:pb-16 lg:px-20">
+        <div className="grid min-h-screen md:min-h-[calc(150vh-4rem)] grid-rows-[auto_minmax(60vh,1fr)] md:grid-rows-[minmax(50vh,0.35fr)_minmax(100vh,0.65fr)] pt-16">
+          <div className="flex min-h-0 md:min-h-[50vh] items-center md:items-end px-6 pb-12 pt-16 sm:pt-24 md:pt-28 text-center md:pb-16 lg:px-20">
             <div className="mx-auto w-full max-w-4xl">
-              <h1 className="hero-heading text-[37px] leading-[48px] text-[#f7f8f8] sm:text-[48px] sm:leading-[55px] lg:text-[60px] lg:leading-[63px]">
-                Premium modular spaces,<br />built in weeks, not years.
+              <h1 className="hero-heading text-[32px] leading-[38px] text-[#f7f8f8] sm:text-[48px] sm:leading-[55px] lg:text-[60px] lg:leading-[63px]">
+                Premium modular spaces, built in weeks, not years.
               </h1>
               <p className="mx-auto mt-5 w-full font-sans text-lg text-white/70 sm:max-w-[90%]">
                 We deliver architecturally crafted modular buildings, combining global offsite manufacturing with
@@ -138,7 +138,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="relative min-h-[100vh]">
+          <div className="relative min-h-[60vh] md:min-h-[100vh]">
             <Image
               src="/hero-background.png"
               alt="Modern modular building exterior"

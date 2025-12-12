@@ -25,7 +25,7 @@ export function Navigation() {
             <Image src="/logo.png" alt="Cloud Modular" width={140} height={140} />
           </Link>
           <nav
-            className="hidden flex-1 items-center justify-center gap-8 text-sm font-medium text-white/70 md:flex"
+            className="hidden md:flex flex-1 items-center justify-center gap-8 text-sm font-medium text-white/70"
             aria-label="Main navigation"
           >
             {navLinks.map((link) => {
@@ -99,8 +99,8 @@ export function Navigation() {
       </div>
       <div
         className={cn(
-          "pointer-events-auto border-b border-white/5 bg-[#0a0a0a]/90 px-4 pb-6 pt-4 shadow-subtle backdrop-blur-md md:hidden",
-          open ? "max-h-96" : "max-h-0 overflow-hidden",
+          "pointer-events-auto bg-[#0a0a0a]/90 backdrop-blur-md md:hidden transition-all duration-300",
+          open ? "max-h-96 px-4 pb-6 pt-4 border-b border-white/5 shadow-subtle" : "max-h-0 overflow-hidden",
         )}
       >
         <nav className="space-y-4 text-base font-medium text-white/80" aria-label="Mobile navigation">
