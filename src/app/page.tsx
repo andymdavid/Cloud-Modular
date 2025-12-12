@@ -154,7 +154,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="min-h-[65vh] bg-[#080a0a] flex flex-col items-center justify-center">
+      <section className="min-h-[100vh] md:min-h-[65vh] bg-[#080a0a] flex flex-col items-center justify-center">
         <div className="section-container text-center flex-1 flex flex-col items-center justify-center">
           <h2 className="hero-heading text-[21px] text-white">
             Partnering with leading architectural, engineering, and procurement teams.
@@ -162,32 +162,32 @@ export default function Home() {
           <p className="hero-heading -mt-1 text-[21px] text-[#8e939c]">
             Delivering fully compliant and thoughtfully designed projects.
           </p>
-          <div className="mt-12 flex items-center justify-center gap-8 md:gap-12">
-            <div className="rounded-lg bg-white px-10 py-8 text-center text-[#0a0a0a] flex h-[120px] w-[160px] items-center justify-center">
+          <div className="mt-12 flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12">
+            <div className="rounded-lg bg-white px-6 py-6 md:px-10 md:py-8 text-center text-[#0a0a0a] flex h-[100px] w-[200px] md:h-[120px] md:w-[160px] items-center justify-center">
               <Image
                 src="/Prism-Logo.png"
                 alt="Prism Design Studio logo"
                 width={200}
                 height={80}
-                className="max-h-12 w-auto"
+                className="max-h-10 md:max-h-12 w-auto"
               />
             </div>
-            <div className="rounded-lg bg-white px-10 py-8 text-center text-[#0a0a0a] flex h-[120px] w-[160px] items-center justify-center">
+            <div className="rounded-lg bg-white px-6 py-6 md:px-10 md:py-8 text-center text-[#0a0a0a] flex h-[100px] w-[200px] md:h-[120px] md:w-[160px] items-center justify-center">
               <Image
                 src="/Decobu-Logo.png"
                 alt="Decobu logo"
                 width={200}
                 height={80}
-                className="max-h-12 w-auto"
+                className="max-h-10 md:max-h-12 w-auto"
               />
             </div>
-            <div className="rounded-lg bg-white px-10 py-8 text-center text-[#0a0a0a] flex h-[120px] w-[160px] items-center justify-center">
+            <div className="rounded-lg bg-white px-6 py-6 md:px-10 md:py-8 text-center text-[#0a0a0a] flex h-[100px] w-[200px] md:h-[120px] md:w-[160px] items-center justify-center">
               <Image
                 src="/Cloud1.png"
                 alt="Cloud Procurement logo"
                 width={600}
                 height={220}
-                className="max-h-12 w-auto object-contain"
+                className="max-h-10 md:max-h-12 w-auto object-contain"
               />
             </div>
           </div>
