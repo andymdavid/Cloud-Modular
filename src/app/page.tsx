@@ -114,7 +114,7 @@ export default function Home() {
               <h1 className="hero-heading text-[32px] leading-[38px] text-[#f7f8f8] sm:text-[48px] sm:leading-[55px] lg:text-[60px] lg:leading-[63px]">
                 Premium modular spaces, built in weeks, not years.
               </h1>
-              <p className="mx-auto mt-5 w-full font-sans text-lg text-white/70 sm:max-w-[90%]">
+              <p className="mx-auto mt-5 w-full font-sans text-lg leading-6 text-white/70 sm:max-w-[90%]">
                 We deliver architecturally crafted modular buildings, combining global offsite manufacturing with
                 rigorous engineering certification to ensure faster delivery and genuine certainty.
               </p>
@@ -177,7 +177,7 @@ export default function Home() {
             <div className="space-y-6">
               <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/40">What we do</p>
               <h2 className="text-[30px] leading-[33px] text-white lg:text-[40px] lg:leading-[40px]">
-                Design-informed, precisely manufactured modular<br />buildings built to Australian standards.
+                Design-informed, precisely manufactured modular<br className="hidden md:block" /> buildings built to Australian standards.
               </h2>
             </div>
             <p className="mx-auto mt-5 w-full text-lg text-white/70 sm:max-w-[65%]">
@@ -198,9 +198,9 @@ export default function Home() {
 
           <div className="mt-48 text-center mx-auto max-w-5xl">
             <h2 className="hero-heading text-[21px] text-white">
-              We work across a wide range of project types, from commercial and multi-residential
+              We work across a wide range of project types, from commercial and multi-residential<span className="md:hidden"> developments, aged care, education, community facilities, hotels and accommodation.</span>
             </h2>
-            <p className="hero-heading -mt-1 text-[21px] text-[#8e939c]">
+            <p className="hero-heading -mt-1 text-[21px] text-[#8e939c] hidden md:block">
               developments, aged care, education, community facilities, hotels and accommodation.
             </p>
           </div>
@@ -298,7 +298,7 @@ export default function Home() {
         <div className="section-container">
           <div className="space-y-6 text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/40">Modular advantage</p>
-            <h2 className="text-[30px] leading-[33px] text-white lg:text-[40px] lg:leading-[40px]">
+            <h2 className="text-[27px] leading-[31px] text-white md:text-[30px] md:leading-[33px] lg:text-[40px] lg:leading-[40px]">
               Our system blends leading architecture and offsite manufacturing delivering projects that meet Australian standards with speed and precision.
             </h2>
           </div>

@@ -39,7 +39,7 @@ export function AdvantageCard({ image, label, title, content }: AdvantageCardPro
             {content.map((line, index) => (
               <p
                 key={index}
-                className={`hero-heading text-[21px] ${
+                className={`hero-heading text-[17px] md:text-[21px] ${
                   index === 0 ? "text-white" : "text-[#8e939c]"
                 }`}
               >
