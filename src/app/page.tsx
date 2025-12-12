@@ -163,9 +163,33 @@ export default function Home() {
             Delivering fully compliant and thoughtfully designed projects.
           </p>
           <div className="mt-12 flex items-center justify-center gap-8 md:gap-12">
-            <div className="flex h-16 w-32 items-center justify-center text-white/50">Dec</div>
-            <div className="flex h-16 w-32 items-center justify-center text-white/50">Arc</div>
-            <div className="flex h-16 w-32 items-center justify-center text-white/50">CP</div>
+            <div className="rounded-lg bg-white px-10 py-8 text-center text-[#0a0a0a] flex h-[120px] w-[160px] items-center justify-center">
+              <Image
+                src="/Prism-Logo.png"
+                alt="Prism Design Studio logo"
+                width={200}
+                height={80}
+                className="max-h-12 w-auto"
+              />
+            </div>
+            <div className="rounded-lg bg-white px-10 py-8 text-center text-[#0a0a0a] flex h-[120px] w-[160px] items-center justify-center">
+              <Image
+                src="/Decobu-Logo.png"
+                alt="Decobu logo"
+                width={200}
+                height={80}
+                className="max-h-12 w-auto"
+              />
+            </div>
+            <div className="rounded-lg bg-white px-10 py-8 text-center text-[#0a0a0a] flex h-[120px] w-[160px] items-center justify-center">
+              <Image
+                src="/Cloud1.png"
+                alt="Cloud Procurement logo"
+                width={600}
+                height={220}
+                className="max-h-12 w-auto object-contain"
+              />
+            </div>
           </div>
         </div>
         <div className="w-[80%] border-b border-white/5"></div>

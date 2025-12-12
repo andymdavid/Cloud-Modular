@@ -112,7 +112,7 @@ export default function PartnerWithUsPage() {
                 </div>
 
                 {/* Contact Information */}
-                <div className="space-y-8">
+                <div className="hidden md:block space-y-8">
                   <div>
                     <h3 className="text-xs font-semibold uppercase tracking-[0.4em] text-white/40 mb-4">
                       Address

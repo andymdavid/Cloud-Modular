@@ -45,9 +45,9 @@ export default function AboutPage() {
       <section className="min-h-[100vh] bg-[#080a0a] text-white grid grid-rows-[1fr_auto]">
         <div className="flex items-center">
           <div className="section-container py-20 w-full">
-          <div className="space-y-6 text-center">
+          <div className="space-y-6 text-left md:text-center md:max-w-[925px] md:mx-auto">
             <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/40">Our Story</p>
-            <h2 className="text-[30px] leading-[33px] text-white lg:text-[40px] lg:leading-[40px]">
+            <h2 className="text-[30px] leading-[33px] text-white lg:text-[34px] lg:leading-[40px]">
               Bringing design, manufacturing and compliance together to deliver modular buildings with greater control.
             </h2>
           </div>
@@ -79,7 +79,7 @@ export default function AboutPage() {
       </section>
 
       <section className="bg-[#080a0a] text-white min-h-[60vh] grid grid-rows-[1fr_auto]">
-        <div className="flex items-center">
+        <div className="flex items-center py-12 md:py-0">
           <div className="section-container grid gap-12 lg:grid-cols-[1fr_1.1fr] items-center w-full">
             <div className="space-y-6 max-w-xl">
               <div className="space-y-4">
@@ -130,7 +130,7 @@ export default function AboutPage() {
                     alt="Cloud Procurement logo"
                     width={600}
                     height={220}
-                    className="max-h-32 w-auto object-contain"
+                    className="max-h-16 md:max-h-32 w-auto object-contain"
                   />
                 </div>
                 <div>
