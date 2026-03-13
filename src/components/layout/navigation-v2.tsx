@@ -44,7 +44,7 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
       <div className="pointer-events-auto py-4 px-4 sm:px-6">
         {/* Glassmorphic nav bar */}
         <div className={cn(
-          "relative mx-auto flex h-14 max-w-5xl items-center px-5 border backdrop-blur-xl shadow-lg",
+          "relative mx-auto flex h-10 max-w-5xl items-center px-5 border backdrop-blur-xl shadow-lg",
           glassBg,
           isLight ? "border-white/20" : "border-white/[0.04]"
         )}>
