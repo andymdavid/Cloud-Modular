@@ -175,11 +175,29 @@ export default function HomeV2() {
               <Link
                 href="/partner-with-us"
                 className={cn(
-                  "inline-flex rounded-[2px] px-[16px] py-[6px] text-[11px] font-semibold transition",
-                  isLight ? "bg-white/90 text-[#080a0a] hover:bg-white" : "bg-white text-forest hover:bg-warm-white",
+                  "group inline-flex items-center gap-5 border border-white/10 bg-[#03080c] px-11 py-6 text-[11px] font-semibold uppercase tracking-[0.34em] text-white transition hover:border-white/20 hover:bg-[#061017]",
                 )}
               >
-                Partner With Us
+                <span className="relative flex h-5 w-5 items-center justify-center">
+                  <svg
+                    className="absolute h-4 w-4 rotate-45 transition-all duration-300 group-hover:scale-75 group-hover:opacity-0"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    aria-hidden
+                  >
+                    <rect x="3.5" y="3.5" width="9" height="9" stroke="currentColor" strokeWidth="1.5" />
+                  </svg>
+                  <svg
+                    className="absolute h-5 w-5 -translate-x-1 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    aria-hidden
+                  >
+                    <path d="M3 10H15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
+                    <path d="M10 4L16 10L10 16" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="miter" />
+                  </svg>
+                </span>
+                <span>Partner With Us</span>
               </Link>
             </div>
           </div>
