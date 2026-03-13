@@ -44,21 +44,13 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
       <div className="pointer-events-auto py-4 px-4 sm:px-6">
         {/* Glassmorphic nav bar */}
         <div className={cn(
-          "mx-auto flex h-14 max-w-5xl items-center gap-4 px-5 border backdrop-blur-xl shadow-lg",
+          "relative mx-auto flex h-14 max-w-5xl items-center px-5 border backdrop-blur-xl shadow-lg",
           glassBg,
           isLight ? "border-white/20" : "border-white/[0.04]"
         )}>
-          <Link href="/" className="flex shrink-0 items-center" onClick={closeMenu}>
-            <Image
-              src="/logo.png"
-              alt="Cloud Modular"
-              width={140}
-              height={140}
-              className={cn(isLight && "invert")}
-            />
-          </Link>
+          {/* Left: Menu */}
           <nav
-            className={cn("hidden md:flex flex-1 items-center justify-center gap-8 text-sm font-medium", textMuted)}
+            className={cn("hidden md:flex flex-1 items-center gap-8 text-[14px] font-medium", textMuted)}
             aria-label="Main navigation"
           >
             {navLinks.map((link) => {
@@ -91,10 +83,24 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
               );
             })}
           </nav>
-          <div className="ml-auto flex items-center gap-4">
+
+          {/* Center: Logo */}
+          <Link href="/" className="absolute left-1/2 -translate-x-1/2 flex shrink-0 items-center" onClick={closeMenu}>
+            <Image
+              src="/logo.png"
+              alt="Cloud Modular"
+              width={140}
+              height={140}
+              className={cn(isLight && "invert")}
+            />
+          </Link>
+
+          {/* Right: CTA Button */}
+          <div className="flex flex-1 items-center justify-end gap-4">
+            {/* Button: 20px horizontal padding, 8px vertical padding, 14px font */}
             <Link
               href={contactHref}
-              className={cn("hidden px-5 py-2 text-sm font-semibold transition md:inline-flex", btnBg, btnText, btnHover)}
+              className={cn("hidden px-[20px] py-[8px] text-[14px] font-semibold transition md:inline-flex", btnBg, btnText, btnHover)}
             >
               Partner With Us
             </Link>
