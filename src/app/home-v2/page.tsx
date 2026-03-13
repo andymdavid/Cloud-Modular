@@ -175,26 +175,27 @@ export default function HomeV2() {
               <Link
                 href="/partner-with-us"
                 className={cn(
-                  "group inline-flex items-center gap-5 border border-white/10 bg-[#03080c] px-11 py-6 text-[11px] font-semibold uppercase tracking-[0.34em] text-white transition hover:border-white/20 hover:bg-[#061017]",
+                  "group inline-flex items-center gap-3 rounded-[2px] bg-white px-[16px] py-[6px] text-[11px] font-semibold uppercase tracking-[0.22em] text-forest transition hover:bg-warm-white",
                 )}
               >
                 <span className="relative flex h-5 w-5 items-center justify-center">
                   <svg
-                    className="absolute h-4 w-4 rotate-45 transition-all duration-300 group-hover:scale-75 group-hover:opacity-0"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    aria-hidden
-                  >
-                    <rect x="3.5" y="3.5" width="9" height="9" stroke="currentColor" strokeWidth="1.5" />
-                  </svg>
-                  <svg
-                    className="absolute h-5 w-5 -translate-x-1 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
+                    className="absolute h-4 w-4 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-0"
                     viewBox="0 0 20 20"
                     fill="none"
                     aria-hidden
                   >
                     <path d="M3 10H15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
                     <path d="M10 4L16 10L10 16" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="miter" />
+                  </svg>
+                  <svg
+                    className="absolute h-4 w-4 -translate-x-1 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    aria-hidden
+                  >
+                    <path d="M4 10H14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
+                    <path d="M10 6L14 10L10 14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="miter" />
                   </svg>
                 </span>
                 <span>Partner With Us</span>
