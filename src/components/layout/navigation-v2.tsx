@@ -34,9 +34,6 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
   const glassBg = isLight
     ? "bg-white/60"
     : "bg-[#0d1212]/75";
-  const glassBorder = isLight
-    ? "border-white/30"
-    : "border-white/[0.08]";
   const mobileBg = isLight
     ? "bg-white/80"
     : "bg-[#0d1212]/90";
@@ -47,9 +44,9 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
       <div className="pointer-events-auto py-4 px-4 sm:px-6">
         {/* Glassmorphic nav bar */}
         <div className={cn(
-          "mx-auto flex h-14 max-w-5xl items-center gap-4 px-5 rounded-full border backdrop-blur-xl shadow-lg",
+          "mx-auto flex h-14 max-w-5xl items-center gap-4 px-5 border backdrop-blur-xl shadow-lg",
           glassBg,
-          glassBorder
+          isLight ? "border-white/20" : "border-white/[0.04]"
         )}>
           <Link href="/" className="flex shrink-0 items-center" onClick={closeMenu}>
             <Image
@@ -97,7 +94,7 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
           <div className="ml-auto flex items-center gap-4">
             <Link
               href={contactHref}
-              className={cn("hidden rounded-full px-5 py-2 text-sm font-semibold transition md:inline-flex", btnBg, btnText, btnHover)}
+              className={cn("hidden px-5 py-2 text-sm font-semibold transition md:inline-flex", btnBg, btnText, btnHover)}
             >
               Partner With Us
             </Link>
@@ -139,10 +136,9 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
       {/* Mobile menu dropdown */}
       <div
         className={cn(
-          "pointer-events-auto mx-4 sm:mx-6 rounded-2xl backdrop-blur-xl md:hidden transition-all duration-300 overflow-hidden mt-2",
+          "pointer-events-auto mx-4 sm:mx-6 backdrop-blur-xl md:hidden transition-all duration-300 overflow-hidden mt-2",
           mobileBg,
-          glassBorder,
-          open ? "max-h-96 px-5 pb-6 pt-4 border shadow-lg" : "max-h-0 border-transparent",
+          open ? cn("max-h-96 px-5 pb-6 pt-4 shadow-lg", isLight ? "border border-white/20" : "border border-white/[0.04]") : "max-h-0",
         )}
       >
         <nav className={cn("space-y-4 text-base font-medium", textMuted)} aria-label="Mobile navigation">
@@ -178,7 +174,7 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
           })}
           <Link
             href={contactHref}
-            className={cn("inline-flex w-full items-center justify-center rounded-full px-6 py-3 text-center text-base font-semibold", btnBg, btnText)}
+            className={cn("inline-flex w-full items-center justify-center px-6 py-3 text-center text-base font-semibold", btnBg, btnText)}
             onClick={closeMenu}
           >
             Partner With Us
