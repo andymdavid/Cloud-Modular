@@ -142,6 +142,9 @@ export default function HomeV2() {
 
   return (
     <>
+      {/* Hide global navigation */}
+      <style>{`#global-nav { display: none !important; }`}</style>
+
       {/* Navigation */}
       <NavigationV2 isLight={isLight} />
 
