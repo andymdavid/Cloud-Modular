@@ -190,8 +190,9 @@ export default function HomeV2() {
               />
             </div>
             {/* H1: Host Grotesk Bold 700 */}
-            <h1 className={cn("font-host-grotesk font-bold text-[32px] leading-[38px] sm:text-[48px] sm:leading-[55px] lg:text-[60px] lg:leading-[63px]", text)}>
-              Premium modular spaces, built in weeks, not years.
+            <h1 className={cn("font-host-grotesk font-bold text-[32px] leading-[34px] sm:text-[48px] sm:leading-[50px] lg:text-[60px] lg:leading-[62px]", text)}>
+              Premium modular spaces,<br />
+              built in weeks, not years.
             </h1>
             {/* Subpara: 18px (text-lg) */}
             <p className={cn("mx-auto mt-5 w-full font-sans text-lg leading-6 sm:max-w-[90%]", textMuted)}>
