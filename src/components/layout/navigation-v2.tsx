@@ -84,13 +84,13 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
             })}
           </nav>
 
-          {/* Center: Logo - scaled down 15% */}
+          {/* Center: Logo - scaled down 25% total */}
           <Link href="/" className="absolute left-1/2 -translate-x-1/2 flex shrink-0 items-center" onClick={closeMenu}>
             <Image
               src="/logo.png"
               alt="Cloud Modular"
-              width={120}
-              height={120}
+              width={108}
+              height={108}
               className={cn(isLight && "invert")}
             />
           </Link>
