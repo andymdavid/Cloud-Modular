@@ -14,6 +14,7 @@ module.exports = {
       fontFamily: {
         sans: ["var(--font-sans)", "Inter", "sans-serif"],
         serif: ["var(--font-serif)", "Instrument Serif", "serif"],
+        "host-grotesk": ["var(--font-host-grotesk)", "Host Grotesk", "sans-serif"],
       },
       borderRadius: {
         none: "0px",

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Instrument_Serif, Inter } from "next/font/google";
+import { Instrument_Serif, Inter, Host_Grotesk } from "next/font/google";
 import { ConditionalNavigation } from "@/components/layout/conditional-navigation";
 import { Footer } from "@/components/layout/footer";
 import "./globals.css";
@@ -16,6 +16,13 @@ const inter = Inter({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-sans",
+});
+
+const hostGrotesk = Host_Grotesk({
+  weight: ["700"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-host-grotesk",
 });
 
 export const metadata: Metadata = {
@@ -48,7 +55,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${instrumentSerif.variable} ${inter.variable} antialiased`}>
+      <body className={`${instrumentSerif.variable} ${inter.variable} ${hostGrotesk.variable} antialiased`}>
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:rounded-sm focus:bg-white focus:px-4 focus:py-2"

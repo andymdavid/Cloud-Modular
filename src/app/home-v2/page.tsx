@@ -179,9 +179,21 @@ export default function HomeV2() {
         {/* Content */}
         <div className="relative z-10 flex h-full items-center justify-center px-6 pt-16 lg:px-20">
           <div className="mx-auto w-full max-w-4xl text-center">
-            <h1 className={cn("hero-heading text-[32px] leading-[38px] sm:text-[48px] sm:leading-[55px] lg:text-[60px] lg:leading-[63px]", text)}>
+            {/* Cloud Icon */}
+            <div className="flex justify-center mb-6">
+              <Image
+                src="/cloud_icon.png"
+                alt=""
+                width={48}
+                height={48}
+                className={cn(isLight && "invert")}
+              />
+            </div>
+            {/* H1: Host Grotesk Bold 700 */}
+            <h1 className={cn("font-host-grotesk font-bold text-[32px] leading-[38px] sm:text-[48px] sm:leading-[55px] lg:text-[60px] lg:leading-[63px]", text)}>
               Premium modular spaces, built in weeks, not years.
             </h1>
+            {/* Subpara: 18px (text-lg) */}
             <p className={cn("mx-auto mt-5 w-full font-sans text-lg leading-6 sm:max-w-[90%]", textMuted)}>
               We deliver architecturally crafted modular buildings, combining global offsite manufacturing with
               rigorous engineering certification to ensure faster delivery and genuine certainty.
