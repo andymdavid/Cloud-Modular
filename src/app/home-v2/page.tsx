@@ -194,28 +194,19 @@ export default function HomeV2() {
               Premium modular spaces,<br />
               built in weeks, not years.
             </h1>
-            {/* Subpara: 18px (text-lg) */}
-            <p className="mx-auto mt-5 w-full max-w-[90%] font-sans text-lg leading-6 text-white">
+            <p className="mx-auto mt-5 w-full max-w-[420px] font-sans text-[12px] leading-[18px] text-white">
               We deliver architecturally crafted modular buildings, combining global offsite manufacturing with
               rigorous engineering certification to ensure faster delivery and genuine certainty.
             </p>
-            <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+            <div className="mt-8 flex justify-center">
               <Link
                 href="/partner-with-us"
                 className={cn(
-                  buttonVariants({ variant: "primary", size: "sm" }),
-                  "px-5 text-sm font-semibold",
-                  btnPrimary,
+                  "inline-flex rounded-[2px] px-[16px] py-[6px] text-[11px] font-semibold transition",
+                  isLight ? "bg-white/90 text-[#080a0a] hover:bg-white" : "bg-white text-forest hover:bg-warm-white",
                 )}
               >
                 Partner With Us
-              </Link>
-              <Link
-                href="/our-work"
-                className={cn("inline-flex items-center justify-center gap-2 text-sm font-semibold transition", btnSecondary)}
-              >
-                View Our Work
-                <span aria-hidden className="text-base">&gt;</span>
               </Link>
             </div>
           </div>
