@@ -22,21 +22,35 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
   const closeMenu = () => setOpen(false);
 
   // Theme-aware colors
-  const headerBg = isLight ? "bg-[#f7f8f8]/85" : "bg-[#0a0a0a]/85";
-  const borderColor = isLight ? "border-black/5" : "border-white/5";
   const textColor = isLight ? "text-[#080a0a]" : "text-white";
   const textMuted = isLight ? "text-[#080a0a]/70" : "text-white/70";
   const textDisabled = isLight ? "text-[#080a0a]/40" : "text-white/40";
-  const btnBg = isLight ? "bg-[#080a0a]" : "bg-white";
-  const btnText = isLight ? "text-white" : "text-forest";
-  const btnHover = isLight ? "hover:bg-[#1a1c1d]" : "hover:bg-warm-white";
+  const btnBg = isLight ? "bg-white/90" : "bg-white";
+  const btnText = isLight ? "text-[#080a0a]" : "text-forest";
+  const btnHover = isLight ? "hover:bg-white" : "hover:bg-warm-white";
   const hamburgerBg = isLight ? "bg-[#080a0a]" : "bg-white";
-  const mobileBg = isLight ? "bg-[#f7f8f8]/90" : "bg-[#0a0a0a]/90";
+
+  // Glassmorphic nav styles
+  const glassBg = isLight
+    ? "bg-white/60"
+    : "bg-[#1a1a1a]/70";
+  const glassBorder = isLight
+    ? "border-white/30"
+    : "border-white/[0.08]";
+  const mobileBg = isLight
+    ? "bg-white/80"
+    : "bg-[#1a1a1a]/90";
 
   return (
     <header className="pointer-events-none fixed inset-x-0 top-0 z-50">
-      <div className={cn("pointer-events-auto border-b backdrop-blur-md", headerBg, borderColor)}>
-        <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4 sm:px-6">
+      {/* Transparent header container */}
+      <div className="pointer-events-auto py-4 px-4 sm:px-6">
+        {/* Glassmorphic nav bar */}
+        <div className={cn(
+          "mx-auto flex h-14 max-w-5xl items-center gap-4 px-5 rounded-full border backdrop-blur-xl shadow-lg",
+          glassBg,
+          glassBorder
+        )}>
           <Link href="/" className="flex shrink-0 items-center" onClick={closeMenu}>
             <Image
               src="/logo.png"
@@ -83,7 +97,7 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
           <div className="ml-auto flex items-center gap-4">
             <Link
               href={contactHref}
-              className={cn("hidden rounded-sm px-5 py-2 text-sm font-semibold transition md:inline-flex", btnBg, btnText, btnHover)}
+              className={cn("hidden rounded-full px-5 py-2 text-sm font-semibold transition md:inline-flex", btnBg, btnText, btnHover)}
             >
               Partner With Us
             </Link>
@@ -98,21 +112,21 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
               <div className="flex h-10 w-10 flex-col items-center justify-center gap-1.5">
                 <span
                   className={cn(
-                    "h-0.5 w-7 transition",
+                    "h-0.5 w-6 transition",
                     hamburgerBg,
                     open && "translate-y-2 rotate-45",
                   )}
                 />
                 <span
                   className={cn(
-                    "h-0.5 w-7 transition",
+                    "h-0.5 w-6 transition",
                     hamburgerBg,
                     open && "opacity-0",
                   )}
                 />
                 <span
                   className={cn(
-                    "h-0.5 w-7 transition",
+                    "h-0.5 w-6 transition",
                     hamburgerBg,
                     open && "-translate-y-2 -rotate-45",
                   )}
@@ -122,11 +136,13 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
           </div>
         </div>
       </div>
+      {/* Mobile menu dropdown */}
       <div
         className={cn(
-          "pointer-events-auto backdrop-blur-md md:hidden transition-all duration-300",
+          "pointer-events-auto mx-4 sm:mx-6 rounded-2xl backdrop-blur-xl md:hidden transition-all duration-300 overflow-hidden mt-2",
           mobileBg,
-          open ? cn("max-h-96 px-4 pb-6 pt-4 border-b shadow-subtle", borderColor) : "max-h-0 overflow-hidden",
+          glassBorder,
+          open ? "max-h-96 px-5 pb-6 pt-4 border shadow-lg" : "max-h-0 border-transparent",
         )}
       >
         <nav className={cn("space-y-4 text-base font-medium", textMuted)} aria-label="Mobile navigation">
@@ -162,7 +178,7 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
           })}
           <Link
             href={contactHref}
-            className={cn("inline-flex w-full items-center justify-center rounded-sm px-6 py-3 text-center text-base font-semibold", btnBg, btnText)}
+            className={cn("inline-flex w-full items-center justify-center rounded-full px-6 py-3 text-center text-base font-semibold", btnBg, btnText)}
             onClick={closeMenu}
           >
             Partner With Us
