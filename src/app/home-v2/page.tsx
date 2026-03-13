@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { buttonVariants } from "@/components/ui/button";
@@ -105,16 +108,59 @@ const aboutImageOverlay = {
 };
 
 export default function HomeV2() {
+  const [isLight, setIsLight] = useState(false);
+
+  // Theme classes
+  const bg = isLight ? "bg-[#f7f8f8]" : "bg-[#080a0a]";
+  const bgAlt = isLight ? "bg-[#ffffff]" : "bg-[#101112]";
+  const bgCard = isLight ? "bg-[#f0f1f1]" : "bg-[#1b1c1d]";
+  const text = isLight ? "text-[#080a0a]" : "text-white";
+  const textMuted = isLight ? "text-[#080a0a]/70" : "text-white/70";
+  const textSubtle = isLight ? "text-[#080a0a]/60" : "text-white/60";
+  const textLabel = isLight ? "text-[#080a0a]/40" : "text-white/40";
+  const border = isLight ? "border-[#080a0a]/10" : "border-white/10";
+  const borderSubtle = isLight ? "border-[#080a0a]/[0.08]" : "border-white/[0.08]";
+  const borderDivider = isLight ? "border-[#080a0a]/5" : "border-white/5";
+  const btnPrimary = isLight ? "bg-[#080a0a] text-white hover:bg-[#1a1c1d]" : "bg-white text-forest hover:bg-warm-white";
+  const btnSecondary = isLight ? "text-[#080a0a]/80 hover:text-[#080a0a]" : "text-white/80 hover:text-white";
+  const logoBox = isLight ? "bg-[#080a0a]" : "bg-white";
+  const logoText = isLight ? "text-white" : "text-[#0a0a0a]";
+
   return (
     <>
-      <section className="bg-[#080a0a] text-white">
+      {/* Theme Toggle Button */}
+      <button
+        onClick={() => setIsLight(!isLight)}
+        className={cn(
+          "fixed top-24 right-6 z-50 flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium shadow-lg transition-all",
+          isLight ? "bg-[#080a0a] text-white" : "bg-white text-[#080a0a]"
+        )}
+      >
+        {isLight ? (
+          <>
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+            Dark
+          </>
+        ) : (
+          <>
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+            Light
+          </>
+        )}
+      </button>
+
+      <section className={cn(bg, text)}>
         <div className="grid min-h-screen md:min-h-[calc(150vh-4rem)] grid-rows-[auto_minmax(60vh,1fr)] md:grid-rows-[minmax(50vh,0.35fr)_minmax(100vh,0.65fr)] pt-16">
           <div className="flex min-h-0 md:min-h-[50vh] items-center md:items-end px-6 pb-12 pt-16 sm:pt-24 md:pt-28 text-center md:pb-16 lg:px-20">
             <div className="mx-auto w-full max-w-4xl">
-              <h1 className="hero-heading text-[32px] leading-[38px] text-[#f7f8f8] sm:text-[48px] sm:leading-[55px] lg:text-[60px] lg:leading-[63px]">
+              <h1 className={cn("hero-heading text-[32px] leading-[38px] sm:text-[48px] sm:leading-[55px] lg:text-[60px] lg:leading-[63px]", text)}>
                 Premium modular spaces, built in weeks, not years.
               </h1>
-              <p className="mx-auto mt-5 w-full font-sans text-lg leading-6 text-white/70 sm:max-w-[90%]">
+              <p className={cn("mx-auto mt-5 w-full font-sans text-lg leading-6 sm:max-w-[90%]", textMuted)}>
                 We deliver architecturally crafted modular buildings, combining global offsite manufacturing with
                 rigorous engineering certification to ensure faster delivery and genuine certainty.
               </p>
@@ -123,14 +169,15 @@ export default function HomeV2() {
                   href="/partner-with-us"
                   className={cn(
                     buttonVariants({ variant: "primary", size: "sm" }),
-                    "px-5 text-sm font-semibold bg-white text-forest hover:bg-warm-white",
+                    "px-5 text-sm font-semibold",
+                    btnPrimary,
                   )}
                 >
                   Partner With Us
                 </Link>
                 <Link
                   href="/our-work"
-                  className="inline-flex items-center justify-center gap-2 text-sm font-semibold text-white/80 transition hover:text-white"
+                  className={cn("inline-flex items-center justify-center gap-2 text-sm font-semibold transition", btnSecondary)}
                 >
                   View Our Work
                   <span aria-hidden className="text-base">&gt;</span>
@@ -154,16 +201,16 @@ export default function HomeV2() {
         </div>
       </section>
 
-      <section className="min-h-[100vh] md:min-h-[65vh] bg-[#080a0a] flex flex-col items-center justify-center">
+      <section className={cn("min-h-[100vh] md:min-h-[65vh] flex flex-col items-center justify-center", bg)}>
         <div className="section-container text-center flex-1 flex flex-col items-center justify-center">
-          <h2 className="hero-heading text-[21px] text-white">
+          <h2 className={cn("hero-heading text-[21px]", text)}>
             Partnering with leading architectural, engineering, and procurement teams.
           </h2>
-          <p className="hero-heading -mt-1 text-[21px] text-[#8e939c]">
+          <p className={cn("hero-heading -mt-1 text-[21px]", textSubtle)}>
             Delivering fully compliant and thoughtfully designed projects.
           </p>
           <div className="mt-12 flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12">
-            <div className="rounded-lg bg-white px-6 py-6 md:px-10 md:py-8 text-center text-[#0a0a0a] flex h-[100px] w-[200px] md:h-[120px] md:w-[160px] items-center justify-center">
+            <div className={cn("rounded-lg px-6 py-6 md:px-10 md:py-8 text-center flex h-[100px] w-[200px] md:h-[120px] md:w-[160px] items-center justify-center", logoBox, logoText, isLight && "invert")}>
               <Image
                 src="/Prism-Logo.png"
                 alt="Prism Design Studio logo"
@@ -172,7 +219,7 @@ export default function HomeV2() {
                 className="max-h-10 md:max-h-12 w-auto"
               />
             </div>
-            <div className="rounded-lg bg-white px-6 py-6 md:px-10 md:py-8 text-center text-[#0a0a0a] flex h-[100px] w-[200px] md:h-[120px] md:w-[160px] items-center justify-center">
+            <div className={cn("rounded-lg px-6 py-6 md:px-10 md:py-8 text-center flex h-[100px] w-[200px] md:h-[120px] md:w-[160px] items-center justify-center", logoBox, logoText, isLight && "invert")}>
               <Image
                 src="/Decobu-Logo.png"
                 alt="Decobu logo"
@@ -181,7 +228,7 @@ export default function HomeV2() {
                 className="max-h-10 md:max-h-12 w-auto"
               />
             </div>
-            <div className="rounded-lg bg-white px-6 py-6 md:px-10 md:py-8 text-center text-[#0a0a0a] flex h-[100px] w-[200px] md:h-[120px] md:w-[160px] items-center justify-center">
+            <div className={cn("rounded-lg px-6 py-6 md:px-10 md:py-8 text-center flex h-[100px] w-[200px] md:h-[120px] md:w-[160px] items-center justify-center", logoBox, logoText, isLight && "invert")}>
               <Image
                 src="/Cloud1.png"
                 alt="Cloud Procurement logo"
@@ -192,19 +239,19 @@ export default function HomeV2() {
             </div>
           </div>
         </div>
-        <div className="w-[80%] border-b border-white/5"></div>
+        <div className={cn("w-[80%] border-b", borderDivider)}></div>
       </section>
 
-      <section className="min-h-[150vh] bg-[#080a0a] text-white flex flex-col pt-24">
+      <section className={cn("min-h-[150vh] flex flex-col pt-24", bg, text)}>
         <div className="section-container flex-1">
           <div className="text-center">
             <div className="space-y-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/40">What we do</p>
-              <h2 className="text-[30px] leading-[33px] text-white lg:text-[40px] lg:leading-[40px]">
+              <p className={cn("text-xs font-semibold uppercase tracking-[0.4em]", textLabel)}>What we do</p>
+              <h2 className={cn("text-[30px] leading-[33px] lg:text-[40px] lg:leading-[40px]", text)}>
                 Design-informed, precisely manufactured modular<br className="hidden md:block" /> buildings built to Australian standards.
               </h2>
             </div>
-            <p className="mx-auto mt-5 w-full text-lg text-white/70 sm:max-w-[65%]">
+            <p className={cn("mx-auto mt-5 w-full text-lg sm:max-w-[65%]", textMuted)}>
               Our system adapts to different sites, budgets and requirements, giving clients more certainty in how their projects are delivered.
             </p>
             <div className="mt-5">
@@ -212,7 +259,8 @@ export default function HomeV2() {
                 href="/partner-with-us"
                 className={cn(
                   buttonVariants({ variant: "primary", size: "sm" }),
-                  "px-5 text-sm font-semibold bg-white text-forest hover:bg-warm-white",
+                  "px-5 text-sm font-semibold",
+                  btnPrimary,
                 )}
               >
                 Partner With Us
@@ -221,108 +269,108 @@ export default function HomeV2() {
           </div>
 
           <div className="mt-48 text-center mx-auto max-w-5xl">
-            <h2 className="hero-heading text-[21px] text-white">
+            <h2 className={cn("hero-heading text-[21px]", text)}>
               We work across a wide range of project types, from commercial and multi-residential<span className="md:hidden"> developments, aged care, education, community facilities, hotels and accommodation.</span>
             </h2>
-            <p className="hero-heading -mt-1 text-[21px] text-[#8e939c] hidden md:block">
+            <p className={cn("hero-heading -mt-1 text-[21px] hidden md:block", textSubtle)}>
               developments, aged care, education, community facilities, hotels and accommodation.
             </p>
           </div>
 
           <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-0 max-w-4xl mx-auto">
-            <div className="rounded-[16px] border border-white/[0.08] p-6 transition hover:bg-[#181a1b] flex flex-col justify-between min-h-[200px]" style={{ backgroundColor: '#101112' }}>
-              <div className="flex h-12 w-12 items-center justify-center rounded-[12px]" style={{ backgroundColor: '#1b1c1d' }}>
-                <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className={cn("rounded-[16px] border p-6 transition flex flex-col justify-between min-h-[200px]", borderSubtle, bgAlt, isLight ? "hover:bg-[#e8e9e9]" : "hover:bg-[#181a1b]")}>
+              <div className={cn("flex h-12 w-12 items-center justify-center rounded-[12px]", bgCard)}>
+                <svg className={cn("h-6 w-6", text)} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
               </div>
               <div>
-                <h3 className="text-xl leading-snug text-white">
+                <h3 className={cn("text-xl leading-snug", text)}>
                   Commercial
                 </h3>
-                <p className="mt-2 text-sm text-white/60">Office buildings, retail spaces and mixed-use developments</p>
+                <p className={cn("mt-2 text-sm", textSubtle)}>Office buildings, retail spaces and mixed-use developments</p>
               </div>
             </div>
 
-            <div className="rounded-[16px] border border-white/[0.08] p-6 transition hover:bg-[#181a1b] flex flex-col justify-between min-h-[200px]" style={{ backgroundColor: '#101112' }}>
-              <div className="flex h-12 w-12 items-center justify-center rounded-[12px]" style={{ backgroundColor: '#1b1c1d' }}>
-                <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className={cn("rounded-[16px] border p-6 transition flex flex-col justify-between min-h-[200px]", borderSubtle, bgAlt, isLight ? "hover:bg-[#e8e9e9]" : "hover:bg-[#181a1b]")}>
+              <div className={cn("flex h-12 w-12 items-center justify-center rounded-[12px]", bgCard)}>
+                <svg className={cn("h-6 w-6", text)} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                 </svg>
               </div>
               <div>
-                <h3 className="text-xl leading-snug text-white">
+                <h3 className={cn("text-xl leading-snug", text)}>
                   Multi-residential
                 </h3>
-                <p className="mt-2 text-sm text-white/60">Apartments, townhouses and residential developments</p>
+                <p className={cn("mt-2 text-sm", textSubtle)}>Apartments, townhouses and residential developments</p>
               </div>
             </div>
 
-            <div className="rounded-[16px] border border-white/[0.08] p-6 transition hover:bg-[#181a1b] flex flex-col justify-between min-h-[200px]" style={{ backgroundColor: '#101112' }}>
-              <div className="flex h-12 w-12 items-center justify-center rounded-[12px]" style={{ backgroundColor: '#1b1c1d' }}>
-                <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className={cn("rounded-[16px] border p-6 transition flex flex-col justify-between min-h-[200px]", borderSubtle, bgAlt, isLight ? "hover:bg-[#e8e9e9]" : "hover:bg-[#181a1b]")}>
+              <div className={cn("flex h-12 w-12 items-center justify-center rounded-[12px]", bgCard)}>
+                <svg className={cn("h-6 w-6", text)} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                 </svg>
               </div>
               <div>
-                <h3 className="text-xl leading-snug text-white">
+                <h3 className={cn("text-xl leading-snug", text)}>
                   Health & Aged Care
                 </h3>
-                <p className="mt-2 text-sm text-white/60">Medical facilities and aged care residences</p>
+                <p className={cn("mt-2 text-sm", textSubtle)}>Medical facilities and aged care residences</p>
               </div>
             </div>
 
-            <div className="rounded-[16px] border border-white/[0.08] p-6 transition hover:bg-[#181a1b] flex flex-col justify-between min-h-[200px]" style={{ backgroundColor: '#101112' }}>
-              <div className="flex h-12 w-12 items-center justify-center rounded-[12px]" style={{ backgroundColor: '#1b1c1d' }}>
-                <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className={cn("rounded-[16px] border p-6 transition flex flex-col justify-between min-h-[200px]", borderSubtle, bgAlt, isLight ? "hover:bg-[#e8e9e9]" : "hover:bg-[#181a1b]")}>
+              <div className={cn("flex h-12 w-12 items-center justify-center rounded-[12px]", bgCard)}>
+                <svg className={cn("h-6 w-6", text)} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
               </div>
               <div>
-                <h3 className="text-xl leading-snug text-white">
+                <h3 className={cn("text-xl leading-snug", text)}>
                   Education & Community
                 </h3>
-                <p className="mt-2 text-sm text-white/60">Schools, libraries and community centres</p>
+                <p className={cn("mt-2 text-sm", textSubtle)}>Schools, libraries and community centres</p>
               </div>
             </div>
 
-            <div className="rounded-[16px] border border-white/[0.08] p-6 transition hover:bg-[#181a1b] flex flex-col justify-between min-h-[200px]" style={{ backgroundColor: '#101112' }}>
-              <div className="flex h-12 w-12 items-center justify-center rounded-[12px]" style={{ backgroundColor: '#1b1c1d' }}>
-                <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className={cn("rounded-[16px] border p-6 transition flex flex-col justify-between min-h-[200px]", borderSubtle, bgAlt, isLight ? "hover:bg-[#e8e9e9]" : "hover:bg-[#181a1b]")}>
+              <div className={cn("flex h-12 w-12 items-center justify-center rounded-[12px]", bgCard)}>
+                <svg className={cn("h-6 w-6", text)} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
               <div>
-                <h3 className="text-xl leading-snug text-white">
+                <h3 className={cn("text-xl leading-snug", text)}>
                   Infrastructure
                 </h3>
-                <p className="mt-2 text-sm text-white/60">Transit facilities and public infrastructure</p>
+                <p className={cn("mt-2 text-sm", textSubtle)}>Transit facilities and public infrastructure</p>
               </div>
             </div>
 
-            <div className="rounded-[16px] border border-white/[0.08] p-6 transition hover:bg-[#181a1b] flex flex-col justify-between min-h-[200px]" style={{ backgroundColor: '#101112' }}>
-              <div className="flex h-12 w-12 items-center justify-center rounded-[12px]" style={{ backgroundColor: '#1b1c1d' }}>
-                <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className={cn("rounded-[16px] border p-6 transition flex flex-col justify-between min-h-[200px]", borderSubtle, bgAlt, isLight ? "hover:bg-[#e8e9e9]" : "hover:bg-[#181a1b]")}>
+              <div className={cn("flex h-12 w-12 items-center justify-center rounded-[12px]", bgCard)}>
+                <svg className={cn("h-6 w-6", text)} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
               <div>
-                <h3 className="text-xl leading-snug text-white">
+                <h3 className={cn("text-xl leading-snug", text)}>
                   Hotels & Accommodation
                 </h3>
-                <p className="mt-2 text-sm text-white/60">Hotels, resorts and short-term accommodation</p>
+                <p className={cn("mt-2 text-sm", textSubtle)}>Hotels, resorts and short-term accommodation</p>
               </div>
             </div>
           </div>
         </div>
-        <div className="w-[80%] mx-auto border-b border-white/5"></div>
+        <div className={cn("w-[80%] mx-auto border-b", borderDivider)}></div>
       </section>
 
-      <section className="bg-[#080a0a] text-white min-h-[130vh] flex flex-col justify-center pt-20 pb-0">
+      <section className={cn("min-h-[130vh] flex flex-col justify-center pt-20 pb-0", bg, text)}>
         <div className="section-container">
           <div className="space-y-6 text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/40">Modular advantage</p>
-            <h2 className="text-[27px] leading-[31px] text-white md:text-[30px] md:leading-[33px] lg:text-[40px] lg:leading-[40px]">
+            <p className={cn("text-xs font-semibold uppercase tracking-[0.4em]", textLabel)}>Modular advantage</p>
+            <h2 className={cn("text-[27px] leading-[31px] md:text-[30px] md:leading-[33px] lg:text-[40px] lg:leading-[40px]", text)}>
               Our system blends leading architecture and offsite manufacturing delivering projects that meet Australian standards with speed and precision.
             </h2>
           </div>
@@ -331,153 +379,165 @@ export default function HomeV2() {
         <div className="mt-16 w-full overflow-x-auto">
           <div className="flex gap-2 pl-6 pr-6 pb-8">
             {advantageCards.map((card) => (
-              <AdvantageCard key={card.label} {...card} />
+              <AdvantageCard key={card.label} {...card} isLight={isLight} />
             ))}
             <div className="min-w-[24px]"></div>
           </div>
         </div>
-        <div className="w-[80%] mx-auto mt-20 border-b border-white/5"></div>
+        <div className={cn("w-[80%] mx-auto mt-20 border-b", borderDivider)}></div>
       </section>
 
-      <section className="min-h-[140vh] bg-[#080a0a] flex flex-col justify-center pt-20 pb-0">
+      <section className={cn("min-h-[140vh] flex flex-col justify-center pt-20 pb-0", bg)}>
         <div className="section-container">
           <div className="max-w-2xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/40">Quality, Compliance & Assurance</p>
-            <h2 className="mt-6 text-[30px] leading-[33px] text-white lg:text-[37px] lg:leading-[40px]">
+            <p className={cn("text-xs font-semibold uppercase tracking-[0.4em]", textLabel)}>Quality, Compliance & Assurance</p>
+            <h2 className={cn("mt-6 text-[30px] leading-[33px] lg:text-[37px] lg:leading-[40px]", text)}>
               Factory-controlled production and verified engineering ensure full compliance with Australian standards.
             </h2>
-            <p className="mt-6 text-lg text-white/70">
+            <p className={cn("mt-6 text-lg", textMuted)}>
               This process gives clients confidence in the accuracy, reliability and compliance of every module before it reaches site.
             </p>
           </div>
 
-          <div className="mt-12 hidden md:grid grid-cols-3 border-t border-b border-white/10">
-            <div className="border-r border-white/10 pt-12 pb-12 px-6">
-              <h3 className="text-xl font-semibold text-white">Engineering & Compliance</h3>
-              <p className="mt-3 text-sm text-white/60 leading-relaxed">
+          <div className={cn("mt-12 hidden md:grid grid-cols-3 border-t border-b", border)}>
+            <div className={cn("border-r pt-12 pb-12 px-6", border)}>
+              <h3 className={cn("text-xl font-semibold", text)}>Engineering & Compliance</h3>
+              <p className={cn("mt-3 text-sm leading-relaxed", textSubtle)}>
                 Each module is certified by qualified engineers and designed to meet all required Australian standards.
               </p>
-              <div className="mt-8 rounded-[24px] bg-[#0d0e0f] overflow-hidden min-h-[440px] relative">
+              <div className={cn("mt-8 rounded-[24px] overflow-hidden min-h-[440px] relative", isLight ? "bg-[#e5e6e6]" : "bg-[#0d0e0f]")}>
                 <Image
                   src="/pillar1.png"
                   alt="Engineering & Compliance"
                   fill
-                  className="object-cover brightness-[0.65]"
+                  className={cn("object-cover", isLight ? "brightness-100" : "brightness-[0.65]")}
                 />
-                <div
-                  className="absolute inset-0 pointer-events-none"
-                  style={pillarCardOverlay}
-                  aria-hidden="true"
-                ></div>
+                {!isLight && (
+                  <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={pillarCardOverlay}
+                    aria-hidden="true"
+                  ></div>
+                )}
               </div>
             </div>
-            <div className="border-r border-white/10 pt-12 pb-12 px-6">
-              <h3 className="text-xl font-semibold text-white">Factory-Controlled Production</h3>
-              <p className="mt-3 text-sm text-white/60 leading-relaxed">
+            <div className={cn("border-r pt-12 pb-12 px-6", border)}>
+              <h3 className={cn("text-xl font-semibold", text)}>Factory-Controlled Production</h3>
+              <p className={cn("mt-3 text-sm leading-relaxed", textSubtle)}>
                 Modules are built in a stable, repeatable environment that supports consistent quality and precise manufacturing.
               </p>
-              <div className="mt-8 rounded-[24px] bg-[#0d0e0f] overflow-hidden min-h-[440px] relative">
+              <div className={cn("mt-8 rounded-[24px] overflow-hidden min-h-[440px] relative", isLight ? "bg-[#e5e6e6]" : "bg-[#0d0e0f]")}>
                 <Image
                   src="/pillar2.png"
                   alt="Factory-Controlled Production"
                   fill
-                  className="object-cover brightness-[0.65]"
+                  className={cn("object-cover", isLight ? "brightness-100" : "brightness-[0.65]")}
                 />
-                <div
-                  className="absolute inset-0 pointer-events-none"
-                  style={pillarCardOverlay}
-                  aria-hidden="true"
-                ></div>
+                {!isLight && (
+                  <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={pillarCardOverlay}
+                    aria-hidden="true"
+                  ></div>
+                )}
               </div>
             </div>
             <div className="pt-12 pb-12 px-6">
-              <h3 className="text-xl font-semibold text-white">Independent Quality Checks</h3>
-              <p className="mt-3 text-sm text-white/60 leading-relaxed">
+              <h3 className={cn("text-xl font-semibold", text)}>Independent Quality Checks</h3>
+              <p className={cn("mt-3 text-sm leading-relaxed", textSubtle)}>
                 Inspections at key stages verify accuracy, workmanship and readiness before modules leave the factory.
               </p>
-              <div className="mt-8 rounded-[24px] bg-[#0d0e0f] overflow-hidden min-h-[440px] relative">
+              <div className={cn("mt-8 rounded-[24px] overflow-hidden min-h-[440px] relative", isLight ? "bg-[#e5e6e6]" : "bg-[#0d0e0f]")}>
                 <Image
                   src="/pillar3.png"
                   alt="Independent Quality Checks"
                   fill
-                  className="object-cover brightness-[0.65]"
+                  className={cn("object-cover", isLight ? "brightness-100" : "brightness-[0.65]")}
                 />
-                <div
-                  className="absolute inset-0 pointer-events-none"
-                  style={pillarCardOverlay}
-                  aria-hidden="true"
-                ></div>
+                {!isLight && (
+                  <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={pillarCardOverlay}
+                    aria-hidden="true"
+                  ></div>
+                )}
               </div>
             </div>
           </div>
 
           <div className="mt-12 w-full overflow-x-auto md:hidden">
             <div className="flex gap-6 pl-6 pr-6 pb-8">
-              <div className="min-w-[85vw] border border-white/10 rounded-[16px] pt-12 pb-12 px-6">
-                <h3 className="text-xl font-semibold text-white">Engineering & Compliance</h3>
-                <p className="mt-3 text-sm text-white/60 leading-relaxed">
+              <div className={cn("min-w-[85vw] border rounded-[16px] pt-12 pb-12 px-6", border)}>
+                <h3 className={cn("text-xl font-semibold", text)}>Engineering & Compliance</h3>
+                <p className={cn("mt-3 text-sm leading-relaxed", textSubtle)}>
                   Each module is certified by qualified engineers and designed to meet all required Australian standards.
                 </p>
-                <div className="mt-8 rounded-[24px] bg-[#0d0e0f] overflow-hidden min-h-[440px] relative">
+                <div className={cn("mt-8 rounded-[24px] overflow-hidden min-h-[440px] relative", isLight ? "bg-[#e5e6e6]" : "bg-[#0d0e0f]")}>
                   <Image
                     src="/pillar1.png"
                     alt="Engineering & Compliance"
                     fill
-                    className="object-cover brightness-[0.65]"
+                    className={cn("object-cover", isLight ? "brightness-100" : "brightness-[0.65]")}
                   />
-                  <div
-                    className="absolute inset-0 pointer-events-none"
-                    style={pillarCardOverlay}
-                    aria-hidden="true"
-                  ></div>
+                  {!isLight && (
+                    <div
+                      className="absolute inset-0 pointer-events-none"
+                      style={pillarCardOverlay}
+                      aria-hidden="true"
+                    ></div>
+                  )}
                 </div>
               </div>
-              <div className="min-w-[85vw] border border-white/10 rounded-[16px] pt-12 pb-12 px-6">
-                <h3 className="text-xl font-semibold text-white">Factory-Controlled Production</h3>
-                <p className="mt-3 text-sm text-white/60 leading-relaxed">
+              <div className={cn("min-w-[85vw] border rounded-[16px] pt-12 pb-12 px-6", border)}>
+                <h3 className={cn("text-xl font-semibold", text)}>Factory-Controlled Production</h3>
+                <p className={cn("mt-3 text-sm leading-relaxed", textSubtle)}>
                   Modules are built in a stable, repeatable environment that supports consistent quality and precise manufacturing.
                 </p>
-                <div className="mt-8 rounded-[24px] bg-[#0d0e0f] overflow-hidden min-h-[440px] relative">
+                <div className={cn("mt-8 rounded-[24px] overflow-hidden min-h-[440px] relative", isLight ? "bg-[#e5e6e6]" : "bg-[#0d0e0f]")}>
                   <Image
                     src="/pillar2.png"
                     alt="Factory-Controlled Production"
                     fill
-                    className="object-cover brightness-[0.65]"
+                    className={cn("object-cover", isLight ? "brightness-100" : "brightness-[0.65]")}
                   />
-                  <div
-                    className="absolute inset-0 pointer-events-none"
-                    style={pillarCardOverlay}
-                    aria-hidden="true"
-                  ></div>
+                  {!isLight && (
+                    <div
+                      className="absolute inset-0 pointer-events-none"
+                      style={pillarCardOverlay}
+                      aria-hidden="true"
+                    ></div>
+                  )}
                 </div>
               </div>
-              <div className="min-w-[85vw] border border-white/10 rounded-[16px] pt-12 pb-12 px-6">
-                <h3 className="text-xl font-semibold text-white">Independent Quality Checks</h3>
-                <p className="mt-3 text-sm text-white/60 leading-relaxed">
+              <div className={cn("min-w-[85vw] border rounded-[16px] pt-12 pb-12 px-6", border)}>
+                <h3 className={cn("text-xl font-semibold", text)}>Independent Quality Checks</h3>
+                <p className={cn("mt-3 text-sm leading-relaxed", textSubtle)}>
                   Inspections at key stages verify accuracy, workmanship and readiness before modules leave the factory.
                 </p>
-                <div className="mt-8 rounded-[24px] bg-[#0d0e0f] overflow-hidden min-h-[440px] relative">
+                <div className={cn("mt-8 rounded-[24px] overflow-hidden min-h-[440px] relative", isLight ? "bg-[#e5e6e6]" : "bg-[#0d0e0f]")}>
                   <Image
                     src="/pillar3.png"
                     alt="Independent Quality Checks"
                     fill
-                    className="object-cover brightness-[0.65]"
+                    className={cn("object-cover", isLight ? "brightness-100" : "brightness-[0.65]")}
                   />
-                  <div
-                    className="absolute inset-0 pointer-events-none"
-                    style={pillarCardOverlay}
-                    aria-hidden="true"
-                  ></div>
+                  {!isLight && (
+                    <div
+                      className="absolute inset-0 pointer-events-none"
+                      style={pillarCardOverlay}
+                      aria-hidden="true"
+                    ></div>
+                  )}
                 </div>
               </div>
               <div className="min-w-[24px]"></div>
             </div>
           </div>
         </div>
-        <div className="w-[80%] mx-auto mt-20 border-b border-white/5"></div>
+        <div className={cn("w-[80%] mx-auto mt-20 border-b", borderDivider)}></div>
       </section>
 
-      <section className="min-h-[130vh] bg-[#080a0a] text-white flex flex-col pt-12 pb-0">
+      <section className={cn("min-h-[130vh] flex flex-col pt-12 pb-0", bg, text)}>
         <div className="section-container flex-1">
           <div className="relative w-full h-[600px] rounded-[24px] overflow-hidden">
             <Image
@@ -486,18 +546,20 @@ export default function HomeV2() {
               fill
               className="object-cover"
             />
-            <div
-              className="absolute inset-0 pointer-events-none"
-              style={aboutImageOverlay}
-              aria-hidden="true"
-            ></div>
+            {!isLight && (
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={aboutImageOverlay}
+                aria-hidden="true"
+              ></div>
+            )}
           </div>
 
           <div className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-12">
             <div>
               <div className="space-y-6">
-                <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/40">About Us</p>
-                <h2 className="text-[27px] leading-[31px] text-white md:text-[35px] md:leading-[38px]">
+                <p className={cn("text-xs font-semibold uppercase tracking-[0.4em]", textLabel)}>About Us</p>
+                <h2 className={cn("text-[27px] leading-[31px] md:text-[35px] md:leading-[38px]", text)}>
                   Cloud Modular offers clarity and certainty to a changing construction landscape.
                 </h2>
               </div>
@@ -506,7 +568,8 @@ export default function HomeV2() {
                   href="/about"
                   className={cn(
                     buttonVariants({ variant: "primary", size: "sm" }),
-                    "px-5 text-sm font-semibold bg-white text-forest hover:bg-warm-white",
+                    "px-5 text-sm font-semibold",
+                    btnPrimary,
                   )}
                 >
                   About Us
@@ -515,43 +578,43 @@ export default function HomeV2() {
             </div>
 
             <div>
-              <p className="text-lg text-white/70 leading-relaxed mt-2 lg:mt-[42px]">
+              <p className={cn("text-lg leading-relaxed mt-2 lg:mt-[42px]", textMuted)}>
                 Construction is becoming harder to deliver predictably - labour shortages, rising costs and tighter compliance all add pressure to traditional methods.
               </p>
-              <p className="text-lg text-white/70 leading-relaxed mt-6">
+              <p className={cn("text-lg leading-relaxed mt-6", textMuted)}>
                 Cloud Modular was created to offer a more controlled way to build, bringing together design clarity, precise offsite manufacturing and assured compliance to give clients greater certainty from the outset.
               </p>
             </div>
           </div>
         </div>
-        <div className="w-[80%] mx-auto mt-20 border-b border-white/5"></div>
+        <div className={cn("w-[80%] mx-auto mt-20 border-b", borderDivider)}></div>
       </section>
 
-      <section className="min-h-[100vh] bg-[#080a0a] text-white flex flex-col justify-center pt-20 pb-0">
+      <section className={cn("min-h-[100vh] flex flex-col justify-center pt-20 pb-0", bg, text)}>
         <div className="section-container">
           <div className="space-y-6 text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/40">FAQ</p>
-            <h2 className="text-[30px] leading-[33px] text-white lg:text-[40px] lg:leading-[40px]">
+            <p className={cn("text-xs font-semibold uppercase tracking-[0.4em]", textLabel)}>FAQ</p>
+            <h2 className={cn("text-[30px] leading-[33px] lg:text-[40px] lg:leading-[40px]", text)}>
               Frequently Asked Questions
             </h2>
           </div>
           <div className="mx-auto mt-12 max-w-3xl">
-            <FAQ items={faqItems} />
+            <FAQ items={faqItems} isLight={isLight} />
           </div>
         </div>
-        <div className="w-[80%] mx-auto mt-20 border-b border-white/5"></div>
+        <div className={cn("w-[80%] mx-auto mt-20 border-b", borderDivider)}></div>
       </section>
 
-      <section className="min-h-[60vh] bg-[#080a0a] text-white flex flex-col justify-center pt-20 pb-20">
+      <section className={cn("min-h-[60vh] flex flex-col justify-center pt-20 pb-20", bg, text)}>
         <div className="section-container">
           <div className="text-center">
             <div className="space-y-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/40">Get Started</p>
-              <h2 className="text-[30px] leading-[33px] text-white lg:text-[40px] lg:leading-[40px]">
+              <p className={cn("text-xs font-semibold uppercase tracking-[0.4em]", textLabel)}>Get Started</p>
+              <h2 className={cn("text-[30px] leading-[33px] lg:text-[40px] lg:leading-[40px]", text)}>
                 Ready to transform your next development?
               </h2>
             </div>
-            <p className="mx-auto mt-5 w-full text-lg text-white/70 sm:max-w-[65%]">
+            <p className={cn("mx-auto mt-5 w-full text-lg sm:max-w-[65%]", textMuted)}>
               Let&rsquo;s discuss how Cloud Modular can deliver your project faster, more cost-effectively, and sustainably.
             </p>
             <div className="mt-5 flex justify-center">
@@ -559,7 +622,8 @@ export default function HomeV2() {
                 href="/partner-with-us"
                 className={cn(
                   buttonVariants({ variant: "primary", size: "sm" }),
-                  "px-5 text-sm font-semibold bg-white text-forest hover:bg-warm-white",
+                  "px-5 text-sm font-semibold",
+                  btnPrimary,
                 )}
               >
                 Partner With Us

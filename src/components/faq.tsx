@@ -10,13 +10,18 @@ type FAQItem = {
 
 type FAQProps = {
   items: FAQItem[];
+  isLight?: boolean;
 };
 
-export function FAQ({ items }: FAQProps) {
+export function FAQ({ items, isLight = false }: FAQProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
+  const dividerColor = isLight ? "divide-black/10" : "divide-white/10";
+  const textPrimary = isLight ? "text-[#080a0a]" : "text-white";
+  const textMuted = isLight ? "text-[#080a0a]/70" : "text-white/70";
+
   return (
-    <div className="divide-y divide-white/10">
+    <div className={cn("divide-y", dividerColor)}>
       {items.map((item, index) => {
         const isOpen = openIndex === index;
         return (
@@ -26,12 +31,13 @@ export function FAQ({ items }: FAQProps) {
               onClick={() => setOpenIndex(isOpen ? null : index)}
               aria-expanded={isOpen}
             >
-              <span className="text-lg font-medium text-white">
+              <span className={cn("text-lg font-medium", textPrimary)}>
                 {item.question}
               </span>
               <span
                 className={cn(
-                  "text-white transition-transform",
+                  "transition-transform",
+                  textPrimary,
                   isOpen && "rotate-45",
                 )}
               >
@@ -40,7 +46,8 @@ export function FAQ({ items }: FAQProps) {
             </button>
             <div
               className={cn(
-                "grid overflow-hidden text-white/70 transition-all duration-300",
+                "grid overflow-hidden transition-all duration-300",
+                textMuted,
                 isOpen ? "grid-rows-[1fr] pb-6" : "grid-rows-[0fr]",
               )}
             >
