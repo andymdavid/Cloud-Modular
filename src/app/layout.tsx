@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Instrument_Serif, Inter } from "next/font/google";
-import { Navigation } from "@/components/layout/navigation";
+import { ConditionalNavigation } from "@/components/layout/conditional-navigation";
 import { Footer } from "@/components/layout/footer";
 import "./globals.css";
 
@@ -55,7 +55,7 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
-        <Navigation />
+        <ConditionalNavigation />
         <main id="main-content">{children}</main>
         <Footer />
       </body>

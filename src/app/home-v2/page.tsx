@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { buttonVariants } from "@/components/ui/button";
@@ -111,19 +111,6 @@ const aboutImageOverlay = {
 export default function HomeV2() {
   const [isLight, setIsLight] = useState(false);
 
-  // Hide global navigation on this page
-  useEffect(() => {
-    const globalNav = document.getElementById("global-nav");
-    if (globalNav) {
-      globalNav.style.display = "none";
-    }
-    return () => {
-      if (globalNav) {
-        globalNav.style.display = "";
-      }
-    };
-  }, []);
-
   // Theme classes
   const bg = isLight ? "bg-[#f7f8f8]" : "bg-[#080a0a]";
   const bgAlt = isLight ? "bg-[#ffffff]" : "bg-[#101112]";
@@ -142,9 +129,6 @@ export default function HomeV2() {
 
   return (
     <>
-      {/* Hide global navigation */}
-      <style>{`#global-nav { display: none !important; }`}</style>
-
       {/* Navigation */}
       <NavigationV2 isLight={isLight} />
 

@@ -17,13 +17,8 @@ export function Navigation() {
 
   const closeMenu = () => setOpen(false);
 
-  // Hide on /home-v2 as it has its own navigation
-  if (pathname?.startsWith("/home-v2")) {
-    return null;
-  }
-
   return (
-    <header id="global-nav" className="pointer-events-none fixed inset-x-0 top-0 z-50">
+    <header className="pointer-events-none fixed inset-x-0 top-0 z-50">
       <div className="pointer-events-auto border-b border-white/5 bg-[#0a0a0a]/85 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4 sm:px-6">
           <Link href="/" className="flex shrink-0 items-center" onClick={closeMenu}>
