@@ -48,9 +48,9 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
           glassBg,
           isLight ? "border-white/20" : "border-white/[0.04]"
         )}>
-          {/* Left: Menu */}
+          {/* Left: Menu - 11px font */}
           <nav
-            className={cn("hidden md:flex flex-1 items-center gap-8 text-[14px] font-medium", textMuted)}
+            className={cn("hidden md:flex flex-1 items-center gap-6 text-[11px] font-medium", textMuted)}
             aria-label="Main navigation"
           >
             {navLinks.map((link) => {
@@ -84,23 +84,23 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
             })}
           </nav>
 
-          {/* Center: Logo */}
+          {/* Center: Logo - scaled down 15% */}
           <Link href="/" className="absolute left-1/2 -translate-x-1/2 flex shrink-0 items-center" onClick={closeMenu}>
             <Image
               src="/logo.png"
               alt="Cloud Modular"
-              width={140}
-              height={140}
+              width={120}
+              height={120}
               className={cn(isLight && "invert")}
             />
           </Link>
 
           {/* Right: CTA Button */}
           <div className="flex flex-1 items-center justify-end gap-4">
-            {/* Button: 20px horizontal padding, 8px vertical padding, 14px font */}
+            {/* Button: 16px horizontal padding, 6px vertical padding, 11px font */}
             <Link
               href={contactHref}
-              className={cn("hidden px-[20px] py-[8px] text-[14px] font-semibold transition md:inline-flex", btnBg, btnText, btnHover)}
+              className={cn("hidden px-[16px] py-[6px] text-[11px] font-semibold transition md:inline-flex", btnBg, btnText, btnHover)}
             >
               Partner With Us
             </Link>
