@@ -206,23 +206,23 @@ export default function HomeV2() {
       </section>
 
       <section className="flex min-h-screen items-center justify-center bg-[#f3f0ec] px-6 py-20">
-        <div className="mx-auto flex w-full max-w-6xl flex-col items-center text-center">
-          <div className="font-special-gothic mb-10 inline-flex items-center gap-4 text-[24px] uppercase tracking-[0.18em] text-[#2b2d30] sm:text-[30px]">
-            <svg className="h-4 w-5 sm:h-5 sm:w-6" viewBox="0 0 24 20" fill="none" aria-hidden>
+        <div className="mx-auto flex w-full max-w-4xl flex-col items-center text-center">
+          <div className="font-special-gothic mb-8 inline-flex items-center gap-2 text-[8px] uppercase tracking-[0.16em] text-[#2b2d30] sm:text-[9px]">
+            <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
               <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
               <path d="M10 10.5L18 8L18 15.5L10 18L10 10.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
               <path d="M6 4.5V12L10 18" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
             </svg>
             <span>About Cloud Modular</span>
           </div>
-          <h2 className="font-host-grotesk text-[48px] font-medium leading-[0.95] tracking-[-0.04em] text-[#1f2124] sm:text-[64px] lg:text-[88px]">
+          <h2 className="font-host-grotesk text-[32px] font-medium leading-[34px] tracking-[-0.03em] text-[#1f2124] sm:text-[48px] sm:leading-[50px] lg:text-[60px] lg:leading-[62px]">
             Partnering with leading architectural, engineering, and procurement teams.
           </h2>
           <Link
             href="/about-us"
-            className="font-special-gothic mt-10 inline-flex items-center gap-3 bg-[#04090d] px-6 py-4 text-[18px] uppercase tracking-[0.14em] text-white transition hover:bg-[#0b1318]"
+            className="group mt-8 inline-flex items-center gap-2 rounded-[2px] bg-[#04090d] px-[16px] py-[6px] text-[11px] font-semibold text-white transition hover:bg-[#0b1318]"
           >
-            <svg className="h-4 w-6" viewBox="0 0 20 20" fill="none" aria-hidden>
+            <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" aria-hidden>
               <path d="M1.5 10H13.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
               <path d="M9 4.5L14.5 10L9 15.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="miter" />
             </svg>
