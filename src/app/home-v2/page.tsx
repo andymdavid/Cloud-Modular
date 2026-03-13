@@ -145,7 +145,7 @@ export default function HomeV2() {
             "pointer-events-none absolute inset-0",
             isLight
               ? "bg-[linear-gradient(180deg,rgba(247,248,248,0.95)_0%,rgba(247,248,248,0.7)_30%,rgba(247,248,248,0.5)_50%,rgba(247,248,248,0.7)_70%,rgba(247,248,248,0.95)_100%)]"
-              : "bg-[linear-gradient(180deg,rgba(8,10,10,0.9)_0%,rgba(8,10,10,0.6)_30%,rgba(8,10,10,0.4)_50%,rgba(8,10,10,0.6)_70%,rgba(8,10,10,0.9)_100%)]"
+              : "bg-[linear-gradient(180deg,rgba(8,10,10,0.72)_0%,rgba(8,10,10,0.42)_30%,rgba(8,10,10,0.22)_50%,rgba(8,10,10,0.42)_70%,rgba(8,10,10,0.72)_100%)]"
           )}
           aria-hidden
         />
