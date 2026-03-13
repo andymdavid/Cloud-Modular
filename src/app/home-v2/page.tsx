@@ -130,7 +130,7 @@ export default function HomeV2() {
       {/* Navigation */}
       <NavigationV2 isLight={isLight} />
 
-      <section className="relative h-screen min-h-[600px]">
+      <section className="relative h-screen min-h-[600px] overflow-hidden">
         {/* Background Image */}
         <Image
           src="/hero-background.png"
