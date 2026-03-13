@@ -18,7 +18,7 @@ export function Navigation() {
   const closeMenu = () => setOpen(false);
 
   // Hide on /home-v2 as it has its own navigation
-  if (pathname === "/home-v2" || pathname === "/home-v2/") {
+  if (pathname?.startsWith("/home-v2")) {
     return null;
   }
 
