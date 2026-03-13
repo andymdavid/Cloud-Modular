@@ -184,8 +184,8 @@ export default function HomeV2() {
               <Image
                 src="/cloud_icon.png"
                 alt=""
-                width={38}
-                height={38}
+                width={32}
+                height={32}
                 className={cn(isLight && "invert")}
               />
             </div>
@@ -195,7 +195,7 @@ export default function HomeV2() {
               built in weeks, not years.
             </h1>
             {/* Subpara: 18px (text-lg) */}
-            <p className={cn("mx-auto mt-5 w-full font-sans text-lg leading-6 sm:max-w-[90%]", textMuted)}>
+            <p className="mx-auto mt-5 w-full max-w-[90%] font-sans text-lg leading-6 text-white">
               We deliver architecturally crafted modular buildings, combining global offsite manufacturing with
               rigorous engineering certification to ensure faster delivery and genuine certainty.
             </p>
