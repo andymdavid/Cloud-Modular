@@ -153,50 +153,54 @@ export default function HomeV2() {
         )}
       </button>
 
-      <section className={cn(bg, text)}>
-        <div className="grid min-h-screen md:min-h-[calc(150vh-4rem)] grid-rows-[auto_minmax(60vh,1fr)] md:grid-rows-[minmax(50vh,0.35fr)_minmax(100vh,0.65fr)] pt-16">
-          <div className="flex min-h-0 md:min-h-[50vh] items-center md:items-end px-6 pb-12 pt-16 sm:pt-24 md:pt-28 text-center md:pb-16 lg:px-20">
-            <div className="mx-auto w-full max-w-4xl">
-              <h1 className={cn("hero-heading text-[32px] leading-[38px] sm:text-[48px] sm:leading-[55px] lg:text-[60px] lg:leading-[63px]", text)}>
-                Premium modular spaces, built in weeks, not years.
-              </h1>
-              <p className={cn("mx-auto mt-5 w-full font-sans text-lg leading-6 sm:max-w-[90%]", textMuted)}>
-                We deliver architecturally crafted modular buildings, combining global offsite manufacturing with
-                rigorous engineering certification to ensure faster delivery and genuine certainty.
-              </p>
-              <div className="mt-5 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-                <Link
-                  href="/partner-with-us"
-                  className={cn(
-                    buttonVariants({ variant: "primary", size: "sm" }),
-                    "px-5 text-sm font-semibold",
-                    btnPrimary,
-                  )}
-                >
-                  Partner With Us
-                </Link>
-                <Link
-                  href="/our-work"
-                  className={cn("inline-flex items-center justify-center gap-2 text-sm font-semibold transition", btnSecondary)}
-                >
-                  View Our Work
-                  <span aria-hidden className="text-base">&gt;</span>
-                </Link>
-              </div>
+      <section className="relative h-screen min-h-[600px]">
+        {/* Background Image */}
+        <Image
+          src="/hero-background.png"
+          alt="Modern modular building exterior"
+          fill
+          priority
+          className="object-cover"
+        />
+        {/* Overlay */}
+        <div
+          className={cn(
+            "pointer-events-none absolute inset-0",
+            isLight
+              ? "bg-[linear-gradient(180deg,rgba(247,248,248,0.95)_0%,rgba(247,248,248,0.7)_30%,rgba(247,248,248,0.5)_50%,rgba(247,248,248,0.7)_70%,rgba(247,248,248,0.95)_100%)]"
+              : "bg-[linear-gradient(180deg,rgba(8,10,10,0.9)_0%,rgba(8,10,10,0.6)_30%,rgba(8,10,10,0.4)_50%,rgba(8,10,10,0.6)_70%,rgba(8,10,10,0.9)_100%)]"
+          )}
+          aria-hidden
+        />
+        {/* Content */}
+        <div className="relative z-10 flex h-full items-center justify-center px-6 pt-16 lg:px-20">
+          <div className="mx-auto w-full max-w-4xl text-center">
+            <h1 className={cn("hero-heading text-[32px] leading-[38px] sm:text-[48px] sm:leading-[55px] lg:text-[60px] lg:leading-[63px]", text)}>
+              Premium modular spaces, built in weeks, not years.
+            </h1>
+            <p className={cn("mx-auto mt-5 w-full font-sans text-lg leading-6 sm:max-w-[90%]", textMuted)}>
+              We deliver architecturally crafted modular buildings, combining global offsite manufacturing with
+              rigorous engineering certification to ensure faster delivery and genuine certainty.
+            </p>
+            <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+              <Link
+                href="/partner-with-us"
+                className={cn(
+                  buttonVariants({ variant: "primary", size: "sm" }),
+                  "px-5 text-sm font-semibold",
+                  btnPrimary,
+                )}
+              >
+                Partner With Us
+              </Link>
+              <Link
+                href="/our-work"
+                className={cn("inline-flex items-center justify-center gap-2 text-sm font-semibold transition", btnSecondary)}
+              >
+                View Our Work
+                <span aria-hidden className="text-base">&gt;</span>
+              </Link>
             </div>
-          </div>
-          <div className="relative min-h-[60vh] md:min-h-[100vh]">
-            <Image
-              src="/hero-background.png"
-              alt="Modern modular building exterior"
-              fill
-              priority
-              className="object-cover"
-            />
-            <div
-              className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#0a0a0a_0%,rgba(10,10,10,0.6)_12%,transparent_35%,transparent_65%,rgba(10,10,10,0.6)_88%,#0a0a0a_100%)]"
-              aria-hidden
-            />
           </div>
         </div>
       </section>
