@@ -168,8 +168,8 @@ export default function HomeV2() {
               built in weeks, not years.
             </h1>
             <p className="mx-auto mt-5 w-full max-w-[420px] font-sans text-[12px] leading-[18px] text-white">
-              We deliver architecturally crafted modular buildings, combining global offsite manufacturing with
-              rigorous engineering certification to ensure faster delivery and genuine certainty.
+              We deliver architecturally designed modular buildings, built offsite and certified to Australian
+              Standards for faster delivery and greater certainty.
             </p>
             <div className="mt-8 flex justify-center">
               <Link
