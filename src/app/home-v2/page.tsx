@@ -205,6 +205,14 @@ export default function HomeV2() {
         </div>
       </section>
 
+      <section className="flex min-h-screen items-center justify-center bg-[#f3f0ec] px-6 py-20">
+        <div className="mx-auto w-full max-w-6xl text-center">
+          <h2 className="font-host-grotesk text-[48px] font-medium leading-[0.95] tracking-[-0.04em] text-[#1f2124] sm:text-[64px] lg:text-[88px]">
+            Partnering with leading architectural, engineering, and procurement teams.
+          </h2>
+        </div>
+      </section>
+
       <section className={cn("min-h-[100vh] md:min-h-[65vh] flex flex-col items-center justify-center", bg)}>
         <div className="section-container text-center flex-1 flex flex-col items-center justify-center">
           <h2 className={cn("hero-heading text-[21px]", text)}>

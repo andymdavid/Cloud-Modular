@@ -19,7 +19,7 @@ const inter = Inter({
 });
 
 const hostGrotesk = Host_Grotesk({
-  weight: ["700"],
+  weight: ["500", "700"],
   subsets: ["latin"],
   display: "swap",
   variable: "--font-host-grotesk",
