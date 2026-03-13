@@ -44,7 +44,7 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
       <div className="pointer-events-auto py-4 px-4 sm:px-6">
         {/* Glassmorphic nav bar */}
         <div className={cn(
-          "relative mx-auto flex h-10 max-w-5xl items-center px-5 border backdrop-blur-xl shadow-lg",
+          "relative mx-auto flex h-10 max-w-5xl items-center px-[8px] border rounded-[2px] backdrop-blur-xl shadow-lg",
           glassBg,
           isLight ? "border-white/20" : "border-white/[0.04]"
         )}>
@@ -97,10 +97,10 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
 
           {/* Right: CTA Button */}
           <div className="flex flex-1 items-center justify-end gap-4">
-            {/* Button: 16px horizontal padding, 6px vertical padding, 11px font */}
+            {/* Button: 16px horizontal padding, 6px vertical padding, 11px font, 2px radius */}
             <Link
               href={contactHref}
-              className={cn("hidden px-[16px] py-[6px] text-[11px] font-semibold transition md:inline-flex", btnBg, btnText, btnHover)}
+              className={cn("hidden px-[16px] py-[6px] text-[11px] font-semibold rounded-[2px] transition md:inline-flex", btnBg, btnText, btnHover)}
             >
               Partner With Us
             </Link>
