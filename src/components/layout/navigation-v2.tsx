@@ -7,7 +7,11 @@ import { useState } from "react";
 import { navLinks } from "@/content/site";
 import { cn } from "@/lib/utils";
 
-export function Navigation() {
+interface NavigationV2Props {
+  isLight?: boolean;
+}
+
+export function NavigationV2({ isLight = false }: NavigationV2Props) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const contactHref = "/partner-with-us#contact";
@@ -17,20 +21,33 @@ export function Navigation() {
 
   const closeMenu = () => setOpen(false);
 
-  // Hide on /home-v2 as it has its own navigation
-  if (pathname === "/home-v2" || pathname === "/home-v2/") {
-    return null;
-  }
+  // Theme-aware colors
+  const headerBg = isLight ? "bg-[#f7f8f8]/85" : "bg-[#0a0a0a]/85";
+  const borderColor = isLight ? "border-black/5" : "border-white/5";
+  const textColor = isLight ? "text-[#080a0a]" : "text-white";
+  const textMuted = isLight ? "text-[#080a0a]/70" : "text-white/70";
+  const textDisabled = isLight ? "text-[#080a0a]/40" : "text-white/40";
+  const btnBg = isLight ? "bg-[#080a0a]" : "bg-white";
+  const btnText = isLight ? "text-white" : "text-forest";
+  const btnHover = isLight ? "hover:bg-[#1a1c1d]" : "hover:bg-warm-white";
+  const hamburgerBg = isLight ? "bg-[#080a0a]" : "bg-white";
+  const mobileBg = isLight ? "bg-[#f7f8f8]/90" : "bg-[#0a0a0a]/90";
 
   return (
     <header className="pointer-events-none fixed inset-x-0 top-0 z-50">
-      <div className="pointer-events-auto border-b border-white/5 bg-[#0a0a0a]/85 backdrop-blur-md">
+      <div className={cn("pointer-events-auto border-b backdrop-blur-md", headerBg, borderColor)}>
         <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4 sm:px-6">
           <Link href="/" className="flex shrink-0 items-center" onClick={closeMenu}>
-            <Image src="/logo.png" alt="Cloud Modular" width={140} height={140} />
+            <Image
+              src="/logo.png"
+              alt="Cloud Modular"
+              width={140}
+              height={140}
+              className={cn(isLight && "invert")}
+            />
           </Link>
           <nav
-            className="hidden md:flex flex-1 items-center justify-center gap-8 text-sm font-medium text-white/70"
+            className={cn("hidden md:flex flex-1 items-center justify-center gap-8 text-sm font-medium", textMuted)}
             aria-label="Main navigation"
           >
             {navLinks.map((link) => {
@@ -40,7 +57,7 @@ export function Navigation() {
                 return (
                   <span
                     key={link.href}
-                    className="text-white/40 cursor-not-allowed"
+                    className={cn(textDisabled, "cursor-not-allowed")}
                   >
                     {link.label}
                   </span>
@@ -54,8 +71,8 @@ export function Navigation() {
                   className={cn(
                     "transition-colors",
                     isActive(link.href)
-                      ? "text-white"
-                      : "text-white/60 hover:text-white",
+                      ? textColor
+                      : cn(textMuted, isLight ? "hover:text-[#080a0a]" : "hover:text-white"),
                   )}
                 >
                   {link.label}
@@ -66,7 +83,7 @@ export function Navigation() {
           <div className="ml-auto flex items-center gap-4">
             <Link
               href={contactHref}
-              className="hidden rounded-sm bg-white px-5 py-2 text-sm font-semibold text-forest transition hover:bg-warm-white md:inline-flex"
+              className={cn("hidden rounded-sm px-5 py-2 text-sm font-semibold transition md:inline-flex", btnBg, btnText, btnHover)}
             >
               Partner With Us
             </Link>
@@ -81,19 +98,22 @@ export function Navigation() {
               <div className="flex h-10 w-10 flex-col items-center justify-center gap-1.5">
                 <span
                   className={cn(
-                    "h-0.5 w-7 bg-white transition",
+                    "h-0.5 w-7 transition",
+                    hamburgerBg,
                     open && "translate-y-2 rotate-45",
                   )}
                 />
                 <span
                   className={cn(
-                    "h-0.5 w-7 bg-white transition",
+                    "h-0.5 w-7 transition",
+                    hamburgerBg,
                     open && "opacity-0",
                   )}
                 />
                 <span
                   className={cn(
-                    "h-0.5 w-7 bg-white transition",
+                    "h-0.5 w-7 transition",
+                    hamburgerBg,
                     open && "-translate-y-2 -rotate-45",
                   )}
                 />
@@ -104,11 +124,12 @@ export function Navigation() {
       </div>
       <div
         className={cn(
-          "pointer-events-auto bg-[#0a0a0a]/90 backdrop-blur-md md:hidden transition-all duration-300",
-          open ? "max-h-96 px-4 pb-6 pt-4 border-b border-white/5 shadow-subtle" : "max-h-0 overflow-hidden",
+          "pointer-events-auto backdrop-blur-md md:hidden transition-all duration-300",
+          mobileBg,
+          open ? cn("max-h-96 px-4 pb-6 pt-4 border-b shadow-subtle", borderColor) : "max-h-0 overflow-hidden",
         )}
       >
-        <nav className="space-y-4 text-base font-medium text-white/80" aria-label="Mobile navigation">
+        <nav className={cn("space-y-4 text-base font-medium", textMuted)} aria-label="Mobile navigation">
           {navLinks.map((link) => {
             const isDisabled = link.label === "Projects" || link.label === "What We Do";
 
@@ -116,7 +137,7 @@ export function Navigation() {
               return (
                 <span
                   key={link.href}
-                  className="block text-white/40 cursor-not-allowed"
+                  className={cn("block cursor-not-allowed", textDisabled)}
                 >
                   {link.label}
                 </span>
@@ -130,8 +151,8 @@ export function Navigation() {
                 className={cn(
                   "block",
                   isActive(link.href)
-                    ? "text-white"
-                    : "text-white/70 hover:text-white",
+                    ? textColor
+                    : cn(textMuted, isLight ? "hover:text-[#080a0a]" : "hover:text-white"),
                 )}
                 onClick={closeMenu}
               >
@@ -141,7 +162,7 @@ export function Navigation() {
           })}
           <Link
             href={contactHref}
-            className="inline-flex w-full items-center justify-center rounded-sm bg-white px-6 py-3 text-center text-base font-semibold text-forest"
+            className={cn("inline-flex w-full items-center justify-center rounded-sm px-6 py-3 text-center text-base font-semibold", btnBg, btnText)}
             onClick={closeMenu}
           >
             Partner With Us

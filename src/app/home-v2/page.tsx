@@ -8,6 +8,7 @@ import { FAQ } from "@/components/faq";
 import { cn } from "@/lib/utils";
 import { faqItems, heroMetrics } from "@/content/site";
 import { AdvantageCard } from "@/components/advantage-card";
+import { NavigationV2 } from "@/components/layout/navigation-v2";
 
 const heroHighlights = [
   {
@@ -128,6 +129,9 @@ export default function HomeV2() {
 
   return (
     <>
+      {/* Navigation */}
+      <NavigationV2 isLight={isLight} />
+
       {/* Theme Toggle Button */}
       <button
         onClick={() => setIsLight(!isLight)}
