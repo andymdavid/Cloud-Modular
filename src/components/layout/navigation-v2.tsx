@@ -33,13 +33,13 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
   // Glassmorphic nav styles
   const glassBg = isLight
     ? "bg-white/60"
-    : "bg-[#1a1a1a]/70";
+    : "bg-[#0d1212]/75";
   const glassBorder = isLight
     ? "border-white/30"
     : "border-white/[0.08]";
   const mobileBg = isLight
     ? "bg-white/80"
-    : "bg-[#1a1a1a]/90";
+    : "bg-[#0d1212]/90";
 
   return (
     <header className="pointer-events-none fixed inset-x-0 top-0 z-50">
