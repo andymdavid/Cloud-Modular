@@ -184,13 +184,13 @@ export default function HomeV2() {
               <Image
                 src="/cloud_icon.png"
                 alt=""
-                width={48}
-                height={48}
+                width={38}
+                height={38}
                 className={cn(isLight && "invert")}
               />
             </div>
             {/* H1: Host Grotesk Bold 700 */}
-            <h1 className={cn("font-host-grotesk font-bold text-[32px] leading-[34px] sm:text-[48px] sm:leading-[50px] lg:text-[60px] lg:leading-[62px]", text)}>
+            <h1 className={cn("font-host-grotesk font-bold tracking-[-0.03em] text-[32px] leading-[34px] sm:text-[48px] sm:leading-[50px] lg:text-[60px] lg:leading-[62px]", text)}>
               Premium modular spaces,<br />
               built in weeks, not years.
             </h1>
