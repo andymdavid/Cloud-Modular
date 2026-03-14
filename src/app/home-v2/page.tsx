@@ -375,8 +375,8 @@ export default function HomeV2() {
         <div className={cn("relative left-1/2 w-screen -translate-x-1/2 border-b", borderDivider)}></div>
       </section>
 
-      <section className={cn("min-h-[130vh] flex flex-col justify-center pt-20 pb-0", bg, text)}>
-        <div className="section-container">
+      <section className={cn("h-screen flex flex-col overflow-hidden", bg, text)}>
+        <div className="section-container flex flex-1 flex-col pt-20">
           <div className="space-y-6 text-center">
             <div className="font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]">
               <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
@@ -390,17 +390,17 @@ export default function HomeV2() {
               Our system blends leading architecture and offsite manufacturing delivering projects that meet Australian standards with speed and precision.
             </h2>
           </div>
-        </div>
 
-        <div className="relative left-1/2 mt-16 w-screen -translate-x-1/2 overflow-x-auto px-8">
-          <div className="flex gap-2 px-0 pb-8">
-            {advantageCards.map((card) => (
-              <AdvantageCard key={card.label} {...card} isLight={isLight} compact cornerRadius="rounded-[5px]" />
-            ))}
-            <div className="min-w-[24px]"></div>
+          <div className="relative left-1/2 mt-auto w-screen -translate-x-1/2 overflow-x-auto px-8 pt-12">
+            <div className="flex gap-2 px-0 pb-8">
+              {advantageCards.map((card) => (
+                <AdvantageCard key={card.label} {...card} isLight={isLight} compact cornerRadius="rounded-[5px]" />
+              ))}
+              <div className="min-w-[24px]"></div>
+            </div>
           </div>
         </div>
-        <div className={cn("w-[80%] mx-auto mt-20 border-b", borderDivider)}></div>
+        <div className={cn("relative left-1/2 w-screen -translate-x-1/2 border-b", borderDivider)}></div>
       </section>
 
       <section className={cn("min-h-[140vh] flex flex-col justify-center pt-20 pb-0", bg)}>
