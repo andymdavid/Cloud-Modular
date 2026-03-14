@@ -107,6 +107,45 @@ const partnerLogos = [
   },
 ];
 
+const detailTiles = [
+  {
+    title: "Commercial",
+    description: "Office buildings, retail spaces and mixed-use developments",
+    background: "bg-[linear-gradient(180deg,#bfc7d4_0%,#dde2ea_100%)]",
+    overlay: "bg-[radial-gradient(circle_at_bottom_left,rgba(91,111,125,0.32),transparent_42%),linear-gradient(180deg,rgba(0,0,0,0.02)_0%,rgba(0,0,0,0.28)_100%)]",
+  },
+  {
+    title: "Multi-residential",
+    description: "Apartments, townhouses and residential developments",
+    background: "bg-[linear-gradient(180deg,#c2cacb_0%,#e3e7e3_100%)]",
+    overlay: "bg-[radial-gradient(circle_at_bottom_right,rgba(88,108,102,0.28),transparent_44%),linear-gradient(180deg,rgba(0,0,0,0.02)_0%,rgba(0,0,0,0.28)_100%)]",
+  },
+  {
+    title: "Health & Aged Care",
+    description: "Medical facilities and aged care residences",
+    background: "bg-[linear-gradient(180deg,#c8ccbf_0%,#e8e6dd_100%)]",
+    overlay: "bg-[radial-gradient(circle_at_center,rgba(130,136,100,0.24),transparent_40%),linear-gradient(180deg,rgba(0,0,0,0.02)_0%,rgba(0,0,0,0.28)_100%)]",
+  },
+  {
+    title: "Education & Community",
+    description: "Schools, libraries and community centres",
+    background: "bg-[linear-gradient(180deg,#c2c9d1_0%,#e2e6ea_100%)]",
+    overlay: "bg-[radial-gradient(circle_at_top_right,rgba(103,121,140,0.24),transparent_38%),linear-gradient(180deg,rgba(0,0,0,0.02)_0%,rgba(0,0,0,0.28)_100%)]",
+  },
+  {
+    title: "Infrastructure",
+    description: "Transit facilities and public infrastructure",
+    background: "bg-[linear-gradient(180deg,#c8c8c7_0%,#e8e4de_100%)]",
+    overlay: "bg-[radial-gradient(circle_at_bottom,rgba(122,120,112,0.24),transparent_38%),linear-gradient(180deg,rgba(0,0,0,0.02)_0%,rgba(0,0,0,0.28)_100%)]",
+  },
+  {
+    title: "Hotels & Accommodation",
+    description: "Hotels, resorts and short-term accommodation",
+    background: "bg-[linear-gradient(180deg,#c0c9d3_0%,#e4e8ee_100%)]",
+    overlay: "bg-[radial-gradient(circle_at_bottom_left,rgba(92,109,130,0.28),transparent_40%),linear-gradient(180deg,rgba(0,0,0,0.02)_0%,rgba(0,0,0,0.28)_100%)]",
+  },
+];
+
 const pillarCardOverlay = {
   backgroundImage: [
     "linear-gradient(to top, rgba(8,10,10,1) 0%, rgba(8,10,10,0.95) 22%, rgba(8,10,10,0.4) 55%, rgba(8,10,10,0.05) 78%, rgba(8,10,10,0) 100%)",
@@ -307,53 +346,31 @@ export default function HomeV2() {
             </Link>
           </div>
           <div className="mt-16 grid gap-4 md:grid-cols-2 xl:grid-cols-6">
-            <div className="group relative min-h-[260px] overflow-hidden rounded-[4px] border border-[#1f2124]/10 bg-[linear-gradient(180deg,#d6dbe6_0%,#eef0f5_100%)]">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(91,111,125,0.32),transparent_42%),linear-gradient(180deg,transparent_0%,rgba(39,46,52,0.08)_100%)]" />
-              <h3 className="absolute left-4 top-4 z-10 text-[10px] font-medium uppercase tracking-[0.04em] text-white">Commercial</h3>
-              <div className="absolute inset-x-0 bottom-0 z-10 translate-y-full bg-black px-4 py-3 text-white transition duration-300 group-hover:translate-y-0">
-                <p className="text-[11px] leading-[15px]">Office buildings, retail spaces and mixed-use developments</p>
+            {detailTiles.map((tile) => (
+              <div
+                key={tile.title}
+                className={cn(
+                  "group relative min-h-[260px] overflow-hidden rounded-[4px] border border-white/5 cursor-pointer",
+                  tile.background,
+                )}
+              >
+                <div className={cn("absolute inset-0 transition-all duration-300 group-hover:brightness-110", tile.overlay)} />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 z-10 flex items-end justify-between gap-4 p-4">
+                  <div>
+                    <h3 className="text-[10px] leading-snug uppercase tracking-[0.04em] text-white">
+                      {tile.title}
+                    </h3>
+                  </div>
+                  <button className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-sm transition-all duration-300 group-hover:bg-white/30 group-hover:border-white/40">
+                    <span className="text-sm leading-none">&gt;</span>
+                  </button>
+                </div>
+                <div className="absolute inset-x-0 bottom-0 z-20 translate-y-full bg-black px-4 py-3 text-white transition duration-300 group-hover:translate-y-0">
+                  <p className="text-[11px] leading-[15px]">{tile.description}</p>
+                </div>
               </div>
-            </div>
-
-            <div className="group relative min-h-[260px] overflow-hidden rounded-[4px] border border-[#1f2124]/10 bg-[linear-gradient(180deg,#d8dedf_0%,#f1f3f0_100%)]">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,rgba(88,108,102,0.28),transparent_44%),linear-gradient(180deg,transparent_0%,rgba(29,35,31,0.08)_100%)]" />
-              <h3 className="absolute left-4 top-4 z-10 text-[10px] font-medium uppercase tracking-[0.04em] text-white">Multi-residential</h3>
-              <div className="absolute inset-x-0 bottom-0 z-10 translate-y-full bg-black px-4 py-3 text-white transition duration-300 group-hover:translate-y-0">
-                <p className="text-[11px] leading-[15px]">Apartments, townhouses and residential developments</p>
-              </div>
-            </div>
-
-            <div className="group relative min-h-[260px] overflow-hidden rounded-[4px] border border-[#1f2124]/10 bg-[linear-gradient(180deg,#d9ddd3_0%,#f2f1eb_100%)]">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(130,136,100,0.24),transparent_40%),linear-gradient(180deg,transparent_0%,rgba(36,40,27,0.08)_100%)]" />
-              <h3 className="absolute left-4 top-4 z-10 text-[10px] font-medium uppercase tracking-[0.04em] text-white">Health &amp; Aged Care</h3>
-              <div className="absolute inset-x-0 bottom-0 z-10 translate-y-full bg-black px-4 py-3 text-white transition duration-300 group-hover:translate-y-0">
-                <p className="text-[11px] leading-[15px]">Medical facilities and aged care residences</p>
-              </div>
-            </div>
-
-            <div className="group relative min-h-[260px] overflow-hidden rounded-[4px] border border-[#1f2124]/10 bg-[linear-gradient(180deg,#d8dde3_0%,#eef1f4_100%)]">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(103,121,140,0.24),transparent_38%),linear-gradient(180deg,transparent_0%,rgba(30,37,44,0.08)_100%)]" />
-              <h3 className="absolute left-4 top-4 z-10 text-[10px] font-medium uppercase tracking-[0.04em] text-white">Education &amp; Community</h3>
-              <div className="absolute inset-x-0 bottom-0 z-10 translate-y-full bg-black px-4 py-3 text-white transition duration-300 group-hover:translate-y-0">
-                <p className="text-[11px] leading-[15px]">Schools, libraries and community centres</p>
-              </div>
-            </div>
-
-            <div className="group relative min-h-[260px] overflow-hidden rounded-[4px] border border-[#1f2124]/10 bg-[linear-gradient(180deg,#d9dbde_0%,#f4f2ef_100%)]">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(122,120,112,0.24),transparent_38%),linear-gradient(180deg,transparent_0%,rgba(41,40,35,0.08)_100%)]" />
-              <h3 className="absolute left-4 top-4 z-10 text-[10px] font-medium uppercase tracking-[0.04em] text-white">Infrastructure</h3>
-              <div className="absolute inset-x-0 bottom-0 z-10 translate-y-full bg-black px-4 py-3 text-white transition duration-300 group-hover:translate-y-0">
-                <p className="text-[11px] leading-[15px]">Transit facilities and public infrastructure</p>
-              </div>
-            </div>
-
-            <div className="group relative min-h-[260px] overflow-hidden rounded-[4px] border border-[#1f2124]/10 bg-[linear-gradient(180deg,#d7dde6_0%,#f2f4f8_100%)]">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(92,109,130,0.28),transparent_40%),linear-gradient(180deg,transparent_0%,rgba(32,38,45,0.08)_100%)]" />
-              <h3 className="absolute left-4 top-4 z-10 text-[10px] font-medium uppercase tracking-[0.04em] text-white">Hotels &amp; Accommodation</h3>
-              <div className="absolute inset-x-0 bottom-0 z-10 translate-y-full bg-black px-4 py-3 text-white transition duration-300 group-hover:translate-y-0">
-                <p className="text-[11px] leading-[15px]">Hotels, resorts and short-term accommodation</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
