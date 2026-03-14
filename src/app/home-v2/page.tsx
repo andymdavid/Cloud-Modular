@@ -202,6 +202,10 @@ export default function HomeV2() {
           )}
           aria-hidden
         />
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(180deg,rgba(8,10,10,0)_0%,#080a0a_100%)]"
+          aria-hidden
+        />
         {/* Content */}
         <div className="relative z-10 flex h-full items-center justify-center px-6 pt-16 lg:px-20">
           <div className="mx-auto w-full max-w-4xl text-center">
@@ -261,7 +265,7 @@ export default function HomeV2() {
       <section className="flex min-h-screen flex-col bg-[#080a0a] px-6 pt-20">
         <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center text-center">
           <div
-            className="font-cal-sans mb-8 inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-white/40"
+            className="font-cal-sans mb-8 inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]"
           >
             <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
               <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
@@ -289,10 +293,10 @@ export default function HomeV2() {
             <span>Who We Are</span>
           </Link>
         </div>
-        <div className="mx-auto mt-16 w-[calc(100%-32px)] max-w-[1400px] border-t border-white/10" />
+        <div className={cn("relative left-1/2 mt-16 w-screen -translate-x-1/2 border-t", borderDivider)} />
         <div className="mx-auto w-full max-w-[66.666vw] bg-[#080a0a] text-white">
           <div className="flex min-h-[44px] w-full flex-col md:flex-row">
-            <div className="flex shrink-0 items-center border-b border-white/10 px-4 py-2 text-[11px] font-medium text-white md:w-[260px] md:border-b-0 md:border-r md:border-white/10">
+            <div className={cn("flex shrink-0 items-center px-4 py-2 text-[11px] font-medium text-white md:w-[260px] md:border-r", borderDivider, "border-b md:border-b-0")}>
               Partnering with leading architectural, engineering, and procurement teams.
             </div>
             <div className="relative flex flex-1 items-center justify-center overflow-hidden">
@@ -312,73 +316,14 @@ export default function HomeV2() {
             </div>
           </div>
         </div>
-        <div className="mx-auto w-[calc(100%-32px)] max-w-[1400px] border-b border-white/10" />
-      </section>
-
-      <section className="flex min-h-screen bg-[#f3f0ec] px-6 py-20">
-        <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col justify-between">
-          <div className="max-w-[48rem] text-left">
-            <div className="font-cal-sans mb-8 inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#2b2d30]">
-              <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
-                <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
-                <path d="M10 10.5L18 8L18 15.5L10 18L10 10.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
-                <path d="M6 4.5V12L10 18" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
-              </svg>
-              <span>What We Do</span>
-            </div>
-            <h2 className="max-w-[48rem] font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] text-[#1f2124] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]">
-              Design-informed, precisely manufactured modular buildings built to Australian standards.
-            </h2>
-            <p className="mt-3 max-w-[620px] text-[12px] leading-[18px] text-[#1f2124] sm:text-[13px] sm:leading-[20px]">
-              Our system adapts to different sites, budgets and requirements, giving clients more certainty in how
-              their projects are delivered.
-            </p>
-            <Link
-              href="/partner-with-us"
-              className="group mt-5 inline-flex items-center gap-2 rounded-[2px] bg-[#04090d] px-[16px] py-[6px] text-[11px] font-semibold text-white transition hover:bg-[#0b1318]"
-            >
-              <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" aria-hidden>
-                <path d="M1.5 10H13.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
-                <path d="M9 4.5L14.5 10L9 15.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="miter" />
-              </svg>
-              <span>Partner With Us</span>
-            </Link>
-          </div>
-          <div className="mt-16 grid gap-4 md:grid-cols-2 xl:grid-cols-6">
-            {detailTiles.map((tile) => (
-              <div
-                key={tile.title}
-                className={cn(
-                  "group relative min-h-[260px] overflow-hidden rounded-[4px] border border-black/10 cursor-pointer bg-black/5",
-                  tile.background,
-                )}
-              >
-                <div className={cn("absolute inset-0 transition-all duration-300 brightness-90 group-hover:brightness-100", tile.overlay)} />
-                <div className="absolute inset-0 bg-gradient-to-t from-white/80 via-white/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 z-10 flex items-end justify-between gap-4 p-4">
-                  <div>
-                    <h3 className="text-[10px] leading-snug uppercase tracking-[0.04em] text-[#080a0a]">
-                      {tile.title}
-                    </h3>
-                  </div>
-                  <button className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-black/20 bg-black/10 text-[#080a0a] backdrop-blur-sm transition-all duration-300 group-hover:bg-black/30 group-hover:border-black/40">
-                    <span className="text-sm leading-none">&gt;</span>
-                  </button>
-                </div>
-                <div className="absolute inset-x-0 bottom-0 z-20 translate-y-full bg-black px-4 py-3 text-white transition duration-300 group-hover:translate-y-0">
-                  <p className="text-[11px] leading-[15px]">{tile.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        <div className={cn("relative left-1/2 w-screen -translate-x-1/2 border-b", borderDivider)} />
       </section>
 
       <section className={cn("min-h-[150vh] flex flex-col pt-24", bg, text)}>
         <div className="section-container flex-1">
           <div className="text-center">
             <div className="space-y-6">
-              <div className={cn("font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em]", textLabel)}>
+              <div className="font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]">
                 <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
                   <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
                   <path d="M10 10.5L18 8L18 15.5L10 18L10 10.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
@@ -390,7 +335,7 @@ export default function HomeV2() {
                 Design-informed, precisely manufactured modular<br className="hidden md:block" /> buildings built to Australian standards.
               </h2>
             </div>
-            <p className={cn("mx-auto mt-3 w-full text-[12px] leading-[18px] sm:max-w-[620px] sm:text-[13px] sm:leading-[20px]", textMuted)}>
+            <p className="mx-auto mt-3 w-full max-w-[520px] font-sans text-[12px] leading-[18px] text-white">
               Our system adapts to different sites, budgets and requirements, giving clients more certainty in how their projects are delivered.
             </p>
             <div className="mt-4">
@@ -507,7 +452,7 @@ export default function HomeV2() {
       <section className={cn("min-h-[130vh] flex flex-col justify-center pt-20 pb-0", bg, text)}>
         <div className="section-container">
           <div className="space-y-6 text-center">
-            <div className={cn("font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em]", textLabel)}>
+            <div className="font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]">
               <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
                 <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
                 <path d="M10 10.5L18 8L18 15.5L10 18L10 10.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
@@ -535,7 +480,7 @@ export default function HomeV2() {
       <section className={cn("min-h-[140vh] flex flex-col justify-center pt-20 pb-0", bg)}>
         <div className="section-container">
           <div className="max-w-2xl">
-            <div className={cn("font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em]", textLabel)}>
+            <div className="font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]">
               <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
                 <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
                 <path d="M10 10.5L18 8L18 15.5L10 18L10 10.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
@@ -546,7 +491,7 @@ export default function HomeV2() {
             <h2 className={cn("mt-6 max-w-[48rem] font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]", text)}>
               Factory-controlled production and verified engineering ensure full compliance with Australian standards.
             </h2>
-            <p className={cn("mt-4 max-w-[620px] text-[12px] leading-[18px] sm:text-[13px] sm:leading-[20px]", textMuted)}>
+            <p className="mt-4 max-w-[520px] font-sans text-[12px] leading-[18px] text-white">
               This process gives clients confidence in the accuracy, reliability and compliance of every module before it reaches site.
             </p>
           </div>
@@ -710,7 +655,7 @@ export default function HomeV2() {
           <div className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-12">
             <div>
               <div className="space-y-6">
-                <div className={cn("font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em]", textLabel)}>
+                <div className="font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]">
                   <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
                     <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
                     <path d="M10 10.5L18 8L18 15.5L10 18L10 10.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
@@ -736,10 +681,10 @@ export default function HomeV2() {
             </div>
 
             <div>
-              <p className={cn("mt-2 text-[12px] leading-[18px] lg:mt-[42px] sm:text-[13px] sm:leading-[20px]", textMuted)}>
+              <p className="mt-2 max-w-[520px] font-sans text-[12px] leading-[18px] text-white lg:mt-[42px]">
                 Construction is becoming harder to deliver predictably - labour shortages, rising costs and tighter compliance all add pressure to traditional methods.
               </p>
-              <p className={cn("mt-6 text-[12px] leading-[18px] sm:text-[13px] sm:leading-[20px]", textMuted)}>
+              <p className="mt-6 max-w-[520px] font-sans text-[12px] leading-[18px] text-white">
                 Cloud Modular was created to offer a more controlled way to build, bringing together design clarity, precise offsite manufacturing and assured compliance to give clients greater certainty from the outset.
               </p>
             </div>
@@ -751,7 +696,7 @@ export default function HomeV2() {
       <section className={cn("min-h-[100vh] flex flex-col justify-center pt-20 pb-0", bg, text)}>
         <div className="section-container">
           <div className="space-y-6 text-center">
-            <div className={cn("font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em]", textLabel)}>
+            <div className="font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]">
               <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
                 <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
                 <path d="M10 10.5L18 8L18 15.5L10 18L10 10.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
@@ -774,7 +719,7 @@ export default function HomeV2() {
         <div className="section-container">
           <div className="text-center">
             <div className="space-y-6">
-              <div className={cn("font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em]", textLabel)}>
+              <div className="font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]">
                 <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
                   <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
                   <path d="M10 10.5L18 8L18 15.5L10 18L10 10.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
@@ -786,7 +731,7 @@ export default function HomeV2() {
                 Ready to transform your next development?
               </h2>
             </div>
-            <p className={cn("mx-auto mt-3 w-full max-w-[620px] text-[12px] leading-[18px] sm:text-[13px] sm:leading-[20px]", textMuted)}>
+            <p className="mx-auto mt-3 w-full max-w-[520px] font-sans text-[12px] leading-[18px] text-white">
               Let&rsquo;s discuss how Cloud Modular can deliver your project faster, more cost-effectively, and sustainably.
             </p>
             <div className="mt-4 flex justify-center">
