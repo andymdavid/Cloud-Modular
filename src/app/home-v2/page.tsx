@@ -246,7 +246,8 @@ export default function HomeV2() {
             <span>Who We Are</span>
           </Link>
         </div>
-        <div className="mx-auto mt-16 w-[calc(100%-32px)] max-w-[1400px] border-t border-[#1f2124]/10 bg-[#f3f0ec] text-[#1f2124]">
+        <div className="mx-auto mt-16 w-[calc(100%-32px)] max-w-[1400px] border-t border-[#1f2124]/10" />
+        <div className="mx-auto w-full max-w-[66.666vw] bg-[#f3f0ec] text-[#1f2124]">
           <div className="flex min-h-[44px] w-full flex-col md:flex-row">
             <div className="flex shrink-0 items-center border-b border-[#1f2124]/10 px-4 py-2 text-[11px] font-medium text-[#1f2124] md:w-[260px] md:border-b-0 md:border-r md:border-[#1f2124]/10">
               Partnering with leading architectural, engineering, and procurement teams.
