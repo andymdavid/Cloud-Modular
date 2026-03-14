@@ -307,75 +307,51 @@ export default function HomeV2() {
             </Link>
           </div>
           <div className="mt-16 grid gap-4 md:grid-cols-2 xl:grid-cols-6">
-            <div className="flex min-h-[180px] flex-col justify-between rounded-[4px] border border-[#1f2124]/10 bg-white p-5 transition hover:bg-[#f8f5f1]">
-              <div className="flex h-12 w-12 items-center justify-center rounded-[12px] bg-[#f3f0ec]">
-                <svg className="h-6 w-6 text-[#1f2124]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                </svg>
-              </div>
-              <div>
-                <h3 className="text-xl leading-snug text-[#1f2124]">Commercial</h3>
-                <p className="mt-2 text-sm text-[#1f2124]/70">Office buildings, retail spaces and mixed-use developments</p>
+            <div className="group relative min-h-[260px] overflow-hidden rounded-[4px] border border-[#1f2124]/10 bg-[linear-gradient(180deg,#d6dbe6_0%,#eef0f5_100%)]">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(91,111,125,0.32),transparent_42%),linear-gradient(180deg,transparent_0%,rgba(39,46,52,0.08)_100%)]" />
+              <h3 className="absolute left-4 top-4 z-10 text-[10px] font-medium uppercase tracking-[0.04em] text-white">Commercial</h3>
+              <div className="absolute inset-x-0 bottom-0 z-10 translate-y-full bg-black px-4 py-3 text-white transition duration-300 group-hover:translate-y-0">
+                <p className="text-[11px] leading-[15px]">Office buildings, retail spaces and mixed-use developments</p>
               </div>
             </div>
 
-            <div className="flex min-h-[180px] flex-col justify-between rounded-[4px] border border-[#1f2124]/10 bg-white p-5 transition hover:bg-[#f8f5f1]">
-              <div className="flex h-12 w-12 items-center justify-center rounded-[12px] bg-[#f3f0ec]">
-                <svg className="h-6 w-6 text-[#1f2124]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                </svg>
-              </div>
-              <div>
-                <h3 className="text-xl leading-snug text-[#1f2124]">Multi-residential</h3>
-                <p className="mt-2 text-sm text-[#1f2124]/70">Apartments, townhouses and residential developments</p>
+            <div className="group relative min-h-[260px] overflow-hidden rounded-[4px] border border-[#1f2124]/10 bg-[linear-gradient(180deg,#d8dedf_0%,#f1f3f0_100%)]">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,rgba(88,108,102,0.28),transparent_44%),linear-gradient(180deg,transparent_0%,rgba(29,35,31,0.08)_100%)]" />
+              <h3 className="absolute left-4 top-4 z-10 text-[10px] font-medium uppercase tracking-[0.04em] text-white">Multi-residential</h3>
+              <div className="absolute inset-x-0 bottom-0 z-10 translate-y-full bg-black px-4 py-3 text-white transition duration-300 group-hover:translate-y-0">
+                <p className="text-[11px] leading-[15px]">Apartments, townhouses and residential developments</p>
               </div>
             </div>
 
-            <div className="flex min-h-[180px] flex-col justify-between rounded-[4px] border border-[#1f2124]/10 bg-white p-5 transition hover:bg-[#f8f5f1]">
-              <div className="flex h-12 w-12 items-center justify-center rounded-[12px] bg-[#f3f0ec]">
-                <svg className="h-6 w-6 text-[#1f2124]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                </svg>
-              </div>
-              <div>
-                <h3 className="text-xl leading-snug text-[#1f2124]">Health &amp; Aged Care</h3>
-                <p className="mt-2 text-sm text-[#1f2124]/70">Medical facilities and aged care residences</p>
+            <div className="group relative min-h-[260px] overflow-hidden rounded-[4px] border border-[#1f2124]/10 bg-[linear-gradient(180deg,#d9ddd3_0%,#f2f1eb_100%)]">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(130,136,100,0.24),transparent_40%),linear-gradient(180deg,transparent_0%,rgba(36,40,27,0.08)_100%)]" />
+              <h3 className="absolute left-4 top-4 z-10 text-[10px] font-medium uppercase tracking-[0.04em] text-white">Health &amp; Aged Care</h3>
+              <div className="absolute inset-x-0 bottom-0 z-10 translate-y-full bg-black px-4 py-3 text-white transition duration-300 group-hover:translate-y-0">
+                <p className="text-[11px] leading-[15px]">Medical facilities and aged care residences</p>
               </div>
             </div>
 
-            <div className="flex min-h-[180px] flex-col justify-between rounded-[4px] border border-[#1f2124]/10 bg-white p-5 transition hover:bg-[#f8f5f1]">
-              <div className="flex h-12 w-12 items-center justify-center rounded-[12px] bg-[#f3f0ec]">
-                <svg className="h-6 w-6 text-[#1f2124]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-              </div>
-              <div>
-                <h3 className="text-xl leading-snug text-[#1f2124]">Education &amp; Community</h3>
-                <p className="mt-2 text-sm text-[#1f2124]/70">Schools, libraries and community centres</p>
+            <div className="group relative min-h-[260px] overflow-hidden rounded-[4px] border border-[#1f2124]/10 bg-[linear-gradient(180deg,#d8dde3_0%,#eef1f4_100%)]">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(103,121,140,0.24),transparent_38%),linear-gradient(180deg,transparent_0%,rgba(30,37,44,0.08)_100%)]" />
+              <h3 className="absolute left-4 top-4 z-10 text-[10px] font-medium uppercase tracking-[0.04em] text-white">Education &amp; Community</h3>
+              <div className="absolute inset-x-0 bottom-0 z-10 translate-y-full bg-black px-4 py-3 text-white transition duration-300 group-hover:translate-y-0">
+                <p className="text-[11px] leading-[15px]">Schools, libraries and community centres</p>
               </div>
             </div>
 
-            <div className="flex min-h-[180px] flex-col justify-between rounded-[4px] border border-[#1f2124]/10 bg-white p-5 transition hover:bg-[#f8f5f1]">
-              <div className="flex h-12 w-12 items-center justify-center rounded-[12px] bg-[#f3f0ec]">
-                <svg className="h-6 w-6 text-[#1f2124]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <div>
-                <h3 className="text-xl leading-snug text-[#1f2124]">Infrastructure</h3>
-                <p className="mt-2 text-sm text-[#1f2124]/70">Transit facilities and public infrastructure</p>
+            <div className="group relative min-h-[260px] overflow-hidden rounded-[4px] border border-[#1f2124]/10 bg-[linear-gradient(180deg,#d9dbde_0%,#f4f2ef_100%)]">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(122,120,112,0.24),transparent_38%),linear-gradient(180deg,transparent_0%,rgba(41,40,35,0.08)_100%)]" />
+              <h3 className="absolute left-4 top-4 z-10 text-[10px] font-medium uppercase tracking-[0.04em] text-white">Infrastructure</h3>
+              <div className="absolute inset-x-0 bottom-0 z-10 translate-y-full bg-black px-4 py-3 text-white transition duration-300 group-hover:translate-y-0">
+                <p className="text-[11px] leading-[15px]">Transit facilities and public infrastructure</p>
               </div>
             </div>
 
-            <div className="flex min-h-[180px] flex-col justify-between rounded-[4px] border border-[#1f2124]/10 bg-white p-5 transition hover:bg-[#f8f5f1]">
-              <div className="flex h-12 w-12 items-center justify-center rounded-[12px] bg-[#f3f0ec]">
-                <svg className="h-6 w-6 text-[#1f2124]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div>
-                <h3 className="text-xl leading-snug text-[#1f2124]">Hotels &amp; Accommodation</h3>
-                <p className="mt-2 text-sm text-[#1f2124]/70">Hotels, resorts and short-term accommodation</p>
+            <div className="group relative min-h-[260px] overflow-hidden rounded-[4px] border border-[#1f2124]/10 bg-[linear-gradient(180deg,#d7dde6_0%,#f2f4f8_100%)]">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(92,109,130,0.28),transparent_40%),linear-gradient(180deg,transparent_0%,rgba(32,38,45,0.08)_100%)]" />
+              <h3 className="absolute left-4 top-4 z-10 text-[10px] font-medium uppercase tracking-[0.04em] text-white">Hotels &amp; Accommodation</h3>
+              <div className="absolute inset-x-0 bottom-0 z-10 translate-y-full bg-black px-4 py-3 text-white transition duration-300 group-hover:translate-y-0">
+                <p className="text-[11px] leading-[15px]">Hotels, resorts and short-term accommodation</p>
               </div>
             </div>
           </div>
