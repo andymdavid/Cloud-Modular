@@ -276,6 +276,8 @@ export default function HomeV2() {
         </div>
       </section>
 
+      <section className="min-h-screen bg-[#f3f0ec]" />
+
       <section className={cn("min-h-[150vh] flex flex-col pt-24", bg, text)}>
         <div className="section-container flex-1">
           <div className="text-center">
