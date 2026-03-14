@@ -208,7 +208,7 @@ export default function HomeV2() {
       <section className="flex min-h-screen items-center justify-center bg-[#f3f0ec] px-6 py-20">
         <div className="mx-auto flex w-full max-w-4xl flex-col items-center text-center">
           <div
-            className="font-cal-sans mb-8 inline-flex items-center gap-2 text-[12px] uppercase leading-none tracking-[0.01em] text-[#2b2d30]"
+            className="font-cal-sans mb-8 inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#2b2d30]"
           >
             <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
               <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
