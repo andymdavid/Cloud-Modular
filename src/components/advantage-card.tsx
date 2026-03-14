@@ -55,7 +55,7 @@ export function AdvantageCard({
               <p
                 key={index}
                 className={cn(
-                  "hero-heading text-[17px] md:text-[21px]",
+                  compact ? "font-sans text-[12px] leading-[17px] md:text-[13px] md:leading-[18px]" : "hero-heading text-[17px] md:text-[21px]",
                   index === 0 ? textPrimary : textSecondary
                 )}
               >
