@@ -233,7 +233,7 @@ export default function HomeV2() {
             <span>Introducing Cloud Modular</span>
           </div>
           <h2 className="font-host-grotesk text-[25px] font-medium leading-[27px] tracking-[-0.03em] text-[#1f2124] sm:text-[38px] sm:leading-[40px] lg:text-[48px] lg:leading-[50px]">
-            Partnering with leading architectural, engineering, and procurement teams.
+            Cloud Modular offers clarity and certainty to a changing construction landscape.
           </h2>
           <Link
             href="/about-us"
