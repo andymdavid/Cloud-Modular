@@ -27,7 +27,7 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
   const textDisabled = isLight ? "text-[#080a0a]/40" : "text-white/40";
   const btnBg = isLight ? "bg-white/90" : "bg-white";
   const btnText = isLight ? "text-[#080a0a]" : "text-forest";
-  const btnHover = isLight ? "hover:bg-white" : "hover:bg-warm-white";
+  const btnHover = isLight ? "hover:bg-white" : "hover:bg-[#d9d4ce]";
   const hamburgerBg = isLight ? "bg-[#080a0a]" : "bg-white";
 
   // Glassmorphic nav styles
@@ -37,6 +37,9 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
   const mobileBg = isLight
     ? "bg-white/80"
     : "bg-[#0d1212]/90";
+  const mobileOverlayBg = isLight
+    ? "bg-[rgba(247,248,248,0.96)]"
+    : "bg-[rgba(1,1,1,0.96)]";
 
   return (
     <header className="pointer-events-none fixed inset-x-0 top-0 z-50">
@@ -142,50 +145,89 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
       {/* Mobile menu dropdown */}
       <div
         className={cn(
-          "pointer-events-auto mx-4 sm:mx-6 backdrop-blur-xl md:hidden transition-all duration-300 overflow-hidden mt-2",
-          mobileBg,
-          open ? cn("max-h-96 px-5 pb-6 pt-4 shadow-lg", isLight ? "border border-white/20" : "border border-white/[0.04]") : "max-h-0",
+          "pointer-events-auto fixed inset-0 md:hidden transition-opacity duration-300",
+          open ? "opacity-100" : "pointer-events-none opacity-0",
         )}
       >
-        <nav className={cn("space-y-4 text-base font-medium", textMuted)} aria-label="Mobile navigation">
-          {navLinks.map((link) => {
-            const isDisabled = link.label === "Projects" || link.label === "What We Do";
+        <div className={cn("absolute inset-0 backdrop-blur-xl", mobileOverlayBg)} />
+        <div className="relative flex h-full flex-col p-4 sm:p-6">
+          <nav
+            className={cn(
+              "flex flex-1 flex-col rounded-[2px] border p-6 text-[16px] font-medium",
+              mobileBg,
+              isLight ? "border-white/20" : "border-white/[0.04]",
+            )}
+            aria-label="Mobile navigation"
+          >
+            <div className="flex items-center justify-between">
+              <Link href="/" className="flex shrink-0 items-center" onClick={closeMenu}>
+                <Image
+                  src="/logo.png"
+                  alt="Cloud Modular"
+                  width={108}
+                  height={108}
+                  className={cn("h-auto w-[108px]", isLight && "invert")}
+                />
+              </Link>
+              <button
+                type="button"
+                className={cn("flex h-10 w-10 items-center justify-center", textColor)}
+                aria-label="Close navigation menu"
+                onClick={closeMenu}
+              >
+                <span className="sr-only">Close</span>
+                <span className="absolute h-0.5 w-8 rotate-45 bg-current" />
+                <span className="absolute h-0.5 w-8 -rotate-45 bg-current" />
+              </button>
+            </div>
+            <div className="space-y-8 pt-10">
+              {navLinks.map((link) => {
+                const isDisabled = link.label === "Projects" || link.label === "What We Do";
 
-            if (isDisabled) {
-              return (
-                <span
-                  key={link.href}
-                  className={cn("block cursor-not-allowed", textDisabled)}
-                >
-                  {link.label}
-                </span>
-              );
-            }
+                if (isDisabled) {
+                  return (
+                    <span
+                      key={link.href}
+                      className={cn("block cursor-not-allowed", textDisabled)}
+                    >
+                      {link.label}
+                    </span>
+                  );
+                }
 
-            return (
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={cn(
+                      "block",
+                      isActive(link.href)
+                        ? textColor
+                        : cn(textMuted, isLight ? "hover:text-[#080a0a]" : "hover:text-white"),
+                    )}
+                    onClick={closeMenu}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
+            </div>
+            <div className="mt-auto pt-8">
               <Link
-                key={link.href}
-                href={link.href}
+                href={contactHref}
                 className={cn(
-                  "block",
-                  isActive(link.href)
-                    ? textColor
-                    : cn(textMuted, isLight ? "hover:text-[#080a0a]" : "hover:text-white"),
+                  "inline-flex h-[30px] w-full items-center justify-center rounded-[2px] px-[16px] py-[6px] text-center text-[11px] font-semibold transition",
+                  btnBg,
+                  btnText,
+                  btnHover,
                 )}
                 onClick={closeMenu}
               >
-                {link.label}
+                Partner With Us
               </Link>
-            );
-          })}
-          <Link
-            href={contactHref}
-            className={cn("inline-flex w-full items-center justify-center px-6 py-3 text-center text-base font-semibold", btnBg, btnText)}
-            onClick={closeMenu}
-          >
-            Partner With Us
-          </Link>
-        </nav>
+            </div>
+          </nav>
+        </div>
       </div>
     </header>
   );

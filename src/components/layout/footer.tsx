@@ -4,9 +4,10 @@ import { contactDetails, footerLinks } from "@/content/site";
 
 export function Footer() {
   return (
-    <footer className="bg-[#080a0a] text-white">
-      <div className="w-[80%] mx-auto border-t border-white/5"></div>
-      <div className="section-container grid gap-10 py-16 md:grid-cols-[40%_1fr_1fr_1fr]">
+    <footer className="bg-[#000000] text-white">
+      <div className="border-t border-white/5"></div>
+      <div className="mx-auto w-full max-w-[1200px] px-8 py-16 sm:px-10 lg:px-12">
+        <div className="grid gap-10 md:grid-cols-[40%_1fr_1fr_1fr]">
         {/* Logo and Tagline - 40% width */}
         <div>
           <Link href="/" className="inline-block">
@@ -18,17 +19,17 @@ export function Footer() {
               className="h-8 w-auto"
             />
           </Link>
-          <p className="mt-4 max-w-sm text-lg leading-relaxed text-white/70">
+          <p className="mt-4 max-w-sm font-sans text-[12px] leading-[18px] text-white/70 sm:text-[13px] sm:leading-[19px]">
             Thoughtful design, precise manufacturing and dependable delivery.
           </p>
         </div>
 
         {/* Discover - Site Links */}
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/40">
+          <p className="font-cal-sans text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]">
             Discover
           </p>
-          <ul className="mt-4 space-y-3 text-white/70">
+          <ul className="mt-4 space-y-3 font-sans text-[12px] leading-[18px] text-white/70">
             {footerLinks.map((link) => (
               <li key={link.label}>
                 <Link
@@ -44,10 +45,10 @@ export function Footer() {
 
         {/* Connect - Contact and LinkedIn */}
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/40">
+          <p className="font-cal-sans text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]">
             Connect
           </p>
-          <ul className="mt-4 space-y-3 text-white/70">
+          <ul className="mt-4 space-y-3 font-sans text-[12px] leading-[18px] text-white/70">
             <li>
               <Link
                 href="/partner-with-us"
@@ -71,29 +72,30 @@ export function Footer() {
 
         {/* Address */}
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/40">
+          <p className="font-cal-sans text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]">
             Address
           </p>
           <div className="mt-4 space-y-4">
             <div>
-              <p className="text-sm font-semibold text-white/60 mb-2">
+              <p className="mb-2 font-host-grotesk text-[14px] font-medium leading-[16px] tracking-[-0.03em] text-white/70">
                 Perth, Australia
               </p>
-              <p className="text-white/70">Loftus St, North Perth</p>
-              <p className="text-white/70">Western Australia, 6006</p>
+              <p className="font-sans text-[12px] leading-[18px] text-white/70">Loftus St, North Perth</p>
+              <p className="font-sans text-[12px] leading-[18px] text-white/70">Western Australia, 6006</p>
             </div>
             <div>
-              <p className="text-sm font-semibold text-white/60 mb-2">
+              <p className="mb-2 font-host-grotesk text-[14px] font-medium leading-[16px] tracking-[-0.03em] text-white/70">
                 Foshan, China
               </p>
-              <p className="text-white/70">3F, 48L, No.26 Lang Bao West Road</p>
-              <p className="text-white/70">Foshan City, Guangdong Province</p>
-              <p className="text-white/70">China</p>
+              <p className="font-sans text-[12px] leading-[18px] text-white/70">3F, 48L, No.26 Lang Bao West Road</p>
+              <p className="font-sans text-[12px] leading-[18px] text-white/70">Foshan City, Guangdong Province</p>
+              <p className="font-sans text-[12px] leading-[18px] text-white/70">China</p>
             </div>
           </div>
         </div>
       </div>
-      <div className="border-t border-white/5 py-6 text-center text-sm text-white/40">
+      </div>
+      <div className="border-t border-white/5 py-3 text-center font-sans text-[12px] leading-[18px] text-white/40">
         © {new Date().getFullYear()} Cloud Modular. All rights reserved.
       </div>
     </footer>
