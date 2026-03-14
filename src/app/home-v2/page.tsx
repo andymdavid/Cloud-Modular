@@ -258,10 +258,10 @@ export default function HomeV2() {
         </div>
       </section>
 
-      <section className="flex min-h-screen flex-col bg-[#f3f0ec] px-6 pt-20">
+      <section className="flex min-h-screen flex-col bg-[#080a0a] px-6 pt-20">
         <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center text-center">
           <div
-            className="font-cal-sans mb-8 inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#2b2d30]"
+            className="font-cal-sans mb-8 inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-white/40"
           >
             <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
               <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
@@ -270,17 +270,17 @@ export default function HomeV2() {
             </svg>
             <span>Introducing Cloud Modular</span>
           </div>
-          <h2 className="max-w-[48rem] font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] text-[#1f2124] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]">
+          <h2 className="max-w-[48rem] font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] text-white sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]">
             Cloud Modular offers clarity and certainty to a changing construction landscape.
           </h2>
-          <p className="mx-auto mt-3 max-w-[620px] text-[12px] leading-[18px] text-[#1f2124] sm:text-[13px] sm:leading-[20px]">
+          <p className="mx-auto mt-3 max-w-[620px] text-[12px] leading-[18px] text-white/70 sm:text-[13px] sm:leading-[20px]">
             Construction is harder to deliver predictably as labour shortages, rising costs and tighter compliance
             strain traditional methods. Cloud Modular offers a more controlled approach, with clear design, offsite
             manufacturing and assured compliance from the start.
           </p>
           <Link
             href="/about-us"
-            className="group mt-5 inline-flex items-center gap-2 rounded-[2px] bg-[#04090d] px-[16px] py-[6px] text-[11px] font-semibold text-white transition hover:bg-[#0b1318]"
+            className="group mt-5 inline-flex items-center gap-2 rounded-[2px] bg-white px-[16px] py-[6px] text-[11px] font-semibold text-forest transition hover:bg-warm-white"
           >
             <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" aria-hidden>
               <path d="M1.5 10H13.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
@@ -289,10 +289,10 @@ export default function HomeV2() {
             <span>Who We Are</span>
           </Link>
         </div>
-        <div className="mx-auto mt-16 w-[calc(100%-32px)] max-w-[1400px] border-t border-[#1f2124]/10" />
-        <div className="mx-auto w-full max-w-[66.666vw] bg-[#f3f0ec] text-[#1f2124]">
+        <div className="mx-auto mt-16 w-[calc(100%-32px)] max-w-[1400px] border-t border-white/10" />
+        <div className="mx-auto w-full max-w-[66.666vw] bg-[#080a0a] text-white">
           <div className="flex min-h-[44px] w-full flex-col md:flex-row">
-            <div className="flex shrink-0 items-center border-b border-[#1f2124]/10 px-4 py-2 text-[11px] font-medium text-[#1f2124] md:w-[260px] md:border-b-0 md:border-r md:border-[#1f2124]/10">
+            <div className="flex shrink-0 items-center border-b border-white/10 px-4 py-2 text-[11px] font-medium text-white md:w-[260px] md:border-b-0 md:border-r md:border-white/10">
               Partnering with leading architectural, engineering, and procurement teams.
             </div>
             <div className="relative flex flex-1 items-center justify-center overflow-hidden">
@@ -312,7 +312,7 @@ export default function HomeV2() {
             </div>
           </div>
         </div>
-        <div className="mx-auto w-[calc(100%-32px)] max-w-[1400px] border-b border-[#1f2124]/10" />
+        <div className="mx-auto w-[calc(100%-32px)] max-w-[1400px] border-b border-white/10" />
       </section>
 
       <section className="flex min-h-screen bg-[#f3f0ec] px-6 py-20">
