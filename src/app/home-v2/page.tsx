@@ -217,7 +217,7 @@ export default function HomeV2() {
             </svg>
             <span>Introducing Cloud Modular</span>
           </div>
-          <h2 className="font-host-grotesk text-[32px] font-medium leading-[34px] tracking-[-0.03em] text-[#1f2124] sm:text-[48px] sm:leading-[50px] lg:text-[60px] lg:leading-[62px]">
+          <h2 className="font-host-grotesk text-[25px] font-medium leading-[27px] tracking-[-0.03em] text-[#1f2124] sm:text-[38px] sm:leading-[40px] lg:text-[48px] lg:leading-[50px]">
             Partnering with leading architectural, engineering, and procurement teams.
           </h2>
           <Link
