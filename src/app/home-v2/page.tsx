@@ -106,42 +106,54 @@ const partnerLogos = [
   },
 ];
 
-const detailTiles = [
+const whatWeDoCards = [
   {
+    image: "/Card1.png",
+    label: "Commercial",
     title: "Commercial",
-    description: "Office buildings, retail spaces and mixed-use developments",
-    background: "bg-[linear-gradient(180deg,#bfc7d4_0%,#dde2ea_100%)]",
-    overlay: "bg-[radial-gradient(circle_at_bottom_left,rgba(91,111,125,0.32),transparent_42%),linear-gradient(180deg,rgba(0,0,0,0.02)_0%,rgba(0,0,0,0.28)_100%)]",
+    content: [
+      "Office buildings, retail spaces and mixed-use developments",
+    ],
   },
   {
+    image: "/Card2.png",
+    label: "Multi-Residential",
     title: "Multi-residential",
-    description: "Apartments, townhouses and residential developments",
-    background: "bg-[linear-gradient(180deg,#c2cacb_0%,#e3e7e3_100%)]",
-    overlay: "bg-[radial-gradient(circle_at_bottom_right,rgba(88,108,102,0.28),transparent_44%),linear-gradient(180deg,rgba(0,0,0,0.02)_0%,rgba(0,0,0,0.28)_100%)]",
+    content: [
+      "Apartments, townhouses and residential developments",
+    ],
   },
   {
+    image: "/Card3.png",
+    label: "Health & Aged Care",
     title: "Health & Aged Care",
-    description: "Medical facilities and aged care residences",
-    background: "bg-[linear-gradient(180deg,#c8ccbf_0%,#e8e6dd_100%)]",
-    overlay: "bg-[radial-gradient(circle_at_center,rgba(130,136,100,0.24),transparent_40%),linear-gradient(180deg,rgba(0,0,0,0.02)_0%,rgba(0,0,0,0.28)_100%)]",
+    content: [
+      "Medical facilities and aged care residences",
+    ],
   },
   {
+    image: "/Card4.png",
+    label: "Education & Community",
     title: "Education & Community",
-    description: "Schools, libraries and community centres",
-    background: "bg-[linear-gradient(180deg,#c2c9d1_0%,#e2e6ea_100%)]",
-    overlay: "bg-[radial-gradient(circle_at_top_right,rgba(103,121,140,0.24),transparent_38%),linear-gradient(180deg,rgba(0,0,0,0.02)_0%,rgba(0,0,0,0.28)_100%)]",
+    content: [
+      "Schools, libraries and community centres",
+    ],
   },
   {
+    image: "/Card5.png",
+    label: "Infrastructure",
     title: "Infrastructure",
-    description: "Transit facilities and public infrastructure",
-    background: "bg-[linear-gradient(180deg,#c8c8c7_0%,#e8e4de_100%)]",
-    overlay: "bg-[radial-gradient(circle_at_bottom,rgba(122,120,112,0.24),transparent_38%),linear-gradient(180deg,rgba(0,0,0,0.02)_0%,rgba(0,0,0,0.28)_100%)]",
+    content: [
+      "Transit facilities and public infrastructure",
+    ],
   },
   {
+    image: "/Card6.png",
+    label: "Hotels & Accommodation",
     title: "Hotels & Accommodation",
-    description: "Hotels, resorts and short-term accommodation",
-    background: "bg-[linear-gradient(180deg,#c0c9d3_0%,#e4e8ee_100%)]",
-    overlay: "bg-[radial-gradient(circle_at_bottom_left,rgba(92,109,130,0.28),transparent_40%),linear-gradient(180deg,rgba(0,0,0,0.02)_0%,rgba(0,0,0,0.28)_100%)]",
+    content: [
+      "Hotels, resorts and short-term accommodation",
+    ],
   },
 ];
 
@@ -319,9 +331,9 @@ export default function HomeV2() {
         <div className={cn("relative left-1/2 w-screen -translate-x-1/2 border-b", borderDivider)} />
       </section>
 
-      <section className={cn("min-h-[150vh] flex flex-col pt-24", bg, text)}>
-        <div className="section-container flex-1">
-          <div className="text-center">
+      <section className={cn("h-screen flex flex-col justify-between overflow-hidden", bg, text)}>
+        <div className="section-container flex flex-1 flex-col pt-24">
+          <div className="mt-28 text-center">
             <div className="space-y-6">
               <div className="font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]">
                 <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
@@ -351,102 +363,16 @@ export default function HomeV2() {
             </div>
           </div>
 
-          <div className="mt-48 text-center mx-auto max-w-5xl">
-            <h2 className={cn("mx-auto max-w-[48rem] font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]", text)}>
-              We work across a wide range of project types, from commercial and multi-residential<span className="md:hidden"> developments, aged care, education, community facilities, hotels and accommodation.</span>
-            </h2>
-            <p className={cn("font-host-grotesk -mt-1 hidden text-[18px] font-medium leading-[20px] tracking-[-0.03em] sm:text-[22px] sm:leading-[24px] lg:block lg:text-[25px] lg:leading-[27px]", textSubtle)}>
-              developments, aged care, education, community facilities, hotels and accommodation.
-            </p>
-          </div>
-
-          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-0 max-w-4xl mx-auto">
-            <div className={cn("rounded-[16px] border p-6 transition flex flex-col justify-between min-h-[200px]", borderSubtle, bgAlt, isLight ? "hover:bg-[#e8e9e9]" : "hover:bg-[#181a1b]")}>
-              <div className={cn("flex h-12 w-12 items-center justify-center rounded-[12px]", bgCard)}>
-                <svg className={cn("h-6 w-6", text)} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                </svg>
-              </div>
-              <div>
-                <h3 className={cn("font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]", text)}>
-                  Commercial
-                </h3>
-                <p className={cn("mt-2 text-sm", textSubtle)}>Office buildings, retail spaces and mixed-use developments</p>
-              </div>
-            </div>
-
-            <div className={cn("rounded-[16px] border p-6 transition flex flex-col justify-between min-h-[200px]", borderSubtle, bgAlt, isLight ? "hover:bg-[#e8e9e9]" : "hover:bg-[#181a1b]")}>
-              <div className={cn("flex h-12 w-12 items-center justify-center rounded-[12px]", bgCard)}>
-                <svg className={cn("h-6 w-6", text)} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                </svg>
-              </div>
-              <div>
-                <h3 className={cn("font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]", text)}>
-                  Multi-residential
-                </h3>
-                <p className={cn("mt-2 text-sm", textSubtle)}>Apartments, townhouses and residential developments</p>
-              </div>
-            </div>
-
-            <div className={cn("rounded-[16px] border p-6 transition flex flex-col justify-between min-h-[200px]", borderSubtle, bgAlt, isLight ? "hover:bg-[#e8e9e9]" : "hover:bg-[#181a1b]")}>
-              <div className={cn("flex h-12 w-12 items-center justify-center rounded-[12px]", bgCard)}>
-                <svg className={cn("h-6 w-6", text)} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                </svg>
-              </div>
-              <div>
-                <h3 className={cn("font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]", text)}>
-                  Health & Aged Care
-                </h3>
-                <p className={cn("mt-2 text-sm", textSubtle)}>Medical facilities and aged care residences</p>
-              </div>
-            </div>
-
-            <div className={cn("rounded-[16px] border p-6 transition flex flex-col justify-between min-h-[200px]", borderSubtle, bgAlt, isLight ? "hover:bg-[#e8e9e9]" : "hover:bg-[#181a1b]")}>
-              <div className={cn("flex h-12 w-12 items-center justify-center rounded-[12px]", bgCard)}>
-                <svg className={cn("h-6 w-6", text)} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-              </div>
-              <div>
-                <h3 className={cn("font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]", text)}>
-                  Education & Community
-                </h3>
-                <p className={cn("mt-2 text-sm", textSubtle)}>Schools, libraries and community centres</p>
-              </div>
-            </div>
-
-            <div className={cn("rounded-[16px] border p-6 transition flex flex-col justify-between min-h-[200px]", borderSubtle, bgAlt, isLight ? "hover:bg-[#e8e9e9]" : "hover:bg-[#181a1b]")}>
-              <div className={cn("flex h-12 w-12 items-center justify-center rounded-[12px]", bgCard)}>
-                <svg className={cn("h-6 w-6", text)} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <div>
-                <h3 className={cn("font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]", text)}>
-                  Infrastructure
-                </h3>
-                <p className={cn("mt-2 text-sm", textSubtle)}>Transit facilities and public infrastructure</p>
-              </div>
-            </div>
-
-            <div className={cn("rounded-[16px] border p-6 transition flex flex-col justify-between min-h-[200px]", borderSubtle, bgAlt, isLight ? "hover:bg-[#e8e9e9]" : "hover:bg-[#181a1b]")}>
-              <div className={cn("flex h-12 w-12 items-center justify-center rounded-[12px]", bgCard)}>
-                <svg className={cn("h-6 w-6", text)} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div>
-                <h3 className={cn("font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]", text)}>
-                  Hotels & Accommodation
-                </h3>
-                <p className={cn("mt-2 text-sm", textSubtle)}>Hotels, resorts and short-term accommodation</p>
-              </div>
+          <div className="relative left-1/2 mt-auto w-screen -translate-x-1/2 overflow-x-auto px-8 pt-12">
+            <div className="flex gap-2 px-0 pb-8">
+              {whatWeDoCards.map((card) => (
+                <AdvantageCard key={card.title} {...card} isLight={isLight} compact cornerRadius="rounded-[5px]" />
+              ))}
+              <div className="min-w-[4px]"></div>
             </div>
           </div>
         </div>
-        <div className={cn("w-[80%] mx-auto border-b", borderDivider)}></div>
+        <div className={cn("relative left-1/2 w-screen -translate-x-1/2 border-b", borderDivider)}></div>
       </section>
 
       <section className={cn("min-h-[130vh] flex flex-col justify-center pt-20 pb-0", bg, text)}>
@@ -469,7 +395,7 @@ export default function HomeV2() {
         <div className="mt-16 w-full overflow-x-auto">
           <div className="flex gap-2 pl-6 pr-6 pb-8">
             {advantageCards.map((card) => (
-              <AdvantageCard key={card.label} {...card} isLight={isLight} />
+              <AdvantageCard key={card.label} {...card} isLight={isLight} compact cornerRadius="rounded-[5px]" />
             ))}
             <div className="min-w-[24px]"></div>
           </div>
