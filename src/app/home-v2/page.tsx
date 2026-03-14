@@ -246,12 +246,12 @@ export default function HomeV2() {
             <span>Who We Are</span>
           </Link>
         </div>
-        <div className="mx-auto mt-16 w-full max-w-[66.666vw] border-t border-[#1f2124]/10 bg-[#f3f0ec] text-[#1f2124]">
+        <div className="mx-auto mt-16 w-[calc(100%-32px)] max-w-[1400px] border-t border-[#1f2124]/10 bg-[#f3f0ec] text-[#1f2124]">
           <div className="flex min-h-[44px] w-full flex-col md:flex-row">
-            <div className="flex shrink-0 items-center border-b border-[#1f2124]/10 px-4 py-2 text-[11px] font-medium text-[#1f2124] md:w-[320px] md:border-b-0 md:border-r md:border-[#1f2124]/10">
+            <div className="flex shrink-0 items-center border-b border-[#1f2124]/10 px-4 py-2 text-[11px] font-medium text-[#1f2124] md:w-[260px] md:border-b-0 md:border-r md:border-[#1f2124]/10">
               Partnering with leading architectural, engineering, and procurement teams.
             </div>
-            <div className="relative flex-1 overflow-hidden">
+            <div className="relative flex flex-1 items-center justify-center overflow-hidden">
               <div className="marquee-track flex w-max items-center gap-12 px-4 py-2 md:gap-16">
                 {[...partnerLogos, ...partnerLogos, ...partnerLogos].map((logo, index) => (
                   <div key={`${logo.src}-${index}`} className="flex h-5 min-w-[120px] items-center justify-center">
