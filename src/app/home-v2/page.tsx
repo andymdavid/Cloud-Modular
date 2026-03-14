@@ -326,7 +326,7 @@ export default function HomeV2() {
               </svg>
               <span>What We Do</span>
             </div>
-            <h3 className="font-host-grotesk text-[22px] font-medium leading-[24px] tracking-[-0.03em] text-[#1f2124] sm:text-[30px] sm:leading-[32px] lg:text-[36px] lg:leading-[38px]">
+            <h3 className="font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] text-[#1f2124] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]">
               Design-informed, precisely manufactured modular buildings built to Australian standards.
             </h3>
             <p className="mt-5 max-w-[620px] text-[12px] leading-[18px] text-[#1f2124] sm:text-[13px] sm:leading-[20px]">
