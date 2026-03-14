@@ -235,7 +235,7 @@ export default function HomeV2() {
           <h2 className="font-host-grotesk text-[25px] font-medium leading-[27px] tracking-[-0.03em] text-[#1f2124] sm:text-[38px] sm:leading-[40px] lg:text-[48px] lg:leading-[50px]">
             Cloud Modular offers clarity and certainty to a changing construction landscape.
           </h2>
-          <p className="mx-auto mt-5 max-w-[620px] text-[12px] leading-[18px] text-[#1f2124]/75 sm:text-[13px] sm:leading-[20px]">
+          <p className="mx-auto mt-5 max-w-[620px] text-[12px] leading-[18px] text-[#1f2124] sm:text-[13px] sm:leading-[20px]">
             Construction is becoming harder to deliver predictably - labour shortages, rising costs and tighter
             compliance all add pressure to traditional methods. Cloud Modular was created to offer a more controlled
             way to build, bringing together design clarity, precise offsite manufacturing and assured compliance to
