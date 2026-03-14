@@ -220,11 +220,11 @@ export default function HomeV2() {
               Premium modular spaces,<br />
               built in weeks, not years.
             </h1>
-            <p className="mx-auto mt-5 w-full max-w-[420px] font-sans text-[12px] leading-[18px] text-white">
+            <p className="mx-auto mt-3 w-full max-w-[420px] font-sans text-[12px] leading-[18px] text-white">
               We deliver architecturally designed modular buildings, built offsite and certified to Australian
               Standards for faster delivery and greater certainty.
             </p>
-            <div className="mt-8 flex justify-center">
+            <div className="mt-5 flex justify-center">
               <Link
                 href="/partner-with-us"
                 className={cn(
@@ -273,14 +273,14 @@ export default function HomeV2() {
           <h2 className="font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] text-[#1f2124] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]">
             Cloud Modular offers clarity and certainty to a changing construction landscape.
           </h2>
-          <p className="mx-auto mt-5 max-w-[620px] text-[12px] leading-[18px] text-[#1f2124] sm:text-[13px] sm:leading-[20px]">
+          <p className="mx-auto mt-3 max-w-[620px] text-[12px] leading-[18px] text-[#1f2124] sm:text-[13px] sm:leading-[20px]">
             Construction is harder to deliver predictably as labour shortages, rising costs and tighter compliance
             strain traditional methods. Cloud Modular offers a more controlled approach, with clear design, offsite
             manufacturing and assured compliance from the start.
           </p>
           <Link
             href="/about-us"
-            className="group mt-8 inline-flex items-center gap-2 rounded-[2px] bg-[#04090d] px-[16px] py-[6px] text-[11px] font-semibold text-white transition hover:bg-[#0b1318]"
+            className="group mt-5 inline-flex items-center gap-2 rounded-[2px] bg-[#04090d] px-[16px] py-[6px] text-[11px] font-semibold text-white transition hover:bg-[#0b1318]"
           >
             <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" aria-hidden>
               <path d="M1.5 10H13.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
@@ -329,13 +329,13 @@ export default function HomeV2() {
             <h2 className="font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] text-[#1f2124] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]">
               Design-informed, precisely manufactured modular buildings built to Australian standards.
             </h2>
-            <p className="mt-5 max-w-[620px] text-[12px] leading-[18px] text-[#1f2124] sm:text-[13px] sm:leading-[20px]">
+            <p className="mt-3 max-w-[620px] text-[12px] leading-[18px] text-[#1f2124] sm:text-[13px] sm:leading-[20px]">
               Our system adapts to different sites, budgets and requirements, giving clients more certainty in how
               their projects are delivered.
             </p>
             <Link
               href="/partner-with-us"
-              className="group mt-8 inline-flex items-center gap-2 rounded-[2px] bg-[#04090d] px-[16px] py-[6px] text-[11px] font-semibold text-white transition hover:bg-[#0b1318]"
+              className="group mt-5 inline-flex items-center gap-2 rounded-[2px] bg-[#04090d] px-[16px] py-[6px] text-[11px] font-semibold text-white transition hover:bg-[#0b1318]"
             >
               <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" aria-hidden>
                 <path d="M1.5 10H13.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
@@ -390,10 +390,10 @@ export default function HomeV2() {
                 Design-informed, precisely manufactured modular<br className="hidden md:block" /> buildings built to Australian standards.
               </h2>
             </div>
-            <p className={cn("mx-auto mt-5 w-full text-[12px] leading-[18px] sm:max-w-[620px] sm:text-[13px] sm:leading-[20px]", textMuted)}>
+            <p className={cn("mx-auto mt-3 w-full text-[12px] leading-[18px] sm:max-w-[620px] sm:text-[13px] sm:leading-[20px]", textMuted)}>
               Our system adapts to different sites, budgets and requirements, giving clients more certainty in how their projects are delivered.
             </p>
-            <div className="mt-5">
+            <div className="mt-4">
               <Link
                 href="/partner-with-us"
                 className={cn(
@@ -546,7 +546,7 @@ export default function HomeV2() {
             <h2 className={cn("mt-6 font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]", text)}>
               Factory-controlled production and verified engineering ensure full compliance with Australian standards.
             </h2>
-            <p className={cn("mt-6 max-w-[620px] text-[12px] leading-[18px] sm:text-[13px] sm:leading-[20px]", textMuted)}>
+            <p className={cn("mt-4 max-w-[620px] text-[12px] leading-[18px] sm:text-[13px] sm:leading-[20px]", textMuted)}>
               This process gives clients confidence in the accuracy, reliability and compliance of every module before it reaches site.
             </p>
           </div>
@@ -722,7 +722,7 @@ export default function HomeV2() {
                   Cloud Modular offers clarity and certainty to a changing construction landscape.
                 </h2>
               </div>
-              <div className="mt-5">
+              <div className="mt-4">
                 <Link
                   href="/about"
                   className={cn(
@@ -786,10 +786,10 @@ export default function HomeV2() {
                 Ready to transform your next development?
               </h2>
             </div>
-            <p className={cn("mx-auto mt-5 w-full max-w-[620px] text-[12px] leading-[18px] sm:text-[13px] sm:leading-[20px]", textMuted)}>
+            <p className={cn("mx-auto mt-3 w-full max-w-[620px] text-[12px] leading-[18px] sm:text-[13px] sm:leading-[20px]", textMuted)}>
               Let&rsquo;s discuss how Cloud Modular can deliver your project faster, more cost-effectively, and sustainably.
             </p>
-            <div className="mt-5 flex justify-center">
+            <div className="mt-4 flex justify-center">
               <Link
                 href="/partner-with-us"
                 className={cn(
