@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Dongle, Host_Grotesk, Instrument_Serif, Inter } from "next/font/google";
+import { Cal_Sans, Host_Grotesk, Instrument_Serif, Inter } from "next/font/google";
 import { ConditionalNavigation } from "@/components/layout/conditional-navigation";
 import { Footer } from "@/components/layout/footer";
 import "./globals.css";
@@ -25,11 +25,11 @@ const hostGrotesk = Host_Grotesk({
   variable: "--font-host-grotesk",
 });
 
-const dongle = Dongle({
-  weight: ["700"],
+const calSans = Cal_Sans({
+  weight: ["400"],
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-dongle",
+  variable: "--font-cal-sans",
 });
 
 export const metadata: Metadata = {
@@ -62,7 +62,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${instrumentSerif.variable} ${inter.variable} ${hostGrotesk.variable} ${dongle.variable} antialiased`}>
+      <body className={`${instrumentSerif.variable} ${inter.variable} ${hostGrotesk.variable} ${calSans.variable} antialiased`}>
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:rounded-sm focus:bg-white focus:px-4 focus:py-2"

@@ -57,8 +57,8 @@ img {
 }
 
 @layer components {
-  .font-dongle {
-    font-family: var(--font-dongle), sans-serif;
+  .font-cal-sans {
+    font-family: var(--font-cal-sans), sans-serif;
   }
 
   .section-label {
