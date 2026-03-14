@@ -277,7 +277,29 @@ export default function HomeV2() {
         <div className="mx-auto w-[calc(100%-32px)] max-w-[1400px] border-b border-[#1f2124]/10" />
       </section>
 
-      <section className="min-h-screen bg-[#f3f0ec]" />
+      <section className="flex min-h-screen items-center bg-[#f3f0ec] px-6 py-20">
+        <div className="mx-auto w-full max-w-6xl">
+          <div className="max-w-3xl text-left">
+            <h3 className="font-host-grotesk text-[22px] font-medium leading-[24px] tracking-[-0.03em] text-[#1f2124] sm:text-[30px] sm:leading-[32px] lg:text-[36px] lg:leading-[38px]">
+              Design-informed, precisely manufactured modular buildings built to Australian standards.
+            </h3>
+            <p className="mt-5 max-w-[620px] text-[12px] leading-[18px] text-[#1f2124] sm:text-[13px] sm:leading-[20px]">
+              Our system adapts to different sites, budgets and requirements, giving clients more certainty in how
+              their projects are delivered.
+            </p>
+            <Link
+              href="/partner-with-us"
+              className="group mt-8 inline-flex items-center gap-2 rounded-[2px] bg-[#04090d] px-[16px] py-[6px] text-[11px] font-semibold text-white transition hover:bg-[#0b1318]"
+            >
+              <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" aria-hidden>
+                <path d="M1.5 10H13.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
+                <path d="M9 4.5L14.5 10L9 15.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="miter" />
+              </svg>
+              <span>Partner With Us</span>
+            </Link>
+          </div>
+        </div>
+      </section>
 
       <section className={cn("min-h-[150vh] flex flex-col pt-24", bg, text)}>
         <div className="section-container flex-1">
