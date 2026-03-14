@@ -277,9 +277,17 @@ export default function HomeV2() {
         <div className="mx-auto w-[calc(100%-32px)] max-w-[1400px] border-b border-[#1f2124]/10" />
       </section>
 
-      <section className="flex min-h-screen items-center bg-[#f3f0ec] px-6 py-20">
-        <div className="mx-auto w-full max-w-6xl">
+      <section className="flex min-h-screen bg-[#f3f0ec] px-6 py-20">
+        <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col justify-between">
           <div className="max-w-3xl text-left">
+            <div className="font-cal-sans mb-8 inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#2b2d30]">
+              <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
+                <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+                <path d="M10 10.5L18 8L18 15.5L10 18L10 10.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+                <path d="M6 4.5V12L10 18" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+              </svg>
+              <span>What We Do</span>
+            </div>
             <h3 className="font-host-grotesk text-[22px] font-medium leading-[24px] tracking-[-0.03em] text-[#1f2124] sm:text-[30px] sm:leading-[32px] lg:text-[36px] lg:leading-[38px]">
               Design-informed, precisely manufactured modular buildings built to Australian standards.
             </h3>
@@ -297,6 +305,79 @@ export default function HomeV2() {
               </svg>
               <span>Partner With Us</span>
             </Link>
+          </div>
+          <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="flex min-h-[200px] flex-col justify-between rounded-[16px] border border-[#1f2124]/10 bg-white p-6 transition hover:bg-[#f8f5f1]">
+              <div className="flex h-12 w-12 items-center justify-center rounded-[12px] bg-[#f3f0ec]">
+                <svg className="h-6 w-6 text-[#1f2124]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-xl leading-snug text-[#1f2124]">Commercial</h3>
+                <p className="mt-2 text-sm text-[#1f2124]/70">Office buildings, retail spaces and mixed-use developments</p>
+              </div>
+            </div>
+
+            <div className="flex min-h-[200px] flex-col justify-between rounded-[16px] border border-[#1f2124]/10 bg-white p-6 transition hover:bg-[#f8f5f1]">
+              <div className="flex h-12 w-12 items-center justify-center rounded-[12px] bg-[#f3f0ec]">
+                <svg className="h-6 w-6 text-[#1f2124]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-xl leading-snug text-[#1f2124]">Multi-residential</h3>
+                <p className="mt-2 text-sm text-[#1f2124]/70">Apartments, townhouses and residential developments</p>
+              </div>
+            </div>
+
+            <div className="flex min-h-[200px] flex-col justify-between rounded-[16px] border border-[#1f2124]/10 bg-white p-6 transition hover:bg-[#f8f5f1]">
+              <div className="flex h-12 w-12 items-center justify-center rounded-[12px] bg-[#f3f0ec]">
+                <svg className="h-6 w-6 text-[#1f2124]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-xl leading-snug text-[#1f2124]">Health &amp; Aged Care</h3>
+                <p className="mt-2 text-sm text-[#1f2124]/70">Medical facilities and aged care residences</p>
+              </div>
+            </div>
+
+            <div className="flex min-h-[200px] flex-col justify-between rounded-[16px] border border-[#1f2124]/10 bg-white p-6 transition hover:bg-[#f8f5f1]">
+              <div className="flex h-12 w-12 items-center justify-center rounded-[12px] bg-[#f3f0ec]">
+                <svg className="h-6 w-6 text-[#1f2124]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-xl leading-snug text-[#1f2124]">Education &amp; Community</h3>
+                <p className="mt-2 text-sm text-[#1f2124]/70">Schools, libraries and community centres</p>
+              </div>
+            </div>
+
+            <div className="flex min-h-[200px] flex-col justify-between rounded-[16px] border border-[#1f2124]/10 bg-white p-6 transition hover:bg-[#f8f5f1]">
+              <div className="flex h-12 w-12 items-center justify-center rounded-[12px] bg-[#f3f0ec]">
+                <svg className="h-6 w-6 text-[#1f2124]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-xl leading-snug text-[#1f2124]">Infrastructure</h3>
+                <p className="mt-2 text-sm text-[#1f2124]/70">Transit facilities and public infrastructure</p>
+              </div>
+            </div>
+
+            <div className="flex min-h-[200px] flex-col justify-between rounded-[16px] border border-[#1f2124]/10 bg-white p-6 transition hover:bg-[#f8f5f1]">
+              <div className="flex h-12 w-12 items-center justify-center rounded-[12px] bg-[#f3f0ec]">
+                <svg className="h-6 w-6 text-[#1f2124]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-xl leading-snug text-[#1f2124]">Hotels &amp; Accommodation</h3>
+                <p className="mt-2 text-sm text-[#1f2124]/70">Hotels, resorts and short-term accommodation</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
