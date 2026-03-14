@@ -274,6 +274,7 @@ export default function HomeV2() {
             </div>
           </div>
         </div>
+        <div className="mx-auto w-[calc(100%-32px)] max-w-[1400px] border-b border-[#1f2124]/10" />
       </section>
 
       <section className="min-h-screen bg-[#f3f0ec]" />
