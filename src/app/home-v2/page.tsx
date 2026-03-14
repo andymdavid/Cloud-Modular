@@ -389,6 +389,9 @@ export default function HomeV2() {
             <h2 className={cn("mx-auto max-w-[48rem] font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]", text)}>
               Our system blends leading architecture and offsite manufacturing delivering projects that meet Australian standards with speed and precision.
             </h2>
+            <p className="mx-auto max-w-[520px] font-sans text-[12px] leading-[18px] text-white">
+              The benefits show up across every stage of project delivery.
+            </p>
             <div className="flex justify-center">
               <Link
                 href="/partner-with-us"
@@ -402,13 +405,7 @@ export default function HomeV2() {
             </div>
           </div>
 
-          <div className="mt-auto pt-10 text-center">
-            <p className="mx-auto max-w-[520px] font-sans text-[12px] leading-[18px] text-white">
-              The benefits show up across every stage of project delivery.
-            </p>
-          </div>
-
-          <div className="relative left-1/2 mt-6 w-screen -translate-x-1/2 overflow-x-auto px-8">
+          <div className="relative left-1/2 mt-auto w-screen -translate-x-1/2 overflow-x-auto px-8 pt-10">
             <div className="flex gap-2 px-0 pb-8">
               {advantageCards.map((card) => (
                 <AdvantageCard key={card.label} {...card} isLight={isLight} compact cornerRadius="rounded-[5px]" />
