@@ -350,19 +350,19 @@ export default function HomeV2() {
               <div
                 key={tile.title}
                 className={cn(
-                  "group relative min-h-[260px] overflow-hidden rounded-[4px] border border-white/5 cursor-pointer",
+                  "group relative min-h-[260px] overflow-hidden rounded-[4px] border border-black/10 cursor-pointer bg-black/5",
                   tile.background,
                 )}
               >
-                <div className={cn("absolute inset-0 transition-all duration-300 group-hover:brightness-110", tile.overlay)} />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <div className={cn("absolute inset-0 transition-all duration-300 brightness-90 group-hover:brightness-100", tile.overlay)} />
+                <div className="absolute inset-0 bg-gradient-to-t from-white/80 via-white/20 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 z-10 flex items-end justify-between gap-4 p-4">
                   <div>
-                    <h3 className="text-[10px] leading-snug uppercase tracking-[0.04em] text-white">
+                    <h3 className="text-[10px] leading-snug uppercase tracking-[0.04em] text-[#080a0a]">
                       {tile.title}
                     </h3>
                   </div>
-                  <button className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-sm transition-all duration-300 group-hover:bg-white/30 group-hover:border-white/40">
+                  <button className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-black/20 bg-black/10 text-[#080a0a] backdrop-blur-sm transition-all duration-300 group-hover:bg-black/30 group-hover:border-black/40">
                     <span className="text-sm leading-none">&gt;</span>
                   </button>
                 </div>
