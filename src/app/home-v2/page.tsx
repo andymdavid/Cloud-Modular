@@ -376,8 +376,8 @@ export default function HomeV2() {
       </section>
 
       <section className={cn("h-screen flex flex-col overflow-hidden", bg, text)}>
-        <div className="section-container flex flex-1 flex-col pt-20">
-          <div className="space-y-6 text-center">
+        <div className="section-container flex flex-1 flex-col pt-28">
+          <div className="space-y-4 text-center">
             <div className="font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]">
               <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
                 <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
@@ -389,9 +389,26 @@ export default function HomeV2() {
             <h2 className={cn("mx-auto max-w-[48rem] font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]", text)}>
               Our system blends leading architecture and offsite manufacturing delivering projects that meet Australian standards with speed and precision.
             </h2>
+            <div className="flex justify-center">
+              <Link
+                href="/partner-with-us"
+                className={cn(
+                  "inline-flex items-center gap-2 rounded-[2px] px-[16px] py-[6px] text-[11px] font-semibold transition",
+                  btnPrimary,
+                )}
+              >
+                Partner With Us
+              </Link>
+            </div>
           </div>
 
-          <div className="relative left-1/2 mt-auto w-screen -translate-x-1/2 overflow-x-auto px-8 pt-12">
+          <div className="mt-auto pt-10 text-center">
+            <h2 className={cn("mx-auto max-w-[48rem] font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]", text)}>
+              The benefits show up across every stage of project delivery.
+            </h2>
+          </div>
+
+          <div className="relative left-1/2 mt-6 w-screen -translate-x-1/2 overflow-x-auto px-8">
             <div className="flex gap-2 px-0 pb-8">
               {advantageCards.map((card) => (
                 <AdvantageCard key={card.label} {...card} isLight={isLight} compact cornerRadius="rounded-[5px]" />
