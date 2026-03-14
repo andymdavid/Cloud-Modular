@@ -270,7 +270,7 @@ export default function HomeV2() {
             </svg>
             <span>Introducing Cloud Modular</span>
           </div>
-          <h2 className="font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] text-[#1f2124] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]">
+          <h2 className="max-w-[48rem] font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] text-[#1f2124] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]">
             Cloud Modular offers clarity and certainty to a changing construction landscape.
           </h2>
           <p className="mx-auto mt-3 max-w-[620px] text-[12px] leading-[18px] text-[#1f2124] sm:text-[13px] sm:leading-[20px]">
