@@ -326,7 +326,7 @@ export default function HomeV2() {
               </svg>
               <span>What We Do</span>
             </div>
-            <h2 className="font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] text-[#1f2124] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]">
+            <h2 className="max-w-[48rem] font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] text-[#1f2124] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]">
               Design-informed, precisely manufactured modular buildings built to Australian standards.
             </h2>
             <p className="mt-3 max-w-[620px] text-[12px] leading-[18px] text-[#1f2124] sm:text-[13px] sm:leading-[20px]">
@@ -386,7 +386,7 @@ export default function HomeV2() {
                 </svg>
                 <span>What We Do</span>
               </div>
-              <h2 className={cn("font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]", text)}>
+              <h2 className={cn("mx-auto max-w-[48rem] font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]", text)}>
                 Design-informed, precisely manufactured modular<br className="hidden md:block" /> buildings built to Australian standards.
               </h2>
             </div>
@@ -407,7 +407,7 @@ export default function HomeV2() {
           </div>
 
           <div className="mt-48 text-center mx-auto max-w-5xl">
-            <h2 className={cn("font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]", text)}>
+            <h2 className={cn("mx-auto max-w-[48rem] font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]", text)}>
               We work across a wide range of project types, from commercial and multi-residential<span className="md:hidden"> developments, aged care, education, community facilities, hotels and accommodation.</span>
             </h2>
             <p className={cn("font-host-grotesk -mt-1 hidden text-[18px] font-medium leading-[20px] tracking-[-0.03em] sm:text-[22px] sm:leading-[24px] lg:block lg:text-[25px] lg:leading-[27px]", textSubtle)}>
@@ -515,7 +515,7 @@ export default function HomeV2() {
               </svg>
               <span>Modular Advantage</span>
             </div>
-            <h2 className={cn("font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]", text)}>
+            <h2 className={cn("mx-auto max-w-[48rem] font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]", text)}>
               Our system blends leading architecture and offsite manufacturing delivering projects that meet Australian standards with speed and precision.
             </h2>
           </div>
@@ -543,7 +543,7 @@ export default function HomeV2() {
               </svg>
               <span>Quality, Compliance &amp; Assurance</span>
             </div>
-            <h2 className={cn("mt-6 font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]", text)}>
+            <h2 className={cn("mt-6 max-w-[48rem] font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]", text)}>
               Factory-controlled production and verified engineering ensure full compliance with Australian standards.
             </h2>
             <p className={cn("mt-4 max-w-[620px] text-[12px] leading-[18px] sm:text-[13px] sm:leading-[20px]", textMuted)}>
@@ -718,7 +718,7 @@ export default function HomeV2() {
                   </svg>
                   <span>About Us</span>
                 </div>
-                <h2 className={cn("font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]", text)}>
+                <h2 className={cn("max-w-[48rem] font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]", text)}>
                   Cloud Modular offers clarity and certainty to a changing construction landscape.
                 </h2>
               </div>
@@ -759,7 +759,7 @@ export default function HomeV2() {
               </svg>
               <span>FAQ</span>
             </div>
-            <h2 className={cn("font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]", text)}>
+            <h2 className={cn("mx-auto max-w-[48rem] font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]", text)}>
               Frequently Asked Questions
             </h2>
           </div>
@@ -782,7 +782,7 @@ export default function HomeV2() {
                 </svg>
                 <span>Get Started</span>
               </div>
-              <h2 className={cn("font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]", text)}>
+              <h2 className={cn("mx-auto max-w-[48rem] font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]", text)}>
                 Ready to transform your next development?
               </h2>
             </div>
