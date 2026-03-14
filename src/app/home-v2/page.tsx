@@ -90,6 +90,23 @@ const advantageCards = [
   },
 ];
 
+const partnerLogos = [
+  {
+    src: "/Prism-Logo.png",
+    alt: "Prism Design Studio logo",
+    width: 200,
+    height: 80,
+    className: "max-h-8 w-auto",
+  },
+  {
+    src: "/Decobu-Logo.png",
+    alt: "Decobu logo",
+    width: 200,
+    height: 80,
+    className: "max-h-8 w-auto",
+  },
+];
+
 const pillarCardOverlay = {
   backgroundImage: [
     "linear-gradient(to top, rgba(8,10,10,1) 0%, rgba(8,10,10,0.95) 22%, rgba(8,10,10,0.4) 55%, rgba(8,10,10,0.05) 78%, rgba(8,10,10,0) 100%)",
@@ -122,8 +139,6 @@ export default function HomeV2() {
   const borderDivider = isLight ? "border-[#080a0a]/5" : "border-white/5";
   const btnPrimary = isLight ? "bg-[#080a0a] text-white hover:bg-[#1a1c1d]" : "bg-white text-forest hover:bg-warm-white";
   const btnSecondary = isLight ? "text-[#080a0a]/80 hover:text-[#080a0a]" : "text-white/80 hover:text-white";
-  const logoBox = isLight ? "bg-[#080a0a]" : "bg-white";
-  const logoText = isLight ? "text-white" : "text-[#0a0a0a]";
 
   return (
     <>
@@ -205,8 +220,8 @@ export default function HomeV2() {
         </div>
       </section>
 
-      <section className="flex min-h-screen items-center justify-center bg-[#f3f0ec] px-6 py-20">
-        <div className="mx-auto flex w-full max-w-4xl flex-col items-center text-center">
+      <section className="flex min-h-screen flex-col bg-[#f3f0ec] px-6 pt-20">
+        <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center text-center">
           <div
             className="font-cal-sans mb-8 inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#2b2d30]"
           >
@@ -231,47 +246,28 @@ export default function HomeV2() {
             <span>Who We Are</span>
           </Link>
         </div>
-      </section>
-
-      <section className={cn("min-h-[100vh] md:min-h-[65vh] flex flex-col items-center justify-center", bg)}>
-        <div className="section-container text-center flex-1 flex flex-col items-center justify-center">
-          <h2 className={cn("hero-heading text-[21px]", text)}>
-            Partnering with leading architectural, engineering, and procurement teams.
-          </h2>
-          <p className={cn("hero-heading -mt-1 text-[21px]", textSubtle)}>
-            Delivering fully compliant and thoughtfully designed projects.
-          </p>
-          <div className="mt-12 flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12">
-            <div className={cn("rounded-lg px-6 py-6 md:px-10 md:py-8 text-center flex h-[100px] w-[200px] md:h-[120px] md:w-[160px] items-center justify-center", logoBox, logoText, isLight && "invert")}>
-              <Image
-                src="/Prism-Logo.png"
-                alt="Prism Design Studio logo"
-                width={200}
-                height={80}
-                className="max-h-10 md:max-h-12 w-auto"
-              />
+        <div className="relative left-1/2 w-screen -translate-x-1/2 border-t border-white/10 bg-[#060708] text-white">
+          <div className="mx-auto flex min-h-[88px] w-full max-w-[1600px] flex-col md:flex-row">
+            <div className="flex shrink-0 items-center border-b border-white/10 px-6 py-4 text-[13px] font-medium text-white md:w-[420px] md:border-b-0 md:border-r md:border-white/10">
+              Partnering with leading architectural, engineering, and procurement teams.
             </div>
-            <div className={cn("rounded-lg px-6 py-6 md:px-10 md:py-8 text-center flex h-[100px] w-[200px] md:h-[120px] md:w-[160px] items-center justify-center", logoBox, logoText, isLight && "invert")}>
-              <Image
-                src="/Decobu-Logo.png"
-                alt="Decobu logo"
-                width={200}
-                height={80}
-                className="max-h-10 md:max-h-12 w-auto"
-              />
-            </div>
-            <div className={cn("rounded-lg px-6 py-6 md:px-10 md:py-8 text-center flex h-[100px] w-[200px] md:h-[120px] md:w-[160px] items-center justify-center", logoBox, logoText, isLight && "invert")}>
-              <Image
-                src="/Cloud1.png"
-                alt="Cloud Procurement logo"
-                width={600}
-                height={220}
-                className="max-h-10 md:max-h-12 w-auto object-contain"
-              />
+            <div className="relative flex-1 overflow-hidden">
+              <div className="marquee-track flex w-max items-center gap-16 px-6 py-5 md:gap-20">
+                {[...partnerLogos, ...partnerLogos, ...partnerLogos].map((logo, index) => (
+                  <div key={`${logo.src}-${index}`} className="flex h-8 min-w-[140px] items-center justify-center">
+                    <Image
+                      src={logo.src}
+                      alt={logo.alt}
+                      width={logo.width}
+                      height={logo.height}
+                      className={logo.className}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
-        <div className={cn("w-[80%] border-b", borderDivider)}></div>
       </section>
 
       <section className={cn("min-h-[150vh] flex flex-col pt-24", bg, text)}>

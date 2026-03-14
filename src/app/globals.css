@@ -61,6 +61,10 @@ img {
     font-family: var(--font-cal-sans), sans-serif;
   }
 
+  .marquee-track {
+    animation: marquee-scroll 24s linear infinite;
+  }
+
   .section-label {
     @apply text-[12px] font-medium tracking-[0.2em] text-mid-gray uppercase;
   }
@@ -84,5 +88,15 @@ img {
     font-weight: 510;
     color: #d5d5d5;
     letter-spacing: -0.04em;
+  }
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
   }
 }
