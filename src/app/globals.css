@@ -62,7 +62,15 @@ img {
   }
 
   .marquee-track {
+    display: flex;
+    width: max-content;
     animation: marquee-scroll 24s linear infinite;
+    will-change: transform;
+  }
+
+  .marquee-group {
+    display: flex;
+    flex-shrink: 0;
   }
 
   .section-label {

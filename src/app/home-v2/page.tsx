@@ -91,11 +91,18 @@ const advantageCards = [
 
 const partnerLogos = [
   {
-    src: "/Prism-Logo.png",
+    src: "/Prism_Logo.png",
     alt: "Prism Design Studio logo",
     width: 200,
     height: 80,
-    className: "max-h-[13.5px] w-auto",
+    className: "max-h-[22px] w-auto",
+  },
+  {
+    src: "/DM_Logo.png",
+    alt: "DM logo",
+    width: 200,
+    height: 80,
+    className: "max-h-[19px] w-auto",
   },
   {
     src: "/Decobu-Logo.png",
@@ -105,6 +112,8 @@ const partnerLogos = [
     className: "max-h-[12px] w-auto",
   },
 ];
+
+const partnerLogosMarquee = [...partnerLogos, ...partnerLogos, ...partnerLogos];
 
 const whatWeDoCards = [
   {
@@ -312,16 +321,20 @@ export default function HomeV2() {
               Partnering with leading architectural, engineering, and procurement teams.
             </div>
             <div className="relative flex flex-1 items-center justify-center overflow-hidden">
-              <div className="marquee-track flex w-max items-center gap-12 px-4 py-2 md:gap-16">
-                {[...partnerLogos, ...partnerLogos, ...partnerLogos].map((logo, index) => (
-                  <div key={`${logo.src}-${index}`} className="flex h-5 min-w-[120px] items-center justify-center">
-                    <Image
-                      src={logo.src}
-                      alt={logo.alt}
-                      width={logo.width}
-                      height={logo.height}
-                      className={logo.className}
-                    />
+              <div className="marquee-track flex w-max items-center py-2">
+                {[0, 1].map((groupIndex) => (
+                  <div key={groupIndex} className="marquee-group flex shrink-0 items-center gap-12 px-4 md:gap-16">
+                    {partnerLogosMarquee.map((logo, index) => (
+                      <div key={`${logo.src}-${groupIndex}-${index}`} className="flex h-5 min-w-[120px] items-center justify-center">
+                        <Image
+                          src={logo.src}
+                          alt={logo.alt}
+                          width={logo.width}
+                          height={logo.height}
+                          className={logo.className}
+                        />
+                      </div>
+                    ))}
                   </div>
                 ))}
               </div>
@@ -376,8 +389,8 @@ export default function HomeV2() {
       </section>
 
       <section className={cn("h-screen flex flex-col overflow-hidden", bg, text)}>
-        <div className="section-container flex flex-1 flex-col pt-28">
-          <div className="space-y-4 text-center">
+        <div className="section-container flex flex-1 flex-col">
+          <div className="mt-auto translate-y-10 space-y-4 text-center">
             <div className="font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]">
               <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
                 <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
