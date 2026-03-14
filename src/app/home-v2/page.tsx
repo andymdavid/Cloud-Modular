@@ -236,10 +236,9 @@ export default function HomeV2() {
             Cloud Modular offers clarity and certainty to a changing construction landscape.
           </h2>
           <p className="mx-auto mt-5 max-w-[620px] text-[12px] leading-[18px] text-[#1f2124] sm:text-[13px] sm:leading-[20px]">
-            Construction is becoming harder to deliver predictably - labour shortages, rising costs and tighter
-            compliance all add pressure to traditional methods. Cloud Modular was created to offer a more controlled
-            way to build, bringing together design clarity, precise offsite manufacturing and assured compliance to
-            give clients greater certainty from the outset.
+            Construction is harder to deliver predictably as labour shortages, rising costs and tighter compliance
+            strain traditional methods. Cloud Modular offers a more controlled approach, with clear design, offsite
+            manufacturing and assured compliance from the start.
           </p>
           <Link
             href="/about-us"
