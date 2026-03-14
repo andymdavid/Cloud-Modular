@@ -66,15 +66,24 @@ export function AdvantageCard({
         </div>
       </div>
 
-      <div className={cn("absolute bottom-0 left-0 right-0 z-10 flex items-end justify-between gap-4", compact ? "p-5" : "p-6")}>
-        <div>
-          <h3 className={cn(compact ? "mt-1 text-base font-semibold whitespace-nowrap" : "mt-1 text-lg font-semibold whitespace-nowrap", textPrimary)}>
-            {title}
-          </h3>
-        </div>
-        <button className={cn("flex h-7 w-7 shrink-0 items-center justify-center rounded-full border backdrop-blur-sm transition-all duration-300", btnBorder, btnBg, btnHoverBg, btnHoverBorder, textPrimary)}>
-          <span className="text-sm leading-none flex items-center justify-center">&gt;</span>
-        </button>
+      <button
+        className={cn(
+          "absolute right-5 top-5 z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border backdrop-blur-sm transition-all duration-300 group-hover:opacity-0",
+          compact ? "right-4 top-4" : "right-5 top-5",
+          btnBorder,
+          btnBg,
+          btnHoverBg,
+          btnHoverBorder,
+          textPrimary
+        )}
+      >
+        <span className="text-sm leading-none flex items-center justify-center">&gt;</span>
+      </button>
+
+      <div className={cn("absolute bottom-0 left-0 right-0 z-10", compact ? "p-5" : "p-6")}>
+        <h3 className={cn(compact ? "mt-1 text-base font-semibold whitespace-nowrap" : "mt-1 text-lg font-semibold whitespace-nowrap", textPrimary)}>
+          {title}
+        </h3>
       </div>
     </div>
   );
