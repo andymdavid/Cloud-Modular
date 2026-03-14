@@ -207,8 +207,11 @@ export default function HomeV2() {
 
       <section className="flex min-h-screen items-center justify-center bg-[#f3f0ec] px-6 py-20">
         <div className="mx-auto flex w-full max-w-4xl flex-col items-center text-center">
-          <div className="font-special-gothic mb-8 inline-flex items-center gap-2 text-[13px] uppercase tracking-[0.06em] text-[#2b2d30] sm:text-[14px]">
-            <svg className="h-3.5 w-4.5 sm:h-4 sm:w-5" viewBox="0 0 24 20" fill="none" aria-hidden>
+          <div
+            className="mb-8 inline-flex items-center gap-2 text-[8px] uppercase tracking-[0.02em] text-[#2b2d30] sm:text-[9px]"
+            style={{ fontFamily: "var(--font-special-gothic), sans-serif", fontWeight: 400 }}
+          >
+            <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
               <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
               <path d="M10 10.5L18 8L18 15.5L10 18L10 10.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
               <path d="M6 4.5V12L10 18" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
