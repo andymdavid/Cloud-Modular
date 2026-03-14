@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { buttonVariants } from "@/components/ui/button";
 import { FAQ } from "@/components/faq";
 import { cn } from "@/lib/utils";
 import { faqItems, heroMetrics } from "@/content/site";
@@ -379,20 +378,26 @@ export default function HomeV2() {
         <div className="section-container flex-1">
           <div className="text-center">
             <div className="space-y-6">
-              <p className={cn("text-xs font-semibold uppercase tracking-[0.4em]", textLabel)}>What we do</p>
-              <h2 className={cn("text-[30px] leading-[33px] lg:text-[40px] lg:leading-[40px]", text)}>
+              <div className={cn("font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em]", textLabel)}>
+                <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
+                  <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+                  <path d="M10 10.5L18 8L18 15.5L10 18L10 10.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+                  <path d="M6 4.5V12L10 18" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+                </svg>
+                <span>What We Do</span>
+              </div>
+              <h2 className={cn("font-host-grotesk text-[25px] font-medium leading-[27px] tracking-[-0.03em] sm:text-[38px] sm:leading-[40px] lg:text-[48px] lg:leading-[50px]", text)}>
                 Design-informed, precisely manufactured modular<br className="hidden md:block" /> buildings built to Australian standards.
               </h2>
             </div>
-            <p className={cn("mx-auto mt-5 w-full text-lg sm:max-w-[65%]", textMuted)}>
+            <p className={cn("mx-auto mt-5 w-full text-[12px] leading-[18px] sm:max-w-[620px] sm:text-[13px] sm:leading-[20px]", textMuted)}>
               Our system adapts to different sites, budgets and requirements, giving clients more certainty in how their projects are delivered.
             </p>
             <div className="mt-5">
               <Link
                 href="/partner-with-us"
                 className={cn(
-                  buttonVariants({ variant: "primary", size: "sm" }),
-                  "px-5 text-sm font-semibold",
+                  "inline-flex items-center gap-2 rounded-[2px] px-[16px] py-[6px] text-[11px] font-semibold transition",
                   btnPrimary,
                 )}
               >
@@ -502,8 +507,15 @@ export default function HomeV2() {
       <section className={cn("min-h-[130vh] flex flex-col justify-center pt-20 pb-0", bg, text)}>
         <div className="section-container">
           <div className="space-y-6 text-center">
-            <p className={cn("text-xs font-semibold uppercase tracking-[0.4em]", textLabel)}>Modular advantage</p>
-            <h2 className={cn("text-[27px] leading-[31px] md:text-[30px] md:leading-[33px] lg:text-[40px] lg:leading-[40px]", text)}>
+            <div className={cn("font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em]", textLabel)}>
+              <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
+                <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+                <path d="M10 10.5L18 8L18 15.5L10 18L10 10.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+                <path d="M6 4.5V12L10 18" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+              </svg>
+              <span>Modular Advantage</span>
+            </div>
+            <h2 className={cn("font-host-grotesk text-[25px] font-medium leading-[27px] tracking-[-0.03em] sm:text-[38px] sm:leading-[40px] lg:text-[48px] lg:leading-[50px]", text)}>
               Our system blends leading architecture and offsite manufacturing delivering projects that meet Australian standards with speed and precision.
             </h2>
           </div>
@@ -523,11 +535,18 @@ export default function HomeV2() {
       <section className={cn("min-h-[140vh] flex flex-col justify-center pt-20 pb-0", bg)}>
         <div className="section-container">
           <div className="max-w-2xl">
-            <p className={cn("text-xs font-semibold uppercase tracking-[0.4em]", textLabel)}>Quality, Compliance & Assurance</p>
-            <h2 className={cn("mt-6 text-[30px] leading-[33px] lg:text-[37px] lg:leading-[40px]", text)}>
+            <div className={cn("font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em]", textLabel)}>
+              <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
+                <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+                <path d="M10 10.5L18 8L18 15.5L10 18L10 10.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+                <path d="M6 4.5V12L10 18" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+              </svg>
+              <span>Quality, Compliance &amp; Assurance</span>
+            </div>
+            <h2 className={cn("mt-6 font-host-grotesk text-[25px] font-medium leading-[27px] tracking-[-0.03em] sm:text-[38px] sm:leading-[40px] lg:text-[48px] lg:leading-[50px]", text)}>
               Factory-controlled production and verified engineering ensure full compliance with Australian standards.
             </h2>
-            <p className={cn("mt-6 text-lg", textMuted)}>
+            <p className={cn("mt-6 max-w-[620px] text-[12px] leading-[18px] sm:text-[13px] sm:leading-[20px]", textMuted)}>
               This process gives clients confidence in the accuracy, reliability and compliance of every module before it reaches site.
             </p>
           </div>
@@ -691,8 +710,15 @@ export default function HomeV2() {
           <div className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-12">
             <div>
               <div className="space-y-6">
-                <p className={cn("text-xs font-semibold uppercase tracking-[0.4em]", textLabel)}>About Us</p>
-                <h2 className={cn("text-[27px] leading-[31px] md:text-[35px] md:leading-[38px]", text)}>
+                <div className={cn("font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em]", textLabel)}>
+                  <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
+                    <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+                    <path d="M10 10.5L18 8L18 15.5L10 18L10 10.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+                    <path d="M6 4.5V12L10 18" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+                  </svg>
+                  <span>About Us</span>
+                </div>
+                <h2 className={cn("font-host-grotesk text-[25px] font-medium leading-[27px] tracking-[-0.03em] sm:text-[38px] sm:leading-[40px] lg:text-[48px] lg:leading-[50px]", text)}>
                   Cloud Modular offers clarity and certainty to a changing construction landscape.
                 </h2>
               </div>
@@ -700,8 +726,7 @@ export default function HomeV2() {
                 <Link
                   href="/about"
                   className={cn(
-                    buttonVariants({ variant: "primary", size: "sm" }),
-                    "px-5 text-sm font-semibold",
+                    "inline-flex items-center gap-2 rounded-[2px] px-[16px] py-[6px] text-[11px] font-semibold transition",
                     btnPrimary,
                   )}
                 >
@@ -711,10 +736,10 @@ export default function HomeV2() {
             </div>
 
             <div>
-              <p className={cn("text-lg leading-relaxed mt-2 lg:mt-[42px]", textMuted)}>
+              <p className={cn("mt-2 text-[12px] leading-[18px] lg:mt-[42px] sm:text-[13px] sm:leading-[20px]", textMuted)}>
                 Construction is becoming harder to deliver predictably - labour shortages, rising costs and tighter compliance all add pressure to traditional methods.
               </p>
-              <p className={cn("text-lg leading-relaxed mt-6", textMuted)}>
+              <p className={cn("mt-6 text-[12px] leading-[18px] sm:text-[13px] sm:leading-[20px]", textMuted)}>
                 Cloud Modular was created to offer a more controlled way to build, bringing together design clarity, precise offsite manufacturing and assured compliance to give clients greater certainty from the outset.
               </p>
             </div>
@@ -726,8 +751,15 @@ export default function HomeV2() {
       <section className={cn("min-h-[100vh] flex flex-col justify-center pt-20 pb-0", bg, text)}>
         <div className="section-container">
           <div className="space-y-6 text-center">
-            <p className={cn("text-xs font-semibold uppercase tracking-[0.4em]", textLabel)}>FAQ</p>
-            <h2 className={cn("text-[30px] leading-[33px] lg:text-[40px] lg:leading-[40px]", text)}>
+            <div className={cn("font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em]", textLabel)}>
+              <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
+                <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+                <path d="M10 10.5L18 8L18 15.5L10 18L10 10.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+                <path d="M6 4.5V12L10 18" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+              </svg>
+              <span>FAQ</span>
+            </div>
+            <h2 className={cn("font-host-grotesk text-[25px] font-medium leading-[27px] tracking-[-0.03em] sm:text-[38px] sm:leading-[40px] lg:text-[48px] lg:leading-[50px]", text)}>
               Frequently Asked Questions
             </h2>
           </div>
@@ -742,20 +774,26 @@ export default function HomeV2() {
         <div className="section-container">
           <div className="text-center">
             <div className="space-y-6">
-              <p className={cn("text-xs font-semibold uppercase tracking-[0.4em]", textLabel)}>Get Started</p>
-              <h2 className={cn("text-[30px] leading-[33px] lg:text-[40px] lg:leading-[40px]", text)}>
+              <div className={cn("font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em]", textLabel)}>
+                <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
+                  <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+                  <path d="M10 10.5L18 8L18 15.5L10 18L10 10.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+                  <path d="M6 4.5V12L10 18" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+                </svg>
+                <span>Get Started</span>
+              </div>
+              <h2 className={cn("font-host-grotesk text-[25px] font-medium leading-[27px] tracking-[-0.03em] sm:text-[38px] sm:leading-[40px] lg:text-[48px] lg:leading-[50px]", text)}>
                 Ready to transform your next development?
               </h2>
             </div>
-            <p className={cn("mx-auto mt-5 w-full text-lg sm:max-w-[65%]", textMuted)}>
+            <p className={cn("mx-auto mt-5 w-full max-w-[620px] text-[12px] leading-[18px] sm:text-[13px] sm:leading-[20px]", textMuted)}>
               Let&rsquo;s discuss how Cloud Modular can deliver your project faster, more cost-effectively, and sustainably.
             </p>
             <div className="mt-5 flex justify-center">
               <Link
                 href="/partner-with-us"
                 className={cn(
-                  buttonVariants({ variant: "primary", size: "sm" }),
-                  "px-5 text-sm font-semibold",
+                  "inline-flex items-center gap-2 rounded-[2px] px-[16px] py-[6px] text-[11px] font-semibold transition",
                   btnPrimary,
                 )}
               >
