@@ -27,11 +27,11 @@ export function FAQ({ items, isLight = false }: FAQProps) {
         return (
           <div key={item.question}>
             <button
-              className="flex w-full items-center justify-between py-6 text-left"
+              className="flex w-full items-center justify-between py-4 text-left"
               onClick={() => setOpenIndex(isOpen ? null : index)}
               aria-expanded={isOpen}
             >
-              <span className={cn("text-lg font-medium", textPrimary)}>
+              <span className={cn("text-[15px] leading-[19px] font-medium sm:text-base sm:leading-5", textPrimary)}>
                 {item.question}
               </span>
               <span
@@ -51,7 +51,7 @@ export function FAQ({ items, isLight = false }: FAQProps) {
                 isOpen ? "grid-rows-[1fr] pb-6" : "grid-rows-[0fr]",
               )}
             >
-              <div className="overflow-hidden text-base leading-relaxed min-h-0">{item.answer}</div>
+              <div className="min-h-0 overflow-hidden font-sans text-[12px] leading-[17px] md:text-[13px] md:leading-[18px]">{item.answer}</div>
             </div>
           </div>
         );

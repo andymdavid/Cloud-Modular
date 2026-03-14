@@ -117,7 +117,7 @@ const partnerLogosMarquee = [...partnerLogos, ...partnerLogos, ...partnerLogos];
 
 const whatWeDoCards = [
   {
-    image: "/Card1.png",
+    image: "/Sec_Card_1.png",
     label: "Commercial",
     title: "Commercial",
     content: [
@@ -125,7 +125,7 @@ const whatWeDoCards = [
     ],
   },
   {
-    image: "/Card2.png",
+    image: "/Sec_Card_2.png",
     label: "Multi-Residential",
     title: "Multi-residential",
     content: [
@@ -133,7 +133,7 @@ const whatWeDoCards = [
     ],
   },
   {
-    image: "/Card3.png",
+    image: "/Sec_Card_3.png",
     label: "Health & Aged Care",
     title: "Health & Aged Care",
     content: [
@@ -141,7 +141,7 @@ const whatWeDoCards = [
     ],
   },
   {
-    image: "/Card4.png",
+    image: "/Sec_Card_4.png",
     label: "Education & Community",
     title: "Education & Community",
     content: [
@@ -149,7 +149,7 @@ const whatWeDoCards = [
     ],
   },
   {
-    image: "/Card5.png",
+    image: "/Sec_Card_5.png",
     label: "Infrastructure",
     title: "Infrastructure",
     content: [
@@ -157,7 +157,7 @@ const whatWeDoCards = [
     ],
   },
   {
-    image: "/Card6.png",
+    image: "/Sec_Card_6.png",
     label: "Hotels & Accommodation",
     title: "Hotels & Accommodation",
     content: [
@@ -379,7 +379,15 @@ export default function HomeV2() {
           <div className="relative left-1/2 mt-auto w-screen -translate-x-1/2 overflow-x-auto px-8 pt-12">
             <div className="flex gap-2 px-0 pb-8">
               {whatWeDoCards.map((card) => (
-                <AdvantageCard key={card.title} {...card} isLight={isLight} compact cornerRadius="rounded-[5px]" />
+                <AdvantageCard
+                  key={card.title}
+                  {...card}
+                  isLight={isLight}
+                  compact
+                  cornerRadius="rounded-[5px]"
+                  imageClassName="brightness-[0.8] group-hover:brightness-[0.9]"
+                  overlayClassName="from-black/42 via-black/10"
+                />
               ))}
               <div className="min-w-[4px]"></div>
             </div>
@@ -388,24 +396,24 @@ export default function HomeV2() {
         <div className={cn("relative left-1/2 w-screen -translate-x-1/2 border-b", borderDivider)}></div>
       </section>
 
-      <section className={cn("h-screen flex flex-col overflow-hidden", bg, text)}>
+      <section className={cn("h-screen flex flex-col overflow-hidden", bg)}>
         <div className="section-container flex flex-1 flex-col">
-          <div className="mt-auto translate-y-10 space-y-4 text-center">
+          <div className="mx-auto mt-auto max-w-2xl translate-y-8 text-center">
             <div className="font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]">
               <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
                 <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
                 <path d="M10 10.5L18 8L18 15.5L10 18L10 10.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
                 <path d="M6 4.5V12L10 18" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
               </svg>
-              <span>Modular Advantage</span>
+              <span>Quality, Compliance &amp; Assurance</span>
             </div>
-            <h2 className={cn("mx-auto max-w-[48rem] font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]", text)}>
-              Our system blends leading architecture and offsite manufacturing delivering projects that meet Australian standards with speed and precision.
+            <h2 className={cn("mt-6 max-w-[48rem] font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]", text)}>
+              Factory-controlled production and verified engineering ensure full compliance with Australian standards.
             </h2>
-            <p className="mx-auto max-w-[520px] font-sans text-[12px] leading-[18px] text-white">
-              The benefits show up across every stage of project delivery.
+            <p className="mx-auto mt-4 max-w-[440px] font-sans text-[12px] leading-[17px] text-white md:text-[13px] md:leading-[18px]">
+              This process gives clients confidence in the accuracy, reliability and compliance of every module before it reaches site.
             </p>
-            <div className="flex justify-center">
+            <div className="mt-4 flex justify-center">
               <Link
                 href="/partner-with-us"
                 className={cn(
@@ -418,99 +426,70 @@ export default function HomeV2() {
             </div>
           </div>
 
-          <div className="relative left-1/2 mt-auto w-screen -translate-x-1/2 overflow-x-auto px-8 pt-10">
-            <div className="flex gap-2 px-0 pb-8">
-              {advantageCards.map((card) => (
-                <AdvantageCard key={card.label} {...card} isLight={isLight} compact cornerRadius="rounded-[5px]" />
-              ))}
-              <div className="min-w-[24px]"></div>
-            </div>
-          </div>
-        </div>
-        <div className={cn("relative left-1/2 w-screen -translate-x-1/2 border-b", borderDivider)}></div>
-      </section>
-
-      <section className={cn("min-h-[140vh] flex flex-col justify-center pt-20 pb-0", bg)}>
-        <div className="section-container">
-          <div className="max-w-2xl">
-            <div className="font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]">
-              <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
-                <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
-                <path d="M10 10.5L18 8L18 15.5L10 18L10 10.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
-                <path d="M6 4.5V12L10 18" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
-              </svg>
-              <span>Quality, Compliance &amp; Assurance</span>
-            </div>
-            <h2 className={cn("mt-6 max-w-[48rem] font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]", text)}>
-              Factory-controlled production and verified engineering ensure full compliance with Australian standards.
-            </h2>
-            <p className="mt-4 max-w-[520px] font-sans text-[12px] leading-[18px] text-white">
-              This process gives clients confidence in the accuracy, reliability and compliance of every module before it reaches site.
-            </p>
-          </div>
-
-          <div className={cn("mt-12 hidden md:grid grid-cols-3 border-t border-b", border)}>
-            <div className={cn("border-r pt-12 pb-12 px-6", border)}>
-              <h3 className={cn("font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]", text)}>Engineering & Compliance</h3>
-              <p className={cn("mt-3 text-sm leading-relaxed", textSubtle)}>
-                Each module is certified by qualified engineers and designed to meet all required Australian standards.
-              </p>
-              <div className={cn("mt-8 rounded-[24px] overflow-hidden min-h-[440px] relative", isLight ? "bg-[#e5e6e6]" : "bg-[#0d0e0f]")}>
-                <Image
-                  src="/pillar1.png"
-                  alt="Engineering & Compliance"
-                  fill
-                  className={cn("object-cover", isLight ? "brightness-100" : "brightness-[0.65]")}
-                />
-                {!isLight && (
-                  <div
-                    className="absolute inset-0 pointer-events-none"
-                    style={pillarCardOverlay}
-                    aria-hidden="true"
-                  ></div>
-                )}
+          <div className={cn("relative left-1/2 mt-auto hidden w-screen -translate-x-1/2 border-t border-b md:block", borderDivider)}>
+            <div className="section-container grid grid-cols-3">
+              <div className={cn("border-r pt-8 pb-8 px-6", borderDivider)}>
+                <h3 className={cn("font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]", text)}>Engineering & Compliance</h3>
+                <p className={cn("mt-3 text-sm leading-relaxed", textSubtle)}>
+                  Each module is certified by qualified engineers and designed to meet all required Australian standards.
+                </p>
+                <div className={cn("mt-6 h-[250px] rounded-[5px] overflow-hidden relative", isLight ? "bg-[#e5e6e6]" : "bg-[#0d0e0f]")}>
+                  <Image
+                    src="/pillar1.png"
+                    alt="Engineering & Compliance"
+                    fill
+                    className={cn("object-cover", isLight ? "brightness-100" : "brightness-[0.65]")}
+                  />
+                  {!isLight && (
+                    <div
+                      className="absolute inset-0 pointer-events-none"
+                      style={pillarCardOverlay}
+                      aria-hidden="true"
+                    ></div>
+                  )}
+                </div>
               </div>
-            </div>
-            <div className={cn("border-r pt-12 pb-12 px-6", border)}>
-              <h3 className={cn("font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]", text)}>Factory-Controlled Production</h3>
-              <p className={cn("mt-3 text-sm leading-relaxed", textSubtle)}>
-                Modules are built in a stable, repeatable environment that supports consistent quality and precise manufacturing.
-              </p>
-              <div className={cn("mt-8 rounded-[24px] overflow-hidden min-h-[440px] relative", isLight ? "bg-[#e5e6e6]" : "bg-[#0d0e0f]")}>
-                <Image
-                  src="/pillar2.png"
-                  alt="Factory-Controlled Production"
-                  fill
-                  className={cn("object-cover", isLight ? "brightness-100" : "brightness-[0.65]")}
-                />
-                {!isLight && (
-                  <div
-                    className="absolute inset-0 pointer-events-none"
-                    style={pillarCardOverlay}
-                    aria-hidden="true"
-                  ></div>
-                )}
+              <div className={cn("border-r pt-8 pb-8 px-6", borderDivider)}>
+                <h3 className={cn("font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]", text)}>Factory-Controlled Production</h3>
+                <p className={cn("mt-3 text-sm leading-relaxed", textSubtle)}>
+                  Modules are built in a stable, repeatable environment that supports consistent quality and precise manufacturing.
+                </p>
+                <div className={cn("mt-6 h-[250px] rounded-[5px] overflow-hidden relative", isLight ? "bg-[#e5e6e6]" : "bg-[#0d0e0f]")}>
+                  <Image
+                    src="/pillar2.png"
+                    alt="Factory-Controlled Production"
+                    fill
+                    className={cn("object-cover", isLight ? "brightness-100" : "brightness-[0.65]")}
+                  />
+                  {!isLight && (
+                    <div
+                      className="absolute inset-0 pointer-events-none"
+                      style={pillarCardOverlay}
+                      aria-hidden="true"
+                    ></div>
+                  )}
+                </div>
               </div>
-            </div>
-            <div className="pt-12 pb-12 px-6">
-              <h3 className={cn("font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]", text)}>Independent Quality Checks</h3>
-              <p className={cn("mt-3 text-sm leading-relaxed", textSubtle)}>
-                Inspections at key stages verify accuracy, workmanship and readiness before modules leave the factory.
-              </p>
-              <div className={cn("mt-8 rounded-[24px] overflow-hidden min-h-[440px] relative", isLight ? "bg-[#e5e6e6]" : "bg-[#0d0e0f]")}>
-                <Image
-                  src="/pillar3.png"
-                  alt="Independent Quality Checks"
-                  fill
-                  className={cn("object-cover", isLight ? "brightness-100" : "brightness-[0.65]")}
-                />
-                {!isLight && (
-                  <div
-                    className="absolute inset-0 pointer-events-none"
-                    style={pillarCardOverlay}
-                    aria-hidden="true"
-                  ></div>
-                )}
+              <div className="pt-8 pb-8 px-6">
+                <h3 className={cn("font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]", text)}>Independent Quality Checks</h3>
+                <p className={cn("mt-3 text-sm leading-relaxed", textSubtle)}>
+                  Inspections at key stages verify accuracy, workmanship and readiness before modules leave the factory.
+                </p>
+                <div className={cn("mt-6 h-[250px] rounded-[5px] overflow-hidden relative", isLight ? "bg-[#e5e6e6]" : "bg-[#0d0e0f]")}>
+                  <Image
+                    src="/pillar3.png"
+                    alt="Independent Quality Checks"
+                    fill
+                    className={cn("object-cover", isLight ? "brightness-100" : "brightness-[0.65]")}
+                  />
+                  {!isLight && (
+                    <div
+                      className="absolute inset-0 pointer-events-none"
+                      style={pillarCardOverlay}
+                      aria-hidden="true"
+                    ></div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -584,88 +563,72 @@ export default function HomeV2() {
             </div>
           </div>
         </div>
-        <div className={cn("w-[80%] mx-auto mt-20 border-b", borderDivider)}></div>
       </section>
 
-      <section className={cn("min-h-[130vh] flex flex-col pt-12 pb-0", bg, text)}>
-        <div className="section-container flex-1">
-          <div className="relative w-full h-[600px] rounded-[24px] overflow-hidden">
-            <Image
-              src="/about.png"
-              alt="About Cloud Modular"
-              fill
-              className="object-cover"
-            />
-            {!isLight && (
-              <div
-                className="absolute inset-0 pointer-events-none"
-                style={aboutImageOverlay}
-                aria-hidden="true"
-              ></div>
-            )}
-          </div>
-
-          <div className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <div>
-              <div className="space-y-6">
-                <div className="font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]">
-                  <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
-                    <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
-                    <path d="M10 10.5L18 8L18 15.5L10 18L10 10.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
-                    <path d="M6 4.5V12L10 18" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
-                  </svg>
-                  <span>About Us</span>
-                </div>
-                <h2 className={cn("max-w-[48rem] font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]", text)}>
-                  Cloud Modular offers clarity and certainty to a changing construction landscape.
-                </h2>
-              </div>
-              <div className="mt-4">
-                <Link
-                  href="/about"
-                  className={cn(
-                    "inline-flex items-center gap-2 rounded-[2px] px-[16px] py-[6px] text-[11px] font-semibold transition",
-                    btnPrimary,
-                  )}
-                >
-                  About Us
-                </Link>
-              </div>
-            </div>
-
-            <div>
-              <p className="mt-2 max-w-[520px] font-sans text-[12px] leading-[18px] text-white lg:mt-[42px]">
-                Construction is becoming harder to deliver predictably - labour shortages, rising costs and tighter compliance all add pressure to traditional methods.
-              </p>
-              <p className="mt-6 max-w-[520px] font-sans text-[12px] leading-[18px] text-white">
-                Cloud Modular was created to offer a more controlled way to build, bringing together design clarity, precise offsite manufacturing and assured compliance to give clients greater certainty from the outset.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className={cn("w-[80%] mx-auto mt-20 border-b", borderDivider)}></div>
-      </section>
-
-      <section className={cn("min-h-[100vh] flex flex-col justify-center pt-20 pb-0", bg, text)}>
-        <div className="section-container">
-          <div className="space-y-6 text-center">
+      <section className={cn("h-screen flex flex-col overflow-hidden", bg, text)}>
+        <div className="section-container flex flex-1 flex-col">
+          <div className="mt-auto translate-y-10 space-y-4 text-center">
             <div className="font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]">
               <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
                 <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
                 <path d="M10 10.5L18 8L18 15.5L10 18L10 10.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
                 <path d="M6 4.5V12L10 18" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
               </svg>
-              <span>FAQ</span>
+              <span>Modular Advantage</span>
             </div>
             <h2 className={cn("mx-auto max-w-[48rem] font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]", text)}>
-              Frequently Asked Questions
+              Our system blends leading architecture and offsite manufacturing delivering projects that meet Australian standards with speed and precision.
             </h2>
+            <p className="mx-auto max-w-[520px] font-sans text-[12px] leading-[18px] text-white">
+              The benefits show up across every stage of project delivery.
+            </p>
+            <div className="flex justify-center">
+              <Link
+                href="/partner-with-us"
+                className={cn(
+                  "inline-flex items-center gap-2 rounded-[2px] px-[16px] py-[6px] text-[11px] font-semibold transition",
+                  btnPrimary,
+                )}
+              >
+                Partner With Us
+              </Link>
+            </div>
           </div>
-          <div className="mx-auto mt-12 max-w-3xl">
-            <FAQ items={faqItems} isLight={isLight} />
+
+          <div className="relative left-1/2 mt-auto w-screen -translate-x-1/2 overflow-x-auto px-8 pt-10">
+            <div className="flex gap-2 px-0 pb-8">
+              {advantageCards.map((card) => (
+                <AdvantageCard key={card.label} {...card} isLight={isLight} compact cornerRadius="rounded-[5px]" />
+              ))}
+              <div className="min-w-[24px]"></div>
+            </div>
           </div>
         </div>
-        <div className={cn("w-[80%] mx-auto mt-20 border-b", borderDivider)}></div>
+        <div className={cn("relative left-1/2 w-screen -translate-x-1/2 border-b", borderDivider)}></div>
+      </section>
+
+      <section className={cn("h-screen flex flex-col overflow-hidden", bg, text)}>
+        <div className="section-container flex flex-1 flex-col">
+          <div className="my-auto w-full">
+            <div className="space-y-6 text-center">
+              <div className="font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]">
+                <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
+                  <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+                  <path d="M10 10.5L18 8L18 15.5L10 18L10 10.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+                  <path d="M6 4.5V12L10 18" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+                </svg>
+                <span>FAQ</span>
+              </div>
+              <h2 className={cn("mx-auto max-w-[48rem] font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]", text)}>
+                Frequently Asked Questions
+              </h2>
+            </div>
+            <div className="mx-auto mt-8 max-w-3xl">
+              <FAQ items={faqItems} isLight={isLight} />
+            </div>
+          </div>
+        </div>
+        <div className={cn("relative left-1/2 w-screen -translate-x-1/2 border-b", borderDivider)}></div>
       </section>
 
       <section className={cn("min-h-[60vh] flex flex-col justify-center pt-20 pb-20", bg, text)}>

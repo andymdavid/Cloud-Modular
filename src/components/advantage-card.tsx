@@ -9,6 +9,8 @@ interface AdvantageCardProps {
   isLight?: boolean;
   compact?: boolean;
   cornerRadius?: string;
+  imageClassName?: string;
+  overlayClassName?: string;
 }
 
 export function AdvantageCard({
@@ -19,6 +21,8 @@ export function AdvantageCard({
   isLight = false,
   compact = false,
   cornerRadius,
+  imageClassName,
+  overlayClassName,
 }: AdvantageCardProps) {
   const bgCollapsed = isLight ? "rgba(0, 0, 0, 0.05)" : "rgba(255, 255, 255, 0.05)";
   const borderColor = isLight ? "border-black/10" : "border-white/5";
@@ -44,9 +48,19 @@ export function AdvantageCard({
         src={image}
         alt={label}
         fill
-        className={cn("object-cover transition-all duration-300", isLight ? "brightness-90 group-hover:brightness-100" : "brightness-50 group-hover:brightness-[0.65]")}
+        className={cn(
+          "object-cover transition-all duration-300",
+          isLight ? "brightness-90 group-hover:brightness-100" : "brightness-50 group-hover:brightness-[0.65]",
+          imageClassName
+        )}
       />
-      <div className={cn("absolute inset-0 transition-opacity duration-300 group-hover:opacity-0", isLight ? "bg-gradient-to-t from-white/80 via-white/20 to-transparent" : "bg-gradient-to-t from-black/80 via-black/20 to-transparent")}></div>
+      <div
+        className={cn(
+          "absolute inset-0 transition-opacity duration-300 group-hover:opacity-0",
+          isLight ? "bg-gradient-to-t from-white/80 via-white/20 to-transparent" : "bg-gradient-to-t from-black/80 via-black/20 to-transparent",
+          overlayClassName
+        )}
+      ></div>
 
       <div className={cn("absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100", isLight ? "bg-white" : "bg-[#0f1111]")}>
         <div className={cn(compact ? "p-5 pt-6" : "p-6 pt-8")}>
