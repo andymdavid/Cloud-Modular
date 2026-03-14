@@ -407,10 +407,10 @@ export default function HomeV2() {
           </div>
 
           <div className="mt-48 text-center mx-auto max-w-5xl">
-            <h2 className={cn("hero-heading text-[21px]", text)}>
+            <h2 className={cn("font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em] sm:text-[22px] sm:leading-[24px] lg:text-[25px] lg:leading-[27px]", text)}>
               We work across a wide range of project types, from commercial and multi-residential<span className="md:hidden"> developments, aged care, education, community facilities, hotels and accommodation.</span>
             </h2>
-            <p className={cn("hero-heading -mt-1 text-[21px] hidden md:block", textSubtle)}>
+            <p className={cn("font-host-grotesk -mt-1 hidden text-[18px] font-medium leading-[20px] tracking-[-0.03em] sm:text-[22px] sm:leading-[24px] lg:block lg:text-[25px] lg:leading-[27px]", textSubtle)}>
               developments, aged care, education, community facilities, hotels and accommodation.
             </p>
           </div>
@@ -423,7 +423,7 @@ export default function HomeV2() {
                 </svg>
               </div>
               <div>
-                <h3 className={cn("text-xl leading-snug", text)}>
+                <h3 className={cn("font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]", text)}>
                   Commercial
                 </h3>
                 <p className={cn("mt-2 text-sm", textSubtle)}>Office buildings, retail spaces and mixed-use developments</p>
@@ -437,7 +437,7 @@ export default function HomeV2() {
                 </svg>
               </div>
               <div>
-                <h3 className={cn("text-xl leading-snug", text)}>
+                <h3 className={cn("font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]", text)}>
                   Multi-residential
                 </h3>
                 <p className={cn("mt-2 text-sm", textSubtle)}>Apartments, townhouses and residential developments</p>
@@ -451,7 +451,7 @@ export default function HomeV2() {
                 </svg>
               </div>
               <div>
-                <h3 className={cn("text-xl leading-snug", text)}>
+                <h3 className={cn("font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]", text)}>
                   Health & Aged Care
                 </h3>
                 <p className={cn("mt-2 text-sm", textSubtle)}>Medical facilities and aged care residences</p>
@@ -465,7 +465,7 @@ export default function HomeV2() {
                 </svg>
               </div>
               <div>
-                <h3 className={cn("text-xl leading-snug", text)}>
+                <h3 className={cn("font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]", text)}>
                   Education & Community
                 </h3>
                 <p className={cn("mt-2 text-sm", textSubtle)}>Schools, libraries and community centres</p>
@@ -479,7 +479,7 @@ export default function HomeV2() {
                 </svg>
               </div>
               <div>
-                <h3 className={cn("text-xl leading-snug", text)}>
+                <h3 className={cn("font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]", text)}>
                   Infrastructure
                 </h3>
                 <p className={cn("mt-2 text-sm", textSubtle)}>Transit facilities and public infrastructure</p>
@@ -493,7 +493,7 @@ export default function HomeV2() {
                 </svg>
               </div>
               <div>
-                <h3 className={cn("text-xl leading-snug", text)}>
+                <h3 className={cn("font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]", text)}>
                   Hotels & Accommodation
                 </h3>
                 <p className={cn("mt-2 text-sm", textSubtle)}>Hotels, resorts and short-term accommodation</p>
@@ -553,7 +553,7 @@ export default function HomeV2() {
 
           <div className={cn("mt-12 hidden md:grid grid-cols-3 border-t border-b", border)}>
             <div className={cn("border-r pt-12 pb-12 px-6", border)}>
-              <h3 className={cn("text-xl font-semibold", text)}>Engineering & Compliance</h3>
+              <h3 className={cn("font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]", text)}>Engineering & Compliance</h3>
               <p className={cn("mt-3 text-sm leading-relaxed", textSubtle)}>
                 Each module is certified by qualified engineers and designed to meet all required Australian standards.
               </p>
@@ -574,7 +574,7 @@ export default function HomeV2() {
               </div>
             </div>
             <div className={cn("border-r pt-12 pb-12 px-6", border)}>
-              <h3 className={cn("text-xl font-semibold", text)}>Factory-Controlled Production</h3>
+              <h3 className={cn("font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]", text)}>Factory-Controlled Production</h3>
               <p className={cn("mt-3 text-sm leading-relaxed", textSubtle)}>
                 Modules are built in a stable, repeatable environment that supports consistent quality and precise manufacturing.
               </p>
@@ -595,7 +595,7 @@ export default function HomeV2() {
               </div>
             </div>
             <div className="pt-12 pb-12 px-6">
-              <h3 className={cn("text-xl font-semibold", text)}>Independent Quality Checks</h3>
+              <h3 className={cn("font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]", text)}>Independent Quality Checks</h3>
               <p className={cn("mt-3 text-sm leading-relaxed", textSubtle)}>
                 Inspections at key stages verify accuracy, workmanship and readiness before modules leave the factory.
               </p>
@@ -620,7 +620,7 @@ export default function HomeV2() {
           <div className="mt-12 w-full overflow-x-auto md:hidden">
             <div className="flex gap-6 pl-6 pr-6 pb-8">
               <div className={cn("min-w-[85vw] border rounded-[16px] pt-12 pb-12 px-6", border)}>
-                <h3 className={cn("text-xl font-semibold", text)}>Engineering & Compliance</h3>
+                <h3 className={cn("font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]", text)}>Engineering & Compliance</h3>
                 <p className={cn("mt-3 text-sm leading-relaxed", textSubtle)}>
                   Each module is certified by qualified engineers and designed to meet all required Australian standards.
                 </p>
@@ -641,7 +641,7 @@ export default function HomeV2() {
                 </div>
               </div>
               <div className={cn("min-w-[85vw] border rounded-[16px] pt-12 pb-12 px-6", border)}>
-                <h3 className={cn("text-xl font-semibold", text)}>Factory-Controlled Production</h3>
+                <h3 className={cn("font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]", text)}>Factory-Controlled Production</h3>
                 <p className={cn("mt-3 text-sm leading-relaxed", textSubtle)}>
                   Modules are built in a stable, repeatable environment that supports consistent quality and precise manufacturing.
                 </p>
@@ -662,7 +662,7 @@ export default function HomeV2() {
                 </div>
               </div>
               <div className={cn("min-w-[85vw] border rounded-[16px] pt-12 pb-12 px-6", border)}>
-                <h3 className={cn("text-xl font-semibold", text)}>Independent Quality Checks</h3>
+                <h3 className={cn("font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]", text)}>Independent Quality Checks</h3>
                 <p className={cn("mt-3 text-sm leading-relaxed", textSubtle)}>
                   Inspections at key stages verify accuracy, workmanship and readiness before modules leave the factory.
                 </p>
