@@ -392,8 +392,8 @@ export default function HomeV2() {
           </div>
         </div>
 
-        <div className="mt-16 w-full overflow-x-auto">
-          <div className="flex gap-2 pl-6 pr-6 pb-8">
+        <div className="relative left-1/2 mt-16 w-screen -translate-x-1/2 overflow-x-auto px-8">
+          <div className="flex gap-2 px-0 pb-8">
             {advantageCards.map((card) => (
               <AdvantageCard key={card.label} {...card} isLight={isLight} compact cornerRadius="rounded-[5px]" />
             ))}
