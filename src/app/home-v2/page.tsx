@@ -96,14 +96,14 @@ const partnerLogos = [
     alt: "Prism Design Studio logo",
     width: 200,
     height: 80,
-    className: "max-h-8 w-auto",
+    className: "max-h-4 w-auto",
   },
   {
     src: "/Decobu-Logo.png",
     alt: "Decobu logo",
     width: 200,
     height: 80,
-    className: "max-h-8 w-auto",
+    className: "max-h-4 w-auto",
   },
 ];
 
