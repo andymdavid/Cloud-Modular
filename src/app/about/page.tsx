@@ -207,7 +207,7 @@ export default function AboutPage() {
                 src: "/Card1.png",
                 name: "Kannan Rajendiran",
                 role: "Co-Founder",
-                bio: "Kannan brings over 21 years of experience in electrical services design, project management, and coordination across commercial, industrial, and infrastructure projects in Australia and Singapore. He is a member of Engineers Australia (MIEAust), demonstrating his commitment to engineering excellence.",
+                bio: "Kannan brings over 21 years of experience in electrical services design, project management, and coordination across commercial, industrial, and infrastructure projects in Australia and Singapore. He is also a member of Engineers Australia (MIEAust).",
               },
               {
                 src: "/Card2.png",
