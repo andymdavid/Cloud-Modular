@@ -234,7 +234,7 @@ export default function AboutPage() {
             ].map((member) => (
               <div
                 key={member.name}
-                className="flex h-full flex-col rounded-[3px] border border-white/5 bg-[#0f1111] p-4"
+                className="flex h-full flex-col rounded-[3px] border border-white/5 bg-[#0f1111] p-3.5"
               >
                 <div className="aspect-square overflow-hidden rounded-[3px] border border-white/5">
                   <Image
