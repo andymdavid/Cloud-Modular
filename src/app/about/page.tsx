@@ -117,7 +117,7 @@ export default function AboutPage() {
             </h2>
           </div>
 
-          <div className="mx-auto mt-12 grid max-w-5xl grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-12 lg:items-start">
+          <div className="mx-auto mt-12 grid max-w-5xl grid-cols-1 gap-5 lg:grid-cols-2 lg:gap-12 lg:items-start">
             <div className="space-y-5">
               <p className={cn(sectionSubcopyClass, textSubtle)}>
                 Construction today asks more of every project team. Programs are tighter, expectations are higher and the pressure to deliver consistent quality has never been greater. Modular has become a practical way to meet these demands because it moves much of the work offsite, where production can be planned, measured and repeated with far greater certainty.
