@@ -91,7 +91,7 @@ export default function AboutPage() {
             </h2>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl mx-auto lg:items-start">
+          <div className="mx-auto mt-12 grid max-w-5xl grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-12 lg:items-start">
             <div className="space-y-5">
               <p className={cn(sectionSubcopyClass, textSubtle)}>
                 Construction today asks more of every project team. Programs are tighter, expectations are higher and the pressure to deliver consistent quality has never been greater. Modular has become a practical way to meet these demands because it moves much of the work offsite, where production can be planned, measured and repeated with far greater certainty.
@@ -101,9 +101,6 @@ export default function AboutPage() {
               </p>
             </div>
             <div className="space-y-5">
-              <p className={cn(sectionSubcopyClass, textSubtle)}>
-                dependable path from brief to completion.
-              </p>
               <p className={cn(sectionSubcopyClass, textSubtle)}>
                 Cloud Modular was created to bring that alignment into a single, coordinated process. We combine architectural thinking, offsite manufacturing capability and rigorous engineering certification to give clients a clear understanding of what will be built, how it will be delivered and the performance they can expect.
               </p>
