@@ -117,19 +117,19 @@ const partnerLogosMarquee = [...partnerLogos, ...partnerLogos, ...partnerLogos];
 
 const whatWeDoCards = [
   {
-    image: "/Sec_Card_1.png",
+    image: "/Sec_Card_1.webp",
     label: "25 On Rowland and Forrest",
     title: "25 on Rowland and Forrest",
     content: [],
   },
   {
-    image: "/Sec_Card_2.png",
+    image: "/Sec_Card_2.webp",
     label: "Capel Drive",
     title: "Capel Drive",
     content: [],
   },
   {
-    image: "/Sec_Card_4.png",
+    image: "/Sec_Card_4.webp",
     label: "21 Central Terrace, Gosnells",
     title: "21 Central Terrace, Gosnells",
     content: [],
@@ -315,7 +315,7 @@ export default function HomeV2() {
 
       <section className={cn("min-h-[112svh] flex flex-col justify-between overflow-hidden sm:h-[100svh] sm:min-h-0", bg, text)}>
         <div className="section-container flex flex-1 flex-col">
-          <div className="flex flex-1 items-center justify-center">
+          <div className="flex flex-1 items-center justify-center pt-12 sm:pt-16">
             <div className="text-center">
               <div className="space-y-6">
                 <div className="font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]">
@@ -347,7 +347,7 @@ export default function HomeV2() {
             </div>
           </div>
 
-          <div className="relative left-1/2 w-screen -translate-x-1/2 px-8 pb-3">
+          <div className="relative left-1/2 w-screen -translate-x-1/2 px-8 pb-4">
             <div className="font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]">
               <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
                 <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
