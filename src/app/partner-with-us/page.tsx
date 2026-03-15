@@ -66,7 +66,7 @@ export default function PartnerWithUsPage() {
   const bg = "bg-[#010101]";
   const text = "text-white";
   const textSubtle = "text-white";
-  const textMuted = "text-white/60";
+  const textMuted = "text-white";
   const borderDivider = "border-white/5";
   const sectionLabelClass = "font-cal-sans text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]";
   const sectionSubcopyClass = "font-sans text-[14px] leading-[20px] text-white sm:text-[12px] sm:leading-[18px]";
