@@ -14,41 +14,48 @@ export default function AboutPage() {
   const sectionHeadingClass = "font-host-grotesk text-[22px] font-medium leading-[24px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]";
   const sectionSubcopyClass = "font-sans text-[14px] leading-[20px] text-white sm:text-[12px] sm:leading-[18px]";
   const sectionH3Class = "font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]";
+  const sectionLabelIcon = (
+    <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
+      <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+      <path d="M10 10.5L18 8L18 15.5L10 18L10 10.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+      <path d="M6 4.5V12L10 18" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+    </svg>
+  );
 
   return (
     <>
-      <section className={cn(bg, text)}>
-        <div className="grid min-h-[calc(100vh-4rem)] grid-rows-[minmax(40vh,auto)_minmax(60vh,1fr)] pt-16">
-          <div className="flex min-h-[40vh] items-center px-6 py-24 text-center sm:py-28 lg:px-20">
-            <div className="mx-auto w-full max-w-4xl">
-              <h1 className={cn(sectionHeadingClass, text)}>
+      <section className="relative h-screen min-h-[600px] overflow-hidden">
+        <Image
+          src="/aboutpage.png"
+          alt="Modern modular building exterior"
+          fill
+          priority
+          className="object-cover object-center"
+        />
+        <div
+          className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(8,10,10,0.8)_0%,rgba(8,10,10,0.5)_30%,rgba(8,10,10,0.28)_50%,rgba(8,10,10,0.5)_70%,rgba(8,10,10,0.8)_100%)]"
+          aria-hidden
+        />
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(180deg,rgba(1,1,1,0)_0%,#010101_100%)]"
+          aria-hidden
+        />
+        <div className="relative z-10 flex h-full items-center justify-center px-6 pt-12 lg:px-20">
+          <div className="mx-auto w-full max-w-4xl -translate-y-6 text-center sm:-translate-y-4 lg:translate-y-0">
+            <h1 className={cn("font-host-grotesk font-bold tracking-[-0.03em] text-[32px] leading-[34px] sm:text-[48px] sm:leading-[50px] lg:text-[60px] lg:leading-[62px]", text)}>
                 Building a better way to deliver certainty
               </h1>
-              <div className="mt-8 flex justify-center">
-                <Link
-                  href="/partner-with-us"
-                  className={cn(
-                    pageButtonClass,
-                    btnPrimary,
-                  )}
-                >
-                  Partner With Us
-                </Link>
-              </div>
+            <div className="mt-8 flex justify-center">
+              <Link
+                href="/partner-with-us"
+                className={cn(
+                  pageButtonClass,
+                  btnPrimary,
+                )}
+              >
+                Partner With Us
+              </Link>
             </div>
-          </div>
-          <div className="relative min-h-[60vh]">
-            <Image
-              src="/aboutpage.png"
-              alt="Modern modular building exterior"
-              fill
-              priority
-              className="object-cover"
-            />
-            <div
-              className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#0a0a0a_0%,rgba(10,10,10,0.6)_12%,transparent_35%,transparent_65%,rgba(10,10,10,0.6)_88%,#0a0a0a_100%)]"
-              aria-hidden
-            />
           </div>
         </div>
       </section>
@@ -57,7 +64,10 @@ export default function AboutPage() {
         <div className="flex items-center">
           <div className="section-container py-20 w-full">
           <div className="space-y-6 text-left md:text-center md:max-w-[925px] md:mx-auto">
-            <p className={sectionLabelClass}>Our Story</p>
+            <div className={cn("inline-flex items-center gap-2", sectionLabelClass)}>
+              {sectionLabelIcon}
+              <span>Our Story</span>
+            </div>
             <h2 className={cn(sectionHeadingClass, text)}>
               Bringing design, manufacturing and compliance together to deliver modular buildings with greater control.
             </h2>
@@ -94,7 +104,10 @@ export default function AboutPage() {
           <div className="section-container grid gap-12 lg:grid-cols-[1fr_1.1fr] items-center w-full">
             <div className="space-y-6 max-w-xl">
               <div className="space-y-4">
-                <p className={sectionLabelClass}>Partners</p>
+                <div className={cn("inline-flex items-center gap-2", sectionLabelClass)}>
+                  {sectionLabelIcon}
+                  <span>Partners</span>
+                </div>
                 <h2 className={cn(sectionHeadingClass, text)}>
                   Specialist partners support each stage of delivery
                 </h2>
@@ -158,7 +171,10 @@ export default function AboutPage() {
       <section className={cn("hidden min-h-[125vh] flex-col justify-center pt-20", bg, text)}>
         <div className="section-container space-y-12">
           <div className="space-y-4 text-center">
-              <p className={sectionLabelClass}>Our Team</p>
+              <div className={cn("inline-flex items-center gap-2", sectionLabelClass)}>
+                {sectionLabelIcon}
+                <span>Our Team</span>
+              </div>
               <h2 className={cn(sectionHeadingClass, text)}>
                 A multidisciplinary team committed to controlled delivery
               </h2>
@@ -200,7 +216,10 @@ export default function AboutPage() {
           <div className="section-container w-full">
           <div className="text-center">
             <div className="space-y-6">
-              <p className={sectionLabelClass}>Get Started</p>
+              <div className={cn("inline-flex items-center gap-2", sectionLabelClass)}>
+                {sectionLabelIcon}
+                <span>Get Started</span>
+              </div>
               <h2 className={cn(sectionHeadingClass, text)}>
                 Ready to transform your next development?
               </h2>
