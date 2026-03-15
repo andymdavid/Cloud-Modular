@@ -1,0 +1,11 @@
+# Cloud Modular - Robots.txt
+# https://cloudmodular.com.au
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://cloudmodular.com.au/sitemap.xml
+
+# LLM-specific files
+# See https://llmstxt.org for the llms.txt standard

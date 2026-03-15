@@ -1,8 +1,20 @@
 import type { Metadata } from "next";
 
+const siteUrl = "https://cloudmodular.com.au";
+
 export const metadata: Metadata = {
-  title: "Our Work - Cloud Modular",
-  description: "Cloud Modular projects coming soon.",
+  title: "Projects | Modular Construction Case Studies Perth",
+  description:
+    "Explore Cloud Modular's prefabricated building projects across Western Australia. Commercial, residential, healthcare, and education modular construction case studies coming soon.",
+  alternates: {
+    canonical: `${siteUrl}/our-work/`,
+  },
+  openGraph: {
+    title: "Our Work | Modular Construction Projects Perth WA",
+    description:
+      "See how Cloud Modular delivers precision-engineered modular buildings for developers across Western Australia.",
+    url: `${siteUrl}/our-work/`,
+  },
 };
 
 export default function OurWorkPage() {

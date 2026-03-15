@@ -1,8 +1,20 @@
 import type { Metadata } from "next";
 
+const siteUrl = "https://cloudmodular.com.au";
+
 export const metadata: Metadata = {
-  title: "Partner With Us - Cloud Modular",
-  description: "Get in touch with Cloud Modular to discuss your next modular construction project.",
+  title: "Get a Quote | Modular Construction Perth | Contact Us",
+  description:
+    "Get a quote for your modular construction project in Perth and Western Australia. Contact Cloud Modular for commercial, residential, healthcare, and education prefab building solutions.",
+  alternates: {
+    canonical: `${siteUrl}/partner-with-us/`,
+  },
+  openGraph: {
+    title: "Partner With Cloud Modular | Get a Modular Construction Quote",
+    description:
+      "Discuss your next modular construction project with Perth's precision-engineered prefab building experts. Free consultation available.",
+    url: `${siteUrl}/partner-with-us/`,
+  },
 };
 
 export default function PartnerWithUsPage() {

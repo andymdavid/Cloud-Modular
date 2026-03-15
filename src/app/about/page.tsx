@@ -204,14 +204,14 @@ export default function AboutPage() {
               {
                 src: "/Kannan_Rajendiran.webp",
                 name: "Kannan Rajendiran",
-                role: "Co-Founder",
+                role: "Co-Founder / Managing Director",
                 bio: "Kannan brings over 21 years of experience in electrical services design, project management, and coordination across commercial, industrial, and infrastructure projects in Australia and Singapore. He is also a member of Engineers Australia (MIEAust).",
                 imageClassName: "object-center",
               },
               {
                 src: "/Nigel_David.webp",
                 name: "Nigel David",
-                role: "Co-Founder",
+                role: "Co-Founder / Sales Director",
                 bio: "Nigel has over thirty years of procurement experience in the building and construction industry specialising in export market development, international procurement management, compliance and logistics, and trade development.",
                 imageClassName: "object-center",
               },
