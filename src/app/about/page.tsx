@@ -223,9 +223,9 @@ export default function AboutPage() {
               },
               {
                 src: "/Card4.png",
-                name: "Lucas Chen",
-                role: "Procurement Lead",
-                bio: "Placeholder biography copy for this team member will sit here once the final content is ready.",
+                name: "Mike Liang",
+                role: "China Lead",
+                bio: "Mike is an engineering graduate and the founder of GuangDong DiBo Smart-Build Technology Co., Ltd. With a strong technical background, he has expanded the company’s capabilities across architectural design, smart building systems, and environmental protection equipment, delivering practical and sustainable construction solutions.",
               },
             ].map((member) => (
               <div key={member.name} className="space-y-4">
