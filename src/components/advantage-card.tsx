@@ -39,7 +39,7 @@ export function AdvantageCard({
 
   const cardWidth = compact ? "min-w-[262px] max-w-[262px]" : "min-w-[362px] max-w-[362px]";
   const cardHeight = compact ? "h-[361px]" : "h-[500px]";
-  const cardRadius = cornerRadius ?? (compact ? "rounded-[5px]" : "rounded-[24px]");
+  const cardRadius = cornerRadius ?? (compact ? "rounded-[3px]" : "rounded-[24px]");
 
   return (
     <div

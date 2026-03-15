@@ -368,7 +368,7 @@ export default function HomeV2() {
                   {...card}
                   isLight={isLight}
                   compact
-                  cornerRadius="rounded-[5px]"
+                  cornerRadius="rounded-[3px]"
                   imageClassName="brightness-[0.72]"
                   overlayClassName="from-black/60 via-black/18"
                   disableHover
@@ -419,7 +419,7 @@ export default function HomeV2() {
                 <p className={cn("mt-3 text-sm leading-relaxed", textSubtle)}>
                   Each module is certified by qualified engineers and designed to meet all required Australian standards.
                 </p>
-                <div className={cn("mt-6 h-[250px] rounded-[5px] overflow-hidden relative", isLight ? "bg-[#e5e6e6]" : "bg-[#0d0e0f]")}>
+                <div className={cn("mt-6 h-[250px] rounded-[3px] overflow-hidden relative", isLight ? "bg-[#e5e6e6]" : "bg-[#0d0e0f]")}>
                   <Image
                     src="/pillar1.png"
                     alt="Engineering & Compliance"
@@ -440,7 +440,7 @@ export default function HomeV2() {
                 <p className={cn("mt-3 text-sm leading-relaxed", textSubtle)}>
                   Modules are built in a stable, repeatable environment that supports consistent quality and precise manufacturing.
                 </p>
-                <div className={cn("mt-6 h-[250px] rounded-[5px] overflow-hidden relative", isLight ? "bg-[#e5e6e6]" : "bg-[#0d0e0f]")}>
+                <div className={cn("mt-6 h-[250px] rounded-[3px] overflow-hidden relative", isLight ? "bg-[#e5e6e6]" : "bg-[#0d0e0f]")}>
                   <Image
                     src="/pillar2.png"
                     alt="Factory-Controlled Production"
@@ -461,7 +461,7 @@ export default function HomeV2() {
                 <p className={cn("mt-3 text-sm leading-relaxed", textSubtle)}>
                   Inspections at key stages verify accuracy, workmanship and readiness before modules leave the factory.
                 </p>
-                <div className={cn("mt-6 h-[250px] rounded-[5px] overflow-hidden relative", isLight ? "bg-[#e5e6e6]" : "bg-[#0d0e0f]")}>
+                <div className={cn("mt-6 h-[250px] rounded-[3px] overflow-hidden relative", isLight ? "bg-[#e5e6e6]" : "bg-[#0d0e0f]")}>
                   <Image
                     src="/pillar3.png"
                     alt="Independent Quality Checks"
@@ -584,7 +584,7 @@ export default function HomeV2() {
           <div className="relative left-1/2 mt-auto w-screen -translate-x-1/2 overflow-x-auto px-8 pt-10">
             <div className="flex gap-2 px-0 pb-8">
               {advantageCards.map((card) => (
-                <AdvantageCard key={card.label} {...card} isLight={isLight} compact cornerRadius="rounded-[5px]" />
+                <AdvantageCard key={card.label} {...card} isLight={isLight} compact cornerRadius="rounded-[3px]" />
               ))}
               <div className="min-w-[24px]"></div>
             </div>
