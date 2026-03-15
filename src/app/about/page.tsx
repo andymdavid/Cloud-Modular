@@ -124,7 +124,7 @@ export default function AboutPage() {
                   <span>Partners</span>
                 </div>
                 <h2 className={cn(sectionHeadingClass, text)}>
-                  Specialist partners support each stage of delivery
+                  Specialist partners support each stage of delivery.
                 </h2>
               </div>
               <p className={cn(sectionSubcopyClass, textSubtle)}>
@@ -191,7 +191,7 @@ export default function AboutPage() {
                 <span>Our Team</span>
               </div>
               <h2 className={cn(sectionHeadingClass, text)}>
-                A multidisciplinary team committed to controlled delivery
+                A team with the experience to deliver modular buildings with confidence.
               </h2>
               <p className={cn("mx-auto max-w-[440px]", sectionSubcopyClass, textSubtle)}>
                 Designers, engineers, product specialists and project leads who understand what it takes to resolve modular buildings with precision and confidence.
@@ -201,28 +201,28 @@ export default function AboutPage() {
           <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-4">
             {[
               {
-                src: "/Kannan_Rajendiran.png",
+                src: "/Kannan_Rajendiran.webp",
                 name: "Kannan Rajendiran",
                 role: "Co-Founder",
                 bio: "Kannan brings over 21 years of experience in electrical services design, project management, and coordination across commercial, industrial, and infrastructure projects in Australia and Singapore. He is also a member of Engineers Australia (MIEAust).",
                 imageClassName: "object-center",
               },
               {
-                src: "/Nigel_David.png",
+                src: "/Nigel_David.webp",
                 name: "Nigel David",
                 role: "Co-Founder",
                 bio: "Nigel has over thirty years of procurement experience in the building and construction industry specialising in export market development, international procurement management, compliance and logistics, and trade development.",
                 imageClassName: "object-center",
               },
               {
-                src: "/Andy_David.png",
+                src: "/Andy_David.webp",
                 name: "Andy David",
                 role: "Co-Founder",
                 bio: "Andy has extensive experience in technology, particularly artificial intelligence, and across management consulting and capital raising projects, digital transformation, growth, and business performance improvement.",
                 imageClassName: "object-[center_18%]",
               },
               {
-                src: "/Mike_Liang.png",
+                src: "/Mike_Liang.webp",
                 name: "Mike Liang",
                 role: "China Lead",
                 bio: "Leading the company's China operations, Mike is an engineer with a strong technical background across architectural design, smart building systems, and environmental protection equipment, delivering practical and sustainable construction solutions.",
@@ -266,7 +266,7 @@ export default function AboutPage() {
                 <span>Get Started</span>
               </div>
               <h2 className={cn(sectionHeadingClass, text)}>
-                Ready to transform your next development?
+                Ready to transform your next development.
               </h2>
             </div>
             <p className={cn("mx-auto mt-5 w-full max-w-[440px]", sectionSubcopyClass, textSubtle)}>
