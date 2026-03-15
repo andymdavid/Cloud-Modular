@@ -1,13 +1,13 @@
 export const navLinks = [
   { label: "About Us", href: "/about" },
-  { label: "Projects", href: "/our-work" },
+  { label: "Projects", href: "/#current-projects" },
   { label: "What We Do", href: "/partner-with-us" },
 ];
 
 export const footerLinks = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
-  { label: "Projects", href: "/our-work" },
+  { label: "Projects", href: "/#current-projects" },
   { label: "What We Do", href: "/partner-with-us" },
 ];
 
