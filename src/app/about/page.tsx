@@ -165,7 +165,7 @@ export default function AboutPage() {
                     alt="Prism Design Studio logo"
                     width={200}
                     height={80}
-                    className="max-h-[40px] w-auto"
+                    className="max-h-[80px] w-auto"
                   />
                 </div>
                 <div>
