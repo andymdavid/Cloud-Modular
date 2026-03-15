@@ -375,9 +375,10 @@ export default function HomeV2() {
                   isLight={isLight}
                   compact
                   cornerRadius="rounded-[5px]"
-                  imageClassName="brightness-[0.8] group-hover:brightness-[0.9]"
-                  overlayClassName="from-black/42 via-black/10"
+                  imageClassName="brightness-[0.72]"
+                  overlayClassName="from-black/60 via-black/18"
                   disableHover
+                  footerClassName="px-6 pb-6 pt-5"
                 />
               ))}
               <div className="min-w-[4px]"></div>

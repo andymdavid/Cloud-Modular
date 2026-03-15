@@ -12,6 +12,7 @@ interface AdvantageCardProps {
   imageClassName?: string;
   overlayClassName?: string;
   disableHover?: boolean;
+  footerClassName?: string;
 }
 
 export function AdvantageCard({
@@ -25,6 +26,7 @@ export function AdvantageCard({
   imageClassName,
   overlayClassName,
   disableHover = false,
+  footerClassName,
 }: AdvantageCardProps) {
   const bgCollapsed = isLight ? "rgba(0, 0, 0, 0.05)" : "rgba(255, 255, 255, 0.05)";
   const borderColor = isLight ? "border-black/10" : "border-white/5";
@@ -104,7 +106,7 @@ export function AdvantageCard({
         <span className="text-sm leading-none flex items-center justify-center">&gt;</span>
       </button>
 
-      <div className={cn("absolute bottom-0 left-0 right-0 z-10", compact ? "p-5" : "p-6")}>
+      <div className={cn("absolute bottom-0 left-0 right-0 z-10", compact ? "p-5" : "p-6", footerClassName)}>
         <h3 className={cn(compact ? "mt-1 text-base font-semibold whitespace-nowrap" : "mt-1 text-lg font-semibold whitespace-nowrap", textPrimary)}>
           {title}
         </h3>
