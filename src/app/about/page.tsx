@@ -185,7 +185,7 @@ export default function AboutPage() {
 
       <section className={cn("min-h-[100svh] lg:h-screen lg:min-h-0 grid grid-rows-[1fr_auto]", bg, text)}>
         <div className="flex items-center">
-          <div className="section-container flex w-full flex-col justify-center py-14 lg:py-10">
+          <div className="section-container flex w-full flex-col justify-center pt-20 pb-8 lg:pt-16 lg:pb-4">
             <div className="space-y-4 text-center">
               <div className={cn("inline-flex items-center gap-2", sectionLabelClass)}>
                 {sectionLabelIcon}
@@ -199,7 +199,7 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
               {[
               {
                 src: "/Kannan_Rajendiran.webp",
