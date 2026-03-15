@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 export default function AboutPage() {
   const bg = "bg-[#010101]";
   const text = "text-white";
-  const textSubtle = "text-white/70";
+  const textSubtle = "text-white";
   const textMuted = "text-white/60";
   const borderDivider = "border-white/5";
   const pageButtonClass = "inline-flex h-[30px] min-w-[138px] items-center justify-center rounded-[2px] px-[16px] py-[6px] text-[11px] font-semibold transition";
