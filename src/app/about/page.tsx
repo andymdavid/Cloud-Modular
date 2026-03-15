@@ -118,13 +118,13 @@ export default function AboutPage() {
             </div>
             <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
               <div className="space-y-4">
-                <div className="rounded-lg bg-white px-10 py-12 text-center text-[#0a0a0a] flex min-h-[160px] items-center justify-center">
+                <div className="flex min-h-[160px] items-center justify-center rounded-lg bg-[#0f1111] px-10 py-12 text-center">
                   <Image
-                    src="/Prism-Logo.png"
+                    src="/Prism_Logo.png"
                     alt="Prism Design Studio logo"
                     width={200}
                     height={80}
-                    className="max-h-16 w-auto"
+                    className="max-h-[28px] w-auto"
                   />
                 </div>
                 <div>
@@ -133,13 +133,13 @@ export default function AboutPage() {
                 </div>
               </div>
               <div className="space-y-4">
-                <div className="rounded-lg bg-white px-10 py-12 text-center text-[#0a0a0a] flex min-h-[160px] items-center justify-center">
+                <div className="flex min-h-[160px] items-center justify-center rounded-lg bg-[#0f1111] px-10 py-12 text-center">
                   <Image
                     src="/Decobu-Logo.png"
                     alt="Decobu logo"
                     width={200}
                     height={80}
-                    className="max-h-16 w-auto"
+                    className="max-h-[20px] w-auto"
                   />
                 </div>
                 <div>
@@ -148,17 +148,17 @@ export default function AboutPage() {
                 </div>
               </div>
               <div className="space-y-4">
-                <div className="rounded-lg bg-white px-10 py-12 text-center text-[#0a0a0a] flex min-h-[160px] items-center justify-center">
+                <div className="flex min-h-[160px] items-center justify-center rounded-lg bg-[#0f1111] px-10 py-12 text-center">
                   <Image
-                    src="/Cloud1.png"
-                    alt="Cloud Procurement logo"
-                    width={600}
-                    height={220}
-                    className="max-h-16 md:max-h-32 w-auto object-contain"
+                    src="/DM_Logo.png"
+                    alt="DM logo"
+                    width={200}
+                    height={80}
+                    className="max-h-[26px] w-auto"
                   />
                 </div>
                 <div>
-                  <p className={cn(sectionH3Class, text)}>Cloud Procurement</p>
+                  <p className={cn(sectionH3Class, text)}>DM</p>
                   <p className={cn("mt-2 font-sans text-[12px] leading-[18px]", textMuted)}>Procurement Partner</p>
                 </div>
               </div>
