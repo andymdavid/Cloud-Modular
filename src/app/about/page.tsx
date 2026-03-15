@@ -203,10 +203,30 @@ export default function AboutPage() {
 
           <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-4">
             {[
-              { src: "/Card1.png", name: "Sarah Lawson", role: "Design Lead" },
-              { src: "/Card2.png", name: "Ethan Walker", role: "Engineering Director" },
-              { src: "/Card3.png", name: "Maya Reed", role: "Delivery Manager" },
-              { src: "/Card4.png", name: "Lucas Chen", role: "Procurement Lead" },
+              {
+                src: "/Card1.png",
+                name: "Kannan Rajendiran",
+                role: "Co-Founder",
+                bio: "Kannan brings over 21 years of experience in electrical services design, project management, and coordination across commercial, industrial, and infrastructure projects in Australia and Singapore. He is a member of Engineers Australia (MIEAust), demonstrating his commitment to engineering excellence.",
+              },
+              {
+                src: "/Card2.png",
+                name: "Nigel David",
+                role: "Co-Founder",
+                bio: "Nigel has a strong procurement track record in the building and construction industry with over thirty years of experience in Export Market Development, International Procurement, Compliance and Logistics, Procurement Management, Domestic Procurement, Trade Development, Strategic Marketing & Business Development.",
+              },
+              {
+                src: "/Card3.png",
+                name: "Maya Reed",
+                role: "Delivery Manager",
+                bio: "Placeholder biography copy for this team member will sit here once the final content is ready.",
+              },
+              {
+                src: "/Card4.png",
+                name: "Lucas Chen",
+                role: "Procurement Lead",
+                bio: "Placeholder biography copy for this team member will sit here once the final content is ready.",
+              },
             ].map((member) => (
               <div key={member.name} className="space-y-4">
                 <div className="overflow-hidden rounded-2xl border border-white/5 h-[210px]">
@@ -222,7 +242,7 @@ export default function AboutPage() {
                   <p className={cn(sectionH3Class, text)}>{member.name}</p>
                   <p className={cn("mt-2 font-sans text-[12px] leading-[18px]", textMuted)}>{member.role}</p>
                   <p className={cn("mt-3 font-sans text-[12px] leading-[18px]", textSubtle)}>
-                    Placeholder biography copy for this team member will sit here once the final content is ready.
+                    {member.bio}
                   </p>
                 </div>
               </div>
