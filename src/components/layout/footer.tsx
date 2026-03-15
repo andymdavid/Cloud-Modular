@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { contactDetails, footerLinks } from "@/content/site";
+import { contactDetails, footerLinks, partnerWithUsMailto } from "@/content/site";
 
 export function Footer() {
   return (
@@ -51,7 +51,7 @@ export function Footer() {
           <ul className="mt-4 space-y-3 font-sans text-[12px] leading-[18px] text-white/70">
             <li>
               <Link
-                href="/partner-with-us"
+                href={partnerWithUsMailto}
                 className="transition-colors hover:text-white"
               >
                 Contact Us

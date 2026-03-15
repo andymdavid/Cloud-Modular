@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { partnerWithUsMailto } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "Page Not Found | Cloud Modular",
@@ -32,7 +33,7 @@ export default function NotFound() {
             Back to Home
           </Link>
           <Link
-            href="/partner-with-us"
+            href={partnerWithUsMailto}
             className="inline-flex h-[30px] min-w-[138px] items-center justify-center rounded-[2px] border border-white/20 px-[16px] py-[6px] text-[11px] font-semibold text-white transition hover:border-white/40"
           >
             Contact Us

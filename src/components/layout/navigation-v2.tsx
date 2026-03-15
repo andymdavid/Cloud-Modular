@@ -5,6 +5,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { navLinks } from "@/content/site";
+import { partnerWithUsMailto } from "@/content/site";
 import { cn } from "@/lib/utils";
 
 interface NavigationV2Props {
@@ -14,7 +15,7 @@ interface NavigationV2Props {
 export function NavigationV2({ isLight = false }: NavigationV2Props) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const contactHref = "/partner-with-us#contact";
+  const contactHref = partnerWithUsMailto;
 
   const isActive = (href: string) =>
     href === "/" ? pathname === href : pathname.startsWith(href);

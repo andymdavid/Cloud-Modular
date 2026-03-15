@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import { partnerWithUsMailto } from "@/content/site";
 import { cn } from "@/lib/utils";
 
 const siteUrl = "https://cloudmodular.com.au";
@@ -90,7 +91,7 @@ export default function AboutPage() {
               </h1>
             <div className="mt-8 flex justify-center">
               <Link
-                href="/partner-with-us"
+                href={partnerWithUsMailto}
                 className={cn(
                   pageButtonClass,
                   btnPrimary,
@@ -301,7 +302,7 @@ export default function AboutPage() {
             </p>
             <div className="mt-5 flex justify-center">
               <Link
-                href="/partner-with-us"
+                href={partnerWithUsMailto}
                 className={cn(
                   pageButtonClass,
                   btnPrimary,

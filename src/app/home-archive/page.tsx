@@ -4,6 +4,7 @@ import Image from "next/image";
 import { buttonVariants } from "@/components/ui/button";
 import { FAQ } from "@/components/faq";
 import { cn } from "@/lib/utils";
+import { partnerWithUsMailto } from "@/content/site";
 import { faqItems, heroMetrics } from "@/content/site";
 import { AdvantageCard } from "@/components/advantage-card";
 
@@ -134,7 +135,7 @@ export default function Home() {
               </p>
               <div className="mt-5 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
                 <Link
-                  href="/partner-with-us"
+                  href={partnerWithUsMailto}
                   className={cn(
                     buttonVariants({ variant: "primary", size: "sm" }),
                     "px-5 text-sm font-semibold bg-white text-forest hover:bg-warm-white",
@@ -223,7 +224,7 @@ export default function Home() {
             </p>
             <div className="mt-5">
               <Link
-                href="/partner-with-us"
+                href={partnerWithUsMailto}
                 className={cn(
                   buttonVariants({ variant: "primary", size: "sm" }),
                   "px-5 text-sm font-semibold bg-white text-forest hover:bg-warm-white",
@@ -570,7 +571,7 @@ export default function Home() {
             </p>
             <div className="mt-5 flex justify-center">
               <Link
-                href="/partner-with-us"
+                href={partnerWithUsMailto}
                 className={cn(
                   buttonVariants({ variant: "primary", size: "sm" }),
                   "px-5 text-sm font-semibold bg-white text-forest hover:bg-warm-white",

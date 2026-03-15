@@ -5,12 +5,13 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { navLinks } from "@/content/site";
+import { partnerWithUsMailto } from "@/content/site";
 import { cn } from "@/lib/utils";
 
 export function Navigation() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const contactHref = "/partner-with-us#contact";
+  const contactHref = partnerWithUsMailto;
 
   const isActive = (href: string) =>
     href === "/" ? pathname === href : pathname.startsWith(href);

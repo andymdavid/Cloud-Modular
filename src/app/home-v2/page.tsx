@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { FAQ } from "@/components/faq";
 import { cn } from "@/lib/utils";
-import { faqItems, heroMetrics } from "@/content/site";
+import { faqItems, heroMetrics, partnerWithUsMailto } from "@/content/site";
 import { AdvantageCard } from "@/components/advantage-card";
 import { NavigationV2 } from "@/components/layout/navigation-v2";
 
@@ -223,7 +223,7 @@ export default function HomeV2() {
             </p>
             <div className="mt-5 flex justify-center">
               <Link
-                href="/partner-with-us"
+                href={partnerWithUsMailto}
                 className={cn(
                   "group gap-2 bg-white text-forest hover:bg-[#d9d4ce]",
                   pageButtonClass,
@@ -335,7 +335,7 @@ export default function HomeV2() {
               </p>
               <div className="mt-4">
                 <Link
-                  href="/partner-with-us"
+                  href={partnerWithUsMailto}
                   className={cn(
                     pageButtonClass,
                     btnPrimary,
@@ -402,7 +402,7 @@ export default function HomeV2() {
             </p>
             <div className="mt-4 flex justify-center">
               <Link
-                href="/partner-with-us"
+                href={partnerWithUsMailto}
                 className={cn(
                   pageButtonClass,
                   btnPrimary,
@@ -571,7 +571,7 @@ export default function HomeV2() {
             </p>
             <div className="flex justify-center">
               <Link
-                href="/partner-with-us"
+                href={partnerWithUsMailto}
                 className={cn(
                   pageButtonClass,
                   btnPrimary,
@@ -639,7 +639,7 @@ export default function HomeV2() {
             </p>
             <div className="mt-4 flex justify-center">
               <Link
-                href="/partner-with-us"
+                href={partnerWithUsMailto}
                 className={cn(
                   pageButtonClass,
                   btnPrimary,
