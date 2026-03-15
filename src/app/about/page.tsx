@@ -96,7 +96,7 @@ export default function AboutPage() {
           </div>
           </div>
         </div>
-        <div className={cn("w-[80%] mx-auto border-b", borderDivider)}></div>
+        <div className={cn("relative left-1/2 w-screen -translate-x-1/2 border-b", borderDivider)}></div>
       </section>
 
       <section className={cn("min-h-[60vh] grid grid-rows-[1fr_auto]", bg, text)}>
@@ -165,7 +165,7 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
-        <div className={cn("w-[80%] mx-auto border-b", borderDivider)}></div>
+        <div className={cn("relative left-1/2 w-screen -translate-x-1/2 border-b", borderDivider)}></div>
       </section>
 
       <section className={cn("hidden min-h-[125vh] flex-col justify-center pt-20", bg, text)}>
@@ -208,7 +208,7 @@ export default function AboutPage() {
             ))}
           </div>
         </div>
-        <div className={cn("w-[80%] mx-auto mt-12 border-b", borderDivider)}></div>
+        <div className={cn("relative left-1/2 mt-12 w-screen -translate-x-1/2 border-b", borderDivider)}></div>
       </section>
 
       <section className={cn("min-h-[60vh] grid grid-rows-[1fr_auto]", bg, text)}>
@@ -241,7 +241,7 @@ export default function AboutPage() {
           </div>
           </div>
         </div>
-        <div className={cn("w-[80%] mx-auto border-b", borderDivider)}></div>
+        <div className={cn("relative left-1/2 w-screen -translate-x-1/2 border-b", borderDivider)}></div>
       </section>
     </>
   );
