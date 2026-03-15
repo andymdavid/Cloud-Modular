@@ -213,7 +213,7 @@ export default function AboutPage() {
                 src: "/Card2.png",
                 name: "Nigel David",
                 role: "Co-Founder",
-                bio: "Nigel has a strong procurement track record in the building and construction industry with over thirty years of experience in Export Market Development, International Procurement, Compliance and Logistics, Procurement Management, Domestic Procurement, Trade Development, Strategic Marketing & Business Development.",
+                bio: "Nigel has over thirty years of procurement experience in the building and construction industry specialising in export market development, international procurement management, compliance and logistics, trade development, strategic marketing & business development.",
               },
               {
                 src: "/Card3.png",
