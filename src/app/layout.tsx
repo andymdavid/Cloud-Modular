@@ -95,6 +95,83 @@ const localBusinessSchema = {
   },
 };
 
+// Service Schema for all service categories
+const servicesSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "@id": `${siteUrl}/#services`,
+  name: "Modular Construction Services",
+  description: "Cloud Modular's prefabricated building services for Perth and Western Australia",
+  itemListElement: [
+    {
+      "@type": "Service",
+      position: 1,
+      name: "Commercial Modular Buildings",
+      description: "Office buildings, retail spaces, and mixed-use commercial developments built with precision-engineered modular construction.",
+      provider: { "@id": `${siteUrl}/#organization` },
+      areaServed: "Western Australia",
+      serviceType: "Modular Construction",
+    },
+    {
+      "@type": "Service",
+      position: 2,
+      name: "Multi-Residential Modular Construction",
+      description: "Apartments, townhouses, and residential developments delivered faster with factory-built modular construction.",
+      provider: { "@id": `${siteUrl}/#organization` },
+      areaServed: "Western Australia",
+      serviceType: "Modular Construction",
+    },
+    {
+      "@type": "Service",
+      position: 3,
+      name: "Healthcare & Aged Care Modular Facilities",
+      description: "Medical facilities and aged care residences built to Australian healthcare standards with modular construction methods.",
+      provider: { "@id": `${siteUrl}/#organization` },
+      areaServed: "Western Australia",
+      serviceType: "Modular Construction",
+    },
+    {
+      "@type": "Service",
+      position: 4,
+      name: "Education & Community Modular Buildings",
+      description: "Schools, libraries, and community centres delivered with precision-engineered modular construction.",
+      provider: { "@id": `${siteUrl}/#organization` },
+      areaServed: "Western Australia",
+      serviceType: "Modular Construction",
+    },
+    {
+      "@type": "Service",
+      position: 5,
+      name: "Infrastructure Modular Construction",
+      description: "Transit facilities and public infrastructure projects built with offsite modular construction methods.",
+      provider: { "@id": `${siteUrl}/#organization` },
+      areaServed: "Western Australia",
+      serviceType: "Modular Construction",
+    },
+    {
+      "@type": "Service",
+      position: 6,
+      name: "Hotels & Accommodation Modular Buildings",
+      description: "Hotels, resorts, and short-term accommodation built faster with factory-controlled modular construction.",
+      provider: { "@id": `${siteUrl}/#organization` },
+      areaServed: "Western Australia",
+      serviceType: "Modular Construction",
+    },
+  ],
+};
+
+// WebSite Schema for sitelinks search
+const webSiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${siteUrl}/#website`,
+  url: siteUrl,
+  name: "Cloud Modular",
+  description: "Precision-engineered modular construction for Perth and Western Australia",
+  publisher: { "@id": `${siteUrl}/#organization` },
+  inLanguage: "en-AU",
+};
+
 const instrumentSerif = Instrument_Serif({
   weight: ["400"],
   subsets: ["latin"],
@@ -154,6 +231,13 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: siteUrl,
+  },
+  icons: {
+    icon: [
+      { url: "/favicon.png", type: "image/png" },
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png" }],
   },
   openGraph: {
     title: "Modular Construction Perth | Prefab Buildings WA | Cloud Modular",
@@ -217,7 +301,7 @@ export default function RootLayout({
 
         {/* Favicon and app icons */}
         <link rel="icon" href="/favicon.png" sizes="32x32" type="image/png" />
-        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/site.webmanifest" />
 
@@ -235,6 +319,18 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(localBusinessSchema),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(servicesSchema),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(webSiteSchema),
           }}
         />
       </head>
