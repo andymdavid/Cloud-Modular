@@ -124,7 +124,7 @@ export default function AboutPage() {
                     alt="Prism Design Studio logo"
                     width={200}
                     height={80}
-                    className="max-h-[34px] w-auto"
+                    className="max-h-[40px] w-auto"
                   />
                 </div>
                 <div>
@@ -158,7 +158,7 @@ export default function AboutPage() {
                   />
                 </div>
                 <div>
-                  <p className={cn(sectionH3Class, text)}>Doepel Marsh Architects</p>
+                  <p className={cn(sectionH3Class, text)}>Doepel Marsh</p>
                   <p className={cn("mt-2 font-sans text-[12px] leading-[18px]", textMuted)}>Architectural Partner</p>
                 </div>
               </div>
