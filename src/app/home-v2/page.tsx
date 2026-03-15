@@ -375,7 +375,13 @@ export default function HomeV2() {
             </div>
           </div>
 
-          <div className="relative left-1/2 mt-auto w-screen -translate-x-1/2 overflow-x-auto px-8 pt-8 sm:pt-12">
+          <div className="relative left-1/2 mt-auto w-screen -translate-x-1/2">
+            <div className="px-8">
+              <div className={cn("border-t", borderDivider)}></div>
+            </div>
+          </div>
+
+          <div className="relative left-1/2 w-screen -translate-x-1/2 overflow-x-auto px-8 pt-8 sm:pt-12">
             <div className="flex gap-2 px-0 pb-6 sm:pb-8">
               {whatWeDoCards.map((card) => (
                 <AdvantageCard
