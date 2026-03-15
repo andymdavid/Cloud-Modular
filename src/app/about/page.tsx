@@ -217,9 +217,9 @@ export default function AboutPage() {
               },
               {
                 src: "/Card3.png",
-                name: "Maya Reed",
-                role: "Delivery Manager",
-                bio: "Placeholder biography copy for this team member will sit here once the final content is ready.",
+                name: "Andy David",
+                role: "Co-Founder",
+                bio: "Andy has extensive experience in technology, particularly artificial intelligence, and across management consulting and capital raising projects, digital transformation, growth, and business performance improvement.",
               },
               {
                 src: "/Card4.png",
