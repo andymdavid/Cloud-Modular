@@ -124,7 +124,7 @@ export default function AboutPage() {
                     alt="Prism Design Studio logo"
                     width={200}
                     height={80}
-                    className="max-h-[28px] w-auto"
+                    className="max-h-[34px] w-auto"
                   />
                 </div>
                 <div>
@@ -154,12 +154,12 @@ export default function AboutPage() {
                     alt="DM logo"
                     width={200}
                     height={80}
-                    className="max-h-[26px] w-auto"
+                    className="max-h-[32px] w-auto"
                   />
                 </div>
                 <div>
-                  <p className={cn(sectionH3Class, text)}>DM</p>
-                  <p className={cn("mt-2 font-sans text-[12px] leading-[18px]", textMuted)}>Procurement Partner</p>
+                  <p className={cn(sectionH3Class, text)}>Doepel Marsh Architects</p>
+                  <p className={cn("mt-2 font-sans text-[12px] leading-[18px]", textMuted)}>Architectural Partner</p>
                 </div>
               </div>
             </div>
