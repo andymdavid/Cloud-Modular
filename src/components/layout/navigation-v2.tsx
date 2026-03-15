@@ -48,13 +48,19 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
       <div className="pointer-events-auto py-4 px-4 sm:px-6">
         {/* Glassmorphic nav bar */}
         <div className={cn(
-          "relative mx-auto flex h-[44px] max-w-5xl items-center pl-5 pr-[8px] border rounded-[2px] backdrop-blur-xl shadow-lg",
-          glassBg,
-          isLight ? "border-white/20" : "border-white/[0.04]"
+          "relative mx-auto flex h-[44px] max-w-5xl items-center overflow-hidden rounded-[2px] shadow-lg",
         )}>
+          <div
+            className={cn(
+              "pointer-events-none absolute inset-0 border backdrop-blur-xl",
+              glassBg,
+              isLight ? "border-white/20" : "border-white/[0.04]"
+            )}
+            aria-hidden
+          />
           {/* Left: Menu - 11px font */}
           <nav
-            className={cn("hidden md:flex flex-1 items-center gap-6 text-[11px] font-medium", textMuted)}
+            className={cn("relative z-10 hidden flex-1 items-center gap-6 text-[11px] font-medium md:flex", textMuted)}
             aria-label="Main navigation"
           >
             {navLinks.map((link) => {
@@ -76,7 +82,7 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
           </nav>
 
           {/* Center: Logo - scaled down 25% total */}
-          <Link href="/" className="absolute left-1/2 -translate-x-1/2 flex shrink-0 items-center" onClick={closeMenu}>
+          <Link href="/" className="absolute left-1/2 z-10 flex shrink-0 -translate-x-1/2 items-center" onClick={closeMenu}>
             <Image
               src="/logo.png"
               alt="Cloud Modular"
@@ -87,7 +93,7 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
           </Link>
 
           {/* Right: CTA Button */}
-          <div className="flex flex-1 items-center justify-end gap-4">
+          <div className="relative z-10 flex flex-1 items-center justify-end gap-4">
             {/* Button: 16px horizontal padding, 6px vertical padding, 11px font, 2px radius */}
             <Link
               href={contactHref}
