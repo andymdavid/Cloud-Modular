@@ -33,8 +33,8 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
 
   // Glassmorphic nav styles
   const glassBg = isLight
-    ? "bg-white/45"
-    : "bg-[rgba(17,22,22,0.42)]";
+    ? "bg-white/60"
+    : "bg-[#0d1212]/75";
   const mobileBg = isLight
     ? "bg-white/80"
     : "bg-[#0d1212]/90";
@@ -48,26 +48,10 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
       <div className="pointer-events-auto py-4 px-4 sm:px-6">
         {/* Glassmorphic nav bar */}
         <div className={cn(
-          "relative mx-auto flex h-[44px] max-w-5xl items-center overflow-hidden rounded-[2px] border pl-5 pr-[8px] backdrop-blur-2xl shadow-[0_10px_30px_rgba(0,0,0,0.22)]",
+          "relative mx-auto flex h-[44px] max-w-5xl items-center pl-5 pr-[8px] border rounded-[2px] backdrop-blur-xl shadow-lg",
           glassBg,
-          isLight ? "border-white/35" : "border-white/12"
+          isLight ? "border-white/20" : "border-white/[0.04]"
         )}>
-          <div
-            className={cn(
-              "pointer-events-none absolute inset-0",
-              isLight
-                ? "bg-[linear-gradient(180deg,rgba(255,255,255,0.28)_0%,rgba(255,255,255,0.08)_100%)]"
-                : "bg-[linear-gradient(180deg,rgba(255,255,255,0.14)_0%,rgba(255,255,255,0.03)_100%)]"
-            )}
-            aria-hidden
-          />
-          <div
-            className={cn(
-              "pointer-events-none absolute inset-x-0 top-0 h-px",
-              isLight ? "bg-white/60" : "bg-white/28"
-            )}
-            aria-hidden
-          />
           {/* Left: Menu - 11px font */}
           <nav
             className={cn("hidden md:flex flex-1 items-center gap-6 text-[11px] font-medium", textMuted)}
