@@ -204,25 +204,25 @@ export default function AboutPage() {
           <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-4">
             {[
               {
-                src: "/Card1.png",
+                src: "/Kannan-Rajendiran.jpg",
                 name: "Kannan Rajendiran",
                 role: "Co-Founder",
                 bio: "Kannan brings over 21 years of experience in electrical services design, project management, and coordination across commercial, industrial, and infrastructure projects in Australia and Singapore. He is also a member of Engineers Australia (MIEAust).",
               },
               {
-                src: "/Card2.png",
+                src: "/Nigel_David.avif",
                 name: "Nigel David",
                 role: "Co-Founder",
                 bio: "Nigel has over thirty years of procurement experience in the building and construction industry specialising in export market development, international procurement management, compliance and logistics, trade development, strategic marketing & business development.",
               },
               {
-                src: "/Card3.png",
+                src: "/Andy_David.jpg",
                 name: "Andy David",
                 role: "Co-Founder",
                 bio: "Andy has extensive experience in technology, particularly artificial intelligence, and across management consulting and capital raising projects, digital transformation, growth, and business performance improvement.",
               },
               {
-                src: "/Card4.png",
+                src: "/Mike_Liang.jpeg",
                 name: "Mike Liang",
                 role: "China Lead",
                 bio: "Leading the company's China operations, Mike is an engineer with a strong technical background across architectural design, smart building systems, and environmental protection equipment, delivering practical and sustainable construction solutions.",
