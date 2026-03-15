@@ -183,9 +183,9 @@ export default function AboutPage() {
         <div className={cn("relative left-1/2 w-screen -translate-x-1/2 border-b", borderDivider)}></div>
       </section>
 
-      <section className={cn("h-screen min-h-[900px] grid grid-rows-[1fr_auto]", bg, text)}>
+      <section className={cn("min-h-[100svh] lg:h-screen lg:min-h-0 grid grid-rows-[1fr_auto]", bg, text)}>
         <div className="flex items-center">
-          <div className="section-container flex w-full flex-col justify-center py-20">
+          <div className="section-container flex w-full flex-col justify-center py-14 lg:py-10">
             <div className="space-y-4 text-center">
               <div className={cn("inline-flex items-center gap-2", sectionLabelClass)}>
                 {sectionLabelIcon}
@@ -199,7 +199,7 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="mt-12 grid gap-8 md:grid-cols-2 xl:grid-cols-4">
+            <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
               {[
               {
                 src: "/Kannan_Rajendiran.webp",
@@ -232,9 +232,9 @@ export default function AboutPage() {
               ].map((member) => (
                 <div
                   key={member.name}
-                  className="flex h-full flex-col rounded-[3px] border border-white/5 bg-[#0f1111] p-3.5"
+                  className="flex h-full flex-col rounded-[3px] border border-white/5 bg-[#0f1111] p-3"
                 >
-                  <div className="aspect-square overflow-hidden rounded-[3px] border border-white/5">
+                  <div className="aspect-[1/1] overflow-hidden rounded-[3px] border border-white/5">
                     <Image
                       src={member.src}
                       alt={member.name}
@@ -243,7 +243,7 @@ export default function AboutPage() {
                       className={cn("h-full w-full object-cover", member.imageClassName)}
                     />
                   </div>
-                  <div className="mt-4 flex flex-1 flex-col">
+                  <div className="mt-3 flex flex-1 flex-col">
                     <p className={cn(sectionH3Class, text)}>{member.name}</p>
                     <p className={cn("mt-2 font-sans text-[12px] leading-[18px]", textMuted)}>{member.role}</p>
                     <p className={cn("mt-3 font-sans text-[12px] leading-[18px]", textSubtle)}>
