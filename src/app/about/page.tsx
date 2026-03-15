@@ -1,6 +1,24 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+
+const siteUrl = "https://cloudmodular.com.au";
+
+export const metadata: Metadata = {
+  title: "About Us | Modular Construction Experts Perth WA",
+  description:
+    "Cloud Modular brings design, manufacturing, and compliance together to deliver modular buildings with greater control. Partnering with leading architectural and engineering teams in Western Australia.",
+  alternates: {
+    canonical: `${siteUrl}/about/`,
+  },
+  openGraph: {
+    title: "About Cloud Modular | Modular Construction Experts Perth",
+    description:
+      "Building a better way to deliver certainty. Cloud Modular combines architectural thinking, offsite manufacturing, and rigorous engineering certification.",
+    url: `${siteUrl}/about/`,
+  },
+};
 
 export default function AboutPage() {
   const bg = "bg-[#010101]";
@@ -26,7 +44,7 @@ export default function AboutPage() {
     <>
       <section className="relative h-screen min-h-[600px] overflow-hidden">
         <Image
-          src="/aboutpage.png"
+          src="/aboutpage.webp"
           alt="Modern modular building exterior"
           fill
           priority
@@ -191,18 +209,21 @@ export default function AboutPage() {
               { src: "/Card4.png", name: "Lucas Chen", role: "Procurement Lead" },
             ].map((member) => (
               <div key={member.name} className="space-y-4">
-                <div className="overflow-hidden rounded-2xl border border-white/5 h-[420px]">
+                <div className="overflow-hidden rounded-2xl border border-white/5 h-[210px]">
                   <Image
                     src={member.src}
                     alt={member.name}
                     width={360}
-                    height={420}
+                    height={210}
                     className="h-full w-full object-cover"
                   />
                 </div>
                 <div>
                   <p className={cn(sectionH3Class, text)}>{member.name}</p>
                   <p className={cn("mt-2 font-sans text-[12px] leading-[18px]", textMuted)}>{member.role}</p>
+                  <p className={cn("mt-3 font-sans text-[12px] leading-[18px]", textSubtle)}>
+                    Placeholder biography copy for this team member will sit here once the final content is ready.
+                  </p>
                 </div>
               </div>
             ))}
