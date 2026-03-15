@@ -48,13 +48,20 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
       <div className="pointer-events-auto py-4 px-4 sm:px-6">
         {/* Glassmorphic nav bar */}
         <div className={cn(
-          "relative mx-auto flex h-[44px] max-w-5xl items-center overflow-hidden rounded-[2px] shadow-lg",
+          "relative isolate mx-auto flex h-[44px] max-w-5xl items-center overflow-hidden rounded-[2px] pl-5 pr-[8px]",
         )}>
           <div
             className={cn(
               "pointer-events-none absolute inset-0 border backdrop-blur-xl",
               glassBg,
               isLight ? "border-white/20" : "border-white/[0.04]"
+            )}
+            aria-hidden
+          />
+          <div
+            className={cn(
+              "pointer-events-none absolute inset-0",
+              isLight ? "bg-white/8" : "bg-[#0b0f0f]/45"
             )}
             aria-hidden
           />
