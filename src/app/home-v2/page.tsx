@@ -383,7 +383,10 @@ export default function HomeV2() {
         <div className={cn("relative left-1/2 w-screen -translate-x-1/2 border-b", borderDivider)}></div>
       </section>
 
-      <section className={cn("min-h-[112svh] flex flex-col overflow-hidden sm:h-screen sm:min-h-0", bg)}>
+      <section
+        id="quality-compliance-assurance"
+        className={cn("min-h-[112svh] flex flex-col overflow-hidden sm:h-screen sm:min-h-0 scroll-mt-24", bg)}
+      >
         <div className="section-container flex flex-1 flex-col">
           <div className="mx-auto mt-auto max-w-2xl translate-y-8 text-center">
             <div className="font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]">

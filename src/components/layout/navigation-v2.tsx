@@ -58,19 +58,6 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
             aria-label="Main navigation"
           >
             {navLinks.map((link) => {
-              const isDisabled = link.label === "What We Do";
-
-              if (isDisabled) {
-                return (
-                  <span
-                    key={link.href}
-                    className={cn(textDisabled, "cursor-not-allowed")}
-                  >
-                    {link.label}
-                  </span>
-                );
-              }
-
               return (
                 <Link
                   key={link.href}
@@ -183,19 +170,6 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
             </div>
             <div className="space-y-8 pt-10">
               {navLinks.map((link) => {
-                const isDisabled = link.label === "What We Do";
-
-                if (isDisabled) {
-                  return (
-                    <span
-                      key={link.href}
-                      className={cn("block cursor-not-allowed", textDisabled)}
-                    >
-                      {link.label}
-                    </span>
-                  );
-                }
-
                 return (
                   <Link
                     key={link.href}
