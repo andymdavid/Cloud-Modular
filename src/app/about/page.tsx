@@ -196,7 +196,7 @@ export default function AboutPage() {
               <h2 className={cn(sectionHeadingClass, text)}>
                 A multidisciplinary team committed to controlled delivery
               </h2>
-              <p className={cn("max-w-2xl mx-auto", sectionSubcopyClass, textSubtle)}>
+              <p className={cn("mx-auto max-w-[440px]", sectionSubcopyClass, textSubtle)}>
                 Designers, engineers, product specialists and project leads who understand what it takes to resolve modular buildings with precision and confidence.
               </p>
             </div>
@@ -232,8 +232,11 @@ export default function AboutPage() {
                 imageClassName: "object-[center_24%]",
               },
             ].map((member) => (
-              <div key={member.name} className="space-y-4">
-                <div className="aspect-square overflow-hidden rounded-2xl border border-white/5">
+              <div
+                key={member.name}
+                className="flex h-full flex-col rounded-[3px] border border-white/5 bg-[#0f1111] p-4"
+              >
+                <div className="aspect-square overflow-hidden rounded-[3px] border border-white/5">
                   <Image
                     src={member.src}
                     alt={member.name}
@@ -242,7 +245,7 @@ export default function AboutPage() {
                     className={cn("h-full w-full object-cover", member.imageClassName)}
                   />
                 </div>
-                <div>
+                <div className="mt-4 flex flex-1 flex-col">
                   <p className={cn(sectionH3Class, text)}>{member.name}</p>
                   <p className={cn("mt-2 font-sans text-[12px] leading-[18px]", textMuted)}>{member.role}</p>
                   <p className={cn("mt-3 font-sans text-[12px] leading-[18px]", textSubtle)}>
