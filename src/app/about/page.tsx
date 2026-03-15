@@ -1,24 +1,35 @@
 import Link from "next/link";
 import Image from "next/image";
-import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export default function AboutPage() {
+  const bg = "bg-[#010101]";
+  const text = "text-white";
+  const textSubtle = "text-white/70";
+  const textMuted = "text-white/60";
+  const borderDivider = "border-white/5";
+  const pageButtonClass = "inline-flex h-[30px] min-w-[138px] items-center justify-center rounded-[2px] px-[16px] py-[6px] text-[11px] font-semibold transition";
+  const btnPrimary = "bg-white text-forest hover:bg-[#d9d4ce]";
+  const sectionLabelClass = "font-cal-sans text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]";
+  const sectionHeadingClass = "font-host-grotesk text-[22px] font-medium leading-[24px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]";
+  const sectionSubcopyClass = "font-sans text-[14px] leading-[20px] text-white sm:text-[12px] sm:leading-[18px]";
+  const sectionH3Class = "font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]";
+
   return (
     <>
-      <section className="bg-[#080a0a] text-white">
+      <section className={cn(bg, text)}>
         <div className="grid min-h-[calc(100vh-4rem)] grid-rows-[minmax(40vh,auto)_minmax(60vh,1fr)] pt-16">
           <div className="flex min-h-[40vh] items-center px-6 py-24 text-center sm:py-28 lg:px-20">
             <div className="mx-auto w-full max-w-4xl">
-              <h2 className="text-[30px] leading-[33px] text-white lg:text-[40px] lg:leading-[40px]">
+              <h1 className={cn(sectionHeadingClass, text)}>
                 Building a better way to deliver certainty
-              </h2>
+              </h1>
               <div className="mt-8 flex justify-center">
                 <Link
                   href="/partner-with-us"
                   className={cn(
-                    buttonVariants({ variant: "primary", size: "sm" }),
-                    "px-5 text-sm font-semibold bg-white text-forest hover:bg-warm-white",
+                    pageButtonClass,
+                    btnPrimary,
                   )}
                 >
                   Partner With Us
@@ -42,53 +53,53 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="min-h-[100vh] bg-[#080a0a] text-white grid grid-rows-[1fr_auto]">
+      <section className={cn("min-h-[100vh] grid grid-rows-[1fr_auto]", bg, text)}>
         <div className="flex items-center">
           <div className="section-container py-20 w-full">
           <div className="space-y-6 text-left md:text-center md:max-w-[925px] md:mx-auto">
-            <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/40">Our Story</p>
-            <h2 className="text-[30px] leading-[33px] text-white lg:text-[34px] lg:leading-[40px]">
+            <p className={sectionLabelClass}>Our Story</p>
+            <h2 className={cn(sectionHeadingClass, text)}>
               Bringing design, manufacturing and compliance together to deliver modular buildings with greater control.
             </h2>
           </div>
 
           <div className="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl mx-auto lg:items-start">
             <div className="space-y-5">
-              <p className="text-base text-white/70 leading-relaxed">
+              <p className={cn(sectionSubcopyClass, textSubtle)}>
                 Construction today asks more of every project team. Programs are tighter, expectations are higher and the pressure to deliver consistent quality has never been greater. Modular has become a practical way to meet these demands because it moves much of the work offsite, where production can be planned, measured and repeated with far greater certainty.
               </p>
-              <p className="text-base text-white/70 leading-relaxed">
+              <p className={cn(sectionSubcopyClass, textSubtle)}>
                 For modular to deliver on its potential, the process has to be aligned from the start. The design needs to suit manufacture. The factory needs to build with consistency. The engineering and compliance work needs to be resolved before anything leaves the floor. When these elements come together, modular gives builders and developers a cleaner program.
               </p>
             </div>
             <div className="space-y-5">
-              <p className="text-base text-white/70 leading-relaxed">
+              <p className={cn(sectionSubcopyClass, textSubtle)}>
                 dependable path from brief to completion.
               </p>
-              <p className="text-base text-white/70 leading-relaxed">
+              <p className={cn(sectionSubcopyClass, textSubtle)}>
                 Cloud Modular was created to bring that alignment into a single, coordinated process. We combine architectural thinking, offsite manufacturing capability and rigorous engineering certification to give clients a clear understanding of what will be built, how it will be delivered and the performance they can expect.
               </p>
-              <p className="text-base text-white/70 leading-relaxed">
+              <p className={cn(sectionSubcopyClass, textSubtle)}>
                 Working with our architectural, engineering and procurement partners, we support each stage of delivery so projects run with fewer variables and greater control. Our focus is simple: modular that is designed well, manufactured precisely and delivered with confidence.
               </p>
             </div>
           </div>
           </div>
         </div>
-        <div className="w-[80%] mx-auto border-b border-white/5"></div>
+        <div className={cn("w-[80%] mx-auto border-b", borderDivider)}></div>
       </section>
 
-      <section className="bg-[#080a0a] text-white min-h-[60vh] grid grid-rows-[1fr_auto]">
+      <section className={cn("min-h-[60vh] grid grid-rows-[1fr_auto]", bg, text)}>
         <div className="flex items-center py-12 md:py-0">
           <div className="section-container grid gap-12 lg:grid-cols-[1fr_1.1fr] items-center w-full">
             <div className="space-y-6 max-w-xl">
               <div className="space-y-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-white/40">Partners</p>
-                <h2 className="text-[30px] leading-[33px] text-white lg:text-[40px] lg:leading-[40px]">
+                <p className={sectionLabelClass}>Partners</p>
+                <h2 className={cn(sectionHeadingClass, text)}>
                   Specialist partners support each stage of delivery
                 </h2>
               </div>
-              <p className="text-base text-white/70 leading-relaxed">
+              <p className={cn(sectionSubcopyClass, textSubtle)}>
                 We work with architectural, engineering and procurement partners who help ensure each project is resolved properly before it's built.
               </p>
             </div>
@@ -104,8 +115,8 @@ export default function AboutPage() {
                   />
                 </div>
                 <div>
-                  <p className="text-base font-semibold text-white">Prism Design Studio</p>
-                  <p className="text-sm text-white/60">Architectural Partner</p>
+                  <p className={cn(sectionH3Class, text)}>Prism Design Studio</p>
+                  <p className={cn("mt-2 font-sans text-[12px] leading-[18px]", textMuted)}>Architectural Partner</p>
                 </div>
               </div>
               <div className="space-y-4">
@@ -119,8 +130,8 @@ export default function AboutPage() {
                   />
                 </div>
                 <div>
-                  <p className="text-base font-semibold text-white">Decobu</p>
-                  <p className="text-sm text-white/60">Engineering Partner</p>
+                  <p className={cn(sectionH3Class, text)}>Decobu</p>
+                  <p className={cn("mt-2 font-sans text-[12px] leading-[18px]", textMuted)}>Engineering Partner</p>
                 </div>
               </div>
               <div className="space-y-4">
@@ -134,24 +145,24 @@ export default function AboutPage() {
                   />
                 </div>
                 <div>
-                  <p className="text-base font-semibold text-white">Cloud Procurement</p>
-                  <p className="text-sm text-white/60">Procurement Partner</p>
+                  <p className={cn(sectionH3Class, text)}>Cloud Procurement</p>
+                  <p className={cn("mt-2 font-sans text-[12px] leading-[18px]", textMuted)}>Procurement Partner</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div className="w-[80%] mx-auto border-b border-white/5"></div>
+        <div className={cn("w-[80%] mx-auto border-b", borderDivider)}></div>
       </section>
 
-      <section className="hidden bg-[#080a0a] text-white min-h-[125vh] flex flex-col justify-center pt-20">
+      <section className={cn("hidden min-h-[125vh] flex-col justify-center pt-20", bg, text)}>
         <div className="section-container space-y-12">
           <div className="space-y-4 text-center">
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-white/40">Our Team</p>
-              <h2 className="text-[30px] leading-[33px] text-white lg:text-[40px] lg:leading-[40px]">
+              <p className={sectionLabelClass}>Our Team</p>
+              <h2 className={cn(sectionHeadingClass, text)}>
                 A multidisciplinary team committed to controlled delivery
               </h2>
-              <p className="text-base text-white/70 leading-relaxed max-w-2xl mx-auto">
+              <p className={cn("max-w-2xl mx-auto", sectionSubcopyClass, textSubtle)}>
                 Designers, engineers, product specialists and project leads who understand what it takes to resolve modular buildings with precision and confidence.
               </p>
             </div>
@@ -174,35 +185,35 @@ export default function AboutPage() {
                   />
                 </div>
                 <div>
-                  <p className="text-lg font-semibold text-white">{member.name}</p>
-                  <p className="text-sm text-white/60">{member.role}</p>
+                  <p className={cn(sectionH3Class, text)}>{member.name}</p>
+                  <p className={cn("mt-2 font-sans text-[12px] leading-[18px]", textMuted)}>{member.role}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
-        <div className="w-[80%] mx-auto mt-12 border-b border-white/5"></div>
+        <div className={cn("w-[80%] mx-auto mt-12 border-b", borderDivider)}></div>
       </section>
 
-      <section className="min-h-[60vh] bg-[#080a0a] text-white grid grid-rows-[1fr_auto]">
+      <section className={cn("min-h-[60vh] grid grid-rows-[1fr_auto]", bg, text)}>
         <div className="flex items-center">
           <div className="section-container w-full">
           <div className="text-center">
             <div className="space-y-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/40">Get Started</p>
-              <h2 className="text-[30px] leading-[33px] text-white lg:text-[40px] lg:leading-[40px]">
+              <p className={sectionLabelClass}>Get Started</p>
+              <h2 className={cn(sectionHeadingClass, text)}>
                 Ready to transform your next development?
               </h2>
             </div>
-            <p className="mx-auto mt-5 w-full text-lg text-white/70 sm:max-w-[65%]">
+            <p className={cn("mx-auto mt-5 w-full max-w-[440px]", sectionSubcopyClass, textSubtle)}>
               Let&rsquo;s discuss how Cloud Modular can deliver your project faster, more cost-effectively, and sustainably.
             </p>
             <div className="mt-5 flex justify-center">
               <Link
                 href="/partner-with-us"
                 className={cn(
-                  buttonVariants({ variant: "primary", size: "sm" }),
-                  "px-5 text-sm font-semibold bg-white text-forest hover:bg-warm-white",
+                  pageButtonClass,
+                  btnPrimary,
                 )}
               >
                 Partner With Us
@@ -211,7 +222,7 @@ export default function AboutPage() {
           </div>
           </div>
         </div>
-        <div className="w-[80%] mx-auto border-b border-white/5"></div>
+        <div className={cn("w-[80%] mx-auto border-b", borderDivider)}></div>
       </section>
     </>
   );
