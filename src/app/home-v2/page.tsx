@@ -344,38 +344,51 @@ export default function HomeV2() {
       </section>
 
       <section className={cn("min-h-[112svh] flex flex-col justify-between overflow-hidden sm:h-[100svh] sm:min-h-0", bg, text)}>
-        <div className="section-container flex flex-1 flex-col pt-18 sm:pt-24">
-          <div className="mt-14 text-center sm:mt-28">
-            <div className="space-y-6">
-              <div className="font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]">
-                <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
-                  <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
-                  <path d="M10 10.5L18 8L18 15.5L10 18L10 10.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
-                  <path d="M6 4.5V12L10 18" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
-                </svg>
-                <span>What We Do</span>
+        <div className="section-container flex flex-1 flex-col">
+          <div className="flex flex-1 items-center justify-center">
+            <div className="text-center">
+              <div className="space-y-6">
+                <div className="font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]">
+                  <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
+                    <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+                    <path d="M10 10.5L18 8L18 15.5L10 18L10 10.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+                    <path d="M6 4.5V12L10 18" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+                  </svg>
+                  <span>What We Do</span>
+                </div>
+                <h2 className={cn("mx-auto max-w-[48rem] font-host-grotesk text-[22px] font-medium leading-[24px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]", text)}>
+                  Design-informed, precisely manufactured modular<br className="hidden md:block" /> buildings built to Australian standards.
+                </h2>
               </div>
-              <h2 className={cn("mx-auto max-w-[48rem] font-host-grotesk text-[22px] font-medium leading-[24px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]", text)}>
-                Design-informed, precisely manufactured modular<br className="hidden md:block" /> buildings built to Australian standards.
-              </h2>
-            </div>
-            <p className="mx-auto mt-3 w-full max-w-[520px] font-sans text-[14px] leading-[20px] text-white sm:text-[12px] sm:leading-[18px]">
-              Our system adapts to different sites, budgets and requirements, giving clients more certainty in how their projects are delivered.
-            </p>
-            <div className="mt-4">
-              <Link
-                href="/partner-with-us"
-                className={cn(
-                  pageButtonClass,
-                  btnPrimary,
-                )}
-              >
-                Partner With Us
-              </Link>
+              <p className="mx-auto mt-3 w-full max-w-[520px] font-sans text-[14px] leading-[20px] text-white sm:text-[12px] sm:leading-[18px]">
+                Our system adapts to different sites, budgets and requirements, giving clients more certainty in how their projects are delivered.
+              </p>
+              <div className="mt-4">
+                <Link
+                  href="/partner-with-us"
+                  className={cn(
+                    pageButtonClass,
+                    btnPrimary,
+                  )}
+                >
+                  Partner With Us
+                </Link>
+              </div>
             </div>
           </div>
 
-          <div className={cn("relative left-1/2 mt-auto w-screen -translate-x-1/2 border-t", borderDivider)}></div>
+          <div className="relative left-1/2 w-screen -translate-x-1/2 px-8 pb-3">
+            <div className="font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]">
+              <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
+                <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+                <path d="M10 10.5L18 8L18 15.5L10 18L10 10.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+                <path d="M6 4.5V12L10 18" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+              </svg>
+              <span>Current Projects</span>
+            </div>
+          </div>
+
+          <div className={cn("relative left-1/2 w-screen -translate-x-1/2 border-t", borderDivider)}></div>
 
           <div className="relative left-1/2 w-screen -translate-x-1/2 overflow-x-auto px-8 pt-6 sm:pt-8">
             <div className="flex gap-2 px-0 pb-6 sm:pb-8">
