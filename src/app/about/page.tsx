@@ -193,9 +193,9 @@ export default function AboutPage() {
                   <Image
                     src="/DM_Logo.png"
                     alt="DM logo"
-                    width={200}
-                    height={80}
-                    className="max-h-[32px] w-auto"
+                    width={270}
+                    height={108}
+                    className="h-auto w-[135px] max-w-none"
                   />
                 </div>
                 <div>
