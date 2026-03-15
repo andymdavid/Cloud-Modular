@@ -13,6 +13,7 @@ interface AdvantageCardProps {
   overlayClassName?: string;
   disableHover?: boolean;
   footerClassName?: string;
+  hideAction?: boolean;
 }
 
 export function AdvantageCard({
@@ -27,6 +28,7 @@ export function AdvantageCard({
   overlayClassName,
   disableHover = false,
   footerClassName,
+  hideAction = false,
 }: AdvantageCardProps) {
   const bgCollapsed = isLight ? "rgba(0, 0, 0, 0.05)" : "rgba(255, 255, 255, 0.05)";
   const borderColor = isLight ? "border-black/10" : "border-white/5";
@@ -91,20 +93,22 @@ export function AdvantageCard({
         </div>
       </div>
 
-      <button
-        className={cn(
-          "absolute right-5 top-5 z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border backdrop-blur-sm transition-all duration-300",
-          !disableHover && "group-hover:opacity-0",
-          compact ? "right-4 top-4" : "right-5 top-5",
-          btnBorder,
-          btnBg,
-          btnHoverBg,
-          btnHoverBorder,
-          textPrimary
-        )}
-      >
-        <span className="text-sm leading-none flex items-center justify-center">&gt;</span>
-      </button>
+      {!hideAction && (
+        <button
+          className={cn(
+            "absolute right-5 top-5 z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border backdrop-blur-sm transition-all duration-300",
+            !disableHover && "group-hover:opacity-0",
+            compact ? "right-4 top-4" : "right-5 top-5",
+            btnBorder,
+            btnBg,
+            btnHoverBg,
+            btnHoverBorder,
+            textPrimary
+          )}
+        >
+          <span className="text-sm leading-none flex items-center justify-center">&gt;</span>
+        </button>
+      )}
 
       <div className={cn("absolute bottom-0 left-0 right-0 z-10", compact ? "p-5" : "p-6", footerClassName)}>
         <h3 className={cn(compact ? "mt-1 text-base font-semibold whitespace-nowrap" : "mt-1 text-lg font-semibold whitespace-nowrap", textPrimary)}>

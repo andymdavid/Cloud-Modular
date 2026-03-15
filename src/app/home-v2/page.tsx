@@ -28,7 +28,7 @@ const heroHighlights = [
 
 const advantageCards = [
   {
-    image: "/Card1.png",
+    image: "/Card1.webp",
     label: "Compliance",
     title: "Certified to Australian standards",
     content: [
@@ -38,7 +38,7 @@ const advantageCards = [
     ],
   },
   {
-    image: "/Card2.png",
+    image: "/Card2.webp",
     label: "Speed",
     title: "Offsite manufacturing is faster",
     content: [
@@ -48,7 +48,7 @@ const advantageCards = [
     ],
   },
   {
-    image: "/Card3.png",
+    image: "/Card3.webp",
     label: "Quality",
     title: "Precision and consistency",
     content: [
@@ -58,7 +58,7 @@ const advantageCards = [
     ],
   },
   {
-    image: "/Card4.png",
+    image: "/Card4.webp",
     label: "Flexibility",
     title: "Tailored to specifications",
     content: [
@@ -68,7 +68,7 @@ const advantageCards = [
     ],
   },
   {
-    image: "/Card5.png",
+    image: "/Card5.webp",
     label: "Cost Effectiveness",
     title: "Significant cost savings",
     content: [
@@ -78,7 +78,7 @@ const advantageCards = [
     ],
   },
   {
-    image: "/Card6.png",
+    image: "/Card6.webp",
     label: "Sustainability",
     title: "Reduced environmental impact",
     content: [
@@ -178,7 +178,7 @@ export default function HomeV2() {
       <section className="relative h-screen min-h-[600px] overflow-hidden">
         {/* Background Image */}
         <Image
-          src="/hero-background.png"
+          src="/hero-background.webp"
           alt="Modern modular building exterior"
           fill
           priority
@@ -373,6 +373,7 @@ export default function HomeV2() {
                   overlayClassName="from-black/60 via-black/18"
                   disableHover
                   footerClassName="px-6 pb-6 pt-5"
+                  hideAction
                 />
               ))}
               <div className="min-w-[4px]"></div>
