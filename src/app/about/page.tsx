@@ -20,6 +20,25 @@ export const metadata: Metadata = {
   },
 };
 
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: siteUrl,
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "About Us",
+      item: `${siteUrl}/about/`,
+    },
+  ],
+};
+
 export default function AboutPage() {
   const bg = "bg-[#010101]";
   const text = "text-white";
@@ -42,6 +61,12 @@ export default function AboutPage() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema),
+        }}
+      />
       <section className="relative h-screen min-h-[600px] overflow-hidden">
         <Image
           src="/aboutpage.webp"

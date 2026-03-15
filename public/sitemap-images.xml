@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <!-- Homepage images -->
+  <url>
+    <loc>https://cloudmodular.com.au/</loc>
+    <image:image>
+      <image:loc>https://cloudmodular.com.au/hero-background.webp</image:loc>
+      <image:title>Modern modular building exterior - Cloud Modular Perth</image:title>
+      <image:caption>Precision-engineered modular construction in Western Australia</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://cloudmodular.com.au/Card1.webp</image:loc>
+      <image:title>Modular construction compliance and certification</image:title>
+      <image:caption>Australian Building Code certified modular buildings</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://cloudmodular.com.au/Card2.webp</image:loc>
+      <image:title>Fast modular construction timeline</image:title>
+      <image:caption>Offsite manufacturing delivers projects faster</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://cloudmodular.com.au/Card3.webp</image:loc>
+      <image:title>Quality controlled modular construction</image:title>
+      <image:caption>Factory-controlled production ensures consistent quality</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://cloudmodular.com.au/Card4.webp</image:loc>
+      <image:title>Flexible modular building design</image:title>
+      <image:caption>Modular buildings tailored to specifications</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://cloudmodular.com.au/Card5.webp</image:loc>
+      <image:title>Cost effective modular construction</image:title>
+      <image:caption>Significant cost savings through factory efficiency</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://cloudmodular.com.au/Card6.webp</image:loc>
+      <image:title>Sustainable modular construction</image:title>
+      <image:caption>70% less landfill waste with offsite construction</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://cloudmodular.com.au/pillar1.webp</image:loc>
+      <image:title>Engineering and compliance certification</image:title>
+      <image:caption>Each module certified by qualified engineers</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://cloudmodular.com.au/pillar2.webp</image:loc>
+      <image:title>Factory controlled modular production</image:title>
+      <image:caption>Stable manufacturing environment for consistent quality</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://cloudmodular.com.au/pillar3.webp</image:loc>
+      <image:title>Independent quality checks</image:title>
+      <image:caption>Third-party inspections at key production stages</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://cloudmodular.com.au/Sec_Card_1.webp</image:loc>
+      <image:title>25 on Rowland and Forrest modular project</image:title>
+      <image:caption>Cloud Modular project in Western Australia</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://cloudmodular.com.au/Sec_Card_2.webp</image:loc>
+      <image:title>Capel Drive modular project</image:title>
+      <image:caption>Cloud Modular residential development</image:caption>
+    </image:image>
+  </url>
+
+  <!-- About page images -->
+  <url>
+    <loc>https://cloudmodular.com.au/about/</loc>
+    <image:image>
+      <image:loc>https://cloudmodular.com.au/aboutpage.webp</image:loc>
+      <image:title>About Cloud Modular - Company overview</image:title>
+      <image:caption>Cloud Modular headquarters and team</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://cloudmodular.com.au/Kannan_Rajendiran.webp</image:loc>
+      <image:title>Kannan Rajendiran - Co-Founder Cloud Modular</image:title>
+      <image:caption>Co-Founder with 21 years engineering experience</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://cloudmodular.com.au/Nigel_David.webp</image:loc>
+      <image:title>Nigel David - Co-Founder Cloud Modular</image:title>
+      <image:caption>Co-Founder with 30 years procurement experience</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://cloudmodular.com.au/Andy_David.webp</image:loc>
+      <image:title>Andy David - Co-Founder Cloud Modular</image:title>
+      <image:caption>Co-Founder specialising in technology and AI</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://cloudmodular.com.au/Mike_Liang.webp</image:loc>
+      <image:title>Mike Liang - China Lead Cloud Modular</image:title>
+      <image:caption>Leading Cloud Modular's China operations</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Partner logos (used across pages) -->
+  <url>
+    <loc>https://cloudmodular.com.au/</loc>
+    <image:image>
+      <image:loc>https://cloudmodular.com.au/logo.png</image:loc>
+      <image:title>Cloud Modular logo</image:title>
+      <image:caption>Cloud Modular - Precision-Engineered Modular Construction</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://cloudmodular.com.au/Prism_Logo.png</image:loc>
+      <image:title>Prism Design Studio logo</image:title>
+      <image:caption>Architectural partner</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://cloudmodular.com.au/Decobu-Logo.png</image:loc>
+      <image:title>Decobu logo</image:title>
+      <image:caption>Engineering partner</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://cloudmodular.com.au/DM_Logo.png</image:loc>
+      <image:title>DM logo</image:title>
+      <image:caption>Partner logo</image:caption>
+    </image:image>
+  </url>
+</urlset>

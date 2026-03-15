@@ -17,13 +17,40 @@ export const metadata: Metadata = {
   },
 };
 
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: siteUrl,
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Projects",
+      item: `${siteUrl}/our-work/`,
+    },
+  ],
+};
+
 export default function OurWorkPage() {
   return (
-    <div className="bg-[#080a0a] min-h-screen flex items-center justify-center">
-      <div className="text-center text-white">
-        <h1 className="text-4xl font-serif mb-4">Projects</h1>
-        <p className="text-white/70">Coming soon</p>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema),
+        }}
+      />
+      <div className="bg-[#080a0a] min-h-screen flex items-center justify-center">
+        <div className="text-center text-white">
+          <h1 className="text-4xl font-serif mb-4">Projects</h1>
+          <p className="text-white/70">Coming soon</p>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

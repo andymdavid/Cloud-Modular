@@ -4,8 +4,14 @@
 User-agent: *
 Allow: /
 
-# Sitemap location
+# Disallow archive/test pages
+Disallow: /home-archive/
+Disallow: /home-v2/
+
+# Sitemap locations
+Sitemap: https://cloudmodular.com.au/sitemap-index.xml
 Sitemap: https://cloudmodular.com.au/sitemap.xml
+Sitemap: https://cloudmodular.com.au/sitemap-images.xml
 
 # LLM-specific files
 # See https://llmstxt.org for the llms.txt standard

@@ -17,9 +17,64 @@ export const metadata: Metadata = {
   },
 };
 
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: siteUrl,
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Partner With Us",
+      item: `${siteUrl}/partner-with-us/`,
+    },
+  ],
+};
+
+const contactPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "@id": `${siteUrl}/partner-with-us/#contactpage`,
+  url: `${siteUrl}/partner-with-us/`,
+  name: "Contact Cloud Modular",
+  description: "Get in touch with Cloud Modular to discuss your modular construction project in Perth and Western Australia.",
+  mainEntity: {
+    "@type": "Organization",
+    "@id": `${siteUrl}/#organization`,
+    name: "Cloud Modular",
+    email: "info@cloudmodular.com.au",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Loftus St",
+      addressLocality: "North Perth",
+      addressRegion: "WA",
+      postalCode: "6006",
+      addressCountry: "AU",
+    },
+  },
+};
+
 export default function PartnerWithUsPage() {
   return (
-    <div className="bg-[#080a0a] text-white">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(contactPageSchema),
+        }}
+      />
+      <div className="bg-[#080a0a] text-white">
       {/* Hero Section - 50vh */}
       <section className="min-h-[50vh] flex flex-col pt-16">
         <div className="flex-1 flex items-center justify-center">
@@ -169,5 +224,6 @@ export default function PartnerWithUsPage() {
         <div className="w-[80%] mx-auto border-b border-white/5"></div>
       </section>
     </div>
+    </>
   );
 }
