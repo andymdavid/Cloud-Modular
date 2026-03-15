@@ -119,7 +119,7 @@ const whatWeDoCards = [
   {
     image: "/Sec_Card_1.webp",
     label: "25 On Rowland and Forrest",
-    title: "25 on Rowland and Forrest",
+    title: "25 On Rowland And Forrest",
     content: [],
   },
   {
