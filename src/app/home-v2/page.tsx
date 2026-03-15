@@ -118,51 +118,27 @@ const partnerLogosMarquee = [...partnerLogos, ...partnerLogos, ...partnerLogos];
 const whatWeDoCards = [
   {
     image: "/Sec_Card_1.png",
-    label: "Commercial",
-    title: "Commercial",
-    content: [
-      "Office buildings, retail spaces and mixed-use developments",
-    ],
+    label: "25 On Rowland and Forrest",
+    title: "25 ON ROWLAND AND FORREST",
+    content: [],
   },
   {
     image: "/Sec_Card_2.png",
-    label: "Multi-Residential",
-    title: "Multi-residential",
-    content: [
-      "Apartments, townhouses and residential developments",
-    ],
+    label: "Rowland Street, Subiaco",
+    title: "ROWLAND STREET, SUBIACO",
+    content: [],
   },
   {
     image: "/Sec_Card_3.png",
-    label: "Health & Aged Care",
-    title: "Health & Aged Care",
-    content: [
-      "Medical facilities and aged care residences",
-    ],
+    label: "Capel Drive",
+    title: "CAPEL DRIVE",
+    content: [],
   },
   {
     image: "/Sec_Card_4.png",
-    label: "Education & Community",
-    title: "Education & Community",
-    content: [
-      "Schools, libraries and community centres",
-    ],
-  },
-  {
-    image: "/Sec_Card_5.png",
-    label: "Infrastructure",
-    title: "Infrastructure",
-    content: [
-      "Transit facilities and public infrastructure",
-    ],
-  },
-  {
-    image: "/Sec_Card_6.png",
-    label: "Hotels & Accommodation",
-    title: "Hotels & Accommodation",
-    content: [
-      "Hotels, resorts and short-term accommodation",
-    ],
+    label: "21 Central Terrace, Gosnells",
+    title: "21 CENTRAL TERRACE, GOSNELLS",
+    content: [],
   },
 ];
 
@@ -401,6 +377,7 @@ export default function HomeV2() {
                   cornerRadius="rounded-[5px]"
                   imageClassName="brightness-[0.8] group-hover:brightness-[0.9]"
                   overlayClassName="from-black/42 via-black/10"
+                  disableHover
                 />
               ))}
               <div className="min-w-[4px]"></div>

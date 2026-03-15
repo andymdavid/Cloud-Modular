@@ -11,6 +11,7 @@ interface AdvantageCardProps {
   cornerRadius?: string;
   imageClassName?: string;
   overlayClassName?: string;
+  disableHover?: boolean;
 }
 
 export function AdvantageCard({
@@ -23,6 +24,7 @@ export function AdvantageCard({
   cornerRadius,
   imageClassName,
   overlayClassName,
+  disableHover = false,
 }: AdvantageCardProps) {
   const bgCollapsed = isLight ? "rgba(0, 0, 0, 0.05)" : "rgba(255, 255, 255, 0.05)";
   const borderColor = isLight ? "border-black/10" : "border-white/5";
@@ -39,7 +41,7 @@ export function AdvantageCard({
 
   return (
     <div
-      className={cn("group relative border overflow-hidden cursor-pointer", cardWidth, cardHeight, cardRadius, borderColor)}
+      className={cn("group relative border overflow-hidden", disableHover ? "cursor-default" : "cursor-pointer", cardWidth, cardHeight, cardRadius, borderColor)}
       style={{
         backgroundColor: bgCollapsed,
       }}
@@ -50,19 +52,26 @@ export function AdvantageCard({
         fill
         className={cn(
           "object-cover transition-all duration-300",
-          isLight ? "brightness-90 group-hover:brightness-100" : "brightness-50 group-hover:brightness-[0.65]",
+          isLight
+            ? disableHover
+              ? "brightness-90"
+              : "brightness-90 group-hover:brightness-100"
+            : disableHover
+              ? "brightness-50"
+              : "brightness-50 group-hover:brightness-[0.65]",
           imageClassName
         )}
       />
       <div
         className={cn(
-          "absolute inset-0 transition-opacity duration-300 group-hover:opacity-0",
+          "absolute inset-0 transition-opacity duration-300",
+          !disableHover && "group-hover:opacity-0",
           isLight ? "bg-gradient-to-t from-white/80 via-white/20 to-transparent" : "bg-gradient-to-t from-black/80 via-black/20 to-transparent",
           overlayClassName
         )}
       ></div>
 
-      <div className={cn("absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100", isLight ? "bg-white" : "bg-[#0f1111]")}>
+      <div className={cn("absolute inset-0 opacity-0 transition-opacity duration-300", !disableHover && "group-hover:opacity-100", isLight ? "bg-white" : "bg-[#0f1111]")}>
         <div className={cn(compact ? "p-5 pt-6" : "p-6 pt-8")}>
           <div className="space-y-2">
             {content.map((line, index) => (
@@ -82,7 +91,8 @@ export function AdvantageCard({
 
       <button
         className={cn(
-          "absolute right-5 top-5 z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border backdrop-blur-sm transition-all duration-300 group-hover:opacity-0",
+          "absolute right-5 top-5 z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border backdrop-blur-sm transition-all duration-300",
+          !disableHover && "group-hover:opacity-0",
           compact ? "right-4 top-4" : "right-5 top-5",
           btnBorder,
           btnBg,
