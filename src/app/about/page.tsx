@@ -237,7 +237,7 @@ export default function AboutPage() {
               {
                 src: "/Nigel_David.webp",
                 name: "Nigel David",
-                role: "Co-Founder / Sales Director",
+                role: "Director - Commercial Strategy",
                 bio: "Nigel has over thirty years of procurement experience in the building and construction industry specialising in export market development, international procurement management, compliance and logistics, and trade development.",
                 imageClassName: "object-center",
               },
