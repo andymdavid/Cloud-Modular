@@ -168,7 +168,7 @@ export default function AboutPage() {
         <div className={cn("relative left-1/2 w-screen -translate-x-1/2 border-b", borderDivider)}></div>
       </section>
 
-      <section className={cn("hidden min-h-[125vh] flex-col justify-center pt-20", bg, text)}>
+      <section className={cn("min-h-[125vh] flex flex-col justify-center pt-20", bg, text)}>
         <div className="section-container space-y-12">
           <div className="space-y-4 text-center">
               <div className={cn("inline-flex items-center gap-2", sectionLabelClass)}>
