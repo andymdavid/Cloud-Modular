@@ -119,25 +119,19 @@ const whatWeDoCards = [
   {
     image: "/Sec_Card_1.png",
     label: "25 On Rowland and Forrest",
-    title: "25 ON ROWLAND AND FORREST",
-    content: [],
-  },
-  {
-    image: "/Sec_Card_2.png",
-    label: "Rowland Street, Subiaco",
-    title: "ROWLAND STREET, SUBIACO",
+    title: "25 on Rowland and Forrest",
     content: [],
   },
   {
     image: "/Sec_Card_3.png",
     label: "Capel Drive",
-    title: "CAPEL DRIVE",
+    title: "Capel Drive",
     content: [],
   },
   {
     image: "/Sec_Card_4.png",
     label: "21 Central Terrace, Gosnells",
-    title: "21 CENTRAL TERRACE, GOSNELLS",
+    title: "21 Central Terrace, Gosnells",
     content: [],
   },
 ];
