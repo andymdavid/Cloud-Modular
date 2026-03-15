@@ -95,21 +95,21 @@ const partnerLogos = [
     alt: "Prism Design Studio logo",
     width: 200,
     height: 80,
-    className: "max-h-[22px] w-auto",
+    className: "max-h-[26px] w-auto",
   },
   {
     src: "/DM_Logo.png",
     alt: "DM logo",
     width: 200,
     height: 80,
-    className: "max-h-[19px] w-auto",
+    className: "max-h-[23px] w-auto",
   },
   {
     src: "/Decobu-Logo.png",
     alt: "Decobu logo",
     width: 200,
     height: 80,
-    className: "max-h-[12px] w-auto",
+    className: "max-h-[14px] w-auto",
   },
 ];
 
@@ -286,16 +286,16 @@ export default function HomeV2() {
         </div>
         <div className={cn("relative left-1/2 mt-16 w-screen -translate-x-1/2 border-t", borderDivider)} />
         <div className="mx-auto w-full max-w-[66.666vw] bg-[#010101] text-white">
-          <div className="flex min-h-[44px] w-full flex-col md:flex-row">
-            <div className={cn("flex shrink-0 items-center justify-center px-4 py-2 text-center text-[11px] font-medium text-white md:w-[260px] md:justify-start md:text-left md:border-r", borderDivider, "border-b md:border-b-0")}>
+          <div className="flex min-h-[54px] w-full flex-col md:flex-row">
+            <div className={cn("flex shrink-0 items-center justify-center px-4 py-3 text-center text-[11px] font-medium text-white md:w-[260px] md:justify-start md:text-left md:border-r", borderDivider, "border-b md:border-b-0")}>
               Partnering with leading architectural, engineering, and procurement teams.
             </div>
             <div className="relative flex flex-1 items-center justify-center overflow-hidden">
-              <div className="marquee-track flex w-max items-center py-2">
+              <div className="marquee-track flex w-max items-center py-3">
                 {[0, 1].map((groupIndex) => (
                   <div key={groupIndex} className="marquee-group flex shrink-0 items-center gap-12 px-4 md:gap-16">
                     {partnerLogosMarquee.map((logo, index) => (
-                      <div key={`${logo.src}-${groupIndex}-${index}`} className="flex h-5 min-w-[120px] items-center justify-center">
+                      <div key={`${logo.src}-${groupIndex}-${index}`} className="flex h-6 min-w-[132px] items-center justify-center">
                         <Image
                           src={logo.src}
                           alt={logo.alt}
