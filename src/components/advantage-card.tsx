@@ -52,22 +52,32 @@ export function AdvantageCard({
         backgroundColor: bgCollapsed,
       }}
     >
-      <Image
-        src={image}
-        alt={label}
-        fill
-        className={cn(
-          "object-cover transition-all duration-300",
-          isLight
-            ? disableHover
-              ? "brightness-90"
-              : "brightness-90 group-hover:brightness-100"
-            : disableHover
-              ? "brightness-50"
-              : "brightness-50 group-hover:brightness-[0.65]",
-          imageClassName
-        )}
-      />
+      {image ? (
+        <Image
+          src={image}
+          alt={label}
+          fill
+          className={cn(
+            "object-cover transition-all duration-300",
+            isLight
+              ? disableHover
+                ? "brightness-90"
+                : "brightness-90 group-hover:brightness-100"
+              : disableHover
+                ? "brightness-50"
+                : "brightness-50 group-hover:brightness-[0.65]",
+            imageClassName
+          )}
+        />
+      ) : (
+        <div
+          className={cn(
+            "absolute inset-0",
+            isLight ? "bg-[#f0f1f1]" : "bg-[#0f1111]"
+          )}
+          aria-hidden="true"
+        />
+      )}
       <div
         className={cn(
           "absolute inset-0 transition-opacity duration-300",

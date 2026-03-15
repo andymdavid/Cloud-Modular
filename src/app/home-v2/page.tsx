@@ -129,7 +129,7 @@ const whatWeDoCards = [
     content: [],
   },
   {
-    image: "/Sec_Card_4.webp",
+    image: "",
     label: "21 Central Terrace, Gosnells",
     title: "21 Central Terrace, Gosnells",
     content: [],
