@@ -133,6 +133,7 @@ const whatWeDoCards = [
     label: "21 Central Terrace, Gosnells",
     title: "21 Central Terrace, Gosnells",
     content: [],
+    topBadge: "[COMING SOON]",
   },
 ];
 

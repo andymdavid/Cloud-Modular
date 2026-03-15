@@ -6,6 +6,7 @@ interface AdvantageCardProps {
   label: string;
   title: string;
   content: string[];
+  topBadge?: string;
   isLight?: boolean;
   compact?: boolean;
   cornerRadius?: string;
@@ -21,6 +22,7 @@ export function AdvantageCard({
   label,
   title,
   content,
+  topBadge,
   isLight = false,
   compact = false,
   cornerRadius,
@@ -108,6 +110,25 @@ export function AdvantageCard({
         >
           <span className="text-sm leading-none flex items-center justify-center">&gt;</span>
         </button>
+      )}
+
+      {topBadge && (
+        <div
+          className={cn(
+            "absolute left-0 right-0 top-0 z-10",
+            compact ? "px-5 pt-4" : "px-6 pt-5",
+            footerClassName
+          )}
+        >
+          <p
+            className={cn(
+              "font-sans text-[10px] font-medium uppercase leading-none tracking-[0.06em]",
+              textPrimary
+            )}
+          >
+            {topBadge}
+          </p>
+        </div>
       )}
 
       <div className={cn("absolute bottom-0 left-0 right-0 z-10", compact ? "p-5" : "p-6", footerClassName)}>
