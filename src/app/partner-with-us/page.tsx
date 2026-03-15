@@ -125,17 +125,17 @@ export default function PartnerWithUsPage() {
                 <div className="space-y-6">
                   <div>
                     <h2 className={cn(sectionH3Class, text)}>Perth, Australia</h2>
-                    <div className={cn("mt-3 space-y-1", sectionSubcopyClass)} style={{ color: "#ffffff" }}>
-                      <p>Loftus St, North Perth</p>
-                      <p>Western Australia, 6006</p>
+                    <div className="mt-3 space-y-1">
+                      <p className={cn(sectionSubcopyClass, "text-white")} style={{ color: "#ffffff" }}>Loftus St, North Perth</p>
+                      <p className={cn(sectionSubcopyClass, "text-white")} style={{ color: "#ffffff" }}>Western Australia, 6006</p>
                     </div>
                   </div>
                   <div>
                     <h2 className={cn(sectionH3Class, text)}>Foshan, China</h2>
-                    <div className={cn("mt-3 space-y-1", sectionSubcopyClass)} style={{ color: "#ffffff" }}>
-                      <p>3F, 48L, No.26 Lang Bao West Road</p>
-                      <p>Foshan City, Guangdong Province</p>
-                      <p>China</p>
+                    <div className="mt-3 space-y-1">
+                      <p className={cn(sectionSubcopyClass, "text-white")} style={{ color: "#ffffff" }}>3F, 48L, No.26 Lang Bao West Road</p>
+                      <p className={cn(sectionSubcopyClass, "text-white")} style={{ color: "#ffffff" }}>Foshan City, Guangdong Province</p>
+                      <p className={cn(sectionSubcopyClass, "text-white")} style={{ color: "#ffffff" }}>China</p>
                     </div>
                   </div>
                 </div>
