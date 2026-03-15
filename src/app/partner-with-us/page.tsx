@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { contactDetails, partnerWithUsMailto } from "@/content/site";
+import { cn } from "@/lib/utils";
 
 const siteUrl = "https://cloudmodular.com.au";
 
@@ -60,6 +63,22 @@ const contactPageSchema = {
 };
 
 export default function PartnerWithUsPage() {
+  const bg = "bg-[#010101]";
+  const text = "text-white";
+  const textSubtle = "text-white";
+  const textMuted = "text-white/60";
+  const borderDivider = "border-white/5";
+  const sectionLabelClass = "font-cal-sans text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]";
+  const sectionSubcopyClass = "font-sans text-[14px] leading-[20px] text-white sm:text-[12px] sm:leading-[18px]";
+  const sectionH3Class = "font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]";
+  const sectionLabelIcon = (
+    <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
+      <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+      <path d="M10 10.5L18 8L18 15.5L10 18L10 10.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+      <path d="M6 4.5V12L10 18" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+    </svg>
+  );
+
   return (
     <>
       <script
@@ -74,156 +93,90 @@ export default function PartnerWithUsPage() {
           __html: JSON.stringify(contactPageSchema),
         }}
       />
-      <div className="bg-[#080a0a] text-white">
-      {/* Hero Section - 50vh */}
-      <section className="min-h-[50vh] flex flex-col pt-16">
-        <div className="flex-1 flex items-center justify-center">
-          <div className="section-container w-full">
-            <div className="max-w-3xl mx-auto text-center">
-              <p className="text-xs font-semibold uppercase tracking-[0.4em] text-white/40 mb-6">
-                Get In Touch
-              </p>
-              <h2 className="text-[30px] leading-[33px] text-white lg:text-[40px] lg:leading-[40px] mb-4">
-                Partner With Us
-              </h2>
-              <p className="text-lg text-white/70 max-w-2xl mx-auto">
-                Let&rsquo;s discuss how Cloud Modular can deliver your project with precision and confidence.
-              </p>
+      <div className={cn(bg, text)}>
+        <section className="min-h-[45vh] grid grid-rows-[1fr_auto]">
+          <div className="flex items-center">
+            <div className="section-container w-full py-20">
+              <div className="mx-auto max-w-4xl text-center">
+                <div className={cn("inline-flex items-center gap-2", sectionLabelClass)}>
+                  {sectionLabelIcon}
+                  <span>Get In Touch</span>
+                </div>
+                <h1 className={cn("mt-6 font-host-grotesk text-[32px] font-bold leading-[34px] tracking-[-0.03em] sm:text-[48px] sm:leading-[50px] lg:text-[60px] lg:leading-[62px]", text)}>
+                  Partner With Us.
+                </h1>
+                <p className={cn("mx-auto mt-3 max-w-[440px]", sectionSubcopyClass, textSubtle)}>
+                  Let&apos;s discuss how Cloud Modular can deliver your project with precision and confidence.
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="w-[80%] mx-auto border-b border-white/5"></div>
-      </section>
+          <div className={cn("relative left-1/2 w-screen -translate-x-1/2 border-b", borderDivider)}></div>
+        </section>
 
-      {/* Contact Form Section */}
-      <section className="min-h-[60vh] grid grid-rows-[1fr_auto]">
-        <div className="flex items-center">
-          <div className="section-container py-20 w-full">
-            <div className="max-w-5xl mx-auto">
-              <div className="grid gap-12 lg:grid-cols-2">
-                {/* Contact Form */}
-                <div className="bg-white/5 rounded-lg p-8 border border-white/10">
-                  <form className="space-y-6">
-                    <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-white/70 mb-2">
-                        Name
-                      </label>
-                      <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded text-white placeholder:text-white/40 focus:outline-none focus:border-white/40"
-                        placeholder="Your name"
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor="company" className="block text-sm font-medium text-white/70 mb-2">
-                        Company
-                      </label>
-                      <input
-                        type="text"
-                        id="company"
-                        name="company"
-                        className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded text-white placeholder:text-white/40 focus:outline-none focus:border-white/40"
-                        placeholder="Your company"
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-white/70 mb-2">
-                        Email
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded text-white placeholder:text-white/40 focus:outline-none focus:border-white/40"
-                        placeholder="your@email.com"
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor="phone" className="block text-sm font-medium text-white/70 mb-2">
-                        Phone
-                      </label>
-                      <input
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded text-white placeholder:text-white/40 focus:outline-none focus:border-white/40"
-                        placeholder="Your phone number"
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor="message" className="block text-sm font-medium text-white/70 mb-2">
-                        Message
-                      </label>
-                      <textarea
-                        id="message"
-                        name="message"
-                        rows={5}
-                        className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded text-white placeholder:text-white/40 focus:outline-none focus:border-white/40 resize-none"
-                        placeholder="Tell us about your project..."
-                      />
-                    </div>
-
-                    <button
-                      type="submit"
-                      className="w-full px-6 py-3 bg-white text-[#080a0a] font-semibold rounded hover:bg-white/90 transition-colors"
-                    >
-                      Send Message
-                    </button>
-                  </form>
+        <section className="min-h-[55vh]">
+          <div className="section-container py-20">
+            <div className="mx-auto grid max-w-5xl gap-12 lg:grid-cols-2">
+              <div className="space-y-6">
+                <div className={cn("inline-flex items-center gap-2", sectionLabelClass)}>
+                  {sectionLabelIcon}
+                  <span>Address</span>
                 </div>
-
-                {/* Contact Information */}
-                <div className="hidden md:block space-y-8">
+                <div className="space-y-6">
                   <div>
-                    <h3 className="text-xs font-semibold uppercase tracking-[0.4em] text-white/40 mb-4">
-                      Address
-                    </h3>
-                    <div className="space-y-4">
-                      <div>
-                        <p className="text-sm font-semibold text-white/60 mb-2">
-                          Perth, Australia
-                        </p>
-                        <p className="text-white/70">Loftus St, North Perth</p>
-                        <p className="text-white/70">Western Australia, 6006</p>
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold text-white/60 mb-2">
-                          Foshan, China
-                        </p>
-                        <p className="text-white/70">3F, 48L, No.26 Lang Bao West Road</p>
-                        <p className="text-white/70">Foshan City, Guangdong Province</p>
-                        <p className="text-white/70">China</p>
-                      </div>
+                    <h2 className={cn(sectionH3Class, text)}>Perth, Australia</h2>
+                    <div className={cn("mt-3 space-y-1", sectionSubcopyClass, textSubtle)}>
+                      <p>Loftus St, North Perth</p>
+                      <p>Western Australia, 6006</p>
                     </div>
                   </div>
-
                   <div>
-                    <h3 className="text-xs font-semibold uppercase tracking-[0.4em] text-white/40 mb-4">
-                      Connect
-                    </h3>
+                    <h2 className={cn(sectionH3Class, text)}>Foshan, China</h2>
+                    <div className={cn("mt-3 space-y-1", sectionSubcopyClass, textSubtle)}>
+                      <p>3F, 48L, No.26 Lang Bao West Road</p>
+                      <p>Foshan City, Guangdong Province</p>
+                      <p>China</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <div className={cn("inline-flex items-center gap-2", sectionLabelClass)}>
+                  {sectionLabelIcon}
+                  <span>Connect</span>
+                </div>
+                <div className="space-y-6">
+                  <div>
+                    <h2 className={cn(sectionH3Class, text)}>Email</h2>
+                    <Link
+                      href={partnerWithUsMailto}
+                      className={cn("mt-3 inline-block font-sans text-[14px] leading-[20px] text-white transition hover:text-white/70 sm:text-[12px] sm:leading-[18px]")}
+                    >
+                      kannan@cloudmodular.com.au
+                    </Link>
+                  </div>
+                  <div>
+                    <h2 className={cn(sectionH3Class, text)}>General Enquiries</h2>
+                    <p className={cn("mt-3", sectionSubcopyClass, textMuted)}>{contactDetails.hours}</p>
+                  </div>
+                  <div>
+                    <h2 className={cn(sectionH3Class, text)}>LinkedIn</h2>
                     <a
                       href="https://www.linkedin.com"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-white/70 hover:text-white transition-colors"
+                      className={cn("mt-3 inline-block font-sans text-[14px] leading-[20px] text-white transition hover:text-white/70 sm:text-[12px] sm:leading-[18px]")}
                     >
-                      LinkedIn
+                      Visit LinkedIn
                     </a>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="w-[80%] mx-auto border-b border-white/5"></div>
-      </section>
-    </div>
+        </section>
+      </div>
     </>
   );
 }
