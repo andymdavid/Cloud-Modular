@@ -7,6 +7,7 @@ interface AdvantageCardProps {
   title: string;
   content: string[];
   topBadge?: string;
+  titleOutside?: boolean;
   isLight?: boolean;
   compact?: boolean;
   cornerRadius?: string;
@@ -23,6 +24,7 @@ export function AdvantageCard({
   title,
   content,
   topBadge,
+  titleOutside = false,
   isLight = false,
   compact = false,
   cornerRadius,
@@ -46,12 +48,13 @@ export function AdvantageCard({
   const cardRadius = cornerRadius ?? (compact ? "rounded-[3px]" : "rounded-[24px]");
 
   return (
-    <div
-      className={cn("group relative border overflow-hidden", disableHover ? "cursor-default" : "cursor-pointer", cardWidth, cardHeight, cardRadius, borderColor)}
-      style={{
-        backgroundColor: bgCollapsed,
-      }}
-    >
+    <div className={cn(cardWidth, titleOutside && "space-y-3")}>
+      <div
+        className={cn("group relative border overflow-hidden", disableHover ? "cursor-default" : "cursor-pointer", cardHeight, cardRadius, borderColor)}
+        style={{
+          backgroundColor: bgCollapsed,
+        }}
+      >
       {image ? (
         <Image
           src={image}
@@ -141,11 +144,21 @@ export function AdvantageCard({
         </div>
       )}
 
-      <div className={cn("absolute bottom-0 left-0 right-0 z-10", compact ? "p-5" : "p-6", footerClassName)}>
-        <h3 className={cn(compact ? "mt-1 text-base font-semibold whitespace-nowrap" : "mt-1 text-lg font-semibold whitespace-nowrap", textPrimary)}>
-          {title}
-        </h3>
+        {!titleOutside && (
+          <div className={cn("absolute bottom-0 left-0 right-0 z-10", compact ? "p-5" : "p-6", footerClassName)}>
+            <h3 className={cn(compact ? "mt-1 text-base font-semibold whitespace-nowrap" : "mt-1 text-lg font-semibold whitespace-nowrap", textPrimary)}>
+              {title}
+            </h3>
+          </div>
+        )}
       </div>
+      {titleOutside && (
+        <div className="px-1">
+          <h3 className={cn("font-host-grotesk text-[14px] font-medium leading-[16px] tracking-[-0.03em]", textPrimary)}>
+            {title}
+          </h3>
+        </div>
+      )}
     </div>
   );
 }

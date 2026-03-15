@@ -362,7 +362,7 @@ export default function HomeV2() {
           <div className={cn("relative left-1/2 w-screen -translate-x-1/2 border-t", borderDivider)}></div>
 
           <div className="relative left-1/2 w-screen -translate-x-1/2 overflow-x-auto px-8 pt-6 sm:pt-8">
-            <div className="flex gap-2 px-0 pb-6 sm:pb-8">
+            <div className="flex items-start gap-3 px-0 pb-6 sm:pb-8">
               {whatWeDoCards.map((card) => (
                 <AdvantageCard
                   key={card.title}
@@ -373,8 +373,9 @@ export default function HomeV2() {
                   imageClassName="brightness-[0.72]"
                   overlayClassName="from-black/60 via-black/18"
                   disableHover
-                  footerClassName="px-6 pb-6 pt-5"
+                  footerClassName="px-6 pb-5 pt-5"
                   hideAction
+                  titleOutside
                 />
               ))}
               <div className="min-w-[4px]"></div>
