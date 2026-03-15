@@ -205,7 +205,7 @@ export default function HomeV2() {
             {/* Cloud Icon */}
             <div className="flex justify-center mb-6">
               <Image
-                src="/cloud_icon.png"
+                src="/Cloud_Icon.png"
                 alt=""
                 width={32}
                 height={32}
