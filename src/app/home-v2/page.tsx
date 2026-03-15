@@ -123,7 +123,7 @@ const whatWeDoCards = [
     content: [],
   },
   {
-    image: "/Sec_Card_3.png",
+    image: "/Sec_Card_2.png",
     label: "Capel Drive",
     title: "Capel Drive",
     content: [],
