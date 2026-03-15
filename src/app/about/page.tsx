@@ -204,28 +204,28 @@ export default function AboutPage() {
           <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-4">
             {[
               {
-                src: "/Kannan-Rajendiran.jpg",
+                src: "/Kannan_Rajendiran.png",
                 name: "Kannan Rajendiran",
                 role: "Co-Founder",
                 bio: "Kannan brings over 21 years of experience in electrical services design, project management, and coordination across commercial, industrial, and infrastructure projects in Australia and Singapore. He is also a member of Engineers Australia (MIEAust).",
                 imageClassName: "object-center",
               },
               {
-                src: "/Nigel_David.jpg",
+                src: "/Nigel_David.png",
                 name: "Nigel David",
                 role: "Co-Founder",
                 bio: "Nigel has over thirty years of procurement experience in the building and construction industry specialising in export market development, international procurement management, compliance and logistics, trade development, strategic marketing & business development.",
                 imageClassName: "object-center",
               },
               {
-                src: "/Andy_David.jpg",
+                src: "/Andy_David.png",
                 name: "Andy David",
                 role: "Co-Founder",
                 bio: "Andy has extensive experience in technology, particularly artificial intelligence, and across management consulting and capital raising projects, digital transformation, growth, and business performance improvement.",
                 imageClassName: "object-[center_18%]",
               },
               {
-                src: "/Mike_Liang.jpeg",
+                src: "/Mike_Liang.png",
                 name: "Mike Liang",
                 role: "China Lead",
                 bio: "Leading the company's China operations, Mike is an engineer with a strong technical background across architectural design, smart building systems, and environmental protection equipment, delivering practical and sustainable construction solutions.",
@@ -233,12 +233,12 @@ export default function AboutPage() {
               },
             ].map((member) => (
               <div key={member.name} className="space-y-4">
-                <div className="overflow-hidden rounded-2xl border border-white/5 h-[210px]">
+                <div className="aspect-square overflow-hidden rounded-2xl border border-white/5">
                   <Image
                     src={member.src}
                     alt={member.name}
-                    width={360}
-                    height={210}
+                    width={1024}
+                    height={1024}
                     className={cn("h-full w-full object-cover", member.imageClassName)}
                   />
                 </div>
