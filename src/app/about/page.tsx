@@ -183,9 +183,10 @@ export default function AboutPage() {
         <div className={cn("relative left-1/2 w-screen -translate-x-1/2 border-b", borderDivider)}></div>
       </section>
 
-      <section className={cn("min-h-[125vh] flex flex-col justify-center pt-20", bg, text)}>
-        <div className="section-container space-y-12">
-          <div className="space-y-4 text-center">
+      <section className={cn("h-screen min-h-[900px] grid grid-rows-[1fr_auto]", bg, text)}>
+        <div className="flex items-center">
+          <div className="section-container flex w-full flex-col justify-center py-20">
+            <div className="space-y-4 text-center">
               <div className={cn("inline-flex items-center gap-2", sectionLabelClass)}>
                 {sectionLabelIcon}
                 <span>Our Team</span>
@@ -198,8 +199,8 @@ export default function AboutPage() {
               </p>
             </div>
 
-          <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-4">
-            {[
+            <div className="mt-12 grid gap-8 md:grid-cols-2 xl:grid-cols-4">
+              {[
               {
                 src: "/Kannan_Rajendiran.webp",
                 name: "Kannan Rajendiran",
@@ -228,32 +229,33 @@ export default function AboutPage() {
                 bio: "Leading the company's China operations, Mike is an engineer with a strong technical background across architectural design, smart building systems, and environmental protection equipment, delivering practical and sustainable construction solutions.",
                 imageClassName: "object-[center_24%]",
               },
-            ].map((member) => (
-              <div
-                key={member.name}
-                className="flex h-full flex-col rounded-[3px] border border-white/5 bg-[#0f1111] p-3.5"
-              >
-                <div className="aspect-square overflow-hidden rounded-[3px] border border-white/5">
-                  <Image
-                    src={member.src}
-                    alt={member.name}
-                    width={1024}
-                    height={1024}
-                    className={cn("h-full w-full object-cover", member.imageClassName)}
-                  />
+              ].map((member) => (
+                <div
+                  key={member.name}
+                  className="flex h-full flex-col rounded-[3px] border border-white/5 bg-[#0f1111] p-3.5"
+                >
+                  <div className="aspect-square overflow-hidden rounded-[3px] border border-white/5">
+                    <Image
+                      src={member.src}
+                      alt={member.name}
+                      width={1024}
+                      height={1024}
+                      className={cn("h-full w-full object-cover", member.imageClassName)}
+                    />
+                  </div>
+                  <div className="mt-4 flex flex-1 flex-col">
+                    <p className={cn(sectionH3Class, text)}>{member.name}</p>
+                    <p className={cn("mt-2 font-sans text-[12px] leading-[18px]", textMuted)}>{member.role}</p>
+                    <p className={cn("mt-3 font-sans text-[12px] leading-[18px]", textSubtle)}>
+                      {member.bio}
+                    </p>
+                  </div>
                 </div>
-                <div className="mt-4 flex flex-1 flex-col">
-                  <p className={cn(sectionH3Class, text)}>{member.name}</p>
-                  <p className={cn("mt-2 font-sans text-[12px] leading-[18px]", textMuted)}>{member.role}</p>
-                  <p className={cn("mt-3 font-sans text-[12px] leading-[18px]", textSubtle)}>
-                    {member.bio}
-                  </p>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
-        <div className={cn("relative left-1/2 mt-12 w-screen -translate-x-1/2 border-b", borderDivider)}></div>
+        <div className={cn("relative left-1/2 w-screen -translate-x-1/2 border-b", borderDivider)}></div>
       </section>
 
       <section className={cn("min-h-[60vh] grid grid-rows-[1fr_auto]", bg, text)}>
