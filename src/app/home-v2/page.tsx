@@ -139,32 +139,32 @@ const whatWeDoCards = [
 
 const sectorCards = [
   {
-    image: "/Sec_Card_1.webp",
+    image: "/office.png",
     title: "Commercial Modular Buildings",
     description: "Office buildings, retail spaces, and mixed-use commercial developments delivered with modular precision.",
   },
   {
-    image: "/About1.png",
+    image: "/Resi.png",
     title: "Multi-Residential Modular Construction",
     description: "Apartments, townhouses, and residential developments delivered faster with factory-built modular construction.",
   },
   {
-    image: "/Quality.png",
+    image: "/aged-care.png",
     title: "Healthcare & Aged Care Modular Facilities",
     description: "Medical facilities and aged care residences built to Australian healthcare standards with modular construction methods.",
   },
   {
-    image: "/Factory.png",
+    image: "/school.png",
     title: "Education & Community Modular Buildings",
     description: "Schools, libraries, and community centres delivered with precision-engineered modular construction.",
   },
   {
-    image: "/Header1.png",
+    image: "/Infra.png",
     title: "Infrastructure Modular Construction",
     description: "Transit facilities and public infrastructure projects built with offsite modular construction methods.",
   },
   {
-    image: "/Header2.png",
+    image: "/hotel.png",
     title: "Hotels & Accommodation Modular Buildings",
     description: "Hotels, resorts, and short-term accommodation built faster with factory-controlled modular construction.",
   },
