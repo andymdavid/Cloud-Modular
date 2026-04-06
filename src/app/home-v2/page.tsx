@@ -183,7 +183,7 @@ export default function HomeV2() {
           alt="Modern modular building exterior"
           fill
           priority
-          className="scale-[1.08] object-cover object-center"
+          className="scale-[1.08] object-cover object-[44%_center]"
         />
         {/* Overlay */}
         <div
