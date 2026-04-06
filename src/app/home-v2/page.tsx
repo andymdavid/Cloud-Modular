@@ -218,7 +218,7 @@ export default function HomeV2() {
               <br className="hidden sm:block" />
               built in weeks, not years.
             </h1>
-            <p className="mx-auto mt-3 w-full max-w-[420px] font-sans text-[14px] leading-[20px] text-white sm:text-[12px] sm:leading-[18px]">
+            <p className="mx-auto mt-3 w-full max-w-[420px] font-sans text-[14px] leading-[20px] text-white sm:text-[14px] sm:leading-[20px]">
               We deliver architecturally designed modular buildings, built offsite and certified to Australian
               Standards for faster delivery and greater certainty.
             </p>
