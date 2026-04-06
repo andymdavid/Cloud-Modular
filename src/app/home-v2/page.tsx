@@ -226,7 +226,7 @@ export default function HomeV2() {
               <Link
                 href={partnerWithUsMailto}
                 className={cn(
-                  "group gap-2 bg-white text-forest hover:bg-[#d9d4ce]",
+                  "group gap-2 bg-white text-forest hover:bg-[#0d1212] hover:text-white",
                   pageButtonClass,
                 )}
               >
@@ -279,7 +279,7 @@ export default function HomeV2() {
           </p>
           <Link
             href="/about-us"
-            className={cn("group mt-5 bg-white text-forest hover:bg-[#d9d4ce]", pageButtonClass)}
+            className={cn("group mt-5 bg-white text-forest hover:bg-[#0d1212] hover:text-white", pageButtonClass)}
           >
             <span>Who We Are</span>
           </Link>

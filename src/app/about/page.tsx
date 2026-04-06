@@ -47,7 +47,7 @@ export default function AboutPage() {
   const textMuted = "text-white/60";
   const borderDivider = "border-white/5";
   const pageButtonClass = "inline-flex h-[30px] min-w-[138px] items-center justify-center rounded-[2px] px-[16px] py-[6px] text-[11px] font-semibold transition";
-  const btnPrimary = "bg-white text-forest hover:bg-[#d9d4ce]";
+  const btnPrimary = "bg-white text-forest hover:bg-[#0d1212] hover:text-white";
   const sectionLabelClass = "font-cal-sans text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]";
   const sectionHeadingClass = "font-host-grotesk text-[22px] font-medium leading-[24px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]";
   const sectionSubcopyClass = "font-sans text-[14px] leading-[20px] text-white sm:text-[12px] sm:leading-[18px]";

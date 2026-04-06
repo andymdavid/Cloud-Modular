@@ -62,7 +62,7 @@ export function Navigation() {
           <div className="ml-auto flex items-center gap-4">
             <Link
               href={contactHref}
-              className="hidden rounded-sm bg-white px-5 py-2 text-sm font-semibold text-forest transition hover:bg-warm-white md:inline-flex"
+              className="hidden rounded-sm bg-white px-5 py-2 text-sm font-semibold text-forest transition hover:bg-[#0d1212] hover:text-white md:inline-flex"
             >
               Partner With Us
             </Link>

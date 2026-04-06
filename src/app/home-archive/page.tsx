@@ -138,7 +138,7 @@ export default function Home() {
                   href={partnerWithUsMailto}
                   className={cn(
                     buttonVariants({ variant: "primary", size: "sm" }),
-                    "px-5 text-sm font-semibold bg-white text-forest hover:bg-warm-white",
+                    "px-5 text-sm font-semibold bg-white text-forest hover:bg-[#0d1212] hover:text-white",
                   )}
                 >
                   Partner With Us
@@ -227,7 +227,7 @@ export default function Home() {
                 href={partnerWithUsMailto}
                 className={cn(
                   buttonVariants({ variant: "primary", size: "sm" }),
-                  "px-5 text-sm font-semibold bg-white text-forest hover:bg-warm-white",
+                  "px-5 text-sm font-semibold bg-white text-forest hover:bg-[#0d1212] hover:text-white",
                 )}
               >
                 Partner With Us
@@ -521,7 +521,7 @@ export default function Home() {
                   href="/about"
                   className={cn(
                     buttonVariants({ variant: "primary", size: "sm" }),
-                    "px-5 text-sm font-semibold bg-white text-forest hover:bg-warm-white",
+                    "px-5 text-sm font-semibold bg-white text-forest hover:bg-[#0d1212] hover:text-white",
                   )}
                 >
                   About Us
@@ -574,7 +574,7 @@ export default function Home() {
                 href={partnerWithUsMailto}
                 className={cn(
                   buttonVariants({ variant: "primary", size: "sm" }),
-                  "px-5 text-sm font-semibold bg-white text-forest hover:bg-warm-white",
+                  "px-5 text-sm font-semibold bg-white text-forest hover:bg-[#0d1212] hover:text-white",
                 )}
               >
                 Partner With Us

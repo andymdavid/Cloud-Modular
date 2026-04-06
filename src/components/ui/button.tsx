@@ -6,9 +6,9 @@ type ButtonSize = "sm" | "md" | "lg";
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
-    "bg-forest text-white hover:bg-forest-dark focus-visible:outline-forest",
+    "bg-forest text-white hover:bg-[#0d1212] focus-visible:outline-forest",
   secondary:
-    "border-2 border-forest text-forest hover:bg-forest hover:text-white focus-visible:outline-forest",
+    "border-2 border-forest text-forest hover:bg-[#0d1212] hover:text-white focus-visible:outline-forest",
   text: "text-forest underline decoration-2 underline-offset-4 hover:text-forest-dark",
 };
 
