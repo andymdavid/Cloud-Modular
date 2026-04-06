@@ -548,7 +548,7 @@ export default function HomeV2() {
             </div>
           </div>
 
-          <div className="mx-auto mt-10 mb-10 w-full max-w-[1240px] px-6 sm:px-0">
+          <div className="mx-auto mt-10 mb-10 w-full max-w-[1240px]">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {advantageCards.map((card) => (
                 <article
