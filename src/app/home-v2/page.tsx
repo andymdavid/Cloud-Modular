@@ -129,7 +129,7 @@ const whatWeDoCards = [
     topBadge: "[COMING SOON]",
   },
   {
-    image: "",
+    image: "/Header1.png",
     label: "21 Central Terrace, Gosnells",
     title: "21 Central Terrace, Gosnells",
     content: [],
