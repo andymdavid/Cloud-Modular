@@ -382,7 +382,6 @@ export default function HomeV2() {
             </div>
           </div>
         </div>
-        <div className={cn("relative left-1/2 w-screen -translate-x-1/2 border-b", borderDivider)}></div>
       </section>
 
       <section
@@ -557,16 +556,16 @@ export default function HomeV2() {
         </div>
       </section>
 
-      <section className={cn("min-h-[112svh] flex flex-col overflow-hidden sm:h-screen sm:min-h-0", bg, text)}>
+      <section className={cn("flex flex-col overflow-hidden pt-20 pb-24 sm:pt-24 sm:pb-28", bg, text)}>
         <div className="section-container flex flex-1 flex-col">
-          <div className="mt-auto translate-y-10 space-y-4 text-center">
+          <div className="space-y-4 text-center">
             <div className="font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]">
               <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
                 <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
                 <path d="M10 10.5L18 8L18 15.5L10 18L10 10.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
                 <path d="M6 4.5V12L10 18" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
               </svg>
-              <span>Modular Advantage</span>
+              <span>Why Modular Construction</span>
             </div>
             <h2 className={cn("mx-auto max-w-[48rem] font-host-grotesk text-[22px] font-medium leading-[24px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]", text)}>
               Our system blends leading architecture and offsite manufacturing delivering projects that meet Australian standards with speed and precision.
@@ -587,16 +586,71 @@ export default function HomeV2() {
             </div>
           </div>
 
-          <div className="relative left-1/2 mt-auto w-screen -translate-x-1/2 overflow-x-auto px-8 pt-10">
-            <div className="flex gap-2 px-0 pb-8">
+          <div className={cn("relative left-1/2 mt-10 mb-10 hidden w-screen -translate-x-1/2 md:block", borderDivider)}>
+            <div className={cn("border-t border-b", borderDivider)}>
+              <div className="section-container grid grid-cols-3">
+                {advantageCards.slice(0, 3).map((card, index) => (
+                  <article
+                    key={card.label}
+                    className={cn(index < 2 && "border-r", "pt-8 pb-8 px-6 text-left", borderDivider)}
+                  >
+                    <h3 className={cn("font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em]", text)}>
+                      {card.title}
+                    </h3>
+                    <div className="mt-5 space-y-3">
+                      {card.content.map((line) => (
+                        <p key={line} className={cn("text-sm leading-relaxed", textSubtle)}>
+                          {line}
+                        </p>
+                      ))}
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+            <div className={cn("border-b", borderDivider)}>
+              <div className="section-container grid grid-cols-3">
+                {advantageCards.slice(3, 6).map((card, index) => (
+                  <article
+                    key={card.label}
+                    className={cn(index < 2 && "border-r", "pt-8 pb-8 px-6 text-left", borderDivider)}
+                  >
+                    <h3 className={cn("font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em]", text)}>
+                      {card.title}
+                    </h3>
+                    <div className="mt-5 space-y-3">
+                      {card.content.map((line) => (
+                        <p key={line} className={cn("text-sm leading-relaxed", textSubtle)}>
+                          {line}
+                        </p>
+                      ))}
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-10 mb-10 w-full overflow-x-auto md:hidden">
+            <div className="flex gap-6 pl-6 pr-6 pb-2">
               {advantageCards.map((card) => (
-                <AdvantageCard key={card.label} {...card} isLight={isLight} compact cornerRadius="rounded-[3px]" />
+                <article key={card.label} className={cn("min-w-[85vw] border rounded-[16px] pt-10 pb-10 px-6", border)}>
+                  <h3 className={cn("font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em]", text)}>
+                    {card.title}
+                  </h3>
+                  <div className="mt-5 space-y-3">
+                    {card.content.map((line) => (
+                      <p key={line} className={cn("text-sm leading-relaxed", textSubtle)}>
+                        {line}
+                      </p>
+                    ))}
+                  </div>
+                </article>
               ))}
               <div className="min-w-[24px]"></div>
             </div>
           </div>
         </div>
-        <div className={cn("relative left-1/2 w-screen -translate-x-1/2 border-b", borderDivider)}></div>
       </section>
 
       <section className={cn("min-h-[118svh] flex flex-col overflow-hidden sm:h-screen sm:min-h-0", bg, text)}>
