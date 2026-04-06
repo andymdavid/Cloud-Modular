@@ -191,7 +191,7 @@ export default function HomeV2() {
             "pointer-events-none absolute inset-0",
             isLight
               ? "bg-[linear-gradient(180deg,rgba(247,248,248,0.95)_0%,rgba(247,248,248,0.7)_30%,rgba(247,248,248,0.5)_50%,rgba(247,248,248,0.7)_70%,rgba(247,248,248,0.95)_100%)]"
-              : "bg-[linear-gradient(180deg,rgba(8,10,10,0.708)_0%,rgba(8,10,10,0.444)_30%,rgba(8,10,10,0.251)_50%,rgba(8,10,10,0.444)_70%,rgba(8,10,10,0.708)_100%)]"
+              : "bg-[linear-gradient(180deg,rgba(8,10,10,0.814)_0%,rgba(8,10,10,0.511)_30%,rgba(8,10,10,0.289)_50%,rgba(8,10,10,0.511)_70%,rgba(8,10,10,0.814)_100%)]"
           )}
           aria-hidden
         />
