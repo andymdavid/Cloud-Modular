@@ -593,7 +593,7 @@ export default function HomeV2() {
                   key={card.label}
                   className={cn(
                     "h-full rounded-[3px] border bg-white/[0.02] px-6 py-8 text-left sm:px-7",
-                    border
+                    borderSubtle
                   )}
                 >
                   <h3 className={cn("font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em]", text)}>
