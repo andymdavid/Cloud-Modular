@@ -26,8 +26,8 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
   const textColor = isLight ? "text-[#080a0a]" : "text-white";
   const textMuted = isLight ? "text-[#080a0a]/70" : "text-white/70";
   const textDisabled = isLight ? "text-[#080a0a]/40" : "text-white/40";
-  const btnBg = isLight ? "bg-white/90" : "bg-white";
-  const btnText = isLight ? "text-[#080a0a]" : "text-forest";
+  const btnBg = isLight ? "bg-white/90" : "bg-[#1b1c1d]";
+  const btnText = isLight ? "text-[#080a0a]" : "text-white";
   const btnHover = isLight ? "hover:bg-white" : "hover:bg-[#0d1212] hover:text-white";
   const hamburgerBg = isLight ? "bg-[#080a0a]" : "bg-white";
 

@@ -167,7 +167,7 @@ export default function HomeV2() {
   const border = isLight ? "border-[#080a0a]/10" : "border-white/10";
   const borderSubtle = isLight ? "border-[#080a0a]/[0.08]" : "border-white/[0.08]";
   const borderDivider = isLight ? "border-[#080a0a]/5" : "border-white/5";
-  const btnPrimary = isLight ? "bg-[#080a0a] text-white hover:bg-[#1a1c1d]" : "bg-white text-forest hover:bg-[#0d1212] hover:text-white";
+  const btnPrimary = isLight ? "bg-[#080a0a] text-white hover:bg-[#1a1c1d]" : "bg-[#1b1c1d] text-white hover:bg-[#0d1212] hover:text-white";
   const btnSecondary = isLight ? "text-[#080a0a]/80 hover:text-[#080a0a]" : "text-white/80 hover:text-white";
   const pageButtonClass = "inline-flex h-[30px] min-w-[138px] items-center justify-center rounded-[2px] px-[16px] py-[6px] text-[11px] font-semibold transition";
 
@@ -226,7 +226,7 @@ export default function HomeV2() {
               <Link
                 href={partnerWithUsMailto}
                 className={cn(
-                  "group gap-2 bg-white text-forest hover:bg-[#0d1212] hover:text-white",
+                  "group gap-2 bg-[#1b1c1d] text-white hover:bg-[#0d1212] hover:text-white",
                   pageButtonClass,
                 )}
               >
@@ -258,7 +258,7 @@ export default function HomeV2() {
       </section>
 
       <section className="bg-[#010101] px-6 py-20 sm:py-24">
-        <div className="mx-auto grid w-full max-w-[1280px] items-center gap-10 lg:grid-cols-[minmax(0,520px)_minmax(0,1fr)] lg:gap-20">
+        <div className="mx-auto grid w-full max-w-[1280px] items-center gap-10 lg:grid-cols-[minmax(0,520px)_minmax(0,1fr)] lg:gap-24">
           <div className="relative aspect-[4/5] overflow-hidden rounded-[3px]">
             <Image
               src="/About1.png"
@@ -267,7 +267,7 @@ export default function HomeV2() {
               className="object-cover"
             />
           </div>
-          <div className="max-w-[560px] pr-4 text-left lg:pr-8">
+          <div className="max-w-[560px] pr-6 text-left lg:pr-12">
             <div className="font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]">
               <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
                 <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
