@@ -279,15 +279,26 @@ export default function HomeV2() {
             <h2 className="mt-6 font-host-grotesk text-[22px] font-medium leading-[24px] tracking-[-0.03em] text-white sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]">
               Introducing Cloud Modular
             </h2>
-            <p className="mt-3 max-w-[520px] font-sans text-[14px] leading-[20px] text-white sm:text-[12px] sm:leading-[18px]">
+            <p className="mt-3 max-w-[520px] font-sans text-[14px] leading-[20px] text-white sm:text-[14px] sm:leading-[20px]">
               Partnering with leading architectural, engineering, and procurement teams.
             </p>
-            <p className="mt-3 max-w-[520px] font-sans text-[14px] leading-[20px] text-white sm:text-[12px] sm:leading-[18px]">
+            <p className="mt-3 max-w-[520px] font-sans text-[14px] leading-[20px] text-white sm:text-[14px] sm:leading-[20px]">
               Cloud Modular offers clarity and certainty to a changing construction landscape. Construction is harder
               to deliver predictably as labour shortages, rising costs and tighter compliance strain traditional
               methods. Cloud Modular offers a more controlled approach, with clear design, offsite manufacturing and
               assured compliance from the start.
             </p>
+            <div className="mt-5">
+              <Link
+                href={partnerWithUsMailto}
+                className={cn(
+                  pageButtonClass,
+                  btnPrimary,
+                )}
+              >
+                Partner With Us
+              </Link>
+            </div>
           </div>
         </div>
         <div className={cn("relative left-1/2 mt-20 w-screen -translate-x-1/2 border-b", borderDivider)} />
@@ -310,7 +321,7 @@ export default function HomeV2() {
                   Design-informed, precisely manufactured modular<br className="hidden md:block" /> buildings built to Australian standards.
                 </h2>
               </div>
-              <p className="mx-auto mt-3 w-full max-w-[520px] font-sans text-[14px] leading-[20px] text-white sm:text-[12px] sm:leading-[18px]">
+              <p className="mx-auto mt-3 w-full max-w-[520px] font-sans text-[14px] leading-[20px] text-white sm:text-[14px] sm:leading-[20px]">
                 Our system adapts to different sites, budgets and requirements, giving clients more certainty in how their projects are delivered.
               </p>
               <div className="mt-4">
@@ -394,7 +405,7 @@ export default function HomeV2() {
             <h2 className={cn("mt-6 max-w-[48rem] font-host-grotesk text-[22px] font-medium leading-[24px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]", text)}>
               Factory-controlled production and verified engineering ensure full compliance with Australian standards.
             </h2>
-            <p className="mx-auto mt-4 max-w-[440px] font-sans text-[14px] leading-[19px] text-white sm:text-[12px] sm:leading-[17px] md:text-[13px] md:leading-[18px]">
+            <p className="mx-auto mt-4 max-w-[440px] font-sans text-[14px] leading-[20px] text-white sm:text-[14px] sm:leading-[20px]">
               This process gives clients confidence in the accuracy, reliability and compliance of every module before it reaches site.
             </p>
             <div className="mt-4 flex justify-center">
@@ -521,7 +532,7 @@ export default function HomeV2() {
             <h2 className={cn("mx-auto max-w-[48rem] font-host-grotesk text-[22px] font-medium leading-[24px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]", text)}>
               Our system blends leading architecture and offsite manufacturing delivering projects that meet Australian standards with speed and precision.
             </h2>
-            <p className="mx-auto max-w-[520px] font-sans text-[14px] leading-[20px] text-white sm:text-[12px] sm:leading-[18px]">
+            <p className="mx-auto max-w-[520px] font-sans text-[14px] leading-[20px] text-white sm:text-[14px] sm:leading-[20px]">
               The benefits show up across every stage of project delivery.
             </p>
             <div className="flex justify-center">
@@ -604,7 +615,7 @@ export default function HomeV2() {
                 Ready to transform your next development?
               </h2>
             </div>
-            <p className="mx-auto mt-3 w-full max-w-[440px] font-sans text-[14px] leading-[20px] text-white sm:text-[12px] sm:leading-[18px]">
+            <p className="mx-auto mt-3 w-full max-w-[440px] font-sans text-[14px] leading-[20px] text-white sm:text-[14px] sm:leading-[20px]">
               Let&rsquo;s discuss how Cloud Modular can deliver your project faster, more cost-effectively, and sustainably.
             </p>
             <div className="mt-4 flex justify-center">
