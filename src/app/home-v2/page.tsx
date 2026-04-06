@@ -170,6 +170,36 @@ const sectorCards = [
   },
 ];
 
+const qualityRows = [
+  {
+    index: "01",
+    title: "Engineering & Compliance",
+    description: "Each module is certified by qualified engineers and designed to meet all required Australian standards.",
+    image: "/pillar1.webp",
+    alt: "Engineering & Compliance",
+    imageClassName: "object-cover",
+    reverse: false,
+  },
+  {
+    index: "02",
+    title: "Factory-Controlled Production",
+    description: "Modules are built in a stable, repeatable environment that supports consistent quality and precise manufacturing.",
+    image: "/Factory.png",
+    alt: "Factory-Controlled Production",
+    imageClassName: "object-cover",
+    reverse: true,
+  },
+  {
+    index: "03",
+    title: "Independent Quality Checks",
+    description: "Inspections at key stages verify accuracy, workmanship and readiness before modules leave the factory.",
+    image: "/Quality.png",
+    alt: "Independent Quality Checks",
+    imageClassName: "object-cover object-[center_62%]",
+    reverse: false,
+  },
+];
+
 const pillarCardOverlay = {
   backgroundImage: [
     "linear-gradient(to top, rgba(1,1,1,1) 0%, rgba(1,1,1,0.92) 16%, rgba(1,1,1,0.32) 42%, rgba(1,1,1,0.04) 64%, rgba(1,1,1,0) 82%)",
@@ -423,10 +453,10 @@ export default function HomeV2() {
 
       <section
         id="quality-compliance-assurance"
-        className={cn("min-h-[112svh] flex flex-col overflow-hidden sm:h-screen sm:min-h-0 scroll-mt-24", bg)}
+        className={cn("scroll-mt-24", bg)}
       >
-        <div className="section-container flex flex-1 flex-col">
-          <div className="mx-auto mt-auto max-w-[48rem] translate-y-8 text-center">
+        <div className="section-container pt-20 text-center sm:pt-24">
+          <div className="mx-auto max-w-[48rem]">
             <div className="font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]">
               <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
                 <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
@@ -453,101 +483,38 @@ export default function HomeV2() {
               </Link>
             </div>
           </div>
+        </div>
 
-          <div className={cn("relative left-1/2 mt-auto hidden w-screen -translate-x-1/2 border-t border-b md:block", borderDivider)}>
-            <div className="section-container grid grid-cols-3">
-              <div className={cn("border-r pt-8 pb-8 px-6", borderDivider)}>
-                <h3 className={cn("font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]", text)}>Engineering & Compliance</h3>
-                <p className={cn("mt-3 text-sm leading-relaxed", textSubtle)}>
-                  Each module is certified by qualified engineers and designed to meet all required Australian standards.
-                </p>
-                <div className={cn("mt-6 h-[250px] rounded-[3px] overflow-hidden relative", isLight ? "bg-[#e5e6e6]" : "bg-[#0d0e0f]")}>
-                  <Image
-                    src="/pillar1.webp"
-                    alt="Engineering & Compliance"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
+        <div className="mt-12 space-y-0">
+          {qualityRows.map((row) => (
+            <div
+              key={row.title}
+              className={cn("grid min-h-[50vh] grid-cols-1 border-t", borderDivider, "lg:grid-cols-2")}
+            >
+              <div className={cn("relative min-h-[320px]", row.reverse && "lg:order-2")}>
+                <Image
+                  src={row.image}
+                  alt={row.alt}
+                  fill
+                  className={row.imageClassName}
+                />
               </div>
-              <div className={cn("border-r pt-8 pb-8 px-6", borderDivider)}>
-                <h3 className={cn("font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]", text)}>Factory-Controlled Production</h3>
-                <p className={cn("mt-3 text-sm leading-relaxed", textSubtle)}>
-                  Modules are built in a stable, repeatable environment that supports consistent quality and precise manufacturing.
-                </p>
-                <div className={cn("mt-6 h-[250px] rounded-[3px] overflow-hidden relative", isLight ? "bg-[#e5e6e6]" : "bg-[#0d0e0f]")}>
-                  <Image
-                    src="/Factory.png"
-                    alt="Factory-Controlled Production"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              </div>
-              <div className="pt-8 pb-8 px-6">
-                <h3 className={cn("font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]", text)}>Independent Quality Checks</h3>
-                <p className={cn("mt-3 text-sm leading-relaxed", textSubtle)}>
-                  Inspections at key stages verify accuracy, workmanship and readiness before modules leave the factory.
-                </p>
-                <div className={cn("mt-6 h-[250px] rounded-[3px] overflow-hidden relative", isLight ? "bg-[#e5e6e6]" : "bg-[#0d0e0f]")}>
-                  <Image
-                    src="/Quality.png"
-                    alt="Independent Quality Checks"
-                    fill
-                    className="object-cover object-[center_62%]"
-                  />
+              <div className={cn("flex items-center", row.reverse ? "lg:order-1" : "lg:order-2")}>
+                <div className="w-full px-6 py-12 sm:px-10 lg:px-12">
+                  <p className="font-cal-sans text-[11px] uppercase leading-none tracking-[0.08em] text-white/30">
+                    {row.index}
+                  </p>
+                  <h3 className={cn("mt-6 max-w-[26rem] font-host-grotesk text-[22px] font-medium leading-[24px] tracking-[-0.03em]", text)}>
+                    {row.title}
+                  </h3>
+                  <p className={cn("mt-4 max-w-[26rem] text-[14px] leading-[20px]", textSubtle)}>
+                    {row.description}
+                  </p>
                 </div>
               </div>
             </div>
-          </div>
-
-          <div className="mt-12 w-full overflow-x-auto md:hidden">
-            <div className="flex gap-6 pl-6 pr-6 pb-8">
-              <div className={cn("min-w-[85vw] border rounded-[16px] pt-12 pb-12 px-6", border)}>
-                <h3 className={cn("font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]", text)}>Engineering & Compliance</h3>
-                <p className={cn("mt-3 text-sm leading-relaxed", textSubtle)}>
-                  Each module is certified by qualified engineers and designed to meet all required Australian standards.
-                </p>
-                <div className={cn("mt-8 rounded-[24px] overflow-hidden min-h-[440px] relative", isLight ? "bg-[#e5e6e6]" : "bg-[#0d0e0f]")}>
-                  <Image
-                    src="/pillar1.webp"
-                    alt="Engineering & Compliance"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              </div>
-              <div className={cn("min-w-[85vw] border rounded-[16px] pt-12 pb-12 px-6", border)}>
-                <h3 className={cn("font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]", text)}>Factory-Controlled Production</h3>
-                <p className={cn("mt-3 text-sm leading-relaxed", textSubtle)}>
-                  Modules are built in a stable, repeatable environment that supports consistent quality and precise manufacturing.
-                </p>
-                <div className={cn("mt-8 rounded-[24px] overflow-hidden min-h-[440px] relative", isLight ? "bg-[#e5e6e6]" : "bg-[#0d0e0f]")}>
-                  <Image
-                    src="/Factory.png"
-                    alt="Factory-Controlled Production"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              </div>
-              <div className={cn("min-w-[85vw] border rounded-[16px] pt-12 pb-12 px-6", border)}>
-                <h3 className={cn("font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em]", text)}>Independent Quality Checks</h3>
-                <p className={cn("mt-3 text-sm leading-relaxed", textSubtle)}>
-                  Inspections at key stages verify accuracy, workmanship and readiness before modules leave the factory.
-                </p>
-                <div className={cn("mt-8 rounded-[24px] overflow-hidden min-h-[440px] relative", isLight ? "bg-[#e5e6e6]" : "bg-[#0d0e0f]")}>
-                  <Image
-                    src="/Quality.png"
-                    alt="Independent Quality Checks"
-                    fill
-                    className="object-cover object-[center_62%]"
-                  />
-                </div>
-              </div>
-              <div className="min-w-[24px]"></div>
-            </div>
-          </div>
+          ))}
+          <div className={cn("relative left-1/2 w-screen -translate-x-1/2 border-b", borderDivider)}></div>
         </div>
       </section>
 
