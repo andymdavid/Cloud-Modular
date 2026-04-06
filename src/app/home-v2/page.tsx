@@ -586,55 +586,16 @@ export default function HomeV2() {
             </div>
           </div>
 
-          <div className={cn("relative left-1/2 mt-10 mb-10 hidden w-screen -translate-x-1/2 md:block", borderDivider)}>
-            <div className={cn("border-t border-b", borderDivider)}>
-              <div className="section-container grid grid-cols-3">
-                {advantageCards.slice(0, 3).map((card, index) => (
-                  <article
-                    key={card.label}
-                    className={cn(index < 2 && "border-r", "pt-8 pb-8 px-6 text-left", borderDivider)}
-                  >
-                    <h3 className={cn("font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em]", text)}>
-                      {card.title}
-                    </h3>
-                    <div className="mt-5 space-y-3">
-                      {card.content.map((line) => (
-                        <p key={line} className={cn("text-sm leading-relaxed", textSubtle)}>
-                          {line}
-                        </p>
-                      ))}
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </div>
-            <div className={cn("border-b", borderDivider)}>
-              <div className="section-container grid grid-cols-3">
-                {advantageCards.slice(3, 6).map((card, index) => (
-                  <article
-                    key={card.label}
-                    className={cn(index < 2 && "border-r", "pt-8 pb-8 px-6 text-left", borderDivider)}
-                  >
-                    <h3 className={cn("font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em]", text)}>
-                      {card.title}
-                    </h3>
-                    <div className="mt-5 space-y-3">
-                      {card.content.map((line) => (
-                        <p key={line} className={cn("text-sm leading-relaxed", textSubtle)}>
-                          {line}
-                        </p>
-                      ))}
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-10 mb-10 w-full overflow-x-auto md:hidden">
-            <div className="flex gap-6 pl-6 pr-6 pb-2">
+          <div className="mx-auto mt-10 mb-10 w-full max-w-[1240px] px-6 sm:px-0">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {advantageCards.map((card) => (
-                <article key={card.label} className={cn("min-w-[85vw] border rounded-[16px] pt-10 pb-10 px-6", border)}>
+                <article
+                  key={card.label}
+                  className={cn(
+                    "h-full rounded-[3px] border bg-white/[0.02] px-6 py-8 text-left sm:px-7",
+                    border
+                  )}
+                >
                   <h3 className={cn("font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em]", text)}>
                     {card.title}
                   </h3>
@@ -647,7 +608,6 @@ export default function HomeV2() {
                   </div>
                 </article>
               ))}
-              <div className="min-w-[24px]"></div>
             </div>
           </div>
         </div>
