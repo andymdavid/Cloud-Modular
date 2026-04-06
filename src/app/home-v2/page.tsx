@@ -422,7 +422,7 @@ export default function HomeV2() {
                     src="/pillar1.webp"
                     alt="Engineering & Compliance"
                     fill
-                    className={cn("object-cover", isLight ? "brightness-100" : "brightness-[0.65]")}
+                    className="object-cover"
                   />
                 </div>
               </div>
@@ -436,7 +436,7 @@ export default function HomeV2() {
                     src="/Factory.png"
                     alt="Factory-Controlled Production"
                     fill
-                    className={cn("object-cover", isLight ? "brightness-100" : "brightness-[0.65]")}
+                    className="object-cover"
                   />
                 </div>
               </div>
@@ -450,7 +450,7 @@ export default function HomeV2() {
                     src="/Quality.png"
                     alt="Independent Quality Checks"
                     fill
-                    className={cn("object-cover object-[center_62%]", isLight ? "brightness-100" : "brightness-[0.65]")}
+                    className="object-cover object-[center_62%]"
                   />
                 </div>
               </div>
@@ -469,7 +469,7 @@ export default function HomeV2() {
                     src="/pillar1.webp"
                     alt="Engineering & Compliance"
                     fill
-                    className={cn("object-cover", isLight ? "brightness-100" : "brightness-[0.65]")}
+                    className="object-cover"
                   />
                 </div>
               </div>
@@ -483,7 +483,7 @@ export default function HomeV2() {
                     src="/Factory.png"
                     alt="Factory-Controlled Production"
                     fill
-                    className={cn("object-cover", isLight ? "brightness-100" : "brightness-[0.65]")}
+                    className="object-cover"
                   />
                 </div>
               </div>
@@ -497,7 +497,7 @@ export default function HomeV2() {
                     src="/Quality.png"
                     alt="Independent Quality Checks"
                     fill
-                    className={cn("object-cover object-[center_62%]", isLight ? "brightness-100" : "brightness-[0.65]")}
+                    className="object-cover object-[center_62%]"
                   />
                 </div>
               </div>
