@@ -167,7 +167,7 @@ export default function HomeV2() {
   const border = isLight ? "border-[#080a0a]/10" : "border-white/10";
   const borderSubtle = isLight ? "border-[#080a0a]/[0.08]" : "border-white/[0.08]";
   const borderDivider = isLight ? "border-[#080a0a]/5" : "border-white/5";
-  const btnPrimary = isLight ? "bg-[#080a0a] text-white hover:bg-[#1a1c1d]" : "bg-white text-forest hover:bg-white/[0.02] hover:text-white";
+  const btnPrimary = isLight ? "bg-[#080a0a] text-white hover:bg-[#1a1c1d]" : "bg-white text-forest hover:bg-[#000000] hover:text-white";
   const btnSecondary = isLight ? "text-[#080a0a]/80 hover:text-[#080a0a]" : "text-white/80 hover:text-white";
   const pageButtonClass = "inline-flex h-[30px] min-w-[138px] items-center justify-center rounded-[2px] px-[16px] py-[6px] text-[11px] font-semibold transition";
 
@@ -226,7 +226,7 @@ export default function HomeV2() {
               <Link
                 href={partnerWithUsMailto}
                 className={cn(
-                  "group gap-2 bg-white text-forest hover:bg-white/[0.02] hover:text-white",
+                  "group gap-2 bg-white text-forest hover:bg-[#000000] hover:text-white",
                   pageButtonClass,
                 )}
               >
