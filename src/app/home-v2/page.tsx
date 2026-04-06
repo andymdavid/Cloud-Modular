@@ -191,7 +191,7 @@ export default function HomeV2() {
             "pointer-events-none absolute inset-0",
             isLight
               ? "bg-[linear-gradient(180deg,rgba(247,248,248,0.95)_0%,rgba(247,248,248,0.7)_30%,rgba(247,248,248,0.5)_50%,rgba(247,248,248,0.7)_70%,rgba(247,248,248,0.95)_100%)]"
-              : "bg-[linear-gradient(180deg,rgba(8,10,10,0.55)_0%,rgba(8,10,10,0.345)_30%,rgba(8,10,10,0.195)_50%,rgba(8,10,10,0.345)_70%,rgba(8,10,10,0.55)_100%)]"
+              : "bg-[linear-gradient(180deg,rgba(8,10,10,0.616)_0%,rgba(8,10,10,0.386)_30%,rgba(8,10,10,0.218)_50%,rgba(8,10,10,0.386)_70%,rgba(8,10,10,0.616)_100%)]"
           )}
           aria-hidden
         />
@@ -201,7 +201,7 @@ export default function HomeV2() {
         />
         {/* Content */}
         <div className="relative z-10 flex h-full items-center justify-center px-6 pt-12 lg:px-20">
-          <div className="mx-auto w-full max-w-4xl -translate-y-10 text-center sm:-translate-y-8 lg:translate-y-0">
+          <div className="mx-auto w-full max-w-4xl -translate-y-14 text-center sm:-translate-y-12 lg:-translate-y-6">
             {/* Cloud Icon */}
             <div className="flex justify-center mb-6">
               <Image
