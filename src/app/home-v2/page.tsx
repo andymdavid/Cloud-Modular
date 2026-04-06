@@ -359,12 +359,12 @@ export default function HomeV2() {
                       className="object-cover brightness-[0.82]"
                     />
                     <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.02)_0%,rgba(0,0,0,0.12)_42%,rgba(0,0,0,0.62)_100%)]" />
-                    <div className="absolute inset-x-0 bottom-0 px-5 pb-5 pt-12 sm:px-6 sm:pb-6">
+                    <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 px-5 pb-5 pt-12 sm:px-6 sm:pb-6">
                       <h3 className="font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em] text-white sm:text-[20px] sm:leading-[22px]">
                         {card.title}
                       </h3>
                       {card.topBadge && (
-                        <span className="absolute bottom-5 right-5 inline-flex h-[20px] items-center rounded-[2px] border border-white/20 px-2 font-cal-sans text-[9px] uppercase leading-none tracking-[0.08em] text-white/60 sm:bottom-6 sm:right-6">
+                        <span className="mb-[1px] inline-flex h-[20px] shrink-0 items-center rounded-[2px] border border-white/20 px-2 font-cal-sans text-[9px] uppercase leading-none tracking-[0.08em] text-white/60">
                           {card.topBadge.replace(/^\[|\]$/g, "")}
                         </span>
                       )}
