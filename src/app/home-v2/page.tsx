@@ -268,16 +268,21 @@ export default function HomeV2() {
             />
           </div>
           <div className="max-w-[560px] text-left">
-            <div className="font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.12em] text-white/30">
+            <div className="font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]">
+              <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
+                <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+                <path d="M10 10.5L18 8L18 15.5L10 18L10 10.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+                <path d="M6 4.5V12L10 18" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+              </svg>
               <span>About Us</span>
             </div>
-            <h2 className="mt-6 font-host-grotesk text-[44px] font-medium leading-[0.96] tracking-[-0.04em] text-white sm:text-[54px] lg:text-[62px]">
+            <h2 className="mt-6 font-host-grotesk text-[22px] font-medium leading-[24px] tracking-[-0.03em] text-white sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]">
               Introducing Cloud Modular
             </h2>
-            <p className="mt-6 max-w-[540px] font-cal-sans text-[13px] uppercase leading-[1.35] tracking-[0.08em] text-white/45">
+            <p className="mt-3 max-w-[520px] font-sans text-[14px] leading-[20px] text-white sm:text-[12px] sm:leading-[18px]">
               Partnering with leading architectural, engineering, and procurement teams.
             </p>
-            <p className="mt-10 max-w-[620px] font-sans text-[18px] leading-[1.55] text-white/78">
+            <p className="mt-3 max-w-[520px] font-sans text-[14px] leading-[20px] text-white sm:text-[12px] sm:leading-[18px]">
               Cloud Modular offers clarity and certainty to a changing construction landscape. Construction is harder
               to deliver predictably as labour shortages, rising costs and tighter compliance strain traditional
               methods. Cloud Modular offers a more controlled approach, with clear design, offsite manufacturing and
