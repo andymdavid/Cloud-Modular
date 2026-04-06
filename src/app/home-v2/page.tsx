@@ -137,6 +137,39 @@ const whatWeDoCards = [
   },
 ];
 
+const sectorCards = [
+  {
+    image: "/Sec_Card_1.webp",
+    title: "Commercial Modular Buildings",
+    description: "Office buildings, retail spaces, and mixed-use commercial developments delivered with modular precision.",
+  },
+  {
+    image: "/About1.png",
+    title: "Multi-Residential Modular Construction",
+    description: "Apartments, townhouses, and residential developments delivered faster with factory-built modular construction.",
+  },
+  {
+    image: "/Quality.png",
+    title: "Healthcare & Aged Care Modular Facilities",
+    description: "Medical facilities and aged care residences built to Australian healthcare standards with modular construction methods.",
+  },
+  {
+    image: "/Factory.png",
+    title: "Education & Community Modular Buildings",
+    description: "Schools, libraries, and community centres delivered with precision-engineered modular construction.",
+  },
+  {
+    image: "/Header1.png",
+    title: "Infrastructure Modular Construction",
+    description: "Transit facilities and public infrastructure projects built with offsite modular construction methods.",
+  },
+  {
+    image: "/Header2.png",
+    title: "Hotels & Accommodation Modular Buildings",
+    description: "Hotels, resorts, and short-term accommodation built faster with factory-controlled modular construction.",
+  },
+];
+
 const pillarCardOverlay = {
   backgroundImage: [
     "linear-gradient(to top, rgba(1,1,1,1) 0%, rgba(1,1,1,0.92) 16%, rgba(1,1,1,0.32) 42%, rgba(1,1,1,0.04) 64%, rgba(1,1,1,0) 82%)",
@@ -575,7 +608,51 @@ export default function HomeV2() {
         <div className={cn("relative left-1/2 w-screen -translate-x-1/2 border-b", borderDivider)}></div>
       </section>
 
-      <section className={cn("h-screen", bg)}></section>
+      <section className={cn("py-20 sm:py-24", bg, text)}>
+        <div className="section-container">
+          <div className="max-w-[48rem]">
+            <div className="font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]">
+              <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
+                <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+                <path d="M10 10.5L18 8L18 15.5L10 18L10 10.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+                <path d="M6 4.5V12L10 18" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
+              </svg>
+              <span>Sector Applications</span>
+            </div>
+            <h2 className="mt-6 font-host-grotesk text-[22px] font-medium leading-[24px] tracking-[-0.03em] sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]">
+              Modular solutions across every sector
+            </h2>
+            <p className="mt-3 max-w-[520px] font-sans text-[14px] leading-[20px] text-white sm:text-[14px] sm:leading-[20px]">
+              Our system adapts across commercial, residential, civic and specialist asset classes, giving clients a faster and more controlled path to delivery.
+            </p>
+          </div>
+
+          <div className="mt-10 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
+            {sectorCards.map((card) => (
+              <article
+                key={card.title}
+                className="relative aspect-[1.08/1] overflow-hidden rounded-[3px] border border-white/5 bg-[#0d0e0f]"
+              >
+                <Image
+                  src={card.image}
+                  alt={card.title}
+                  fill
+                  className="object-cover brightness-[0.82]"
+                />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.04)_0%,rgba(0,0,0,0.14)_42%,rgba(0,0,0,0.74)_100%)]" />
+                <div className="absolute inset-x-0 bottom-0 px-5 pb-5 sm:px-6 sm:pb-6">
+                  <h3 className="max-w-[18ch] font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em] text-white sm:text-[20px] sm:leading-[22px]">
+                    {card.title}
+                  </h3>
+                  <p className="mt-3 max-w-[28ch] font-sans text-[14px] leading-[20px] text-white/70">
+                    {card.description}
+                  </p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <section className={cn("min-h-[118svh] flex flex-col overflow-hidden sm:h-screen sm:min-h-0", bg, text)}>
         <div className="section-container flex flex-1 flex-col">
