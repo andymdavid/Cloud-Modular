@@ -179,7 +179,7 @@ export default function HomeV2() {
       <section className="relative h-screen min-h-[600px] overflow-hidden">
         {/* Background Image */}
         <Image
-          src="/Header1.png"
+          src="/Header2.png"
           alt="Modern modular building exterior"
           fill
           priority
