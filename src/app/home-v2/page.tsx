@@ -175,7 +175,7 @@ const qualityRows = [
     index: "01",
     title: "Engineering & Compliance",
     description: "Each module is certified by qualified engineers and designed to meet all required Australian standards.",
-    image: "/pillar1.webp",
+    image: "/Header1.png",
     alt: "Engineering & Compliance",
     imageClassName: "object-cover",
     reverse: false,
