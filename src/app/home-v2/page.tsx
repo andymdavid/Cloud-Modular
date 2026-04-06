@@ -438,7 +438,7 @@ export default function HomeV2() {
                         {card.title}
                       </h3>
                       {card.topBadge && (
-                        <span className="ml-auto inline-flex h-[20px] items-center rounded-[2px] border border-white/20 px-2 font-cal-sans text-[9px] uppercase leading-none tracking-[0.08em] text-white/60">
+                        <span className="ml-auto inline-flex h-[22px] items-center whitespace-nowrap rounded-[2px] border border-white/20 px-3 font-cal-sans text-[9px] uppercase leading-none tracking-[0.08em] text-white/60">
                           {card.topBadge.replace(/^\[|\]$/g, "")}
                         </span>
                       )}
