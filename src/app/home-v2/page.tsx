@@ -424,13 +424,6 @@ export default function HomeV2() {
                     fill
                     className={cn("object-cover", isLight ? "brightness-100" : "brightness-[0.65]")}
                   />
-                  {!isLight && (
-                    <div
-                      className="absolute inset-0 pointer-events-none"
-                      style={pillarCardOverlay}
-                      aria-hidden="true"
-                    ></div>
-                  )}
                 </div>
               </div>
               <div className={cn("border-r pt-8 pb-8 px-6", borderDivider)}>
@@ -445,13 +438,6 @@ export default function HomeV2() {
                     fill
                     className={cn("object-cover", isLight ? "brightness-100" : "brightness-[0.65]")}
                   />
-                  {!isLight && (
-                    <div
-                      className="absolute inset-0 pointer-events-none"
-                      style={pillarCardOverlay}
-                      aria-hidden="true"
-                    ></div>
-                  )}
                 </div>
               </div>
               <div className="pt-8 pb-8 px-6">
@@ -466,13 +452,6 @@ export default function HomeV2() {
                     fill
                     className={cn("object-cover", isLight ? "brightness-100" : "brightness-[0.65]")}
                   />
-                  {!isLight && (
-                    <div
-                      className="absolute inset-0 pointer-events-none"
-                      style={pillarCardOverlay}
-                      aria-hidden="true"
-                    ></div>
-                  )}
                 </div>
               </div>
             </div>
@@ -492,13 +471,6 @@ export default function HomeV2() {
                     fill
                     className={cn("object-cover", isLight ? "brightness-100" : "brightness-[0.65]")}
                   />
-                  {!isLight && (
-                    <div
-                      className="absolute inset-0 pointer-events-none"
-                      style={pillarCardOverlay}
-                      aria-hidden="true"
-                    ></div>
-                  )}
                 </div>
               </div>
               <div className={cn("min-w-[85vw] border rounded-[16px] pt-12 pb-12 px-6", border)}>
@@ -513,13 +485,6 @@ export default function HomeV2() {
                     fill
                     className={cn("object-cover", isLight ? "brightness-100" : "brightness-[0.65]")}
                   />
-                  {!isLight && (
-                    <div
-                      className="absolute inset-0 pointer-events-none"
-                      style={pillarCardOverlay}
-                      aria-hidden="true"
-                    ></div>
-                  )}
                 </div>
               </div>
               <div className={cn("min-w-[85vw] border rounded-[16px] pt-12 pb-12 px-6", border)}>
@@ -534,13 +499,6 @@ export default function HomeV2() {
                     fill
                     className={cn("object-cover", isLight ? "brightness-100" : "brightness-[0.65]")}
                   />
-                  {!isLight && (
-                    <div
-                      className="absolute inset-0 pointer-events-none"
-                      style={pillarCardOverlay}
-                      aria-hidden="true"
-                    ></div>
-                  )}
                 </div>
               </div>
               <div className="min-w-[24px]"></div>
