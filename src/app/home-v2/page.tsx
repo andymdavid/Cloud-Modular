@@ -293,7 +293,7 @@ export default function HomeV2() {
         <div className={cn("relative left-1/2 mt-20 w-screen -translate-x-1/2 border-b", borderDivider)} />
       </section>
 
-      <section className={cn("min-h-[112svh] flex flex-col justify-between overflow-hidden sm:h-[100svh] sm:min-h-0", bg, text)}>
+      <section className={cn("flex flex-col py-20 sm:py-24", bg, text)}>
         <div className="section-container flex flex-1 flex-col">
           <div className="flex flex-1 items-center justify-center pt-12 sm:pt-16">
             <div className="text-center">
