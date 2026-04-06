@@ -360,7 +360,7 @@ export default function HomeV2() {
                     />
                     <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.015)_0%,rgba(0,0,0,0.072)_38%,rgba(0,0,0,0.42)_100%)]" />
                     <div className="absolute inset-x-0 bottom-0 flex h-[112px] items-end px-5 pb-9 sm:h-[120px] sm:px-6 sm:pb-10">
-                      <h3 className="font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] text-white md:whitespace-nowrap">
+                      <h3 className="font-host-grotesk text-[22px] font-medium leading-[24px] tracking-[-0.03em] text-white md:whitespace-nowrap">
                         {card.title}
                       </h3>
                       {card.topBadge && (
