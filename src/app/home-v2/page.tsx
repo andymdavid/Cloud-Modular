@@ -90,21 +90,21 @@ const advantageCards = [
 
 const partnerLogos = [
   {
-    src: "/Prism_Logo.png",
+    src: "/Prism_Logo.webp",
     alt: "Prism Design Studio logo",
     width: 200,
     height: 80,
     className: "max-h-[26px] w-auto",
   },
   {
-    src: "/DM_Logo.png",
+    src: "/DM_Logo.webp",
     alt: "DM logo",
     width: 200,
     height: 80,
     className: "max-h-[23px] w-auto",
   },
   {
-    src: "/Decobu-Logo.png",
+    src: "/Decobu-Logo.webp",
     alt: "Decobu logo",
     width: 200,
     height: 80,
@@ -129,7 +129,7 @@ const whatWeDoCards = [
     topBadge: "[COMING SOON]",
   },
   {
-    image: "/Header1.png",
+    image: "/Header1.webp",
     label: "21 Central Terrace, Gosnells",
     title: "21 Central Terrace, Gosnells",
     content: [],
@@ -139,32 +139,32 @@ const whatWeDoCards = [
 
 const sectorCards = [
   {
-    image: "/office.png",
+    image: "/office.webp",
     title: "Commercial Modular Buildings",
     description: "Office buildings, retail spaces, and mixed-use commercial developments delivered with modular precision.",
   },
   {
-    image: "/Resi.png",
+    image: "/Resi.webp",
     title: "Multi-Residential Modular Construction",
     description: "Apartments, townhouses, and residential developments delivered faster with factory-built modular construction.",
   },
   {
-    image: "/aged-care.png",
+    image: "/aged-care.webp",
     title: "Healthcare & Aged Care Modular Facilities",
     description: "Medical facilities and aged care residences built to Australian healthcare standards with modular construction methods.",
   },
   {
-    image: "/school.png",
+    image: "/school.webp",
     title: "Education & Community Modular Buildings",
     description: "Schools, libraries, and community centres delivered with precision-engineered modular construction.",
   },
   {
-    image: "/Infra.png",
+    image: "/Infra.webp",
     title: "Infrastructure Modular Construction",
     description: "Transit facilities and public infrastructure projects built with offsite modular construction methods.",
   },
   {
-    image: "/hotel.png",
+    image: "/hotel.webp",
     title: "Hotels & Accommodation Modular Buildings",
     description: "Hotels, resorts, and short-term accommodation built faster with factory-controlled modular construction.",
   },
@@ -175,7 +175,7 @@ const qualityRows = [
     index: "01",
     title: "Engineering & Compliance",
     description: "Each module is certified by qualified engineers and designed to meet all required Australian standards.",
-    image: "/Header1.png",
+    image: "/Header1.webp",
     alt: "Engineering & Compliance",
     imageClassName: "object-cover",
     reverse: false,
@@ -184,7 +184,7 @@ const qualityRows = [
     index: "02",
     title: "Factory-Controlled Production",
     description: "Modules are built in a stable, repeatable environment that supports consistent quality and precise manufacturing.",
-    image: "/Factory.png",
+    image: "/Factory.webp",
     alt: "Factory-Controlled Production",
     imageClassName: "object-cover",
     reverse: true,
@@ -193,7 +193,7 @@ const qualityRows = [
     index: "03",
     title: "Independent Quality Checks",
     description: "Inspections at key stages verify accuracy, workmanship and readiness before modules leave the factory.",
-    image: "/Checks.png",
+    image: "/Checks.webp",
     alt: "Independent Quality Checks",
     imageClassName: "object-cover object-[center_62%]",
     reverse: false,
@@ -242,7 +242,7 @@ export default function HomeV2() {
       <section className="relative h-screen min-h-[600px] overflow-hidden">
         {/* Background Image */}
         <Image
-          src="/Header2.png"
+          src="/Header2.webp"
           alt="Modern modular building exterior"
           fill
           priority
@@ -268,7 +268,7 @@ export default function HomeV2() {
             {/* Cloud Icon */}
             <div className="flex justify-center mb-6">
               <Image
-                src="/Cloud_Icon.png"
+                src="/Cloud_Icon.webp"
                 alt=""
                 width={32}
                 height={32}
@@ -324,7 +324,7 @@ export default function HomeV2() {
         <div className="mx-auto grid w-full max-w-[1280px] items-center gap-10 lg:grid-cols-[minmax(0,520px)_minmax(0,1fr)] lg:gap-24">
           <div className="relative aspect-[4/5] overflow-hidden rounded-[3px]">
             <Image
-              src="/About1.png"
+              src="/About1.webp"
               alt="Cloud Modular project exterior"
               fill
               className="object-cover"

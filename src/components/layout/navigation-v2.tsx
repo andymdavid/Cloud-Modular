@@ -91,7 +91,7 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
           {/* Center logo */}
           <Link href="/" className="absolute left-1/2 z-10 flex shrink-0 -translate-x-1/2 select-none items-center" onClick={closeMenu}>
             <Image
-              src="/logo.png"
+              src="/logo.webp"
               alt="Cloud Modular"
               width={156}
               height={156}
@@ -164,7 +164,7 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
             <div className="flex items-center justify-between">
               <Link href="/" className="flex shrink-0 items-center" onClick={closeMenu}>
                 <Image
-                  src="/logo.png"
+                  src="/logo.webp"
                   alt="Cloud Modular"
                   width={108}
                   height={108}

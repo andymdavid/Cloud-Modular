@@ -161,7 +161,7 @@ export default function AboutPage() {
               <div className="space-y-4">
                 <div className="flex min-h-[160px] items-center justify-center rounded-lg bg-[#0f1111] px-10 py-12 text-center">
                   <Image
-                    src="/Prism_Logo.png"
+                    src="/Prism_Logo.webp"
                     alt="Prism Design Studio logo"
                     width={400}
                     height={160}
@@ -176,7 +176,7 @@ export default function AboutPage() {
               <div className="space-y-4">
                 <div className="flex min-h-[160px] items-center justify-center rounded-lg bg-[#0f1111] px-10 py-12 text-center">
                   <Image
-                    src="/Decobu-Logo.png"
+                    src="/Decobu-Logo.webp"
                     alt="Decobu logo"
                     width={200}
                     height={80}
@@ -191,7 +191,7 @@ export default function AboutPage() {
               <div className="space-y-4">
                 <div className="flex min-h-[160px] items-center justify-center rounded-lg bg-[#0f1111] px-10 py-12 text-center">
                   <Image
-                    src="/DM_Logo.png"
+                    src="/DM_Logo.webp"
                     alt="DM logo"
                     width={270}
                     height={108}

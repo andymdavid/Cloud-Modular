@@ -12,7 +12,7 @@ export function Footer() {
         <div>
           <Link href="/" className="inline-block">
             <Image
-              src="/logo.png"
+              src="/logo.webp"
               alt="Cloud Modular"
               width={160}
               height={40}
