@@ -89,13 +89,14 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
           </nav>
 
           {/* Center logo */}
-          <Link href="/" className="absolute left-1/2 z-10 flex shrink-0 -translate-x-1/2 items-center" onClick={closeMenu}>
+          <Link href="/" className="absolute left-1/2 z-10 flex shrink-0 -translate-x-1/2 select-none items-center" onClick={closeMenu}>
             <Image
               src="/logo.png"
               alt="Cloud Modular"
               width={156}
               height={156}
-              className={cn(isLight && "invert")}
+              className={cn("select-none", isLight && "invert")}
+              draggable={false}
             />
           </Link>
 
