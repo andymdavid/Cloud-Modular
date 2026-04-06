@@ -193,7 +193,7 @@ const qualityRows = [
     index: "03",
     title: "Independent Quality Checks",
     description: "Inspections at key stages verify accuracy, workmanship and readiness before modules leave the factory.",
-    image: "/Quality.png",
+    image: "/Checks.png",
     alt: "Independent Quality Checks",
     imageClassName: "object-cover object-[center_62%]",
     reverse: false,
