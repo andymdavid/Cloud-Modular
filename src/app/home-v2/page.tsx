@@ -595,7 +595,7 @@ export default function HomeV2() {
                   </h3>
                   <div className="mt-5 space-y-3">
                     {card.content.map((line) => (
-                      <p key={line} className={cn("text-sm leading-relaxed", textSubtle)}>
+                      <p key={line} className={cn("text-[14px] leading-[20px]", textSubtle)}>
                         {line}
                       </p>
                     ))}
@@ -637,9 +637,9 @@ export default function HomeV2() {
                   src={card.image}
                   alt={card.title}
                   fill
-                  className="object-cover brightness-[0.82]"
+                  className="object-cover brightness-[0.62] saturate-[0.9]"
                 />
-                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.04)_0%,rgba(0,0,0,0.14)_42%,rgba(0,0,0,0.74)_100%)]" />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.08)_0%,rgba(0,0,0,0.22)_42%,rgba(0,0,0,0.84)_100%)]" />
                 <div className="absolute inset-x-0 bottom-0 px-5 pb-5 sm:px-6 sm:pb-6">
                   <h3 className="max-w-[18ch] font-host-grotesk text-[18px] font-medium leading-[20px] tracking-[-0.03em] text-white sm:text-[20px] sm:leading-[22px]">
                     {card.title}
