@@ -433,7 +433,7 @@ export default function HomeV2() {
                 </p>
                 <div className={cn("mt-6 h-[250px] rounded-[3px] overflow-hidden relative", isLight ? "bg-[#e5e6e6]" : "bg-[#0d0e0f]")}>
                   <Image
-                    src="/pillar2.webp"
+                    src="/Factory.png"
                     alt="Factory-Controlled Production"
                     fill
                     className={cn("object-cover", isLight ? "brightness-100" : "brightness-[0.65]")}
@@ -447,7 +447,7 @@ export default function HomeV2() {
                 </p>
                 <div className={cn("mt-6 h-[250px] rounded-[3px] overflow-hidden relative", isLight ? "bg-[#e5e6e6]" : "bg-[#0d0e0f]")}>
                   <Image
-                    src="/pillar3.webp"
+                    src="/Quality.png"
                     alt="Independent Quality Checks"
                     fill
                     className={cn("object-cover", isLight ? "brightness-100" : "brightness-[0.65]")}
@@ -480,7 +480,7 @@ export default function HomeV2() {
                 </p>
                 <div className={cn("mt-8 rounded-[24px] overflow-hidden min-h-[440px] relative", isLight ? "bg-[#e5e6e6]" : "bg-[#0d0e0f]")}>
                   <Image
-                    src="/pillar2.webp"
+                    src="/Factory.png"
                     alt="Factory-Controlled Production"
                     fill
                     className={cn("object-cover", isLight ? "brightness-100" : "brightness-[0.65]")}
@@ -494,7 +494,7 @@ export default function HomeV2() {
                 </p>
                 <div className={cn("mt-8 rounded-[24px] overflow-hidden min-h-[440px] relative", isLight ? "bg-[#e5e6e6]" : "bg-[#0d0e0f]")}>
                   <Image
-                    src="/pillar3.webp"
+                    src="/Quality.png"
                     alt="Independent Quality Checks"
                     fill
                     className={cn("object-cover", isLight ? "brightness-100" : "brightness-[0.65]")}
