@@ -257,61 +257,35 @@ export default function HomeV2() {
         </div>
       </section>
 
-      <section className="flex min-h-screen flex-col bg-[#010101] px-6 pt-20">
-        <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col items-center justify-center text-center">
-          <div
-            className="font-cal-sans mb-8 inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]"
-          >
-            <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
-              <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
-              <path d="M10 10.5L18 8L18 15.5L10 18L10 10.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
-              <path d="M6 4.5V12L10 18" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
-            </svg>
-            <span>Introducing Cloud Modular</span>
+      <section className="bg-[#010101] px-6 py-20 sm:py-24">
+        <div className="mx-auto grid w-full max-w-[1280px] items-center gap-10 lg:grid-cols-[minmax(0,520px)_minmax(0,1fr)] lg:gap-16">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-[3px]">
+            <Image
+              src="/About1.png"
+              alt="Cloud Modular project exterior"
+              fill
+              className="object-cover"
+            />
           </div>
-          <h2 className="max-w-[48rem] font-host-grotesk text-[22px] font-medium leading-[24px] tracking-[-0.03em] text-white sm:text-[27px] sm:leading-[29px] lg:text-[32px] lg:leading-[34px]">
-            Cloud Modular offers clarity and certainty to a changing construction landscape.
-          </h2>
-          <p className="mx-auto mt-3 w-full max-w-[520px] font-sans text-[14px] leading-[20px] text-white sm:text-[12px] sm:leading-[18px]">
-            Construction is harder to deliver predictably as labour shortages, rising costs and tighter compliance
-            strain traditional methods. Cloud Modular offers a more controlled approach, with clear design, offsite
-            manufacturing and assured compliance from the start.
-          </p>
-          <Link
-            href="/about-us"
-            className={cn("group mt-5 bg-white text-forest hover:bg-[#0d1212] hover:text-white", pageButtonClass)}
-          >
-            <span>Who We Are</span>
-          </Link>
-        </div>
-        <div className={cn("relative left-1/2 mt-16 w-screen -translate-x-1/2 border-t", borderDivider)} />
-        <div className="mx-auto w-full max-w-[66.666vw] bg-[#010101] text-white">
-          <div className="flex min-h-[54px] w-full flex-col md:flex-row">
-            <div className={cn("flex shrink-0 items-center justify-center px-4 py-3 text-center text-[11px] font-medium text-white md:w-[260px] md:justify-start md:text-left md:border-r", borderDivider, "border-b md:border-b-0")}>
+          <div className="max-w-[560px] text-left">
+            <div className="font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.12em] text-white/30">
+              <span>About Us</span>
+            </div>
+            <h2 className="mt-6 font-host-grotesk text-[44px] font-medium leading-[0.96] tracking-[-0.04em] text-white sm:text-[54px] lg:text-[62px]">
+              Introducing Cloud Modular
+            </h2>
+            <p className="mt-6 max-w-[540px] font-cal-sans text-[13px] uppercase leading-[1.35] tracking-[0.08em] text-white/45">
               Partnering with leading architectural, engineering, and procurement teams.
-            </div>
-            <div className="relative flex flex-1 items-center justify-center overflow-hidden">
-              <div className="marquee-track flex w-max items-center py-3">
-                {[0, 1].map((groupIndex) => (
-                  <div key={groupIndex} className="marquee-group flex shrink-0 items-center gap-12 px-4 md:gap-16">
-                    {partnerLogosMarquee.map((logo, index) => (
-                      <div key={`${logo.src}-${groupIndex}-${index}`} className="flex h-6 min-w-[132px] items-center justify-center">
-                        <Image
-                          src={logo.src}
-                          alt={logo.alt}
-                          width={logo.width}
-                          height={logo.height}
-                          className={logo.className}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                ))}
-              </div>
-            </div>
+            </p>
+            <p className="mt-10 max-w-[620px] font-sans text-[18px] leading-[1.55] text-white/78">
+              Cloud Modular offers clarity and certainty to a changing construction landscape. Construction is harder
+              to deliver predictably as labour shortages, rising costs and tighter compliance strain traditional
+              methods. Cloud Modular offers a more controlled approach, with clear design, offsite manufacturing and
+              assured compliance from the start.
+            </p>
           </div>
         </div>
-        <div className={cn("relative left-1/2 w-screen -translate-x-1/2 border-b", borderDivider)} />
+        <div className={cn("relative left-1/2 mt-20 w-screen -translate-x-1/2 border-b", borderDivider)} />
       </section>
 
       <section className={cn("min-h-[112svh] flex flex-col justify-between overflow-hidden sm:h-[100svh] sm:min-h-0", bg, text)}>
