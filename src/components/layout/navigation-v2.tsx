@@ -93,8 +93,8 @@ export function NavigationV2({ isLight = false }: NavigationV2Props) {
             <Image
               src="/logo.png"
               alt="Cloud Modular"
-              width={184}
-              height={184}
+              width={156}
+              height={156}
               className={cn(isLight && "invert")}
             />
           </Link>
