@@ -575,6 +575,8 @@ export default function HomeV2() {
         <div className={cn("relative left-1/2 w-screen -translate-x-1/2 border-b", borderDivider)}></div>
       </section>
 
+      <section className={cn("h-screen", bg)}></section>
+
       <section className={cn("min-h-[118svh] flex flex-col overflow-hidden sm:h-screen sm:min-h-0", bg, text)}>
         <div className="section-container flex flex-1 flex-col">
           <div className="my-auto w-full pt-12 sm:pt-0">
