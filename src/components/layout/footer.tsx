@@ -80,8 +80,8 @@ export function Footer() {
               <p className="mb-2 font-host-grotesk text-[14px] font-medium leading-[16px] tracking-[-0.03em] text-white/70">
                 Perth, Australia
               </p>
-              <p className="font-sans text-[12px] leading-[18px] text-white/70">Loftus St, North Perth</p>
-              <p className="font-sans text-[12px] leading-[18px] text-white/70">Western Australia, 6006</p>
+              <p className="font-sans text-[12px] leading-[18px] text-white/70">311-313 Hay St</p>
+              <p className="font-sans text-[12px] leading-[18px] text-white/70">Subiaco WA 6008</p>
             </div>
             <div>
               <p className="mb-2 font-host-grotesk text-[14px] font-medium leading-[16px] tracking-[-0.03em] text-white/70">
