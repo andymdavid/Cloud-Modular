@@ -112,8 +112,6 @@ const partnerLogos = [
   },
 ];
 
-const partnerLogosMarquee = [...partnerLogos, ...partnerLogos, ...partnerLogos];
-
 const whatWeDoCards = [
   {
     image: "/Sec_Card_1.webp",
@@ -122,16 +120,9 @@ const whatWeDoCards = [
     content: [],
   },
   {
-    image: "/Sec_Card_2.webp",
-    label: "Capel Drive",
-    title: "Capel Drive",
-    content: [],
-    topBadge: "[COMING SOON]",
-  },
-  {
-    image: "/Header1.webp",
-    label: "21 Central Terrace, Gosnells",
-    title: "21 Central Terrace, Gosnells",
+    image: "/TYPE 3A_AI_FINAL-Firefly_GeminiFlash.webp",
+    label: "Over 55 Accommodation",
+    title: "Over 55 Accommodation",
     content: [],
     topBadge: "[COMING SOON]",
   },

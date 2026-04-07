@@ -20,7 +20,9 @@ export function Footer() {
             />
           </Link>
           <p className="mt-4 max-w-sm font-sans text-[12px] leading-[18px] text-white/70 sm:text-[13px] sm:leading-[19px]">
-            Thoughtful design, precise manufacturing and dependable delivery.
+            Thoughtful design, precise manufacturing
+            <br />
+            and dependable delivery.
           </p>
         </div>
 
