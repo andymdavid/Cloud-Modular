@@ -121,8 +121,8 @@ const whatWeDoCards = [
   },
   {
     image: "/TYPE 3A_AI_FINAL-Firefly_GeminiFlash.webp",
-    label: "Over 55 Accommodation",
-    title: "Over 55 Accommodation",
+    label: "Capel Over 55 Accommodation",
+    title: "Capel Over 55 Accommodation",
     content: [],
     topBadge: "[COMING SOON]",
   },
