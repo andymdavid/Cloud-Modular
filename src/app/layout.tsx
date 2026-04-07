@@ -13,7 +13,7 @@ const organizationSchema = {
   "@id": `${siteUrl}/#organization`,
   name: "Cloud Modular",
   url: siteUrl,
-  logo: `${siteUrl}/logo.png`,
+  logo: `${siteUrl}/logo.webp`,
   description:
     "Precision-engineered modular construction company delivering prefabricated buildings certified to Australian standards for Perth, Western Australia and nationally.",
   email: "info@cloudmodular.com.au",
@@ -60,7 +60,7 @@ const localBusinessSchema = {
   "@type": "LocalBusiness",
   "@id": `${siteUrl}/#local-business`,
   name: "Cloud Modular",
-  image: `${siteUrl}/logo.png`,
+  image: `${siteUrl}/logo.webp`,
   url: siteUrl,
   telephone: "",
   email: "info@cloudmodular.com.au",
@@ -249,7 +249,7 @@ export const metadata: Metadata = {
     locale: "en_AU",
     images: [
       {
-        url: `${siteUrl}/og-image.png`,
+        url: `${siteUrl}/og-image.webp`,
         width: 1200,
         height: 630,
         alt: "Cloud Modular - Precision-Engineered Modular Construction Perth",
@@ -261,7 +261,7 @@ export const metadata: Metadata = {
     title: "Modular Construction Perth | Cloud Modular",
     description:
       "Precision-engineered modular construction for Western Australia. Build 50% faster with Australian-certified prefab buildings.",
-    images: [`${siteUrl}/og-image.png`],
+    images: [`${siteUrl}/og-image.webp`],
   },
   robots: {
     index: true,
