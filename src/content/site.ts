@@ -1,13 +1,11 @@
 export const navLinks = [
   { label: "About Us", href: "/about" },
-  { label: "Projects", href: "/#current-projects" },
   { label: "What We Do", href: "/#quality-compliance-assurance" },
 ];
 
 export const footerLinks = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
-  { label: "Projects", href: "/#current-projects" },
   { label: "What We Do", href: "/#quality-compliance-assurance" },
 ];
 

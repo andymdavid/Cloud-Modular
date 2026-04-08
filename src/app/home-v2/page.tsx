@@ -88,46 +88,6 @@ const advantageCards = [
   },
 ];
 
-const partnerLogos = [
-  {
-    src: "/Prism_Logo.webp",
-    alt: "Prism Design Studio logo",
-    width: 200,
-    height: 80,
-    className: "max-h-[26px] w-auto",
-  },
-  {
-    src: "/DM_Logo.webp",
-    alt: "DM logo",
-    width: 200,
-    height: 80,
-    className: "max-h-[23px] w-auto",
-  },
-  {
-    src: "/Decobu-Logo.webp",
-    alt: "Decobu logo",
-    width: 200,
-    height: 80,
-    className: "max-h-[14px] w-auto",
-  },
-];
-
-const whatWeDoCards = [
-  {
-    image: "/Sec_Card_1.webp",
-    label: "25 On Rowland and Forrest",
-    title: "25 On Rowland And Forrest",
-    content: [],
-  },
-  {
-    image: "/TYPE 3A_AI_FINAL-Firefly_GeminiFlash.webp",
-    label: "Capel Over 55 Accommodation",
-    title: "Capel Over 55 Accommodation",
-    content: [],
-    topBadge: "[COMING SOON]",
-  },
-];
-
 const sectorCards = [
   {
     image: "/office.webp",
@@ -392,53 +352,6 @@ export default function HomeV2() {
             </div>
           </div>
 
-          <div id="current-projects" className="relative left-1/2 mt-8 w-screen -translate-x-1/2 px-8 pb-4 scroll-mt-24 sm:mt-0">
-            <div className="font-cal-sans inline-flex items-center gap-2 text-[11px] uppercase leading-none tracking-[0.01em] text-[#f3f0ec]">
-              <svg className="h-2.5 w-3.5 sm:h-3 sm:w-4" viewBox="0 0 24 20" fill="none" aria-hidden>
-                <path d="M6 4.5L14 2L18 8L10 10.5L6 4.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
-                <path d="M10 10.5L18 8L18 15.5L10 18L10 10.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
-                <path d="M6 4.5V12L10 18" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="miter" />
-              </svg>
-              <span>Current Projects</span>
-            </div>
-          </div>
-
-          <div className={cn("relative left-1/2 w-screen -translate-x-1/2 border-t", borderDivider)}></div>
-
-          <div className="relative left-1/2 w-screen -translate-x-1/2 px-8 pt-6 sm:pt-8">
-            <div className="mx-auto max-w-[1220px]">
-              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-                {whatWeDoCards.map((card, index) => (
-                  <article
-                    key={card.title}
-                    className={cn(
-                      "relative overflow-hidden rounded-[3px] border border-white/5 bg-[#0d0e0f]",
-                      index === 2 ? "md:col-start-1" : "",
-                      "aspect-[1.22/1]"
-                    )}
-                  >
-                    <Image
-                      src={card.image || "/Sec_Card_2.webp"}
-                      alt={card.label}
-                      fill
-                      className="object-cover brightness-[0.93]"
-                    />
-                    <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.015)_0%,rgba(0,0,0,0.072)_38%,rgba(0,0,0,0.42)_100%)]" />
-                    <div className="absolute inset-x-0 bottom-0 flex h-[112px] items-end px-5 pb-9 sm:h-[120px] sm:px-6 sm:pb-10">
-                      <h3 className="font-host-grotesk text-[22px] font-medium leading-[24px] tracking-[-0.03em] text-white md:whitespace-nowrap">
-                        {card.title}
-                      </h3>
-                      {card.topBadge && (
-                        <span className="ml-auto inline-flex h-[22px] items-center whitespace-nowrap rounded-[2px] border border-white/20 px-3 font-cal-sans text-[9px] uppercase leading-none tracking-[0.08em] text-white/60">
-                          {card.topBadge.replace(/^\[|\]$/g, "")}
-                        </span>
-                      )}
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 

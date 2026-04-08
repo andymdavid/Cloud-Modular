@@ -121,20 +121,6 @@ Our system addresses key construction industry challenges: labour shortages, ris
 2. **Factory-Controlled Production**: Stable, repeatable environment for consistent quality
 3. **Independent Quality Checks**: Inspections at key stages verify accuracy and workmanship
 
-## Partnership Model
-
-### Who We Work With
-
-- **Architectural Partners**: Design coordination and modular-optimised architecture
-- **Engineering Partners**: Structural engineering and compliance certification
-- **Procurement Partners**: Supply chain management and logistics
-
-### Featured Partners
-
-- Prism Design Studio (Architectural Partner)
-- Decobu (Engineering Partner)
-- Cloud Procurement (Procurement Partner)
-
 ## Geographic Coverage
 
 ### Primary Market

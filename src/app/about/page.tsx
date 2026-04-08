@@ -140,90 +140,6 @@ export default function AboutPage() {
         <div className={cn("relative left-1/2 w-screen -translate-x-1/2 border-b", borderDivider)}></div>
       </section>
 
-      <section className={cn("min-h-[100vh] grid grid-rows-[1fr_auto]", bg, text)}>
-        <div className="flex items-center py-20 md:py-0">
-          <div className="section-container grid w-full gap-12 xl:grid-cols-[minmax(0,0.32fr)_minmax(0,0.68fr)] xl:items-start">
-            <div className="space-y-6 max-w-xl">
-              <div className="space-y-4">
-                <div className={cn("inline-flex items-center gap-2", sectionLabelClass)}>
-                  {sectionLabelIcon}
-                  <span>Partners</span>
-                </div>
-                <h2 className={cn(sectionHeadingClass, text)}>
-                  Specialist partners support each stage of delivery.
-                </h2>
-              </div>
-              <p className={cn(sectionSubcopyClass, textSubtle)}>
-                We work with architectural, engineering and procurement partners who help ensure each project is resolved properly before it's built.
-              </p>
-            </div>
-            <div className="grid gap-8 sm:grid-cols-2">
-              <div className="space-y-4">
-                <div className="flex aspect-[1.08/1] items-center justify-center overflow-hidden rounded-lg bg-[#0f1111] px-6 py-8 text-center sm:px-8">
-                  <Image
-                    src="/Prism_Logo.webp"
-                    alt="Prism Design Studio logo"
-                    width={400}
-                    height={160}
-                    className="h-auto max-h-[110px] w-auto max-w-full"
-                  />
-                </div>
-                <div>
-                  <p className={cn(sectionH3Class, text)}>Prism Design Studio</p>
-                  <p className={cn("mt-2 font-sans text-[12px] leading-[18px]", textMuted)}>Architectural Partner</p>
-                </div>
-              </div>
-              <div className="space-y-4">
-                <div className="flex aspect-[1.08/1] items-center justify-center overflow-hidden rounded-lg bg-[#0f1111] px-6 py-8 text-center sm:px-8">
-                  <Image
-                    src="/Decobu-Logo.webp"
-                    alt="Decobu logo"
-                    width={200}
-                    height={80}
-                    className="h-auto max-h-[36px] w-auto max-w-full"
-                  />
-                </div>
-                <div>
-                  <p className={cn(sectionH3Class, text)}>Decobu</p>
-                  <p className={cn("mt-2 font-sans text-[12px] leading-[18px]", textMuted)}>Engineering Partner</p>
-                </div>
-              </div>
-              <div className="space-y-4">
-                <div className="flex aspect-[1.08/1] items-center justify-center overflow-hidden rounded-lg bg-[#0f1111] px-6 py-8 text-center sm:px-8">
-                  <Image
-                    src="/DM_Logo.webp"
-                    alt="DM logo"
-                    width={270}
-                    height={108}
-                    className="h-auto max-h-[78px] w-auto max-w-full"
-                  />
-                </div>
-                <div>
-                  <p className={cn(sectionH3Class, text)}>Doepel Marsh</p>
-                  <p className={cn("mt-2 font-sans text-[12px] leading-[18px]", textMuted)}>Architectural Partner</p>
-                </div>
-              </div>
-              <div className="space-y-4">
-                <div className="flex aspect-[1.08/1] items-center justify-center overflow-hidden rounded-lg bg-[#0f1111] px-6 py-8 text-center sm:px-8">
-                  <Image
-                    src="/AFS-LightLogo-Horizontal-DarkBG.webp"
-                    alt="AFS logo"
-                    width={320}
-                    height={119}
-                    className="h-auto max-h-[76px] w-auto max-w-full"
-                  />
-                </div>
-                <div>
-                  <p className={cn(sectionH3Class, text)}>Admiral Financial Services</p>
-                  <p className={cn("mt-2 font-sans text-[12px] leading-[18px]", textMuted)}>Procurement Partner</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className={cn("relative left-1/2 w-screen -translate-x-1/2 border-b", borderDivider)}></div>
-      </section>
-
       <section className={cn("min-h-[100svh] lg:h-screen lg:min-h-0 grid grid-rows-[1fr_auto]", bg, text)}>
         <div className="flex items-center">
           <div className="section-container flex w-full flex-col justify-center pt-20 pb-8 lg:pt-16 lg:pb-4">
@@ -240,19 +156,12 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               {[
-              {
-                src: "/Kannan_Rajendiran.webp",
-                name: "Kannan Rajendiran",
-                role: "Co-Founder / Managing Director",
-                bio: "Kannan brings over 21 years of experience in electrical services design, project management, and coordination across commercial, industrial, and infrastructure projects in Australia and Singapore. He is also a member of Engineers Australia (MIEAust).",
-                imageClassName: "object-center",
-              },
               {
                 src: "/Nigel_David.webp",
                 name: "Nigel David",
-                role: "Co-Founder / Commercial Director",
+                role: "Co-Founder / Director",
                 bio: "Nigel has over thirty years of procurement experience in the building and construction industry specialising in export market development, international procurement management, compliance and logistics, and trade development.",
                 imageClassName: "object-center",
               },
