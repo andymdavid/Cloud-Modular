@@ -16,7 +16,7 @@ export const contactDetails = {
   hours: "Monday - Friday, 9am - 5pm AWST",
 };
 
-export const partnerWithUsMailto = "mailto:kannan@cloudmodular.com.au?subject=Cloud%20Modular%20Website%20Inquiry";
+export const partnerWithUsMailto = "mailto:nigel@cloudmodular.com.au?subject=Cloud%20Modular%20Website%20Inquiry";
 
 export const heroMetrics = "50% faster to manufacture · 20% cost reduction · 70% less landfill";
 

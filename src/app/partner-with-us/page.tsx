@@ -53,10 +53,10 @@ const contactPageSchema = {
     email: "info@cloudmodular.com.au",
     address: {
       "@type": "PostalAddress",
-      streetAddress: "Loftus St",
-      addressLocality: "North Perth",
+      streetAddress: "311-313 Hay St",
+      addressLocality: "Subiaco",
       addressRegion: "WA",
-      postalCode: "6006",
+      postalCode: "6008",
       addressCountry: "AU",
     },
   },
@@ -126,8 +126,8 @@ export default function PartnerWithUsPage() {
                   <div>
                     <h2 className={cn(sectionH3Class, text)}>Perth, Australia</h2>
                     <div className="mt-3 space-y-1">
-                      <p className={cn(sectionSubcopyClass, "text-white")} style={{ color: "#ffffff" }}>Loftus St, North Perth</p>
-                      <p className={cn(sectionSubcopyClass, "text-white")} style={{ color: "#ffffff" }}>Western Australia, 6006</p>
+                      <p className={cn(sectionSubcopyClass, "text-white")} style={{ color: "#ffffff" }}>311-313 Hay St</p>
+                      <p className={cn(sectionSubcopyClass, "text-white")} style={{ color: "#ffffff" }}>Subiaco WA 6008</p>
                     </div>
                   </div>
                   <div>
@@ -153,7 +153,7 @@ export default function PartnerWithUsPage() {
                       href={partnerWithUsMailto}
                       className={cn("mt-3 inline-block font-sans text-[14px] leading-[20px] text-white transition hover:text-white/70 sm:text-[12px] sm:leading-[18px]")}
                     >
-                      kannan@cloudmodular.com.au
+                      nigel@cloudmodular.com.au
                     </Link>
                   </div>
                   <div>
