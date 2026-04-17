@@ -159,6 +159,13 @@ export default function AboutPage() {
             <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               {[
               {
+                src: "/office.webp",
+                name: "Thomas Tierney",
+                role: "Director",
+                bio: "Thomas brings a rare combination of commercial, construction, and international development experience to Cloud Modular. With over ten years as a property developer/QS in Ireland and London, delivering multiple successful projects across residential and commercial sectors, he arrived in Australia with a strong foundation in every phase of the development lifecycle. As Commercial Manager for six years in Perth, he honed deep expertise in cost planning, value analysis, and value engineering, skills that directly inform how he evaluates and delivers modular projects today. A wealth of mining industry experience adds further rigour to his approach to programme, procurement, and build quality. Now as the developer behind the Seashells Jurien Bay Resort, a 108-residence modular development on Western Australia's Coral Coast, Thomas knows first-hand what precision modular construction can achieve at scale. Working alongside energy partner Geniux, the resort is designed to achieve an 8-star energy rating through innovative modular construction, double glazing, and solar micro-grid power, setting a new benchmark for sustainable coastal living in Australia. Thomas is passionate about bringing Cloud Modular's high-performance, energy-efficient solutions to the Australian market.",
+                imageClassName: "object-center",
+              },
+              {
                 src: "/Nigel_David.webp",
                 name: "Nigel David",
                 role: "Co-Founder / Director",
