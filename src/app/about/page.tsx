@@ -159,7 +159,7 @@ export default function AboutPage() {
             <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
               {[
               {
-                src: "/office.webp",
+                src: "/Thomas_Tierney.webp",
                 name: "Thomas Tierney",
                 role: "Director",
                 bio: "Thomas brings a rare combination of commercial, construction, and international development experience to Cloud Modular. With over ten years as a property developer/QS in Ireland and London, delivering multiple successful projects across residential and commercial sectors, he arrived in Australia with a strong foundation in every phase of the development lifecycle.",
