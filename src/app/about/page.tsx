@@ -148,7 +148,7 @@ export default function AboutPage() {
                 {sectionLabelIcon}
                 <span>Our Team</span>
               </div>
-              <h2 className={cn(sectionHeadingClass, text)}>
+              <h2 className={cn("mx-auto max-w-[620px]", sectionHeadingClass, text)}>
                 A team with the experience to deliver modular buildings with confidence.
               </h2>
               <p className={cn("mx-auto max-w-[440px]", sectionSubcopyClass, textSubtle)}>
