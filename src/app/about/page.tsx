@@ -162,7 +162,7 @@ export default function AboutPage() {
                 src: "/Thomas_Tierney.webp",
                 name: "Thomas Tierney",
                 role: "Director",
-                bio: "Thomas brings a rare combination of commercial, construction, and international development experience to Cloud Modular. With over ten years as a property developer/QS in Ireland and London, delivering multiple successful projects across residential and commercial sectors, he arrived in Australia with a strong foundation in every phase of the development lifecycle.",
+                bio: "Thomas brings a rare combination of commercial, construction, and international development experience. With over ten years as a property developer/QS in Ireland and London, Thomas has delivered many successful residential and commercial projects, and has a strong foundation in every phase of the development lifecycle.",
                 imageClassName: "object-center",
               },
               {
