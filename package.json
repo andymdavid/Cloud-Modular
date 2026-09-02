@@ -1,30 +1,27 @@
 {
-  "name": "web",
-  "version": "0.1.0",
+  "name": "cloud-modular-web",
+  "version": "2.0.0",
   "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "lint": "astro check"
   },
   "dependencies": {
-    "clsx": "^2.1.1",
-    "next": "16.0.3",
-    "react": "19.2.0",
-    "react-dom": "19.2.0",
-    "tailwind-merge": "^3.4.0"
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^7.2.10"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
+    "@astrojs/check": "^0.9.10",
     "autoprefixer": "^10.4.22",
-    "babel-plugin-react-compiler": "1.0.0",
-    "eslint": "^9",
-    "eslint-config-next": "16.0.3",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.14",
-    "typescript": "^5"
+    "typescript": "^5.9.3"
   }
 }

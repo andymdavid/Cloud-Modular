@@ -1,0 +1,19 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ButtonLink from "@/components/ButtonLink.astro";
+import { site } from "@/data/site";
+---
+
+<BaseLayout title="Page Not Found | Cloud Modular" description="The requested page could not be found." noindex>
+  <section class="flex min-h-screen items-center justify-center bg-[#010101] px-6 text-white">
+    <div class="mx-auto max-w-md text-center">
+      <p class="font-cal-sans text-[11px] uppercase tracking-[0.08em] text-white/40">Error 404</p>
+      <h1 class="mt-4 font-host-grotesk text-[32px] font-medium leading-[34px] tracking-[-0.03em]">Page not found</h1>
+      <p class="mt-4 text-[14px] leading-5 text-white/70">The page you’re looking for doesn’t exist or has been moved.</p>
+      <div class="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+        <ButtonLink href="/" label="Back to Home" />
+        <a href={site.enquiryHref} class="inline-flex h-[30px] min-w-[138px] items-center justify-center rounded-[2px] border border-white/20 px-4 py-1.5 text-[11px] font-semibold text-white transition hover:border-white/40">Contact Us</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

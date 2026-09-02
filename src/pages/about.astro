@@ -1,0 +1,90 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import SectionLabel from "@/components/SectionLabel.astro";
+import ButtonLink from "@/components/ButtonLink.astro";
+import { site, team } from "@/data/site";
+
+const title = "About Us | Modular Construction Experts Perth WA";
+const description =
+  "Cloud Modular brings design, manufacturing and compliance together to deliver modular buildings with greater control.";
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: site.url },
+    { "@type": "ListItem", position: 2, name: "About Us", item: `${site.url}/about/` },
+  ],
+};
+---
+
+<BaseLayout title={title} description={description} canonical="/about/" structuredData={breadcrumbSchema}>
+  <section class="relative h-screen min-h-[600px] overflow-hidden">
+    <img src="/1.webp" alt="Modern modular building exterior" width="2688" height="1792" fetchpriority="high" class="absolute inset-0 h-full w-full object-cover" />
+    <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,10,10,0.8)_0%,rgba(8,10,10,0.5)_30%,rgba(8,10,10,0.28)_50%,rgba(8,10,10,0.5)_70%,rgba(8,10,10,0.8)_100%)]"></div>
+    <div class="absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(180deg,rgba(1,1,1,0)_0%,#010101_100%)]"></div>
+    <div class="relative z-10 flex h-full items-center justify-center px-6 pt-12 lg:px-20">
+      <div class="mx-auto w-full max-w-4xl text-center">
+        <h1 class="font-host-grotesk text-[32px] font-bold leading-[34px] tracking-[-0.03em] text-white sm:text-[48px] sm:leading-[50px] lg:text-[60px] lg:leading-[62px]">Building a better way to deliver certainty</h1>
+        <div class="mt-8"><ButtonLink href={site.enquiryHref} label="Partner With Us" /></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="grid min-h-screen grid-rows-[1fr_auto] bg-[#010101] text-white">
+    <div class="flex items-center py-20">
+      <div class="section-container w-full">
+        <div class="mx-auto max-w-[925px] space-y-6 text-left md:text-center">
+          <SectionLabel text="Our Story" />
+          <h2 class="section-heading">Bringing design, manufacturing and compliance together to deliver modular buildings with greater control.</h2>
+        </div>
+        <div class="mx-auto mt-12 grid max-w-5xl grid-cols-1 gap-5 lg:grid-cols-2 lg:gap-12">
+          <div class="space-y-5">
+            <p class="section-copy">Construction today asks more of every project team. Programs are tighter, expectations are higher and the pressure to deliver consistent quality has never been greater. Modular has become a practical way to meet these demands because it moves much of the work offsite, where production can be planned, measured and repeated with far greater certainty.</p>
+            <p class="section-copy">For modular to deliver on its potential, the process has to be aligned from the start. The design needs to suit manufacture. The factory needs to build with consistency. The engineering and compliance work needs to be resolved before anything leaves the floor. When these elements come together, modular gives builders and developers a cleaner program.</p>
+          </div>
+          <div class="space-y-5">
+            <p class="section-copy">Cloud Modular was created to bring that alignment into a single, coordinated process. We combine architectural thinking, offsite manufacturing capability and rigorous engineering certification to give clients a clear understanding of what will be built, how it will be delivered and the performance they can expect.</p>
+            <p class="section-copy">Working with our architectural, engineering and procurement partners, we support each stage of delivery so projects run with fewer variables and greater control. Our focus is simple: modular that is designed well, manufactured precisely and delivered with confidence.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="border-b border-white/5"></div>
+  </section>
+
+  <section class="grid min-h-screen grid-rows-[1fr_auto] bg-[#010101] text-white">
+    <div class="flex items-center py-20">
+      <div class="section-container w-full">
+        <div class="space-y-4 text-center">
+          <SectionLabel text="Our Team" />
+          <h2 class="section-heading mx-auto max-w-[620px]">A team with the experience to deliver modular buildings with confidence.</h2>
+          <p class="section-copy mx-auto max-w-[440px]">Designers, engineers, product specialists and project leads who understand what it takes to resolve modular buildings with precision and confidence.</p>
+        </div>
+        <div class="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+          {team.map((member) => (
+            <article class="flex h-full flex-col rounded-[3px] border border-white/5 bg-[#0f1111] p-3">
+              <div class="aspect-square overflow-hidden rounded-[3px] border border-white/5">
+                <img src={member.image} alt={member.name} width="1024" height="1024" loading="lazy" class="h-full w-full object-cover" style={`object-position:${member.position}`} />
+              </div>
+              <div class="mt-3 flex flex-1 flex-col">
+                <h3 class="font-host-grotesk text-[18px] font-medium leading-5 tracking-[-0.03em]">{member.name}</h3>
+                <p class="mt-2 font-sans text-[12px] leading-[18px] text-white/60">{member.role}</p>
+                <p class="mt-3 font-sans text-[12px] leading-[18px] text-white">{member.bio}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+    <div class="border-b border-white/5"></div>
+  </section>
+
+  <section class="flex min-h-[60vh] items-center bg-[#010101] py-20 text-white">
+    <div class="section-container text-center">
+      <SectionLabel text="Get Started" />
+      <h2 class="section-heading mt-6">Ready to transform your next development.</h2>
+      <p class="section-copy mx-auto mt-5 max-w-[440px]">Let’s discuss how Cloud Modular can deliver your project faster, more cost-effectively, and sustainably.</p>
+      <div class="mt-5"><ButtonLink href={site.enquiryHref} label="Partner With Us" /></div>
+    </div>
+  </section>
+</BaseLayout>

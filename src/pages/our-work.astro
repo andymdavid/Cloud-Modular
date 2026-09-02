@@ -1,0 +1,25 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { site } from "@/data/site";
+
+const title = "Projects | Modular Construction Case Studies Perth";
+const description = "Explore Cloud Modular's prefabricated building projects across Western Australia.";
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: site.url },
+    { "@type": "ListItem", position: 2, name: "Projects", item: `${site.url}/our-work/` },
+  ],
+};
+---
+
+<BaseLayout title={title} description={description} canonical="/our-work/" structuredData={breadcrumbSchema}>
+  <section class="flex min-h-screen items-center justify-center bg-[#080a0a] px-6 text-center text-white">
+    <div>
+      <p class="font-cal-sans text-[11px] uppercase tracking-[0.08em] text-white/40">Our Work</p>
+      <h1 class="mt-4 font-host-grotesk text-4xl font-medium tracking-[-0.03em]">Projects</h1>
+      <p class="mt-4 text-white/70">Coming soon</p>
+    </div>
+  </section>
+</BaseLayout>

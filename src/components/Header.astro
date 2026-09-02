@@ -1,0 +1,87 @@
+---
+import { navigation, site } from "@/data/site";
+
+const pathname = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === "/" ? pathname === href : href.startsWith("/#") ? pathname === "/" : pathname.startsWith(href);
+---
+
+<header class="pointer-events-none fixed inset-x-0 top-0 z-50">
+  <div class="pointer-events-auto px-4 py-4 sm:px-6">
+    <div class="nav-shell relative isolate mx-auto flex h-[44px] max-w-5xl items-center overflow-hidden rounded-[2px] pl-5 pr-2">
+      <div class="pointer-events-none absolute inset-0 border border-white/[0.04] bg-[#0d1212]/75 backdrop-blur-xl" aria-hidden="true"></div>
+      <div class="pointer-events-none absolute inset-0 bg-[#0b0f0f]/45" aria-hidden="true"></div>
+
+      <nav class="relative z-10 hidden flex-1 items-center gap-6 text-[11px] font-medium text-white/70 md:flex" aria-label="Main navigation">
+        {navigation.map((link) => (
+          <a class:list={["transition-colors hover:text-white", { "text-white": isActive(link.href) }]} href={link.href}>
+            {link.label}
+          </a>
+        ))}
+      </nav>
+
+      <a href="/" class="absolute left-1/2 z-10 flex -translate-x-1/2 select-none items-center">
+        <img src="/logo.webp" alt="Cloud Modular" width="156" height="156" class="select-none" draggable="false" />
+      </a>
+
+      <div class="relative z-10 flex flex-1 items-center justify-end">
+        <a href={site.enquiryHref} class="hidden rounded-[2px] bg-white px-4 py-1.5 text-[11px] font-semibold text-forest transition hover:bg-black hover:text-white md:inline-flex">
+          Partner With Us
+        </a>
+        <button data-menu-open type="button" class="flex h-10 w-10 flex-col items-center justify-center gap-1.5 md:hidden" aria-label="Open navigation menu" aria-expanded="false">
+          <span class="h-0.5 w-6 bg-white"></span>
+          <span class="h-0.5 w-6 bg-white"></span>
+          <span class="h-0.5 w-6 bg-white"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div data-mobile-menu class="pointer-events-none fixed inset-0 opacity-0 transition-opacity duration-300 md:hidden" aria-hidden="true">
+    <div class="absolute inset-0 bg-[rgba(1,1,1,0.96)] backdrop-blur-xl"></div>
+    <div class="relative flex h-full flex-col p-4 sm:p-6">
+      <nav class="flex flex-1 flex-col rounded-[2px] border border-white/[0.04] bg-[#0d1212]/90 p-6 text-base font-medium text-white/70" aria-label="Mobile navigation">
+        <div class="flex items-center justify-between">
+          <a href="/"><img src="/logo.webp" alt="Cloud Modular" width="108" height="108" /></a>
+          <button data-menu-close type="button" class="relative flex h-10 w-10 items-center justify-center text-white" aria-label="Close navigation menu">
+            <span class="absolute h-0.5 w-8 rotate-45 bg-current"></span>
+            <span class="absolute h-0.5 w-8 -rotate-45 bg-current"></span>
+          </button>
+        </div>
+        <div class="space-y-8 pt-10">
+          {navigation.map((link) => <a data-menu-link class="block hover:text-white" href={link.href}>{link.label}</a>)}
+        </div>
+        <div class="mt-auto pt-8">
+          <a data-menu-link href={site.enquiryHref} class="inline-flex h-[30px] w-full items-center justify-center rounded-[2px] bg-white px-4 py-1.5 text-center text-[11px] font-semibold text-forest">
+            Partner With Us
+          </a>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<script>
+  const menu = document.querySelector<HTMLElement>("[data-mobile-menu]");
+  const openButton = document.querySelector<HTMLButtonElement>("[data-menu-open]");
+  const closeButton = document.querySelector<HTMLButtonElement>("[data-menu-close]");
+
+  const setMenu = (open: boolean) => {
+    if (!menu || !openButton) return;
+    menu.classList.toggle("pointer-events-none", !open);
+    menu.classList.toggle("opacity-0", !open);
+    menu.classList.toggle("opacity-100", open);
+    menu.setAttribute("aria-hidden", String(!open));
+    openButton.setAttribute("aria-expanded", String(open));
+    document.documentElement.classList.toggle("overflow-y-hidden", open);
+  };
+
+  openButton?.addEventListener("click", () => setMenu(true));
+  closeButton?.addEventListener("click", () => setMenu(false));
+  document.querySelectorAll("[data-menu-link]").forEach((link) =>
+    link.addEventListener("click", () => setMenu(false)),
+  );
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") setMenu(false);
+  });
+</script>

@@ -1,5 +1,4 @@
 import sharp from 'sharp';
-import { writeFile } from 'fs/promises';
 
 const PUBLIC_DIR = './public';
 

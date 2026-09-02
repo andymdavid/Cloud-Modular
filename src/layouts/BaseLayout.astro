@@ -1,0 +1,143 @@
+---
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import { sectors, site } from "@/data/site";
+import "@/styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  image?: string;
+  noindex?: boolean;
+  structuredData?: object | object[];
+}
+
+const {
+  title,
+  description,
+  canonical = Astro.url.pathname,
+  image = "/og-image.webp",
+  noindex = false,
+  structuredData = [],
+} = Astro.props;
+
+const canonicalUrl = new URL(canonical, site.url).toString();
+const imageUrl = new URL(image, site.url).toString();
+const pageSchemas = Array.isArray(structuredData) ? structuredData : [structuredData];
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": `${site.url}/#organization`,
+  name: site.name,
+  url: site.url,
+  logo: `${site.url}/logo.webp`,
+  description: site.description,
+  email: site.email,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "311-313 Hay St",
+    addressLocality: "Subiaco",
+    addressRegion: "WA",
+    postalCode: "6008",
+    addressCountry: "AU",
+  },
+  areaServed: ["Perth", "Western Australia", "Australia"],
+  sameAs: [site.linkedIn],
+};
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${site.url}/#website`,
+  url: site.url,
+  name: site.name,
+  description: site.description,
+  publisher: { "@id": `${site.url}/#organization` },
+  inLanguage: "en-AU",
+};
+
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": `${site.url}/#local-business`,
+  name: site.name,
+  image: `${site.url}/logo.webp`,
+  url: site.url,
+  email: site.email,
+  address: organizationSchema.address,
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: -31.9465,
+    longitude: 115.8262,
+  },
+  openingHoursSpecification: {
+    "@type": "OpeningHoursSpecification",
+    dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    opens: "09:00",
+    closes: "17:00",
+  },
+  areaServed: ["Perth", "Western Australia", "Australia"],
+};
+
+const servicesSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "@id": `${site.url}/#services`,
+  name: "Modular Construction Services",
+  itemListElement: sectors.map((sector, index) => ({
+    "@type": "Service",
+    position: index + 1,
+    name: sector.title,
+    description: sector.description,
+    provider: { "@id": `${site.url}/#organization` },
+    areaServed: "Australia",
+    serviceType: "Modular Construction",
+  })),
+};
+---
+
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#010101" />
+    <meta name="description" content={description} />
+    <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow"} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cal+Sans&family=Host+Grotesk:wght@500;700&family=Instrument+Serif&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_AU" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={imageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+    <title>{title}</title>
+
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(localBusinessSchema)} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(servicesSchema)} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+    {pageSchemas.map((schema) => <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />)}
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <Header />
+    <main id="main-content"><slot /></main>
+    <Footer />
+  </body>
+</html>

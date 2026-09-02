@@ -1,0 +1,16 @@
+---
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+---
+
+<div class="section-label-mark">
+  <svg viewBox="0 0 24 20" fill="none" aria-hidden="true">
+    <path d="M6 4.5 14 2l4 6-8 2.5L6 4.5Z" stroke="currentColor" stroke-width="1.8" />
+    <path d="m10 10.5 8-2v7.5L10 18v-7.5Z" stroke="currentColor" stroke-width="1.8" />
+    <path d="M6 4.5V12l4 6" stroke="currentColor" stroke-width="1.8" />
+  </svg>
+  <span>{text}</span>
+</div>

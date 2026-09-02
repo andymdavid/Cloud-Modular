@@ -1,0 +1,175 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import SectionLabel from "@/components/SectionLabel.astro";
+import ButtonLink from "@/components/ButtonLink.astro";
+import FaqList from "@/components/FaqList.astro";
+import { advantages, faqItems, qualityRows, sectors, site } from "@/data/site";
+
+const title = "Modular Construction Perth | Prefab Buildings WA | Cloud Modular";
+const description =
+  "Perth's modular construction company delivering Australian-certified prefabricated buildings for commercial, residential and healthcare projects.";
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqItems.map((item) => ({
+    "@type": "Question",
+    name: item.question,
+    acceptedAnswer: { "@type": "Answer", text: item.answer },
+  })),
+};
+
+const pageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": `${site.url}/#webpage`,
+  url: site.url,
+  name: title,
+  description,
+  isPartOf: { "@id": `${site.url}/#website` },
+  about: { "@id": `${site.url}/#organization` },
+};
+---
+
+<BaseLayout title={title} description={description} canonical="/" structuredData={[faqSchema, pageSchema]}>
+  <section class="relative h-screen min-h-[600px] overflow-hidden">
+    <img src="/Header2.webp" alt="Modern modular building exterior" width="2912" height="1632" fetchpriority="high" class="absolute inset-0 h-full w-full scale-[1.08] object-cover object-[68%_center] sm:object-[44%_center]" />
+    <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(8,10,10,0.814)_0%,rgba(8,10,10,0.511)_30%,rgba(8,10,10,0.289)_50%,rgba(8,10,10,0.511)_70%,rgba(8,10,10,0.814)_100%)]" aria-hidden="true"></div>
+    <div class="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(180deg,rgba(1,1,1,0)_0%,#010101_100%)]" aria-hidden="true"></div>
+    <div class="relative z-10 flex h-full items-center justify-center px-6 pt-12 lg:px-20">
+      <div class="mx-auto w-full max-w-4xl -translate-y-14 text-center sm:-translate-y-12 lg:-translate-y-6">
+        <img src="/Cloud_Icon.webp" alt="" width="32" height="32" class="mx-auto mb-6" />
+        <h1 class="font-host-grotesk text-[32px] font-bold leading-[34px] tracking-[-0.03em] text-white sm:text-[48px] sm:leading-[50px] lg:text-[60px] lg:leading-[62px]">
+          Premium modular spaces,<br class="hidden sm:block" /> built in weeks, not years.
+        </h1>
+        <p class="mx-auto mt-3 w-full max-w-[420px] font-sans text-[14px] leading-5 text-white">
+          We deliver architecturally designed modular buildings, built offsite and certified to Australian Standards for faster delivery and greater certainty.
+        </p>
+        <div class="mt-5"><ButtonLink href={site.enquiryHref} label="Partner With Us" arrow /></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-[#010101] px-6 py-20 sm:py-24">
+    <div class="mx-auto grid w-full max-w-[1280px] items-center gap-10 lg:grid-cols-[minmax(0,520px)_minmax(0,1fr)] lg:gap-24">
+      <div class="aspect-[4/5] overflow-hidden rounded-[3px]">
+        <img src="/About1.webp" alt="Cloud Modular project exterior" width="1856" height="2464" loading="lazy" class="h-full w-full object-cover" />
+      </div>
+      <div class="max-w-[560px] pr-6 text-left lg:pr-12">
+        <SectionLabel text="About Us" />
+        <h2 class="section-heading mt-6 text-white">Introducing Cloud Modular</h2>
+        <p class="section-copy mt-3 max-w-[520px]">Partnering with leading architectural, engineering, and procurement teams.</p>
+        <p class="section-copy mt-3 max-w-[520px]">
+          Cloud Modular offers clarity and certainty to a changing construction landscape. Construction is harder to deliver predictably as labour shortages, rising costs and tighter compliance strain traditional methods. Cloud Modular offers a more controlled approach, with clear design, offsite manufacturing and assured compliance from the start.
+        </p>
+        <div class="mt-5"><ButtonLink href={site.enquiryHref} label="Partner With Us" /></div>
+      </div>
+    </div>
+    <div class="relative left-1/2 mt-20 w-screen -translate-x-1/2 border-b border-white/5"></div>
+  </section>
+
+  <section class="flex flex-col bg-[#010101] py-20 text-white sm:py-24">
+    <div class="section-container flex flex-1 flex-col">
+      <div class="flex flex-1 items-center justify-center pt-12 text-center sm:pt-16">
+        <div>
+          <SectionLabel text="What We Do" />
+          <h2 class="section-heading mx-auto mt-6 max-w-3xl">Design-informed, precisely manufactured modular<br class="hidden md:block" /> buildings built to Australian standards.</h2>
+          <p class="section-copy mx-auto mt-3 max-w-[520px]">Our system adapts to different sites, budgets and requirements, giving clients more certainty in how their projects are delivered.</p>
+          <div class="mt-4"><ButtonLink href={site.enquiryHref} label="Partner With Us" /></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="quality-compliance-assurance" class="scroll-mt-24 bg-[#010101]">
+    <div class="section-container pt-20 text-center sm:pt-24">
+      <div class="mx-auto max-w-3xl">
+        <SectionLabel text="Quality, Compliance & Assurance" />
+        <h2 class="section-heading mt-6 text-white">Factory-controlled production and verified engineering ensure full compliance with Australian standards.</h2>
+        <p class="section-copy mx-auto mt-4 max-w-[440px]">This process gives clients confidence in the accuracy, reliability and compliance of every module before it reaches site.</p>
+        <div class="mt-4"><ButtonLink href={site.enquiryHref} label="Partner With Us" /></div>
+      </div>
+    </div>
+    <div class="mt-12">
+      {qualityRows.map((row) => (
+        <article class="grid min-h-[50vh] grid-cols-1 border-t border-white/5 lg:grid-cols-2">
+          <div class:list={["relative min-h-[320px]", { "lg:order-2": row.reverse }]}>
+            <img src={row.image} alt={row.title} width="1456" height="816" loading="lazy" class="absolute inset-0 h-full w-full object-cover" style={`object-position:${row.imagePosition}`} />
+          </div>
+          <div class:list={["flex items-center", row.reverse ? "lg:order-1" : "lg:order-2"]}>
+            <div class="w-full px-6 py-12 sm:px-10 lg:px-12">
+              <p class="font-cal-sans text-[11px] uppercase leading-none tracking-[0.08em] text-white/30">{row.index}</p>
+              <h3 class="mt-6 max-w-[26rem] font-host-grotesk text-[22px] font-medium leading-6 tracking-[-0.03em] text-white">{row.title}</h3>
+              <p class="mt-4 max-w-[26rem] text-[14px] leading-5 text-white/60">{row.description}</p>
+            </div>
+          </div>
+        </article>
+      ))}
+      <div class="border-b border-white/5"></div>
+    </div>
+  </section>
+
+  <section class="overflow-hidden bg-[#010101] pb-24 pt-20 text-white sm:pb-28 sm:pt-24">
+    <div class="section-container">
+      <div class="space-y-4 text-center">
+        <SectionLabel text="Why Modular Construction" />
+        <h2 class="section-heading mx-auto max-w-3xl">Our system blends leading architecture and offsite manufacturing, delivering projects that meet Australian standards with speed and precision.</h2>
+        <p class="section-copy mx-auto max-w-[520px]">The benefits show up across every stage of project delivery.</p>
+        <ButtonLink href={site.enquiryHref} label="Partner With Us" />
+      </div>
+      <div class="mx-auto mb-10 mt-10 grid w-full max-w-[1240px] grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {advantages.map((card) => (
+          <article class="h-full rounded-[3px] border border-white/[0.05] bg-white/[0.02] px-6 py-8 text-left sm:px-7">
+            <h3 class="font-host-grotesk text-[20px] font-medium leading-[22px] tracking-[-0.03em] text-white">{card.title}</h3>
+            <div class="mt-5 space-y-3">
+              {card.points.map((point) => <p class="text-[14px] leading-5 text-white/60">{point}</p>)}
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+    <div class="border-b border-white/5"></div>
+  </section>
+
+  <section class="bg-[#010101] py-20 text-white sm:py-24">
+    <div class="section-container">
+      <div class="max-w-3xl">
+        <SectionLabel text="Sector Applications" />
+        <h2 class="section-heading mt-6">Modular solutions across every sector</h2>
+        <p class="section-copy mt-3 max-w-[520px]">Our system adapts across commercial, residential, civic and specialist asset classes, giving clients a faster and more controlled path to delivery.</p>
+      </div>
+      <div class="mt-10 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
+        {sectors.map((card) => (
+          <article class="relative aspect-[1.08/1] overflow-hidden rounded-[3px] border border-white/5 bg-[#0d0e0f]">
+            <img src={card.image} alt={card.title} width="928" height="1232" loading="lazy" class="absolute inset-0 h-full w-full object-cover brightness-[0.62] saturate-[0.9]" />
+            <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.08)_0%,rgba(0,0,0,0.22)_42%,rgba(0,0,0,0.84)_100%)]"></div>
+            <div class="absolute inset-x-0 bottom-0 px-5 pb-5 sm:px-6 sm:pb-6">
+              <h3 class="max-w-[18ch] font-host-grotesk text-[18px] font-medium leading-5 tracking-[-0.03em] text-white sm:text-[20px] sm:leading-[22px]">{card.title}</h3>
+              <p class="mt-3 max-w-[28ch] font-sans text-[14px] leading-5 text-white/70">{card.description}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="flex min-h-[118svh] flex-col overflow-hidden bg-[#010101] text-white sm:min-h-screen">
+    <div class="section-container my-auto w-full py-20">
+      <div class="space-y-6 text-center">
+        <SectionLabel text="FAQ" />
+        <h2 class="section-heading mx-auto max-w-3xl">Frequently Asked Questions</h2>
+      </div>
+      <div class="mx-auto mt-8 max-w-3xl"><FaqList items={faqItems} /></div>
+    </div>
+    <div class="border-b border-white/5"></div>
+  </section>
+
+  <section class="flex min-h-[60vh] flex-col justify-center bg-[#010101] py-20 text-white">
+    <div class="section-container text-center">
+      <SectionLabel text="Get Started" />
+      <h2 class="section-heading mx-auto mt-6 max-w-3xl">Ready to transform your next development?</h2>
+      <p class="section-copy mx-auto mt-3 max-w-[440px]">Let’s discuss how Cloud Modular can deliver your project faster, more cost-effectively, and sustainably.</p>
+      <div class="mt-4"><ButtonLink href={site.enquiryHref} label="Partner With Us" /></div>
+    </div>
+  </section>
+</BaseLayout>
