@@ -1,0 +1,154 @@
+@import "./tokens.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background: rgb(var(--ink));
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background: rgb(var(--surface));
+    color: rgb(var(--fg));
+    font-family: var(--font-text);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    font-weight: var(--weight-regular);
+  }
+
+  [data-theme] {
+    background: rgb(var(--surface));
+    color: rgb(var(--fg));
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    margin: 0;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  img, video {
+    display: block;
+    max-width: 100%;
+  }
+
+  ::selection {
+    background: rgb(var(--forest));
+    color: rgb(var(--paper));
+  }
+
+  :focus-visible {
+    outline: 1px solid rgb(var(--fg));
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  /* Full-width shell with the reference sites' tight page gutter */
+  .shell {
+    width: 100%;
+    max-width: var(--page-max);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  /* 12-column grid used for asymmetric editorial layouts */
+  .grid-12 {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gap-sm);
+  }
+
+  .rule {
+    border-top: var(--rule) solid rgb(var(--line));
+  }
+
+  .btn {
+    @apply inline-flex h-8 items-center justify-center gap-2 whitespace-nowrap border px-6 text-small font-medium transition-colors duration-base ease-cm-standard;
+  }
+
+  .btn-outline {
+    @apply btn border-fg text-fg hover:bg-fg hover:text-surface;
+  }
+
+  .btn-solid {
+    @apply btn;
+    background: rgb(var(--button-solid-bg));
+    border-color: rgb(var(--button-solid-bg));
+    color: rgb(var(--button-solid-fg));
+  }
+
+  .btn-solid:hover {
+    background: transparent;
+    color: rgb(var(--fg));
+    border-color: rgb(var(--fg));
+  }
+
+  .icon-btn {
+    @apply inline-flex h-9 w-9 items-center justify-center rounded-pill border border-fg text-fg transition-colors duration-base ease-cm-standard hover:bg-fg hover:text-surface disabled:pointer-events-none disabled:opacity-25;
+  }
+
+  .text-link {
+    @apply underline decoration-1 underline-offset-[3px] transition-opacity duration-base hover:opacity-60;
+  }
+
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:bg-paper focus:px-4 focus:py-2 focus:text-ink;
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Scroll reveals: only hidden when JS has marked the document as ready */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(1.5rem);
+  transition:
+    opacity var(--dur-reveal) var(--ease-out),
+    transform var(--dur-reveal) var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.js [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .js [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

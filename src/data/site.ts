@@ -118,36 +118,42 @@ export const advantages = [
 export const sectors = [
   {
     image: "/office.webp",
+    label: "Commercial",
     title: "Commercial Modular Buildings",
     description:
       "Office buildings, retail spaces, and mixed-use commercial developments delivered with modular precision.",
   },
   {
     image: "/Resi.webp",
+    label: "Multi-Residential",
     title: "Multi-Residential Modular Construction",
     description:
       "Apartments, townhouses, and residential developments delivered faster with factory-built modular construction.",
   },
   {
     image: "/aged-care.webp",
+    label: "Healthcare & Aged Care",
     title: "Healthcare & Aged Care Modular Facilities",
     description:
       "Medical facilities and aged care residences built to Australian healthcare standards with modular construction methods.",
   },
   {
     image: "/school.webp",
+    label: "Education & Community",
     title: "Education & Community Modular Buildings",
     description:
       "Schools, libraries, and community centres delivered with precision-engineered modular construction.",
   },
   {
     image: "/Infra.webp",
+    label: "Infrastructure",
     title: "Infrastructure Modular Construction",
     description:
       "Transit facilities and public infrastructure projects built with offsite modular construction methods.",
   },
   {
     image: "/hotel.webp",
+    label: "Hotels & Accommodation",
     title: "Hotels & Accommodation Modular Buildings",
     description:
       "Hotels, resorts, and short-term accommodation built faster with factory-controlled modular construction.",

@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const channel = (name) => `rgb(var(--${name}) / <alpha-value>)`;
+
 export default {
   content: ["./src/**/*.{astro,html,js,ts,jsx,tsx,md,mdx}"],
   theme: {
@@ -10,11 +12,42 @@ export default {
         charcoal: "#1a1a1a",
         "mid-gray": "#6b6b6b",
         "light-gray": "#e8e8e8",
+
+        // Design-refresh tokens (src/styles/tokens.css)
+        ink: channel("ink"),
+        "ink-raised": channel("ink-raised"),
+        graphite: channel("graphite"),
+        stone: channel("stone"),
+        mist: channel("mist"),
+        paper: channel("paper"),
+        sage: channel("sage"),
+        surface: channel("surface"),
+        "surface-alt": channel("surface-alt"),
+        "surface-quiet": channel("surface-quiet"),
+        fg: channel("fg"),
+        "fg-muted": channel("fg-muted"),
+        "fg-subtle": channel("fg-subtle"),
+        line: channel("line"),
+        accent: channel("accent"),
       },
       fontFamily: {
         sans: ["var(--font-sans)", "Inter", "sans-serif"],
         serif: ["var(--font-serif)", "Instrument Serif", "serif"],
         "host-grotesk": ["var(--font-host-grotesk)", "Host Grotesk", "sans-serif"],
+        display: ["var(--font-display)"],
+        text: ["var(--font-text)"],
+      },
+      fontSize: {
+        display: ["var(--text-display)", { lineHeight: "var(--leading-none)", letterSpacing: "var(--tracking-display)", fontWeight: "400" }],
+        h1: ["var(--text-h1)", { lineHeight: "var(--leading-tight)", letterSpacing: "var(--tracking-display)", fontWeight: "400" }],
+        statement: ["var(--text-statement)", { lineHeight: "var(--leading-statement)", letterSpacing: "var(--tracking-heading)", fontWeight: "400" }],
+        h2: ["var(--text-h2)", { lineHeight: "var(--leading-tight)", letterSpacing: "var(--tracking-heading)", fontWeight: "500" }],
+        h3: ["var(--text-h3)", { lineHeight: "var(--leading-snug)", letterSpacing: "var(--tracking-heading)", fontWeight: "500" }],
+        lead: ["var(--text-lead)", { lineHeight: "var(--leading-snug)", letterSpacing: "var(--tracking-body)", fontWeight: "500" }],
+        body: ["var(--text-body)", { lineHeight: "var(--leading-body)" }],
+        small: ["var(--text-small)", { lineHeight: "var(--leading-snug)" }],
+        caption: ["var(--text-caption)", { lineHeight: "var(--leading-snug)" }],
+        micro: ["var(--text-micro)", { lineHeight: "var(--leading-none)", letterSpacing: "var(--tracking-micro)" }],
       },
       borderRadius: {
         none: "0px",
@@ -24,20 +57,39 @@ export default {
         lg: "4px",
         xl: "4px",
         "2xl": "4px",
+        xs: "var(--radius-xs)",
+        pill: "var(--radius-pill)",
       },
       maxWidth: {
         container: "1200px",
         "container-wide": "1400px",
         prose: "800px",
+        measure: "var(--measure)",
+        "measure-wide": "var(--measure-wide)",
+        page: "var(--page-max)",
       },
       boxShadow: {
         subtle: "0 15px 45px rgba(0,0,0,0.08)",
       },
       transitionTimingFunction: {
-        "standard": "cubic-bezier(0.4, 0, 0.2, 1)",
+        standard: "cubic-bezier(0.4, 0, 0.2, 1)",
+        "cm-standard": "var(--ease-standard)",
+        "cm-out": "var(--ease-out)",
+      },
+      transitionDuration: {
+        fast: "var(--dur-fast)",
+        base: "var(--dur-base)",
+        slow: "var(--dur-slow)",
+        reveal: "var(--dur-reveal)",
       },
       spacing: {
         18: "4.5rem",
+        gutter: "var(--gutter)",
+        gap: "var(--gap)",
+        "gap-sm": "var(--gap-sm)",
+        section: "var(--section)",
+        "section-sm": "var(--section-sm)",
+        header: "var(--header-h)",
       },
     },
   },

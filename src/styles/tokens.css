@@ -1,0 +1,127 @@
+/*
+  Cloud Modular design tokens (design-refresh)
+
+  Distilled from the two aesthetic references:
+  - modscape.com.au: light editorial surfaces, single grotesk family, hairline
+    section rules, square outline buttons, 120px section rhythm.
+  - graya.com.au: black chrome, 72px header, 40px gap, full-screen menu,
+    slow opacity/transform reveals.
+
+  Layers:
+  1. Primitives: raw values (colour channels, font stacks, sizes).
+  2. Semantic: what components use (--surface, --fg, --line ...). These swap
+     per section via [data-theme="dark" | "light"], so a component written
+     once works on both surfaces.
+
+  Colours are stored as space-separated RGB channels so Tailwind can apply
+  opacity modifiers, e.g. `bg-fg/10`.
+*/
+
+:root {
+  /* ---------- Primitives: colour ---------- */
+  --ink: 11 11 12;            /* #0B0B0C  near-black, primary text + dark chrome */
+  --ink-raised: 22 22 24;     /* #161618  raised surface on dark */
+  --graphite: 36 36 38;       /* #242426  solid buttons (Modscape) */
+  --grey-600: 88 88 90;       /* #58585A  secondary text on light */
+  --grey-500: 117 117 117;    /* #757575  captions, meta on light */
+  --grey-400: 187 186 186;    /* #BBBABA  secondary text on dark (Graya) */
+  --grey-300: 138 138 140;    /* #8A8A8C  meta on dark */
+  --grey-200: 217 217 217;    /* #D9D9D9  image placeholders */
+  --stone: 237 237 237;       /* #EDEDED  alt surface, footer panels, tiles */
+  --mist: 242 242 244;        /* #F2F2F4  quiet panels (plans, specs) */
+  --paper: 255 255 255;       /* #FFFFFF */
+  --forest: 42 49 40;         /* #2A3128  brand accent, used sparingly */
+  --sage: 213 219 209;        /* #D5DBD1  brand tint tile (cf. Modscape pastel tiles) */
+
+  /* ---------- Primitives: type ---------- */
+  --font-display: "Inter Tight", "Helvetica Neue", Arial, sans-serif;
+  --font-text: "Inter Tight", "Helvetica Neue", Arial, sans-serif;
+  --weight-regular: 400;
+  --weight-medium: 500;
+
+  /* Fluid scale: min @ 390px viewport, max @ 1440px */
+  --text-display: clamp(2.75rem, 1.7rem + 4.3vw, 5rem);        /* 44 → 80 */
+  --text-h1: clamp(2.25rem, 1.8rem + 1.9vw, 3.25rem);          /* 36 → 52 */
+  --text-statement: clamp(1.5rem, 1.13rem + 1.52vw, 2.5rem);   /* 24 → 40 */
+  --text-h2: clamp(1.5rem, 1.31rem + 0.76vw, 2rem);            /* 24 → 32 */
+  --text-h3: clamp(1.25rem, 1.16rem + 0.38vw, 1.5rem);         /* 20 → 24 */
+  --text-lead: clamp(1.125rem, 1.08rem + 0.19vw, 1.25rem);     /* 18 → 20 */
+  --text-body: 1rem;                                            /* 16 */
+  --text-small: 0.875rem;                                       /* 14 */
+  --text-caption: 0.75rem;                                      /* 12 */
+  --text-micro: 0.625rem;                                       /* 10 */
+
+  --leading-none: 1;
+  --leading-tight: 1.1;
+  --leading-snug: 1.3;
+  --leading-body: 1.45;
+  --leading-statement: 1.35;
+
+  --tracking-display: -0.03em;
+  --tracking-heading: -0.015em;
+  --tracking-body: 0;
+  --tracking-micro: 0.06em;
+
+  /* ---------- Primitives: space & layout ---------- */
+  --gutter: clamp(1rem, 0.85rem + 0.38vw, 1.25rem);            /* 16 → 20, page edge */
+  --gap: clamp(1.25rem, 0.8rem + 1.9vw, 2.5rem);               /* 20 → 40, column gap */
+  --gap-sm: clamp(0.75rem, 0.6rem + 0.5vw, 1.25rem);           /* 12 → 20, card gap */
+  --section: clamp(4.5rem, 3.4rem + 4.6vw, 7.5rem);            /* 72 → 120 */
+  --section-sm: clamp(3rem, 2.4rem + 2.3vw, 4.5rem);           /* 48 → 72 */
+  --header-h: 4.5rem;                                           /* 72 */
+  --measure: 36rem;                                             /* ~560px copy width */
+  --measure-wide: 45rem;                                        /* ~720px */
+  --page-max: 120rem;                                           /* 1920px hard cap */
+
+  /* ---------- Primitives: shape & motion ---------- */
+  --radius-none: 0;
+  --radius-xs: 2px;
+  --radius-pill: 999px;
+  --rule: 1px;
+
+  --ease-standard: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 200ms;
+  --dur-base: 400ms;
+  --dur-slow: 700ms;
+  --dur-reveal: 900ms;
+
+  --z-header: 50;
+  --z-overlay: 60;
+
+  /* ---------- Semantic (light is the default surface) ---------- */
+  --surface: var(--paper);
+  --surface-alt: var(--stone);
+  --surface-quiet: var(--mist);
+  --fg: var(--ink);
+  --fg-muted: var(--grey-600);
+  --fg-subtle: var(--grey-500);
+  --line: var(--ink);
+  --accent: var(--forest);
+  --button-solid-bg: var(--graphite);
+  --button-solid-fg: var(--paper);
+}
+
+[data-theme="dark"] {
+  --surface: var(--ink);
+  --surface-alt: var(--ink-raised);
+  --surface-quiet: var(--ink-raised);
+  --fg: var(--paper);
+  --fg-muted: var(--grey-400);
+  --fg-subtle: var(--grey-300);
+  --line: var(--paper);
+  --button-solid-bg: var(--paper);
+  --button-solid-fg: var(--ink);
+}
+
+[data-theme="light"] {
+  --surface: var(--paper);
+  --surface-alt: var(--stone);
+  --surface-quiet: var(--mist);
+  --fg: var(--ink);
+  --fg-muted: var(--grey-600);
+  --fg-subtle: var(--grey-500);
+  --line: var(--ink);
+  --button-solid-bg: var(--graphite);
+  --button-solid-fg: var(--paper);
+}

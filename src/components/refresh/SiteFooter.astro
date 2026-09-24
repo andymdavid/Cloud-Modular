@@ -1,0 +1,59 @@
+---
+import { site } from "@/data/site";
+
+const discover = [
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about/" },
+  { label: "Our Work", href: "/our-work/" },
+  { label: "Partner With Us", href: "/partner-with-us/" },
+];
+---
+
+<footer id="contact" data-theme="dark" class="scroll-mt-header">
+  <div class="shell pb-6 pt-section-sm">
+    <div class="grid-12 rule gap-y-12 pt-6">
+      <div class="col-span-12 lg:col-span-6" data-reveal>
+        <p class="text-small font-medium">Contact</p>
+        <p class="mt-8 max-w-[22ch] text-statement">Have a project in mind? Let’s talk about how modular can deliver it.</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href={site.enquiryHref} class="btn-solid">Enquire now</a>
+          <a href="/partner-with-us/" class="btn-outline">Partner with us</a>
+        </div>
+      </div>
+
+      <div class="col-span-12 grid grid-cols-2 gap-x-gap-sm gap-y-10 sm:grid-cols-3 lg:col-span-6" data-reveal>
+        <div>
+          <p class="text-small font-medium">Enquiries</p>
+          <a href={`mailto:${site.email}`} class="mt-3 block text-small text-fg-muted transition-colors hover:text-fg">{site.email}</a>
+          <p class="mt-6 text-small font-medium">Follow</p>
+          <a href={site.linkedIn} target="_blank" rel="noreferrer" class="mt-3 block text-small text-fg-muted transition-colors hover:text-fg">LinkedIn</a>
+        </div>
+
+        <div class="space-y-6">
+          {site.offices.map((office) => (
+            <div>
+              <p class="text-small font-medium">{office.city}</p>
+              <div class="mt-3 text-small text-fg-muted">
+                {office.lines.map((line) => <p>{line}</p>)}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <nav aria-label="Footer navigation">
+          <p class="text-small font-medium">Discover</p>
+          <ul class="mt-3 space-y-1.5">
+            {discover.map((link) => (
+              <li><a href={link.href} class="text-small text-fg-muted transition-colors hover:text-fg">{link.label}</a></li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <div class="mt-section-sm flex flex-col gap-4 border-t border-fg/15 pt-5 sm:flex-row sm:items-center sm:justify-between">
+      <img src="/logo.webp" alt="Cloud Modular" width="1280" height="275" loading="lazy" class="h-5 w-auto opacity-90" />
+      <p class="text-caption text-fg-subtle">© {new Date().getFullYear()} Cloud Modular. All rights reserved. · {site.hours}</p>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,50 @@
+---
+import SeoHead from "@/components/SeoHead.astro";
+import SiteHeader from "@/components/refresh/SiteHeader.astro";
+import SiteFooter from "@/components/refresh/SiteFooter.astro";
+import "@/styles/refresh.css";
+
+import type { Props as SeoProps } from "@/components/SeoHead.astro";
+import type { NavLink } from "@/components/refresh/SiteHeader.astro";
+
+type Props = SeoProps & {
+  /** Header starts transparent over a full-bleed hero, then turns solid. */
+  overlayHeader?: boolean;
+  navLinks?: NavLink[];
+};
+
+const { overlayHeader = false, navLinks, ...seo } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <script is:inline>document.documentElement.classList.add("js");</script>
+    <SeoHead
+      {...seo}
+      themeColor="#0B0B0C"
+      fontsHref="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&display=swap"
+    />
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <SiteHeader overlay={overlayHeader} links={navLinks} />
+    <main id="main-content"><slot /></main>
+    <SiteFooter />
+
+    <script>
+      const targets = document.querySelectorAll<HTMLElement>("[data-reveal]");
+      const reveal = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            entry.target.classList.add("is-visible");
+            reveal.unobserve(entry.target);
+          }
+        },
+        { rootMargin: "0px 0px -10% 0px", threshold: 0.05 },
+      );
+      targets.forEach((el) => reveal.observe(el));
+    </script>
+  </body>
+</html>

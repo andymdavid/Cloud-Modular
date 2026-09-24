@@ -1,0 +1,149 @@
+---
+import { site } from "@/data/site";
+
+export interface NavLink {
+  label: string;
+  href: string;
+}
+
+interface Props {
+  overlay?: boolean;
+  links?: NavLink[];
+}
+
+const {
+  overlay = false,
+  links = [
+    { label: "Sectors", href: "#sectors" },
+    { label: "Quality", href: "#quality" },
+    { label: "About", href: "/about/" },
+    { label: "FAQ", href: "#faq" },
+    { label: "Contact", href: "#contact" },
+  ],
+} = Astro.props;
+---
+
+<header
+  data-site-header
+  data-overlay={overlay ? "true" : "false"}
+  data-theme={overlay ? "dark" : "light"}
+  class:list={["site-header fixed inset-x-0 top-0 z-50", { "is-solid": !overlay }]}
+>
+  <div class="shell">
+    <div class="flex h-header items-center justify-between gap-6 border-b border-line/100 transition-colors duration-base">
+      <a href="/" class="site-logo shrink-0" aria-label="Cloud Modular home">
+        <img src="/logo.webp" alt="Cloud Modular" width="1280" height="275" class="h-[22px] w-auto sm:h-[26px]" />
+      </a>
+
+      <nav class="hidden items-center gap-6 lg:flex" aria-label="Main navigation">
+        {links.map((link) => (
+          <a href={link.href} class="text-small font-medium transition-opacity duration-base hover:opacity-60">{link.label}</a>
+        ))}
+        <a href={site.enquiryHref} class="btn-outline ml-2">Enquire now</a>
+      </nav>
+
+      <div class="flex items-center gap-3 lg:hidden">
+        <a href={site.enquiryHref} class="btn-outline px-4">Enquire now</a>
+        <button type="button" data-menu-toggle class="btn-solid px-4" aria-expanded="false" aria-controls="site-menu">Menu</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div
+  id="site-menu"
+  data-site-menu
+  data-theme="dark"
+  class="pointer-events-none fixed inset-0 z-[45] flex flex-col justify-center opacity-0 transition-opacity duration-slow ease-cm-standard lg:hidden"
+  aria-hidden="true"
+  inert
+>
+  <nav class="shell flex flex-col items-center gap-3 pb-24 pt-header" aria-label="Mobile navigation">
+    {links.map((link) => (
+      <a data-menu-link href={link.href} class="text-[2.25rem] font-normal leading-tight tracking-[-0.02em] text-fg transition-opacity duration-base hover:opacity-60">{link.label}</a>
+    ))}
+  </nav>
+  <p class="shell absolute inset-x-0 bottom-8 text-center text-caption text-fg-subtle">{site.offices.map((o) => o.city).join("  ·  ")}</p>
+</div>
+
+<style>
+  .site-header {
+    background: transparent;
+    transition:
+      background-color var(--dur-base) var(--ease-standard),
+      color var(--dur-base) var(--ease-standard);
+  }
+
+  .site-header[data-overlay="true"]:not(.is-solid) > .shell > div {
+    border-color: rgb(255 255 255 / 0.35);
+  }
+
+  .site-header.is-solid {
+    background: rgb(var(--surface));
+  }
+
+  /* Supplied logo is white; render it ink on light surfaces */
+  .site-header[data-theme="light"] .site-logo img {
+    filter: brightness(0);
+  }
+
+  :global(html.menu-open) .site-header {
+    background: rgb(var(--ink));
+  }
+
+  :global(html.menu-open) .site-header .site-logo img {
+    filter: none;
+  }
+
+  :global(html.menu-open) {
+    overflow: hidden;
+  }
+</style>
+
+<script>
+  const header = document.querySelector<HTMLElement>("[data-site-header]");
+  const menu = document.querySelector<HTMLElement>("[data-site-menu]");
+  const toggle = document.querySelector<HTMLButtonElement>("[data-menu-toggle]");
+  const hero = document.querySelector<HTMLElement>("[data-hero]");
+
+  const setSolid = (solid: boolean) => {
+    if (!header) return;
+    header.classList.toggle("is-solid", solid);
+    header.dataset.theme = solid ? "light" : "dark";
+  };
+
+  if (header?.dataset.overlay === "true") {
+    if (hero) {
+      const headerHeight = header.offsetHeight;
+      new IntersectionObserver(([entry]) => setSolid(!entry.isIntersecting), {
+        rootMargin: `-${headerHeight}px 0px 0px 0px`,
+      }).observe(hero);
+    } else {
+      setSolid(true);
+    }
+  }
+
+  let lastTheme = header?.dataset.theme;
+  const setMenu = (open: boolean) => {
+    if (!menu || !toggle || !header) return;
+    if (open) {
+      lastTheme = header.dataset.theme;
+      header.dataset.theme = "dark";
+    } else if (lastTheme) {
+      header.dataset.theme = lastTheme;
+    }
+    menu.classList.toggle("opacity-0", !open);
+    menu.classList.toggle("pointer-events-none", !open);
+    menu.setAttribute("aria-hidden", String(!open));
+    menu.toggleAttribute("inert", !open);
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.textContent = open ? "Close" : "Menu";
+    document.documentElement.classList.toggle("menu-open", open);
+  };
+
+  toggle?.addEventListener("click", () => setMenu(toggle.getAttribute("aria-expanded") !== "true"));
+  menu?.querySelectorAll("[data-menu-link]").forEach((link) => link.addEventListener("click", () => setMenu(false)));
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") setMenu(false);
+  });
+</script>
