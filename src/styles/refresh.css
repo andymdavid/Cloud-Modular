@@ -84,16 +84,36 @@
     border-top: var(--rule) solid rgb(var(--line));
   }
 
-  .btn {
-    @apply inline-flex h-8 items-center justify-center gap-2 whitespace-nowrap border px-6 text-small font-medium transition-colors duration-base ease-cm-standard;
+  /* Components use token variables directly rather than @apply with custom
+     Tailwind keys, so they compile regardless of the Tailwind config state. */
+  .btn,
+  .btn-outline,
+  .btn-solid {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 2rem;
+    padding-inline: 1.5rem;
+    border: var(--rule) solid rgb(var(--fg));
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    line-height: 1;
+    white-space: nowrap;
+    color: rgb(var(--fg));
+    background: transparent;
+    transition:
+      background-color var(--dur-base) var(--ease-standard),
+      border-color var(--dur-base) var(--ease-standard),
+      color var(--dur-base) var(--ease-standard);
   }
 
-  .btn-outline {
-    @apply btn border-fg text-fg hover:bg-fg hover:text-surface;
+  .btn-outline:hover {
+    background: rgb(var(--fg));
+    color: rgb(var(--surface));
   }
 
   .btn-solid {
-    @apply btn;
     background: rgb(var(--button-solid-bg));
     border-color: rgb(var(--button-solid-bg));
     color: rgb(var(--button-solid-fg));
@@ -101,20 +121,54 @@
 
   .btn-solid:hover {
     background: transparent;
-    color: rgb(var(--fg));
     border-color: rgb(var(--fg));
+    color: rgb(var(--fg));
   }
 
   .icon-btn {
-    @apply inline-flex h-9 w-9 items-center justify-center rounded-pill border border-fg text-fg transition-colors duration-base ease-cm-standard hover:bg-fg hover:text-surface disabled:pointer-events-none disabled:opacity-25;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: var(--rule) solid rgb(var(--fg));
+    border-radius: var(--radius-pill);
+    color: rgb(var(--fg));
+    background: transparent;
+    transition:
+      background-color var(--dur-base) var(--ease-standard),
+      color var(--dur-base) var(--ease-standard),
+      opacity var(--dur-base) var(--ease-standard);
+  }
+
+  .icon-btn:hover {
+    background: rgb(var(--fg));
+    color: rgb(var(--surface));
+  }
+
+  .icon-btn:disabled {
+    pointer-events: none;
+    opacity: 0.25;
   }
 
   .text-link {
-    @apply underline decoration-1 underline-offset-[3px] transition-opacity duration-base hover:opacity-60;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: opacity var(--dur-base) var(--ease-standard);
+  }
+
+  .text-link:hover {
+    opacity: 0.6;
   }
 
   .skip-link {
-    @apply sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:bg-paper focus:px-4 focus:py-2 focus:text-ink;
+    @apply sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:px-4 focus:py-2;
+  }
+
+  .skip-link:focus {
+    background: rgb(var(--paper));
+    color: rgb(var(--ink));
   }
 
   .no-scrollbar {
