@@ -180,6 +180,45 @@
   }
 }
 
+/*
+  List row with a hairline top border that "powers up" on hover (Bloom FAQ):
+  a full-strength line draws across from the left, and retracts on leave.
+*/
+.line-item {
+  position: relative;
+  border-top: var(--rule) solid rgb(var(--line) / var(--rule-alpha));
+}
+
+.line-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--rule) * -1);
+  height: var(--rule);
+  background: rgb(var(--line));
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur-slow) var(--ease-out);
+  pointer-events: none;
+}
+
+.line-item:has(:focus-visible)::before {
+  transform: scaleX(1);
+}
+
+@media (hover: hover) {
+  .line-item:hover::before {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .line-item::before {
+    transition: none;
+  }
+}
+
 /* Headline sizes always use the display family, whatever element carries them */
 .text-display,
 .text-h1,

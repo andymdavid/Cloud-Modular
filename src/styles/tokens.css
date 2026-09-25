@@ -22,6 +22,7 @@
   --ink: 11 11 12;            /* #0B0B0C  near-black, primary text + dark chrome */
   --ink-raised: 22 22 24;     /* #161618  raised surface on dark */
   --graphite: 36 36 38;       /* #242426  solid buttons (Modscape) */
+  --charcoal: 34 34 34;       /* #222222  footer panel (Bloom) */
   --grey-600: 88 88 90;       /* #58585A  secondary text on light */
   --grey-500: 117 117 117;    /* #757575  captions, meta on light */
   --grey-400: 187 186 186;    /* #BBBABA  secondary text on dark (Graya) */
@@ -77,6 +78,8 @@
   --measure: 36rem;                                             /* ~560px copy width */
   --measure-wide: 45rem;                                        /* ~720px */
   --page-max: 120rem;                                           /* 1920px hard cap */
+  --frame: 4px;                                                 /* light frame around the inset footer panel (Bloom) */
+  --menu-w: 30rem;                                              /* 480px slide-in menu panel */
 
   /* ---------- Primitives: shape & motion ---------- */
   --radius-none: 0;
@@ -91,6 +94,7 @@
   --dur-base: 400ms;
   --dur-slow: 700ms;
   --dur-reveal: 900ms;
+  --dur-panel: 800ms;             /* menu panel slide (Bloom) */
 
   --z-header: 50;
   --z-overlay: 60;

@@ -35,35 +35,42 @@ const {
         <img src="/logo.webp" alt="Cloud Modular" width="1280" height="275" class="h-[22px] w-auto sm:h-[26px]" />
       </a>
 
-      <nav class="hidden items-center gap-6 lg:flex" aria-label="Main navigation">
-        {links.map((link) => (
-          <a href={link.href} class="text-small font-medium transition-opacity duration-base hover:opacity-60">{link.label}</a>
-        ))}
-        <a href={site.enquiryHref} class="btn-outline ml-2">Enquire now</a>
-      </nav>
-
-      <div class="flex items-center gap-3 lg:hidden">
-        <a href={site.enquiryHref} class="btn-outline px-4">Enquire now</a>
-        <button type="button" data-menu-toggle class="btn-solid px-4" aria-expanded="false" aria-controls="site-menu">Menu</button>
+      <div class="flex items-center gap-3 sm:gap-4">
+        <a href={site.enquiryHref} class="btn-outline px-4 sm:px-6">Enquire now</a>
+        <button type="button" data-menu-open class="menu-icon" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </button>
       </div>
     </div>
   </div>
 </header>
 
-<div
-  id="site-menu"
-  data-site-menu
-  data-theme="dark"
-  class="pointer-events-none fixed inset-0 z-[45] flex flex-col justify-center opacity-0 transition-opacity duration-slow ease-cm-standard lg:hidden"
-  aria-hidden="true"
-  inert
->
-  <nav class="shell flex flex-col items-center gap-3 pb-24 pt-header" aria-label="Mobile navigation">
-    {links.map((link) => (
-      <a data-menu-link href={link.href} class="text-[2.25rem] font-normal leading-tight tracking-[-0.02em] text-fg transition-opacity duration-base hover:opacity-60">{link.label}</a>
-    ))}
-  </nav>
-  <p class="shell absolute inset-x-0 bottom-8 text-center text-caption text-fg-subtle">{site.offices.map((o) => o.city).join("  ·  ")}</p>
+<!-- Slide-in menu panel (Bloom): white panel from the right over a soft scrim -->
+<div data-menu-root class="menu-root" aria-hidden="true" inert>
+  <div data-menu-scrim class="menu-scrim"></div>
+  <div id="site-menu" data-theme="light" class="menu-panel" role="dialog" aria-modal="true" aria-label="Site menu">
+    <div class="flex h-header shrink-0 items-center justify-end">
+      <button type="button" data-menu-close class="menu-icon menu-icon--close" aria-label="Close menu">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </button>
+    </div>
+
+    <nav class="menu-links mt-4 flex flex-col items-start gap-1" aria-label="Main navigation">
+      {links.map((link, index) => (
+        <a data-menu-link href={link.href} class="menu-link" style={`--i:${index}`}>{link.label}</a>
+      ))}
+    </nav>
+
+    <div class="menu-cta mt-auto pb-10 pt-16">
+      <p class="font-display text-[1.5rem] font-normal leading-[1.2] tracking-[var(--tracking-heading)]">Let’s talk about your next project</p>
+      <div class="mt-6 flex flex-wrap gap-1">
+        <a data-menu-link href={site.enquiryHref} class="btn-solid h-12 px-5">Enquire now</a>
+        <a data-menu-link href="/partner-with-us/" class="btn-solid h-12 px-5">Partner with us</a>
+      </div>
+    </div>
+  </div>
 </div>
 
 <style>
@@ -87,23 +94,133 @@ const {
     filter: brightness(0);
   }
 
-  :global(html.menu-open) .site-header {
-    background: rgb(var(--ink));
+  /* Two-bar menu icon; the close variant crosses the same bars into an × */
+  .menu-icon {
+    position: relative;
+    display: inline-flex;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-right: -0.625rem; /* bars align with the page gutter */
+    color: rgb(var(--fg));
+    transition: opacity var(--dur-base) var(--ease-standard);
   }
 
-  :global(html.menu-open) .site-header .site-logo img {
-    filter: none;
+  .menu-icon:hover {
+    opacity: 0.6;
+  }
+
+  .menu-icon span {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 1.5rem;
+    height: 1.5px;
+    margin: -0.75px 0 0 -0.75rem;
+    background: currentColor;
+    transition: transform var(--dur-slow) var(--ease-out);
+  }
+
+  .menu-icon span:first-child {
+    transform: translateY(-3.5px);
+  }
+
+  .menu-icon span:last-child {
+    transform: translateY(3.5px);
+  }
+
+  .menu-root.is-open .menu-icon--close span {
+    transition-delay: 200ms;
+  }
+
+  .menu-root.is-open .menu-icon--close span:first-child {
+    transform: rotate(45deg);
+  }
+
+  .menu-root.is-open .menu-icon--close span:last-child {
+    transform: rotate(-45deg);
+  }
+
+  .menu-root {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+  }
+
+  .menu-root.is-open {
+    pointer-events: auto;
+  }
+
+  .menu-scrim {
+    position: absolute;
+    inset: 0;
+    background: rgb(var(--ink) / 0.35);
+    opacity: 0;
+    transition: opacity var(--dur-panel) var(--ease-out);
+  }
+
+  .menu-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    width: min(var(--menu-w), 100%);
+    padding-inline: var(--gap) var(--gutter);
+    overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform var(--dur-panel) var(--ease-out);
+  }
+
+  .menu-root.is-open .menu-scrim {
+    opacity: 1;
+  }
+
+  .menu-root.is-open .menu-panel {
+    transform: none;
+  }
+
+  .menu-link {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    line-height: 1.2;
+    font-weight: 400;
+    letter-spacing: var(--tracking-title);
+    opacity: 0;
+    transform: translateY(0.75rem);
+    transition:
+      opacity var(--dur-slow) var(--ease-out),
+      transform var(--dur-slow) var(--ease-out),
+      color var(--dur-base) var(--ease-standard);
+  }
+
+  .menu-link:hover {
+    color: rgb(var(--fg-subtle));
+  }
+
+  .menu-root.is-open .menu-link {
+    opacity: 1;
+    transform: none;
+    transition-delay: calc(150ms + var(--i) * 50ms), calc(150ms + var(--i) * 50ms), 0ms;
   }
 
   :global(html.menu-open) {
     overflow: hidden;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .menu-panel,
+    .menu-scrim,
+    .menu-link,
+    .menu-icon span {
+      transition: none !important;
+    }
+  }
 </style>
 
 <script>
   const header = document.querySelector<HTMLElement>("[data-site-header]");
-  const menu = document.querySelector<HTMLElement>("[data-site-menu]");
-  const toggle = document.querySelector<HTMLButtonElement>("[data-menu-toggle]");
   const hero = document.querySelector<HTMLElement>("[data-hero]");
 
   const setSolid = (solid: boolean) => {
@@ -123,27 +240,45 @@ const {
     }
   }
 
-  let lastTheme = header?.dataset.theme;
+  const root = document.querySelector<HTMLElement>("[data-menu-root]");
+  const panel = root?.querySelector<HTMLElement>("[role='dialog']");
+  const openButton = document.querySelector<HTMLButtonElement>("[data-menu-open]");
+  const closeButton = root?.querySelector<HTMLButtonElement>("[data-menu-close]");
+
   const setMenu = (open: boolean) => {
-    if (!menu || !toggle || !header) return;
-    if (open) {
-      lastTheme = header.dataset.theme;
-      header.dataset.theme = "dark";
-    } else if (lastTheme) {
-      header.dataset.theme = lastTheme;
-    }
-    menu.classList.toggle("opacity-0", !open);
-    menu.classList.toggle("pointer-events-none", !open);
-    menu.setAttribute("aria-hidden", String(!open));
-    menu.toggleAttribute("inert", !open);
-    toggle.setAttribute("aria-expanded", String(open));
-    toggle.textContent = open ? "Close" : "Menu";
+    if (!root || !openButton) return;
+    if (open === root.classList.contains("is-open")) return;
+    root.classList.toggle("is-open", open);
+    root.setAttribute("aria-hidden", String(!open));
+    root.toggleAttribute("inert", !open);
+    openButton.setAttribute("aria-expanded", String(open));
     document.documentElement.classList.toggle("menu-open", open);
+    (open ? closeButton : openButton)?.focus({ preventScroll: true });
   };
 
-  toggle?.addEventListener("click", () => setMenu(toggle.getAttribute("aria-expanded") !== "true"));
-  menu?.querySelectorAll("[data-menu-link]").forEach((link) => link.addEventListener("click", () => setMenu(false)));
+  openButton?.addEventListener("click", () => setMenu(true));
+  closeButton?.addEventListener("click", () => setMenu(false));
+  root?.querySelector("[data-menu-scrim]")?.addEventListener("click", () => setMenu(false));
+  root?.querySelectorAll("[data-menu-link]").forEach((link) => link.addEventListener("click", () => setMenu(false)));
+
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") setMenu(false);
+    if (!root?.classList.contains("is-open")) return;
+    if (event.key === "Escape") {
+      setMenu(false);
+      return;
+    }
+    // Keep keyboard focus inside the open panel
+    if (event.key === "Tab" && panel) {
+      const focusable = panel.querySelectorAll<HTMLElement>("a[href], button");
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
   });
 </script>

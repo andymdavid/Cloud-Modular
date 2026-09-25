@@ -9,7 +9,9 @@ const discover = [
 ];
 ---
 
-<footer id="contact" data-theme="dark" class="scroll-mt-header">
+<!-- Charcoal panel inset from the page edges by a thin light frame (Bloom) -->
+<div data-theme="light" class="footer-frame">
+<footer id="contact" data-theme="dark" class="footer-panel scroll-mt-header">
   <div class="shell pb-6 pt-section">
     <div class="grid-12 gap-y-12">
       <div class="col-span-12 lg:col-span-6" data-reveal>
@@ -57,3 +59,15 @@ const discover = [
     </div>
   </div>
 </footer>
+</div>
+
+<style>
+  .footer-frame {
+    padding: 0 var(--frame) var(--frame);
+  }
+
+  .footer-panel {
+    --surface: var(--charcoal);
+    --surface-alt: var(--graphite);
+  }
+</style>
