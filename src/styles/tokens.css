@@ -34,9 +34,10 @@
   --sage: 213 219 209;        /* #D5DBD1  brand tint tile (cf. Modscape pastel tiles) */
 
   /* ---------- Primitives: type ---------- */
-  /* Display: Montserrat, the closest free match to the GRAYA wordmark
-     (a wide, Gotham-style geometric sans). Set headlines at 500. */
-  --font-display: "Montserrat", "Gotham", "Helvetica Neue", Arial, sans-serif;
+  /* Display: Gantari, the closest free match to the GRAYA wordmark.
+     Scored per letter against the logo outlines, Gantari 600 overlays the
+     G, R, A and Y almost exactly. The wordmark itself is weight 600. */
+  --font-display: "Gantari", "Gotham", "Proxima Nova", "Helvetica Neue", Arial, sans-serif;
   --font-text: "Inter Tight", "Helvetica Neue", Arial, sans-serif;
   --weight-light: 300;
   --weight-regular: 400;
@@ -60,8 +61,8 @@
   --leading-body: 1.45;
   --leading-statement: 1.35;
 
-  --tracking-display: -0.025em;
-  --tracking-heading: -0.015em;
+  --tracking-display: -0.02em;
+  --tracking-heading: -0.01em;
   --tracking-body: 0;
   --tracking-micro: 0.06em;
 
