@@ -61,8 +61,9 @@
   --leading-body: 1.45;
   --leading-statement: 1.35;
 
-  --tracking-display: -0.02em;
-  --tracking-heading: -0.01em;
+  --tracking-display: -0.035em;   /* hero + large numerals */
+  --tracking-title: -0.025em;     /* section titles */
+  --tracking-heading: -0.01em;    /* statements, card headings */
   --tracking-body: 0;
   --tracking-micro: 0.06em;
 
@@ -82,6 +83,7 @@
   --radius-xs: 2px;
   --radius-pill: 999px;
   --rule: 1px;
+  --rule-alpha: 0.2;              /* section dividers match the FAQ item lines */
 
   --ease-standard: cubic-bezier(0.25, 0.1, 0.25, 1);
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);

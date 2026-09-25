@@ -41,7 +41,7 @@ export default {
         display: ["var(--text-display)", { lineHeight: "var(--leading-none)", letterSpacing: "var(--tracking-display)", fontWeight: "600" }],
         h1: ["var(--text-h1)", { lineHeight: "var(--leading-tight)", letterSpacing: "var(--tracking-display)", fontWeight: "500" }],
         statement: ["var(--text-statement)", { lineHeight: "var(--leading-statement)", letterSpacing: "var(--tracking-heading)", fontWeight: "400" }],
-        h2: ["var(--text-h2)", { lineHeight: "var(--leading-tight)", letterSpacing: "var(--tracking-heading)", fontWeight: "500" }],
+        h2: ["var(--text-h2)", { lineHeight: "var(--leading-tight)", letterSpacing: "var(--tracking-title)", fontWeight: "600" }],
         h3: ["var(--text-h3)", { lineHeight: "var(--leading-snug)", letterSpacing: "var(--tracking-heading)", fontWeight: "500" }],
         lead: ["var(--text-lead)", { lineHeight: "var(--leading-snug)", letterSpacing: "var(--tracking-body)", fontWeight: "500" }],
         body: ["var(--text-body)", { lineHeight: "var(--leading-body)" }],

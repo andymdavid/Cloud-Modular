@@ -81,7 +81,7 @@
   }
 
   .rule {
-    border-top: var(--rule) solid rgb(var(--line));
+    border-top: var(--rule) solid rgb(var(--line) / var(--rule-alpha));
   }
 
   /* Components use token variables directly rather than @apply with custom

@@ -118,8 +118,8 @@ const stats = [
   <!-- About: Graya-style staggered, asymmetric image columns -->
   <section data-theme="light" class="pb-section">
     <div class="shell">
-      <div class="grid-12 rule gap-y-10 pt-6">
-        <p class="col-span-12 text-small font-medium md:col-span-3" data-reveal>About</p>
+      <div class="grid-12 rule gap-y-10 pt-section">
+        <h2 class="col-span-12 text-h2 md:col-span-3" data-reveal>About</h2>
         <div class="col-span-12 space-y-5 md:col-span-6 lg:col-span-5" data-reveal>
           <p class="text-lead">Cloud Modular offers clarity and certainty to a changing construction landscape.</p>
           <p class="text-body text-fg-muted">
@@ -152,7 +152,7 @@ const stats = [
   <!-- Stats: Modscape project-page numerals -->
   <section data-theme="light" class="py-section">
     <div class="shell">
-      <SectionHead title="Why modular" intro="Most of the build happens offsite, which shortens programmes, reduces site disruption and improves cost certainty." />
+      <SectionHead rule={false} title="Why modular" intro="Most of the build happens offsite, which shortens programmes, reduces site disruption and improves cost certainty." />
       <dl class="mt-12 grid grid-cols-2 gap-x-gap-sm gap-y-10 lg:grid-cols-4">
         {stats.map((stat, index) => (
           <div class="flex flex-col" data-reveal style={`--reveal-delay:${index * 80}ms`}>
@@ -184,7 +184,7 @@ const stats = [
         <h2 class="col-span-12 text-h2 md:col-span-4" data-reveal>Questions</h2>
         <div class="col-span-12 md:col-span-8 lg:col-span-7 lg:col-start-6" data-reveal>
           {faqItems.map((item) => (
-            <details class="faq group border-b border-line/20 first:border-t">
+            <details class="faq group border-b border-line/[var(--rule-alpha)] first:border-t">
               <summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-4 text-body font-medium">
                 <span>{item.question}</span>
                 <span class="relative h-3 w-3 shrink-0" aria-hidden="true">
