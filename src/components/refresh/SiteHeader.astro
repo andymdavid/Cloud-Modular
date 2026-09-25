@@ -81,9 +81,9 @@ const {
     content: "";
     position: absolute;
     inset: 0 0 auto;
-    height: calc(var(--header-h) + 3.5rem);
+    height: 100%; /* never spills past the header onto a neighbouring light section */
     z-index: -1; /* behind the logo and icon (the header is its own stacking context) */
-    background: linear-gradient(180deg, rgb(var(--ink) / 0.55) 0%, rgb(var(--ink) / 0.25) 55%, rgb(var(--ink) / 0) 100%);
+    background: linear-gradient(180deg, rgb(var(--ink) / 0.5) 0%, rgb(var(--ink) / 0) 100%);
     opacity: 0;
     transition: opacity var(--dur-base) var(--ease-standard);
     pointer-events: none;
@@ -232,19 +232,20 @@ const {
 <script>
   const header = document.querySelector<HTMLElement>("[data-site-header]");
 
-  // Match the header's theme to the section currently beneath it (sampled at the header's midline)
+  // Match the header's theme to the section beneath it. Dark only when a dark section covers the
+  // whole header, so the white logo and its fade never sit over a light section.
   const themedSections = [...document.querySelectorAll<HTMLElement>("main [data-theme], footer[data-theme]")];
   let ticking = false;
   const syncTheme = () => {
     ticking = false;
     if (!header) return;
-    const probe = header.offsetHeight / 2;
-    let theme: string | undefined;
+    const bottom = header.offsetHeight;
+    let theme = "light";
     for (const section of themedSections) {
       const rect = section.getBoundingClientRect();
-      if (rect.top <= probe && rect.bottom > probe) theme = section.dataset.theme;
+      if (section.dataset.theme === "dark" && rect.top <= 0 && rect.bottom >= bottom) theme = "dark";
     }
-    if (theme && header.dataset.theme !== theme) header.dataset.theme = theme;
+    if (header.dataset.theme !== theme) header.dataset.theme = theme;
   };
   const requestSync = () => {
     if (ticking) return;
