@@ -41,8 +41,9 @@
      G, R, A and Y almost exactly. The wordmark itself is weight 600. */
   --font-display: "Gantari", "Gotham", "Proxima Nova", "Helvetica Neue", Arial, sans-serif;
   --font-text: "Inter Tight", "Helvetica Neue", Arial, sans-serif;
-  /* Hero H1 only: a classic serif set tight against the sans system */
-  --font-hero: "Libre Baskerville", Baskerville, Georgia, serif;
+  /* Hero H1 only: a classic serif set tight against the sans system. Baskervville (ANRT) is a
+     finer cut than Libre Baskerville, whose lightest weight reads bold at display sizes. */
+  --font-hero: "Baskervville", "Libre Baskerville", Baskerville, Georgia, serif;
   --weight-light: 300;
   --weight-regular: 400;
   --weight-medium: 500;

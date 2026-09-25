@@ -229,7 +229,7 @@
   text-wrap: balance;
 }
 
-/* Hero H1: Libre Baskerville with tight letter and line spacing */
+/* Hero H1: Baskervville with tight letter and line spacing */
 .text-hero {
   font-family: var(--font-hero);
   font-size: var(--text-display);
