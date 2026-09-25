@@ -180,6 +180,15 @@
   }
 }
 
+/* Headline sizes always use the display family, whatever element carries them */
+.text-display,
+.text-h1,
+.text-statement,
+.text-h2,
+.text-h3 {
+  font-family: var(--font-display);
+}
+
 /* Scroll reveals: only hidden when JS has marked the document as ready */
 .js [data-reveal] {
   opacity: 0;

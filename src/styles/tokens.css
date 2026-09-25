@@ -34,8 +34,11 @@
   --sage: 213 219 209;        /* #D5DBD1  brand tint tile (cf. Modscape pastel tiles) */
 
   /* ---------- Primitives: type ---------- */
-  --font-display: "Inter Tight", "Helvetica Neue", Arial, sans-serif;
+  /* Display: Barlow, a free DIN-style match for Graya's DIN 2014.
+     Barlow runs lighter than DIN: Barlow 300 ≈ DIN 300, Barlow 500 ≈ DIN 400. */
+  --font-display: "Barlow", "DIN 2014", "DIN Next", "Bahnschrift", Arial, sans-serif;
   --font-text: "Inter Tight", "Helvetica Neue", Arial, sans-serif;
+  --weight-light: 300;
   --weight-regular: 400;
   --weight-medium: 500;
 
@@ -57,8 +60,8 @@
   --leading-body: 1.45;
   --leading-statement: 1.35;
 
-  --tracking-display: -0.03em;
-  --tracking-heading: -0.015em;
+  --tracking-display: -0.01em;
+  --tracking-heading: -0.005em;
   --tracking-body: 0;
   --tracking-micro: 0.06em;
 
