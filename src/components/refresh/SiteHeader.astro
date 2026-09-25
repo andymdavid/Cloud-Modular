@@ -77,8 +77,8 @@ const {
     background: transparent;
   }
 
-  /* Legibility fade behind the logo and icon. Always on over dark photography (ink fade);
-     on light sections it appears only when content scrolls beneath the header (surface fade). */
+  /* Full-width legibility fade behind the header. Always on over dark photography (ink);
+     on light sections only while the logo or menu icon clashes with content (surface colour). */
   .site-header {
     --scrim: var(--paper);
     --scrim-top: 0.94;
@@ -253,16 +253,21 @@ const {
     if (el.matches("html, body, main, section, [data-theme]")) return false;
     return getComputedStyle(el).backgroundColor !== "rgba(0, 0, 0, 0)";
   };
-  const contentBeneath = (height: number) => {
-    const rows = [height * 0.2, height * 0.5, height * 0.8];
-    for (const y of rows) {
-      for (let x = 8; x < window.innerWidth; x += 40) {
+  // Is the logo or menu icon clashing with content? Sample a small grid over each one's box.
+  const contentBeneath = (target: Element) => {
+    const r = target.getBoundingClientRect();
+    const pad = 6;
+    for (let i = 0; i <= 4; i++) {
+      for (let j = 0; j <= 2; j++) {
+        const x = r.left - pad + ((r.width + pad * 2) * i) / 4;
+        const y = r.top - pad + ((r.height + pad * 2) * j) / 2;
         const hit = document.elementsFromPoint(x, y).find((el) => !el.closest("[data-site-header], [data-menu-root]"));
         if (hit && isContent(hit)) return true;
       }
     }
     return false;
   };
+  const scrimTargets = header ? [...header.querySelectorAll(".site-logo, .menu-icon")] : [];
 
   let ticking = false;
   const syncTheme = () => {
@@ -275,7 +280,7 @@ const {
       if (section.dataset.theme === "dark" && rect.top <= 0 && rect.bottom >= bottom) theme = "dark";
     }
     if (header.dataset.theme !== theme) header.dataset.theme = theme;
-    header.classList.toggle("has-overlap", theme === "light" && contentBeneath(bottom));
+    header.classList.toggle("has-overlap", theme === "light" && scrimTargets.some((target) => contentBeneath(target)));
   };
   const requestSync = () => {
     if (ticking) return;
