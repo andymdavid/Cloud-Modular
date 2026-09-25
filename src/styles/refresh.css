@@ -187,6 +187,7 @@
 .text-h2,
 .text-h3 {
   font-family: var(--font-display);
+  text-wrap: balance;
 }
 
 /* Scroll reveals: only hidden when JS has marked the document as ready */
