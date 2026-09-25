@@ -40,6 +40,8 @@
      G, R, A and Y almost exactly. The wordmark itself is weight 600. */
   --font-display: "Gantari", "Gotham", "Proxima Nova", "Helvetica Neue", Arial, sans-serif;
   --font-text: "Inter Tight", "Helvetica Neue", Arial, sans-serif;
+  /* Hero H1 only: a classic serif set tight against the sans system */
+  --font-hero: "Libre Baskerville", Baskerville, Georgia, serif;
   --weight-light: 300;
   --weight-regular: 400;
   --weight-medium: 500;
@@ -61,8 +63,10 @@
   --leading-snug: 1.3;
   --leading-body: 1.45;
   --leading-statement: 1.35;
+  --leading-hero: 1.05;
 
-  --tracking-display: -0.035em;   /* hero + large numerals */
+  --tracking-display: -0.035em;   /* large numerals */
+  --tracking-hero: -0.04em;       /* serif hero H1 */
   --tracking-title: -0.025em;     /* section titles */
   --tracking-heading: -0.01em;    /* statements, card headings */
   --tracking-body: 0;

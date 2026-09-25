@@ -229,6 +229,16 @@
   text-wrap: balance;
 }
 
+/* Hero H1: Libre Baskerville with tight letter and line spacing */
+.text-hero {
+  font-family: var(--font-hero);
+  font-size: var(--text-display);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-hero);
+  letter-spacing: var(--tracking-hero);
+  text-wrap: balance;
+}
+
 /* Scroll reveals: only hidden when JS has marked the document as ready */
 .js [data-reveal] {
   opacity: 0;
