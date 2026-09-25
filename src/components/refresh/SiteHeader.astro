@@ -1,5 +1,6 @@
 ---
 import { site } from "@/data/site";
+import Logo from "@/components/refresh/Logo.astro";
 
 export interface NavLink {
   label: string;
@@ -33,7 +34,7 @@ const {
   <div class="shell">
     <div class="flex h-header items-center justify-between gap-6">
       <a href="/" class="site-logo pointer-events-auto shrink-0" aria-label="Cloud Modular home">
-        <img src="/logo.webp" alt="Cloud Modular" width="1280" height="275" class="h-[22px] w-auto sm:h-[26px]" />
+        <Logo class="h-[20px] w-auto sm:h-[24px]" />
       </a>
 
       <button type="button" data-menu-open class="menu-icon pointer-events-auto" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu">
@@ -93,13 +94,9 @@ const {
     opacity: 1;
   }
 
-  /* Supplied logo is white; render it ink on light surfaces */
-  .site-logo img {
-    transition: filter var(--dur-base) var(--ease-standard);
-  }
-
-  .site-header[data-theme="light"] .site-logo img {
-    filter: brightness(0);
+  .site-logo {
+    color: rgb(var(--fg));
+    transition: color var(--dur-base) var(--ease-standard);
   }
 
   /* Two-bar menu icon; the close variant crosses the same bars into an × */

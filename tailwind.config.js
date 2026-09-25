@@ -21,6 +21,7 @@ export default {
         mist: channel("mist"),
         paper: channel("paper"),
         sage: channel("sage"),
+        gold: channel("gold"),
         surface: channel("surface"),
         "surface-alt": channel("surface-alt"),
         "surface-quiet": channel("surface-quiet"),

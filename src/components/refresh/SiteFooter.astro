@@ -1,5 +1,6 @@
 ---
 import { site } from "@/data/site";
+import Logo from "@/components/refresh/Logo.astro";
 
 const discover = [
   { label: "Home", href: "/" },
@@ -54,7 +55,7 @@ const discover = [
     </div>
 
     <div class="rule mt-section flex flex-col gap-4 pt-5 sm:flex-row sm:items-center sm:justify-between">
-      <img src="/logo.webp" alt="Cloud Modular" width="1280" height="275" loading="lazy" class="h-5 w-auto opacity-90" />
+      <Logo class="h-[18px] w-auto text-fg" />
       <p class="text-caption text-fg-subtle">© {new Date().getFullYear()} Cloud Modular. All rights reserved. · {site.hours}</p>
     </div>
   </div>

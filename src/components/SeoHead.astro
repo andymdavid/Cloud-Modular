@@ -10,6 +10,8 @@ export interface Props {
   structuredData?: object | object[];
   fontsHref?: string;
   themeColor?: string;
+  favicon?: string;
+  appleTouchIcon?: string;
 }
 
 const {
@@ -21,6 +23,8 @@ const {
   structuredData = [],
   fontsHref = "https://fonts.googleapis.com/css2?family=Cal+Sans&family=Host+Grotesk:wght@500;700&family=Instrument+Serif&family=Inter:wght@400;500;600&display=swap",
   themeColor = "#010101",
+  favicon = "/favicon.png",
+  appleTouchIcon = "/apple-touch-icon.png",
 } = Astro.props;
 
 const canonicalUrl = new URL(canonical, site.url).toString();
@@ -106,8 +110,8 @@ const servicesSchema = {
 <meta name="description" content={description} />
 <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow"} />
 <link rel="canonical" href={canonicalUrl} />
-<link rel="icon" href="/favicon.png" type="image/png" />
-<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="icon" href={favicon} type="image/png" />
+<link rel="apple-touch-icon" href={appleTouchIcon} />
 <link rel="manifest" href="/site.webmanifest" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
