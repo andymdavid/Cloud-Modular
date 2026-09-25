@@ -77,20 +77,34 @@ const {
     background: transparent;
   }
 
-  /* Over photography the white logo/icon get a soft top fade for legibility; nothing on light sections */
+  /* Legibility fade behind the logo and icon. Always on over dark photography (ink fade);
+     on light sections it appears only when content scrolls beneath the header (surface fade). */
+  .site-header {
+    --scrim: var(--paper);
+    --scrim-top: 0.94;
+    --scrim-mid: 0.8;
+  }
+
+  .site-header[data-theme="dark"] {
+    --scrim: var(--ink);
+    --scrim-top: 0.5;
+    --scrim-mid: 0.25;
+  }
+
   .site-header::before {
     content: "";
     position: absolute;
     inset: 0 0 auto;
     height: 100%; /* never spills past the header onto a neighbouring light section */
     z-index: -1; /* behind the logo and icon (the header is its own stacking context) */
-    background: linear-gradient(180deg, rgb(var(--ink) / 0.5) 0%, rgb(var(--ink) / 0) 100%);
+    background: linear-gradient(180deg, rgb(var(--scrim) / var(--scrim-top)) 0%, rgb(var(--scrim) / var(--scrim-mid)) 55%, rgb(var(--scrim) / 0) 100%);
     opacity: 0;
     transition: opacity var(--dur-base) var(--ease-standard);
     pointer-events: none;
   }
 
-  .site-header[data-theme="dark"]::before {
+  .site-header[data-theme="dark"]::before,
+  .site-header.has-overlap::before {
     opacity: 1;
   }
 
@@ -232,6 +246,24 @@ const {
   // Match the header's theme to the section beneath it. Dark only when a dark section covers the
   // whole header, so the white logo and its fade never sit over a light section.
   const themedSections = [...document.querySelectorAll<HTMLElement>("main [data-theme], footer[data-theme]")];
+  // Does any visible content (text, media, controls, filled panels) sit beneath the header strip?
+  const CONTENT_TAGS = new Set(["P", "H1", "H2", "H3", "H4", "H5", "H6", "A", "BUTTON", "IMG", "VIDEO", "SVG", "PATH", "LI", "DT", "DD", "SUMMARY", "FIGCAPTION", "LABEL", "INPUT", "SPAN"]);
+  const isContent = (el: Element) => {
+    if (CONTENT_TAGS.has(el.tagName.toUpperCase())) return true;
+    if (el.matches("html, body, main, section, [data-theme]")) return false;
+    return getComputedStyle(el).backgroundColor !== "rgba(0, 0, 0, 0)";
+  };
+  const contentBeneath = (height: number) => {
+    const rows = [height * 0.2, height * 0.5, height * 0.8];
+    for (const y of rows) {
+      for (let x = 8; x < window.innerWidth; x += 40) {
+        const hit = document.elementsFromPoint(x, y).find((el) => !el.closest("[data-site-header], [data-menu-root]"));
+        if (hit && isContent(hit)) return true;
+      }
+    }
+    return false;
+  };
+
   let ticking = false;
   const syncTheme = () => {
     ticking = false;
@@ -243,6 +275,7 @@ const {
       if (section.dataset.theme === "dark" && rect.top <= 0 && rect.bottom >= bottom) theme = "dark";
     }
     if (header.dataset.theme !== theme) header.dataset.theme = theme;
+    header.classList.toggle("has-overlap", theme === "light" && contentBeneath(bottom));
   };
   const requestSync = () => {
     if (ticking) return;
