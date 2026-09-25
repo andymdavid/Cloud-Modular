@@ -23,25 +23,23 @@ const {
 } = Astro.props;
 ---
 
+<!-- Bloom-style header: no background or divider, just the logo and menu icon.
+     Its theme follows whichever section is underneath, so it stays legible. -->
 <header
   data-site-header
-  data-overlay={overlay ? "true" : "false"}
   data-theme={overlay ? "dark" : "light"}
-  class:list={["site-header fixed inset-x-0 top-0 z-50", { "is-solid": !overlay }]}
+  class="site-header pointer-events-none fixed inset-x-0 top-0 z-50"
 >
   <div class="shell">
-    <div class="flex h-header items-center justify-between gap-6 border-b border-line/[var(--rule-alpha)] transition-colors duration-base">
-      <a href="/" class="site-logo shrink-0" aria-label="Cloud Modular home">
+    <div class="flex h-header items-center justify-between gap-6">
+      <a href="/" class="site-logo pointer-events-auto shrink-0" aria-label="Cloud Modular home">
         <img src="/logo.webp" alt="Cloud Modular" width="1280" height="275" class="h-[22px] w-auto sm:h-[26px]" />
       </a>
 
-      <div class="flex items-center gap-3 sm:gap-4">
-        <a href={site.enquiryHref} class="btn-outline px-4 sm:px-6">Enquire now</a>
-        <button type="button" data-menu-open class="menu-icon" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu">
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </button>
-      </div>
+      <button type="button" data-menu-open class="menu-icon pointer-events-auto" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </button>
     </div>
   </div>
 </header>
@@ -76,20 +74,30 @@ const {
 <style>
   .site-header {
     background: transparent;
-    transition:
-      background-color var(--dur-base) var(--ease-standard),
-      color var(--dur-base) var(--ease-standard);
   }
 
-  .site-header[data-overlay="true"]:not(.is-solid) > .shell > div {
-    border-color: rgb(255 255 255 / 0.35);
+  /* Over photography the white logo/icon get a soft top fade for legibility; nothing on light sections */
+  .site-header::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: calc(var(--header-h) + 3.5rem);
+    z-index: -1; /* behind the logo and icon (the header is its own stacking context) */
+    background: linear-gradient(180deg, rgb(var(--ink) / 0.55) 0%, rgb(var(--ink) / 0.25) 55%, rgb(var(--ink) / 0) 100%);
+    opacity: 0;
+    transition: opacity var(--dur-base) var(--ease-standard);
+    pointer-events: none;
   }
 
-  .site-header.is-solid {
-    background: rgb(var(--surface));
+  .site-header[data-theme="dark"]::before {
+    opacity: 1;
   }
 
   /* Supplied logo is white; render it ink on light surfaces */
+  .site-logo img {
+    transition: filter var(--dur-base) var(--ease-standard);
+  }
+
   .site-header[data-theme="light"] .site-logo img {
     filter: brightness(0);
   }
@@ -102,7 +110,9 @@ const {
     height: 2.75rem;
     margin-right: -0.625rem; /* bars align with the page gutter */
     color: rgb(var(--fg));
-    transition: opacity var(--dur-base) var(--ease-standard);
+    transition:
+      opacity var(--dur-base) var(--ease-standard),
+      color var(--dur-base) var(--ease-standard);
   }
 
   .menu-icon:hover {
@@ -221,24 +231,29 @@ const {
 
 <script>
   const header = document.querySelector<HTMLElement>("[data-site-header]");
-  const hero = document.querySelector<HTMLElement>("[data-hero]");
 
-  const setSolid = (solid: boolean) => {
+  // Match the header's theme to the section currently beneath it (sampled at the header's midline)
+  const themedSections = [...document.querySelectorAll<HTMLElement>("main [data-theme], footer[data-theme]")];
+  let ticking = false;
+  const syncTheme = () => {
+    ticking = false;
     if (!header) return;
-    header.classList.toggle("is-solid", solid);
-    header.dataset.theme = solid ? "light" : "dark";
-  };
-
-  if (header?.dataset.overlay === "true") {
-    if (hero) {
-      const headerHeight = header.offsetHeight;
-      new IntersectionObserver(([entry]) => setSolid(!entry.isIntersecting), {
-        rootMargin: `-${headerHeight}px 0px 0px 0px`,
-      }).observe(hero);
-    } else {
-      setSolid(true);
+    const probe = header.offsetHeight / 2;
+    let theme: string | undefined;
+    for (const section of themedSections) {
+      const rect = section.getBoundingClientRect();
+      if (rect.top <= probe && rect.bottom > probe) theme = section.dataset.theme;
     }
-  }
+    if (theme && header.dataset.theme !== theme) header.dataset.theme = theme;
+  };
+  const requestSync = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(syncTheme);
+  };
+  window.addEventListener("scroll", requestSync, { passive: true });
+  window.addEventListener("resize", requestSync);
+  syncTheme();
 
   const root = document.querySelector<HTMLElement>("[data-menu-root]");
   const panel = root?.querySelector<HTMLElement>("[role='dialog']");
