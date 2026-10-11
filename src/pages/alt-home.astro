@@ -1,6 +1,7 @@
 ---
 import RefreshLayout from "@/layouts/RefreshLayout.astro";
 import SectionHead from "@/components/refresh/SectionHead.astro";
+import HomeExplorer from "@/components/refresh/HomeExplorer.astro";
 import { advantages, faqItems, qualityRows, sectors, site } from "@/data/site";
 
 // Test page for the design refresh. Kept out of search and the sitemap until it replaces `/`.
@@ -44,14 +45,8 @@ const stats = [
     </div>
   </section>
 
-  <!-- Intro statement -->
-  <section data-theme="light" class="py-section">
-    <div class="shell grid-12">
-      <p class="col-span-12 text-statement lg:col-span-9 xl:col-span-8" data-reveal>
-        Cloud Modular brings clear design, precision offsite manufacturing and assured compliance together, giving developers a faster and more predictable way to build.
-      </p>
-    </div>
-  </section>
+  <!-- 3D home explorer: replaces the text-only intro statement (it repeated the hero and About copy) -->
+  <HomeExplorer />
 
   <!-- Sectors carousel -->
   <section id="sectors" data-theme="light" class="scroll-mt-header pb-section" data-carousel>
