@@ -1,0 +1,431 @@
+---
+import SectionHead from "@/components/refresh/SectionHead.astro";
+import { componentOrder, components, views } from "@/data/explorer/jurien-type-b-info";
+
+/**
+ * 3D home explorer: one Jurien Bay Type B residence, modelled from the DA drawings. The static image is
+ * a render of the same model and stays in place until WebGL is ready (and for no-JS or no-WebGL visitors).
+ * three.js loads only as the section approaches the viewport.
+ */
+interface Props {
+  title?: string;
+  intro?: string;
+}
+
+const {
+  title = "Explore a Cloud Modular Home",
+  intro = "A Jurien Bay residence, modelled from its design drawings. Turn it around, separate its parts and look inside each floor.",
+} = Astro.props;
+---
+
+<section id="explore" data-theme="light" class="scroll-mt-header py-section" data-explorer>
+  <div class="shell">
+    <SectionHead title={title} intro={intro} rule={false} />
+
+    <div class="mt-10 sm:mt-12" data-reveal>
+      <div
+        class="explorer-stage relative aspect-square overflow-hidden bg-surface-quiet sm:aspect-[16/10] lg:aspect-[16/9]"
+        data-stage
+      >
+        <img
+          src="/explorer/jurien-type-b.webp"
+          alt="Rendered three-quarter view of the Jurien Bay Type B residence model, showing the white-framed balcony, roof terrace pergola and spiral stair at the front"
+          width="1600"
+          height="892"
+          loading="lazy"
+          decoding="async"
+          class="explorer-fallback absolute inset-0 h-full w-full object-contain"
+          data-fallback
+        />
+        <div class="explorer-canvas absolute inset-0" data-canvas-host></div>
+
+        <p class="pointer-events-none absolute left-4 top-4 max-w-[28ch] text-caption text-fg-muted sm:left-5 sm:top-5" role="status" aria-live="polite" data-status></p>
+
+        <!-- Inactive: one clear way in; the page keeps scrolling over the model -->
+        <div class="absolute inset-x-0 bottom-0 flex justify-center p-4 sm:p-6" data-js-only data-enter-wrap>
+          <button type="button" class="btn-solid" data-enter disabled>Explore in 3D</button>
+        </div>
+
+        <!-- Active: instructions, camera buttons and the way out -->
+        <div class="explorer-active pointer-events-none absolute inset-0" hidden data-active-ui>
+          <p class="absolute bottom-4 left-4 right-4 text-caption text-fg-muted sm:bottom-auto sm:left-5 sm:right-auto sm:top-5 sm:max-w-[34ch]">
+            <span class="hidden sm:inline">Drag to rotate, scroll to zoom, right-drag to pan. Click a part for details. Arrow keys also rotate.</span>
+            <span class="sm:hidden">Drag to rotate, pinch to zoom, two fingers to pan. Tap a part for details.</span>
+          </p>
+          <div class="pointer-events-auto absolute right-4 top-4 flex items-center gap-2 sm:right-5 sm:top-5">
+            <button type="button" class="icon-btn explorer-icon" data-rotate="-1" aria-label="Rotate left">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 7a4 4 0 1 0 1.2-2.85M3 2.5v2.2h2.2" stroke="currentColor" stroke-width="1.2" /></svg>
+            </button>
+            <button type="button" class="icon-btn explorer-icon" data-rotate="1" aria-label="Rotate right">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M11 7a4 4 0 1 1-1.2-2.85M11 2.5v2.2H8.8" stroke="currentColor" stroke-width="1.2" /></svg>
+            </button>
+            <button type="button" class="icon-btn explorer-icon" data-zoom="out" aria-label="Zoom out">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 7h8" stroke="currentColor" stroke-width="1.2" /></svg>
+            </button>
+            <button type="button" class="icon-btn explorer-icon" data-zoom="in" aria-label="Zoom in">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 7h8M7 3v8" stroke="currentColor" stroke-width="1.2" /></svg>
+            </button>
+            <button type="button" class="btn-solid ml-1" data-exit>Exit 3D</button>
+          </div>
+        </div>
+
+        <!-- Details: overlays the empty bottom-left of the stage on large screens, sits below it on small ones -->
+        <aside class="explorer-details" hidden data-details aria-labelledby="explorer-details-title">
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <p class="text-caption text-fg-subtle" data-details-kind>Assembly group (illustrative)</p>
+              <h3 id="explorer-details-title" class="mt-1 text-body font-medium" data-details-title></h3>
+            </div>
+            <button type="button" class="icon-btn explorer-icon shrink-0" data-details-close aria-label="Clear selection">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="m2.5 2.5 7 7m0-7-7 7" stroke="currentColor" stroke-width="1.2" /></svg>
+            </button>
+          </div>
+          <p class="mt-2 text-small text-fg-muted" data-details-summary></p>
+          <dl class="mt-3 divide-y divide-line/10 border-t border-line/10 text-small" data-details-facts></dl>
+        </aside>
+      </div>
+
+      <!-- Controls: always keyboard operable, never capture page scroll -->
+      <div class="mt-4 grid gap-x-gap gap-y-4 border-b border-line/[var(--rule-alpha)] pb-5 sm:mt-5 lg:grid-cols-[minmax(0,1fr)_auto_auto] lg:items-end" data-js-only data-controls>
+        <div class="min-w-0">
+          <label for="explorer-explode" class="text-caption text-fg-subtle">Assembly</label>
+          <div class="mt-2 flex items-center gap-3 text-small">
+            <span aria-hidden="true">Assembled</span>
+            <input id="explorer-explode" type="range" min="0" max="100" step="1" value="0" class="explorer-range min-w-0 flex-1" aria-valuetext="Assembled" disabled data-explode />
+            <span aria-hidden="true">Separated</span>
+          </div>
+        </div>
+
+        <div>
+          <p class="text-caption text-fg-subtle" id="explorer-view-label">Show</p>
+          <div class="mt-2 flex flex-wrap gap-1.5" role="group" aria-labelledby="explorer-view-label">
+            {views.map((view, index) => (
+              <button type="button" class="explorer-chip" aria-pressed={index === 0 ? "true" : "false"} data-view={view.id} disabled>
+                {view.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-end gap-3">
+          <div>
+            <label for="explorer-part" class="text-caption text-fg-subtle">Part</label>
+            <select id="explorer-part" class="explorer-select mt-2 block" disabled data-part>
+              <option value="">None selected</option>
+              {componentOrder.map((id) => <option value={id}>{components[id].name}</option>)}
+            </select>
+          </div>
+          <button type="button" class="btn-outline" disabled data-reset>Reset view</button>
+        </div>
+      </div>
+
+      <details class="mt-4 text-caption text-fg-subtle">
+        <summary class="cursor-pointer">About this model</summary>
+        <p class="mt-2 max-w-measure-wide">
+          Modelled from Kellett Design Group's DA drawings for 1 Casuarina Crescent, Jurien Bay (Type B lot, rev B08). Room sizes and areas are taken from the drawings. The separated parts show how the home is organised, not documented construction modules or an installation sequence. Interiors, furniture, the roof form and some exterior finishes are simplified or follow the project render.
+        </p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<style>
+  html:not(.js) [data-js-only],
+  [data-explorer] [hidden] {
+    display: none !important;
+  }
+
+  .explorer-canvas {
+    pointer-events: none;
+  }
+
+  .explorer-stage[data-active] .explorer-canvas {
+    pointer-events: auto;
+  }
+
+  .explorer-stage[data-active] {
+    outline: 1px solid rgb(var(--fg) / 0.6);
+    outline-offset: -1px;
+  }
+
+  .explorer-fallback {
+    transition: opacity var(--dur-slow) var(--ease-standard);
+  }
+
+  .explorer-stage[data-ready] .explorer-fallback {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .explorer-icon {
+    background: rgb(var(--surface) / 0.9);
+  }
+
+  .explorer-icon:hover {
+    background: rgb(var(--fg));
+  }
+
+  .explorer-chip {
+    height: 2rem;
+    padding-inline: 0.875rem;
+    border: var(--rule) solid rgb(var(--fg) / 0.25);
+    font-size: var(--text-small);
+    line-height: 1;
+    color: rgb(var(--fg));
+    transition:
+      background-color var(--dur-base) var(--ease-standard),
+      border-color var(--dur-base) var(--ease-standard),
+      color var(--dur-base) var(--ease-standard);
+  }
+
+  .explorer-chip:hover {
+    border-color: rgb(var(--fg));
+  }
+
+  .explorer-chip[aria-pressed="true"] {
+    background: rgb(var(--fg));
+    border-color: rgb(var(--fg));
+    color: rgb(var(--surface));
+  }
+
+  .explorer-chip:disabled,
+  .explorer-select:disabled,
+  .explorer-range:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+
+  .explorer-select {
+    height: 2rem;
+    max-width: 16rem;
+    padding-inline: 0.75rem 2rem;
+    border: var(--rule) solid rgb(var(--fg) / 0.25);
+    border-radius: 0;
+    background: transparent
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='m1 1 4 4 4-4' stroke='%230B0B0C' stroke-width='1.2'/%3E%3C/svg%3E")
+      no-repeat right 0.75rem center;
+    font-size: var(--text-small);
+    color: rgb(var(--fg));
+    appearance: none;
+  }
+
+  .explorer-range {
+    accent-color: rgb(var(--fg));
+    height: 2rem;
+  }
+
+  /* Details panel: below the stage on small screens so it never covers the home */
+  .explorer-details {
+    position: static;
+    background: rgb(var(--surface));
+    padding: 1rem 0 0;
+  }
+
+  @media (min-width: 64rem) {
+    .explorer-stage .explorer-details {
+      position: absolute;
+      left: 1.25rem;
+      bottom: 1.25rem;
+      width: 19rem;
+      padding: 1rem 1.125rem 0.5rem;
+      background: rgb(var(--surface) / 0.94);
+      backdrop-filter: blur(6px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .explorer-fallback,
+    .explorer-chip {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import type { GroupId } from "@/data/explorer/jurien-type-b";
+  import { components, type ViewId } from "@/data/explorer/jurien-type-b-info";
+  import type { Explorer } from "@/lib/explorer/viewer";
+
+  const root = document.querySelector<HTMLElement>("[data-explorer]");
+  if (root) init(root);
+
+  function init(root: HTMLElement) {
+    const $ = <T extends Element>(selector: string) => root.querySelector<T>(selector)!;
+    const stage = $<HTMLElement>("[data-stage]");
+    const host = $<HTMLElement>("[data-canvas-host]");
+    const status = $<HTMLElement>("[data-status]");
+    const enterWrap = $<HTMLElement>("[data-enter-wrap]");
+    const enter = $<HTMLButtonElement>("[data-enter]");
+    const activeUi = $<HTMLElement>("[data-active-ui]");
+    const exit = $<HTMLButtonElement>("[data-exit]");
+    const explodeInput = $<HTMLInputElement>("[data-explode]");
+    const partSelect = $<HTMLSelectElement>("[data-part]");
+    const reset = $<HTMLButtonElement>("[data-reset]");
+    const viewButtons = [...root.querySelectorAll<HTMLButtonElement>("[data-view]")];
+    const controls = $<HTMLElement>("[data-controls]");
+
+    // One details panel, moved between the stage (large screens) and below the controls (small screens)
+    const details = $<HTMLElement>("[data-details]");
+    const detailsTitle = $<HTMLElement>("[data-details-title]");
+    const detailsSummary = $<HTMLElement>("[data-details-summary]");
+    const detailsFacts = $<HTMLElement>("[data-details-facts]");
+    const wide = window.matchMedia("(min-width: 64rem)");
+    const placeDetails = () => {
+      if (wide.matches) stage.appendChild(details);
+      else controls.after(details);
+    };
+    placeDetails();
+    wide.addEventListener("change", placeDetails);
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let explorer: Explorer | null = null;
+    let loading: Promise<Explorer | null> | null = null;
+    let active = false;
+
+    const setStatus = (text: string) => (status.textContent = text);
+
+    const showDetails = (id: GroupId | null) => {
+      partSelect.value = id ?? "";
+      if (!id) {
+        details.hidden = true;
+        return;
+      }
+      const info = components[id];
+      detailsTitle.textContent = info.name;
+      detailsSummary.textContent = info.summary;
+      detailsFacts.replaceChildren(
+        ...info.facts.map((fact) => {
+          const row = document.createElement("div");
+          row.className = "flex items-baseline justify-between gap-4 py-2";
+          const dt = document.createElement("dt");
+          dt.className = "text-fg-muted";
+          dt.textContent = fact.label;
+          const dd = document.createElement("dd");
+          dd.className = "text-right";
+          dd.innerHTML = `${fact.value} <span class="block text-caption text-fg-subtle">${fact.source}</span>`;
+          row.append(dt, dd);
+          return row;
+        }),
+      );
+      details.hidden = false;
+    };
+
+    const syncPartOptions = () => {
+      if (!explorer) return;
+      for (const option of partSelect.options) {
+        if (option.value) option.disabled = !explorer.isGroupVisible(option.value as GroupId);
+      }
+    };
+
+    const fail = (message: string) => {
+      setStatus(message);
+      stage.removeAttribute("data-ready");
+      setActive(false);
+      enterWrap.hidden = true;
+      controls.hidden = true;
+      explorer?.dispose();
+      explorer = null;
+    };
+
+    const load = () => {
+      loading ??= (async () => {
+        setStatus("Loading 3D model…");
+        try {
+          const { createExplorer, webglAvailable } = await import("@/lib/explorer/viewer");
+          if (!webglAvailable()) {
+            fail("3D view isn't available in this browser. Showing a still of the model instead.");
+            return null;
+          }
+          explorer = createExplorer({
+            host,
+            reducedMotion,
+            onSelect: showDetails,
+            onExit: () => setActive(false),
+            onError: () => fail("The 3D view stopped responding. Reload the page to try again."),
+          });
+          if (import.meta.env.DEV) Object.assign(window, { __cmExplorer: explorer });
+          stage.setAttribute("data-ready", "");
+          setStatus("");
+          for (const control of [enter, explodeInput, partSelect, reset, ...viewButtons]) control.disabled = false;
+          syncPartOptions();
+          return explorer;
+        } catch (error) {
+          console.error("[explorer]", error);
+          fail("The 3D model couldn't load. Showing a still of the model instead.");
+          return null;
+        }
+      })();
+      return loading;
+    };
+
+    function setActive(next: boolean) {
+      active = next && !!explorer;
+      explorer?.setActive(active);
+      stage.toggleAttribute("data-active", active);
+      activeUi.hidden = !active;
+      enterWrap.hidden = active || !explorer;
+      if (!active && document.activeElement && stage.contains(document.activeElement)) enter.focus({ preventScroll: true });
+    }
+
+    enter.addEventListener("click", async () => {
+      if (await load()) setActive(true);
+    });
+    exit.addEventListener("click", () => setActive(false));
+    root.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && active) setActive(false);
+    });
+
+    explodeInput.addEventListener("input", () => {
+      const value = Number(explodeInput.value);
+      explodeInput.setAttribute("aria-valuetext", value === 0 ? "Assembled" : value === 100 ? "Fully separated" : `${value}% separated`);
+      explorer?.setExplode(value / 100);
+    });
+
+    for (const button of viewButtons) {
+      button.addEventListener("click", () => {
+        viewButtons.forEach((other) => other.setAttribute("aria-pressed", String(other === button)));
+        explorer?.setView(button.dataset.view as ViewId);
+        syncPartOptions();
+      });
+    }
+
+    partSelect.addEventListener("change", () => {
+      const id = (partSelect.value || null) as GroupId | null;
+      explorer?.select(id);
+      showDetails(id);
+    });
+    $<HTMLButtonElement>("[data-details-close]").addEventListener("click", () => {
+      explorer?.select(null);
+      showDetails(null);
+    });
+    reset.addEventListener("click", () => explorer?.resetView());
+    for (const button of root.querySelectorAll<HTMLButtonElement>("[data-rotate]")) {
+      button.addEventListener("click", () => explorer?.rotate((Number(button.dataset.rotate) * Math.PI) / 12, 0));
+    }
+    for (const button of root.querySelectorAll<HTMLButtonElement>("[data-zoom]")) {
+      button.addEventListener("click", () => explorer?.zoom(button.dataset.zoom === "in" ? 1.25 : 0.8));
+    }
+
+    // Start loading as the section approaches, so the page itself is never held up
+    const approach = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        approach.disconnect();
+        load();
+      },
+      { rootMargin: "50% 0px" },
+    );
+    approach.observe(root);
+
+    // Leaving the section ends explore mode, so focus and gestures don't linger off-screen
+    new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting && active) setActive(false);
+    }).observe(stage);
+
+    window.addEventListener("pagehide", (event) => {
+      if (event.persisted) return;
+      explorer?.dispose();
+      explorer = null;
+    });
+  }
+</script>
