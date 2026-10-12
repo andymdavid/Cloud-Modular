@@ -103,9 +103,9 @@ const stats = [
 
       <div class="mt-gap grid gap-x-gap-sm gap-y-12 md:grid-cols-3">
         {pillars.map((row, index) => (
-          <article data-reveal style={`--reveal-delay:${index * 100}ms`}>
+          <article class="group" data-reveal style={`--reveal-delay:${index * 100}ms`}>
             <div class="aspect-[4/3] overflow-hidden bg-stone">
-              <img src={row.image} alt={row.title} width="1456" height="816" loading="lazy" class="h-full w-full object-cover" style={`object-position:${row.imagePosition}`} />
+              <img src={row.image} alt={row.title} width="1456" height="816" loading="lazy" class="h-full w-full object-cover transition-transform duration-slow ease-cm-out group-hover:scale-[1.03]" style={`object-position:${row.imagePosition}`} />
             </div>
             <p class="mt-4 text-caption tabular-nums text-fg-subtle">{row.index}</p>
             <h3 class="mt-2 text-h3">{row.title}</h3>
