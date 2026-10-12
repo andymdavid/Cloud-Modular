@@ -2,73 +2,212 @@
 import { site } from "@/data/site";
 import Logo from "@/components/refresh/Logo.astro";
 
-const discover = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about/" },
-  { label: "Our Work", href: "/our-work/" },
-  { label: "Partner With Us", href: "/partner-with-us/" },
+/**
+ * Footer (olympic.no): full-width slate panel on a six-column grid. Row 1: link groups under grey mono labels.
+ * Row 2: an enquiry block on the left; offices, contact icons and back-to-top on the right. Row 3: logo, hours
+ * and copyright. Rows are split by soft hairlines.
+ */
+interface FooterGroup {
+  label: string;
+  links: { label: string; href: string; external?: boolean }[];
+}
+
+const groups: FooterGroup[] = [
+  {
+    label: "Company",
+    links: [
+      { label: "Home", href: "/alt-home/" },
+      { label: "About", href: "/about/" },
+      { label: "Our Work", href: "/our-work/" },
+      { label: "Partner With Us", href: "/partner-with-us/" },
+    ],
+  },
+  {
+    label: "Explore",
+    links: [
+      { label: "Projects", href: "/alt-home/#projects" },
+      { label: "How It's Made", href: "/alt-home/#explore" },
+      { label: "Sectors", href: "/alt-home/#sectors" },
+    ],
+  },
+  {
+    label: "Why Cloud Modular",
+    links: [
+      { label: "Quality & Compliance", href: "/quality/" },
+      { label: "Why Cloud Modular", href: "/why-cloud-modular/" },
+      { label: "FAQ", href: "/faq/" },
+    ],
+  },
+  {
+    label: "Contact",
+    links: [
+      { label: "Enquire Now", href: site.enquiryHref },
+      { label: "LinkedIn", href: site.linkedIn, external: true },
+    ],
+  },
 ];
 ---
 
-<!-- Charcoal panel inset from the page edges by a thin light frame (Bloom) -->
-<div data-theme="light" class="footer-frame">
-<footer id="contact" data-theme="dark" class="footer-panel scroll-mt-header">
-  <div class="shell pb-6 pt-section">
-    <div class="grid-12 gap-y-12">
-      <div class="col-span-12 lg:col-span-6" data-reveal>
-        <p class="text-small font-medium">Contact</p>
-        <p class="mt-8 max-w-[22ch] text-statement leading-[1.2]">Have a project in mind? Let’s talk about how modular can deliver it.</p>
-        <div class="mt-8 flex flex-wrap gap-3">
-          <a href={site.enquiryHref} class="btn-solid">Enquire now</a>
-          <a href="/partner-with-us/" class="btn-outline">Partner with us</a>
-        </div>
+<!-- At least one screen tall: the link groups at the top, the enquiry block and base row pinned to the bottom -->
+<footer id="contact" data-theme="dark" class="site-footer flex min-h-[100svh] scroll-mt-header flex-col">
+  <div class="shell flex flex-1 flex-col">
+    <!-- Row 1: link groups. Contact sits on column 5 (over Offices); the first three share columns 1–4 in three
+         equal parts, so all four groups start an equal distance apart -->
+    <div class="grid grid-cols-2 gap-x-gap-sm gap-y-10 pb-16 pt-[calc(var(--header-h)+2.75rem)] md:grid-cols-6">
+      <div class="col-span-2 grid grid-cols-2 gap-x-gap-sm gap-y-10 md:col-span-4 md:grid-cols-3">
+        {groups.slice(0, 3).map((group) => (
+          <nav aria-label={group.label}>
+            <p class="label label-muted">{group.label}</p>
+            <ul class="mt-4 space-y-2">
+              {group.links.map((link) => (
+                <li><a href={link.href} class="footer-link">{link.label}</a></li>
+              ))}
+            </ul>
+          </nav>
+        ))}
       </div>
-
-      <div class="col-span-12 grid grid-cols-2 gap-x-gap-sm gap-y-10 sm:grid-cols-3 lg:col-span-6" data-reveal>
-        <div>
-          <p class="text-small font-medium">Enquiries</p>
-          <a href={`mailto:${site.email}`} class="mt-3 block text-small text-fg-muted transition-colors hover:text-fg">{site.email}</a>
-          <p class="mt-6 text-small font-medium">Follow</p>
-          <a href={site.linkedIn} target="_blank" rel="noreferrer" class="mt-3 block text-small text-fg-muted transition-colors hover:text-fg">LinkedIn</a>
-        </div>
-
-        <div class="space-y-6">
-          {site.offices.map((office) => (
-            <div>
-              <p class="text-small font-medium">{office.city}</p>
-              <div class="mt-3 text-small text-fg-muted">
-                {office.lines.map((line) => <p>{line}</p>)}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <nav aria-label="Footer navigation">
-          <p class="text-small font-medium">Discover</p>
-          <ul class="mt-3 space-y-1.5">
-            {discover.map((link) => (
-              <li><a href={link.href} class="text-small text-fg-muted transition-colors hover:text-fg">{link.label}</a></li>
+      {groups.slice(3).map((group) => (
+        <nav class="md:col-start-5" aria-label={group.label}>
+          <p class="label label-muted">{group.label}</p>
+          <ul class="mt-4 space-y-2">
+            {group.links.map((link) => (
+              <li>
+                <a href={link.href} class="footer-link" {...(link.external ? { target: "_blank", rel: "noreferrer" } : {})}>{link.label}</a>
+              </li>
             ))}
           </ul>
         </nav>
+      ))}
+    </div>
+
+    <!-- Row 2: enquiry left; offices, contact icons and back-to-top right -->
+    <div class="footer-rule mt-auto grid grid-cols-2 gap-x-gap-sm gap-y-12 pb-16 pt-[4.25rem] md:grid-cols-6">
+      <div class="col-span-2 flex flex-col items-start" data-reveal>
+        <p class="label label-muted">Let’s talk</p>
+        <p class="mt-4 max-w-[34ch] text-small text-sage">Have a project in mind? Tell us about it and we’ll show you how modular can deliver it.</p>
+        <div class="mt-10 flex flex-wrap gap-1 md:mt-auto md:pt-10">
+          <a href={site.enquiryHref} class="footer-btn">Enquire now</a>
+          <a href="/partner-with-us/" class="footer-btn">Partner with us</a>
+        </div>
+      </div>
+
+      <div class="col-span-2 grid grid-cols-2 gap-x-gap-sm md:col-start-5" data-reveal>
+        <p class="label label-muted col-span-2">Offices</p>
+        {site.offices.map((office) => (
+          <div class="mt-4 text-small">
+            <p>{office.city}</p>
+            <div class="text-sage">{office.lines.map((line) => <p>{line}</p>)}</div>
+          </div>
+        ))}
+
+        <p class="label label-muted col-span-2 mt-12">Connect</p>
+        <div class="mt-4 flex gap-1">
+          <a href={site.linkedIn} target="_blank" rel="noreferrer" class="footer-icon" aria-label="Cloud Modular on LinkedIn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.75h4v11H3v-11Zm6.5 0h3.8v1.5h.05c.53-1 1.84-2.05 3.78-2.05 4.05 0 4.8 2.66 4.8 6.13v5.42h-4v-4.8c0-1.15-.02-2.62-1.6-2.62-1.6 0-1.84 1.25-1.84 2.54v4.88h-4v-11Z" /></svg>
+          </a>
+          <a href={`mailto:${site.email}`} class="footer-icon" aria-label={`Email ${site.email}`}>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="1.5" y="3" width="11" height="8" rx="0.5" stroke="currentColor" stroke-width="1.1" /><path d="m2 3.5 5 4 5-4" stroke="currentColor" stroke-width="1.1" /></svg>
+          </a>
+        </div>
+        <div class="mt-4">
+          <a href="#top" class="footer-top" aria-label="Back to top" data-to-top>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 10V2M2.5 5.5 6 2l3.5 3.5" stroke="currentColor" stroke-width="1.1" /></svg>
+          </a>
+        </div>
       </div>
     </div>
 
-    <div class="rule mt-section flex flex-col gap-4 pt-5 sm:flex-row sm:items-center sm:justify-between">
-      <Logo class="h-[18px] w-auto text-fg" />
-      <p class="text-caption text-fg-subtle">© {new Date().getFullYear()} Cloud Modular. All rights reserved. · {site.hours}</p>
+    <!-- Row 3: logo, copyright, Privacy Policy and Terms, on the same four starts as the link groups in row 1 -->
+    <div class="footer-rule grid grid-cols-2 items-center gap-x-gap-sm gap-y-6 pb-12 pt-14 md:grid-cols-6">
+      <div class="col-span-2 grid grid-cols-2 items-center gap-x-gap-sm gap-y-6 md:col-span-4 md:grid-cols-3">
+        <Logo class="col-span-2 h-[18px] w-auto justify-self-start text-fg md:col-span-1" />
+        <p class="label label-muted">{new Date().getFullYear()} © Cloud Modular</p>
+        <a href="/privacy-policy/" class="label label-muted footer-legal">Privacy Policy</a>
+      </div>
+      <a href="/terms/" class="label label-muted footer-legal col-span-2 justify-self-start md:col-span-2 md:col-start-5">Terms</a>
     </div>
   </div>
 </footer>
-</div>
 
 <style>
-  .footer-frame {
-    padding: 0 var(--frame) var(--frame);
+  .site-footer {
+    --surface: var(--slate);
+    --surface-alt: var(--slate);
+    background: rgb(var(--slate));
   }
 
-  .footer-panel {
-    --surface: var(--charcoal);
-    --surface-alt: var(--graphite);
+  .footer-rule {
+    border-top: var(--rule) solid rgb(var(--paper) / 0.1);
+  }
+
+  .footer-link {
+    font-size: var(--text-small);
+    color: rgb(var(--paper));
+    transition: color var(--dur-base) var(--ease-standard);
+  }
+
+  .footer-legal {
+    transition: color var(--dur-base) var(--ease-standard);
+  }
+
+  .footer-legal:hover {
+    color: rgb(var(--paper));
+  }
+
+  .footer-link:hover {
+    color: rgb(var(--label-gold));
+  }
+
+  /* Footer buttons: a dark translucent fill with sage mono text (olympic.no), lighter on hover */
+  .footer-btn,
+  .footer-icon,
+  .footer-top {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 2rem;
+    border-radius: var(--radius-media);
+    color: rgb(var(--sage));
+    transition:
+      background-color var(--dur-base) var(--ease-standard),
+      color var(--dur-base) var(--ease-standard),
+      border-color var(--dur-base) var(--ease-standard);
+  }
+
+  .footer-btn {
+    padding-inline: 0.875rem;
+    background: rgb(var(--paper) / 0.06);
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .footer-icon {
+    width: 2rem;
+    background: rgb(var(--paper) / 0.06);
+  }
+
+  .footer-top {
+    width: 2rem;
+    border: var(--rule) solid rgb(var(--paper) / 0.2);
+  }
+
+  .footer-btn:hover,
+  .footer-icon:hover,
+  .footer-top:hover {
+    background: rgb(var(--paper));
+    border-color: rgb(var(--paper));
+    color: rgb(var(--ink));
   }
 </style>
+
+<script>
+  // Back to top without writing #top to the URL
+  document.querySelector("[data-to-top]")?.addEventListener("click", (event) => {
+    event.preventDefault();
+    window.scrollTo({ top: 0 });
+  });
+</script>
