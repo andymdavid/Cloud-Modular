@@ -1,7 +1,7 @@
 ---
 /**
  * Row of cards. Pass <li> items in the slot.
- * - "grid": a sideways-swiping row below lg, three equal columns from lg (Projects).
+ * - "grid": a sideways-swiping row below lg, three (or four) equal columns from lg (Projects, Team).
  * - "carousel": always a sideways row showing 3¼ cards at lg; pair with prev/next buttons marked
  *   data-carousel-prev / data-carousel-next inside an ancestor with data-carousel (Sectors).
  * A mostly vertical wheel or trackpad gesture over the row scrolls the page rather than nudging the row.
@@ -9,16 +9,20 @@
 interface Props {
   label: string;
   variant?: "grid" | "carousel";
+  /** Grid columns from lg (Projects 3, Team 4). */
+  columns?: 3 | 4;
   class?: string;
 }
 
-const { label, variant = "grid", class: className } = Astro.props;
+const { label, variant = "grid", columns = 3, class: className } = Astro.props;
 ---
 
 <ul
   class:list={[
     "card-row no-scrollbar flex snap-x snap-proximity gap-gap-sm overflow-x-auto scroll-px-gutter px-gutter",
-    variant === "grid" ? "card-row--grid lg:mx-auto lg:grid lg:max-w-page lg:grid-cols-3 lg:overflow-visible" : "card-row--carousel",
+    variant === "grid"
+      ? ["card-row--grid lg:mx-auto lg:grid lg:max-w-page lg:overflow-visible", columns === 4 ? "lg:grid-cols-4" : "lg:grid-cols-3"]
+      : "card-row--carousel",
     className,
   ]}
   aria-label={label}
