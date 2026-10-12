@@ -160,6 +160,35 @@ export const sectors = [
   },
 ] as const;
 
+// Alt home Projects grid (one row of four). Seashells Jurien Bay is real; the other three are
+// placeholders reusing its renders until more projects are ready.
+export const projects = [
+  {
+    name: "Seashells Jurien Bay",
+    image: "/projects/jurien-bay-apartments.webp",
+    imageAlt: "Seashells Jurien Bay apartments with rooftop terraces at sunset",
+    imagePosition: "center",
+  },
+  {
+    name: "Project Name",
+    image: "/projects/jurien-bay-townhouses.webp",
+    imageAlt: "Modular townhouses with timber-framed verandahs and native garden beds",
+    imagePosition: "62% center",
+  },
+  {
+    name: "Project Name",
+    image: "/projects/jurien-bay-dusk.webp",
+    imageAlt: "Modular townhouses lit at dusk",
+    imagePosition: "center",
+  },
+  {
+    name: "Project Name",
+    image: "/projects/jurien-bay-terraces.webp",
+    imageAlt: "Terraced modular apartments beside a landscaped street",
+    imagePosition: "center",
+  },
+] as const;
+
 export const faqItems = [
   {
     question: "How do your modules comply with Australian standards?",

@@ -2,7 +2,7 @@
 import RefreshLayout from "@/layouts/RefreshLayout.astro";
 import SectionHead from "@/components/refresh/SectionHead.astro";
 import HomeExplorer from "@/components/refresh/HomeExplorer.astro";
-import { advantages, faqItems, qualityRows, sectors, site } from "@/data/site";
+import { advantages, faqItems, projects, qualityRows, sectors, site } from "@/data/site";
 
 // Test page for the design refresh. Kept out of search and the sitemap until it replaces `/`.
 const title = "Cloud Modular | Alternate Home (Design Refresh)";
@@ -145,15 +145,57 @@ const stats = [
     </div>
   </section>
 
-  <!-- Full-bleed break image -->
-  <section data-theme="dark" class="relative h-[100svh] min-h-[560px] overflow-hidden" aria-label="Project imagery">
-    <img src="/aboutpage.webp" alt="Terraced modular townhouses among tropical planting" width="2912" height="1632" loading="lazy" class="absolute inset-0 h-full w-full object-cover" />
+  <!-- Projects: Graya collection grid. Title in the left column (as About and FAQ), a small label and
+       a row of portrait cards right, project name set over the top-left of each image -->
+  <section id="projects" data-theme="light" class="scroll-mt-header pb-section">
+    <div class="shell">
+      <div class="grid-12 rule gap-y-6 pt-section">
+        <h2 class="col-span-12 self-start text-h2 md:col-span-3" data-reveal>Projects</h2>
+        <div class="col-span-12 md:col-span-9">
+          <div class="flex items-center justify-between gap-6" data-reveal>
+            <p class="text-small">Selected work</p>
+            <a href="/our-work/" class="btn-outline">All projects</a>
+          </div>
+
+          <ul class="mt-10 grid grid-cols-2 gap-gap-sm sm:mt-12 lg:grid-cols-4">
+            {projects.map((project, index) => (
+              <li data-reveal style={`--reveal-delay:${index * 80}ms`}>
+                <a href="/our-work/" class="group relative block aspect-[3/4] overflow-hidden bg-stone">
+                  <img src={project.image} alt={project.imageAlt} loading="lazy" class="h-full w-full object-cover transition-transform duration-slow ease-cm-out group-hover:scale-[1.03]" style={`object-position:${project.imagePosition}`} />
+                  <span class="absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgb(11_11_12/0.35),rgb(11_11_12/0))]" aria-hidden="true"></span>
+                  <h3 class="absolute left-3 top-3 text-small uppercase tracking-[0.04em] text-white sm:left-4 sm:top-4">{project.name}</h3>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Full-height project image closes the section, inside the dividers -->
+      <div class="relative mt-gap h-[100svh] min-h-[560px] overflow-hidden bg-stone" data-reveal>
+        <video
+          src="/projects/jurien-bay-drone.mp4"
+          poster="/projects/jurien-bay-drone-start.webp"
+          data-end-poster="/projects/jurien-bay-drone-end.webp"
+          width="1284"
+          height="716"
+          muted
+          playsinline
+          preload="none"
+          aria-label="Aerial flyover of the Seashells Jurien Bay development beside the coast"
+          data-play-once
+          class="h-full w-full object-cover"
+        ></video>
+        <span class="absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgb(11_11_12/0.35),rgb(11_11_12/0))]" aria-hidden="true"></span>
+        <p class="absolute left-3 top-3 text-small uppercase tracking-[0.04em] text-white sm:left-4 sm:top-4">Seashells Jurien Bay</p>
+      </div>
+    </div>
   </section>
 
   <!-- Stats: Modscape project-page numerals -->
-  <section data-theme="light" class="py-section">
+  <section data-theme="light" class="pb-section">
     <div class="shell">
-      <SectionHead rule={false} title="Why Modular" intro="Most of the build happens offsite, which shortens programmes, reduces site disruption and improves cost certainty." />
+      <SectionHead title="Why Modular" intro="Most of the build happens offsite, which shortens programmes, reduces site disruption and improves cost certainty." />
       <dl class="mt-12 grid grid-cols-2 gap-x-gap-sm gap-y-10 lg:grid-cols-4">
         {stats.map((stat, index) => (
           <div class="flex flex-col" data-reveal style={`--reveal-delay:${index * 80}ms`}>
@@ -250,6 +292,37 @@ const stats = [
     track.addEventListener("scroll", update, { passive: true });
     window.addEventListener("resize", update);
     update();
+  });
+</script>
+
+<script>
+  // Play-once videos: start loading as they approach, play once when half in view, then hold the
+  // final frame. Reduced motion shows the final frame as a still and never plays.
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  document.querySelectorAll<HTMLVideoElement>("[data-play-once]").forEach((video) => {
+    if (reduceMotion) {
+      if (video.dataset.endPoster) video.poster = video.dataset.endPoster;
+      return;
+    }
+    // Separate observers: a root margin also inflates intersectionRatio, so it can't gate playback
+    const preload = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        video.preload = "auto";
+        preload.disconnect();
+      },
+      { rootMargin: "50% 0px" },
+    );
+    const play = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        video.play().catch(() => {});
+        play.disconnect();
+      },
+      { threshold: 0.5 },
+    );
+    preload.observe(video);
+    play.observe(video);
   });
 </script>
 
