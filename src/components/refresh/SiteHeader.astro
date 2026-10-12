@@ -108,6 +108,13 @@ const {
     opacity: 1;
   }
 
+  /* Until the first theme sync, apply colours instantly so a reload never shows a stale state */
+  .site-header:not(.is-ready)::before,
+  .site-header:not(.is-ready) .site-logo,
+  .site-header:not(.is-ready) .menu-icon {
+    transition: none;
+  }
+
   .site-logo {
     color: rgb(var(--fg));
     transition: color var(--dur-base) var(--ease-standard);
@@ -289,7 +296,11 @@ const {
   };
   window.addEventListener("scroll", requestSync, { passive: true });
   window.addEventListener("resize", requestSync);
+  // Re-check once layout settles (late styles, fonts, media) and after a back/forward restore
+  window.addEventListener("load", requestSync);
+  window.addEventListener("pageshow", requestSync);
   syncTheme();
+  requestAnimationFrame(() => requestAnimationFrame(() => header?.classList.add("is-ready")));
 
   const root = document.querySelector<HTMLElement>("[data-menu-root]");
   const panel = root?.querySelector<HTMLElement>("[role='dialog']");
