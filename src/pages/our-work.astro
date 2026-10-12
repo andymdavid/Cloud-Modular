@@ -1,6 +1,11 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
-import { site } from "@/data/site";
+import RefreshLayout from "@/layouts/RefreshLayout.astro";
+import PageIntro from "@/components/refresh/PageIntro.astro";
+import SectionHead from "@/components/refresh/SectionHead.astro";
+import CardRow from "@/components/refresh/CardRow.astro";
+import MediaCard from "@/components/refresh/MediaCard.astro";
+import GetStarted from "@/components/refresh/GetStarted.astro";
+import { projects, site } from "@/data/site";
 
 const title = "Projects | Modular Construction Case Studies Perth";
 const description = "Explore Cloud Modular's prefabricated building projects across Western Australia.";
@@ -14,12 +19,84 @@ const breadcrumbSchema = {
 };
 ---
 
-<BaseLayout title={title} description={description} canonical="/our-work/" structuredData={breadcrumbSchema}>
-  <section class="flex min-h-screen items-center justify-center bg-[#080a0a] px-6 text-center text-white">
-    <div>
-      <p class="font-cal-sans text-[11px] uppercase tracking-[0.08em] text-white/40">Our Work</p>
-      <h1 class="mt-4 font-host-grotesk text-4xl font-medium tracking-[-0.03em]">Projects</h1>
-      <p class="mt-4 text-white/70">Coming soon</p>
+<RefreshLayout title={title} description={description} canonical="/our-work/" structuredData={breadcrumbSchema}>
+  <PageIntro label="Our work" title="Selected work" lead={description} />
+
+  <!-- Featured project: the Seashells Jurien Bay aerial in a wide row, playing once when half in view -->
+  <section data-theme="light" class="pb-section" aria-label="Seashells Jurien Bay">
+    <div class="wide-row" data-reveal>
+      <div data-theme="dark" class="relative aspect-[4/5] overflow-hidden rounded bg-stone sm:aspect-[16/9]">
+        <video
+          src="/projects/jurien-bay-drone.mp4"
+          poster="/projects/jurien-bay-drone-start.webp"
+          data-end-poster="/projects/jurien-bay-drone-end.webp"
+          width="1284"
+          height="716"
+          muted
+          playsinline
+          preload="none"
+          aria-label="Aerial flyover of the Seashells Jurien Bay development beside the coast"
+          data-play-once
+          class="h-full w-full object-cover"
+        ></video>
+        <span class="absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgb(11_11_12/0.35),rgb(11_11_12/0))]" aria-hidden="true"></span>
+        <p class="label absolute left-4 top-4 text-fg sm:left-5 sm:top-5">Seashells Jurien Bay</p>
+      </div>
     </div>
   </section>
-</BaseLayout>
+
+  <!-- All projects: the same cards as the home page (no links until each project has its own page) -->
+  <section id="projects" data-theme="light" class="scroll-mt-header pb-section">
+    <div class="shell">
+      <SectionHead label="Projects" title="Across Western Australia" />
+    </div>
+    <CardRow label="Projects" class="mt-12 sm:mt-16">
+      {projects.map((project, index) => (
+        <li data-reveal style={`--reveal-delay:${index * 80}ms`}>
+          <MediaCard
+            image={project.image}
+            alt={project.imageAlt}
+            imagePosition={project.imagePosition}
+            tag={project.sector}
+            meta={project.location}
+            title={project.name}
+            ratio="aspect-[4/5] lg:aspect-[13/15]"
+          />
+        </li>
+      ))}
+    </CardRow>
+  </section>
+
+  <GetStarted />
+</RefreshLayout>
+
+<script>
+  // Play-once video: start loading as it approaches, play once when half in view, then hold the final frame.
+  // Reduced motion shows the final frame as a still and never plays.
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  document.querySelectorAll<HTMLVideoElement>("[data-play-once]").forEach((video) => {
+    if (reduceMotion) {
+      if (video.dataset.endPoster) video.poster = video.dataset.endPoster;
+      return;
+    }
+    // Separate observers: a root margin also inflates intersectionRatio, so it can't gate playback
+    const preload = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        video.preload = "auto";
+        preload.disconnect();
+      },
+      { rootMargin: "50% 0px" },
+    );
+    const play = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        video.play().catch(() => {});
+        play.disconnect();
+      },
+      { threshold: 0.5 },
+    );
+    preload.observe(video);
+    play.observe(video);
+  });
+</script>
