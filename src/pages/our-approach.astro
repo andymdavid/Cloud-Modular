@@ -3,8 +3,6 @@ import RefreshLayout from "@/layouts/RefreshLayout.astro";
 import PageIntro from "@/components/refresh/PageIntro.astro";
 import SplitSection from "@/components/refresh/SplitSection.astro";
 import SectionHead from "@/components/refresh/SectionHead.astro";
-import CardRow from "@/components/refresh/CardRow.astro";
-import MediaCard from "@/components/refresh/MediaCard.astro";
 import ProgrammeLine from "@/components/refresh/ProgrammeLine.astro";
 import RoleMatrix from "@/components/refresh/RoleMatrix.astro";
 import ToConfirm from "@/components/refresh/ToConfirm.astro";
@@ -42,57 +40,24 @@ const breadcrumbSchema = {
     <a href="#process" class="btn mt-10">See the process</a>
   </SplitSection>
 
-  <!-- The process: one image card per stage, in the Sectors carousel -->
-  <section id="process" data-theme="light" class="scroll-mt-header pb-section" data-carousel>
-    <div class="shell">
-      <SectionHead label="The process" title="Eight stages, one team" intro="Each stage ends with a decision from you, so nothing goes into production until the design and approvals are settled." confirm={approachStages.confirm}>
-        <Fragment slot="actions">
-          <button type="button" class="icon-btn" data-carousel-prev aria-label="Previous stages" disabled>
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M8.5 2.5 4 7l4.5 4.5" stroke="currentColor" stroke-width="1.2" /></svg>
-          </button>
-          <button type="button" class="icon-btn" data-carousel-next aria-label="Next stages">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M5.5 2.5 10 7l-4.5 4.5" stroke="currentColor" stroke-width="1.2" /></svg>
-          </button>
-        </Fragment>
-      </SectionHead>
-    </div>
-
-    <CardRow label="Process stages" variant="carousel" class="mt-10 sm:mt-12">
-      {approachStages.items.map((stage, index) => (
-        <li data-reveal style={`--reveal-delay:${Math.min(index, 3) * 80}ms`}>
-          <MediaCard
-            image={stage.image}
-            alt={stage.alt}
-            width={stage.width}
-            height={stage.height}
-            meta={stage.index}
-            title={stage.title}
-            description={stage.summary}
-            size="compact"
-          />
-        </li>
-      ))}
-    </CardRow>
-  </section>
-
-  <!-- The programme: a route that splits into the modules and site tracks, drawn on scroll -->
-  <section id="programme" data-theme="dark" data-surface="slate" class="scroll-mt-header py-section">
+  <!-- The process: the programme line, a route that splits into the modules and site tracks and draws on scroll.
+       Each stop opens its stage underneath. -->
+  <section id="process" data-theme="dark" data-surface="slate" class="scroll-mt-header py-section">
     <div class="shell">
       <div class="grid-12 gap-y-6">
         <div class="col-span-12 md:col-span-6" data-reveal>
           <div class="flex items-center gap-3">
-            <p class="label">The programme</p>
-            {approachProgramme.confirm && <ToConfirm />}
+            <p class="label">The process</p>
+            {(approachProgramme.confirm || approachStages.confirm) && <ToConfirm />}
           </div>
           <h2 class="mt-5 max-w-[16ch] text-h2 sm:mt-6">Factory and site, at the same time</h2>
         </div>
-        <p class="col-span-12 max-w-measure self-end text-body text-fg-muted md:col-span-6 md:col-start-7" data-reveal>The modules are made in Foshan while your site is prepared, and the two tracks meet at installation. This is how modular shortens the programme.</p>
+        <p class="col-span-12 max-w-measure self-end text-body text-fg-muted md:col-span-6 md:col-start-7" data-reveal>The modules are made in Foshan while your site is prepared, and the two tracks meet at installation. This is how modular shortens the programme. Select a stage to see what happens.</p>
       </div>
 
       <ProgrammeLine class="mt-section" />
 
-      <p class="mt-10 text-caption text-fg-subtle md:mt-8">Stages in order, not to scale.</p>
-    </div>
+          </div>
   </section>
 
   <!-- Who does what: every task, stage by stage, against the roles on a project -->

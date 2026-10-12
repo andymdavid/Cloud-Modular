@@ -299,7 +299,7 @@ export const approachStages = {
     {
       index: "01",
       title: "Brief and feasibility",
-      summary: "Your site, yield, programme and budget, and whether modular is the right fit.",
+      body: "We start with your site, your brief and your budget. We test the yield and the programme, and confirm whether modular is the right fit. You then decide whether to go ahead to design.",
       image: "/approach/site-aerial.webp",
       width: 1054,
       height: 1492,
@@ -308,7 +308,7 @@ export const approachStages = {
     {
       index: "02",
       title: "Design for manufacture",
-      summary: "The design resolved around module sizes, transport limits and lifting, with engineering for the site's wind region.",
+      body: "The design is resolved around module sizes, transport limits and crane lifts. Our engineers design the structure for the site's wind region, including cyclone regions. You sign off the design and an updated budget.",
       image: "/approach/module-design.webp",
       width: 1100,
       height: 734,
@@ -317,7 +317,7 @@ export const approachStages = {
     {
       index: "03",
       title: "Approvals and documentation",
-      summary: "Planning and building approvals, and the shop drawings the factory builds from.",
+      body: "We prepare the documents for planning and building approval, and the registered builder lodges the building permit. At the same time we produce the shop drawings the factory builds from. Production starts once the approvals are in place.",
       image: "/approach/approved-design.webp",
       width: 1054,
       height: 1492,
@@ -326,7 +326,7 @@ export const approachStages = {
     {
       index: "04",
       title: "Manufacture in Foshan",
-      summary: "Modules are built in the factory while the site is prepared. The two run at the same time.",
+      body: "The modules are built in the factory in Foshan, with the structure, services and fit-out built in. While they are made, your site is prepared in Australia. We report progress to you throughout.",
       image: "/Factory-1.webp",
       width: 1672,
       height: 941,
@@ -335,7 +335,7 @@ export const approachStages = {
     {
       index: "05",
       title: "Inspection and sign-off",
-      summary: "Independent checks at key stages confirm accuracy, workmanship and compliance before anything ships.",
+      body: "Independent inspections at key stages check accuracy, workmanship and compliance. Engineering sign-off and the import documents are completed before anything leaves the factory.",
       image: "/Checks.webp",
       width: 1456,
       height: 816,
@@ -344,7 +344,7 @@ export const approachStages = {
     {
       index: "06",
       title: "Shipping and clearance",
-      summary: "Sea freight to the nearest suitable port, then customs and biosecurity clearance.",
+      body: "The modules are shipped to the nearest suitable port and cleared through customs and biosecurity. We then plan road transport to site, including to regional and remote locations.",
       image: "/approach/shipping.webp",
       width: 1100,
       height: 620,
@@ -353,7 +353,7 @@ export const approachStages = {
     {
       index: "07",
       title: "Delivery and installation",
-      summary: "Modules arrive in sequence, are craned onto prepared footings, then joined, sealed and connected.",
+      body: "The modules arrive in an agreed sequence and are craned onto the prepared footings. They are then joined, sealed and connected to services.",
       image: "/approach/delivery.webp",
       width: 1100,
       height: 1100,
@@ -362,7 +362,7 @@ export const approachStages = {
     {
       index: "08",
       title: "Completion and handover",
-      summary: "Final finishes, inspections and certification, then the keys, manuals and warranties.",
+      body: "The builder completes the finishing works and the building surveyor carries out the final inspection. We then hand over the keys, manuals and warranties.",
       image: "/projects/jurien-bay-dusk.webp",
       width: 1254,
       height: 1254,

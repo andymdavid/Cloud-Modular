@@ -7,6 +7,9 @@ import { approachProgramme, approachStages } from "@/data/site";
  * installation and handover. The line draws in gold and sage as the diagram scrolls through the viewport, and each
  * stop lights up as the line reaches it. Horizontal from md; vertical on phones. Order, not scale.
  *
+ * It is also the process. Each numbered stop is a button that opens that stage's paragraph and image in the panel
+ * under the diagram (the first is open to start). Without JavaScript every panel shows, one after another.
+ *
  * Geometry is in percent of the diagram box. Desktop: ten columns (three shared, a split, three tracked, a merge,
  * two shared), with the modules track above the centre line and the site track below. Phones: ten rows, the
  * modules track running straight down the left and the site track branching to the right.
@@ -69,9 +72,48 @@ const mSite = "M0 28 C0 33 52 33 52 38 V68 C52 74 0 74 0 80";
             {stop.index && <span class="label programme-index">{stop.index}</span>}
             <span class="programme-title">{stop.title}</span>
           </span>
+          {stop.index && (
+            <button
+              type="button"
+              class="programme-hit"
+              data-stage-select={stop.index}
+              aria-controls={`stage-${stop.index}`}
+              aria-pressed={stop.index === "01" ? "true" : "false"}
+            >
+              <span class="sr-only">Stage {stop.index}, {stop.title}</span>
+            </button>
+          )}
         </li>
       ))}
     </ol>
+  </div>
+
+  <p class="mt-8 text-caption text-fg-subtle">Stages are shown in order and not to scale.</p>
+
+  <!-- The selected stage: copy left, image from the centre line -->
+  <div class="programme-detail rule mt-section-sm pt-10 sm:pt-12" data-stage-detail>
+    {approachStages.items.map((item, index) => (
+      <article id={`stage-${item.index}`} class="programme-panel grid-12 gap-y-8" data-stage-panel={item.index} aria-live="polite">
+        <div class="col-span-12 flex flex-col md:col-span-5">
+          <p class="label">{item.index} <span class="text-fg-subtle">/ {String(approachStages.items.length).padStart(2, "0")}</span></p>
+          <h3 class="mt-5 text-h3">{item.title}</h3>
+          <p class="mt-4 max-w-measure text-body text-fg-muted">{item.body}</p>
+          <div class="programme-controls mt-8 flex gap-1 md:mt-auto md:pt-8">
+            <button type="button" class="icon-btn" data-stage-step="-1" aria-label="Previous stage" disabled={index === 0}>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M8.5 2.5 4 7l4.5 4.5" stroke="currentColor" stroke-width="1.2" /></svg>
+            </button>
+            <button type="button" class="icon-btn" data-stage-step="1" aria-label="Next stage" disabled={index === approachStages.items.length - 1}>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M5.5 2.5 10 7l-4.5 4.5" stroke="currentColor" stroke-width="1.2" /></svg>
+            </button>
+          </div>
+        </div>
+        <div class="col-span-12 md:col-span-6 md:col-start-7">
+          <div class="aspect-[3/2] overflow-hidden rounded bg-surface-alt">
+            <img src={item.image} alt={item.alt} width={item.width} height={item.height} loading="lazy" class="h-full w-full object-cover" />
+          </div>
+        </div>
+      </article>
+    ))}
   </div>
 </div>
 
@@ -286,6 +328,84 @@ const mSite = "M0 28 C0 33 52 33 52 38 V68 C52 74 0 74 0 80";
     }
   }
 
+  /* Hit area over each numbered stop (dot and label) */
+  .programme-hit {
+    position: absolute;
+    left: -0.75rem;
+    top: -0.75rem;
+    width: calc(100% + 1rem);
+    height: 3.5rem;
+    border-radius: var(--radius-media);
+    cursor: pointer;
+  }
+
+  @media (min-width: 48rem) {
+    .programme-hit {
+      height: 6.25rem;
+    }
+  }
+
+  .programme-hit:focus-visible {
+    outline: 1px solid rgb(var(--fg) / 0.6);
+    outline-offset: 2px;
+  }
+
+  @media (hover: hover) {
+    .programme-stop:has(.programme-hit:hover) .programme-title {
+      color: rgb(var(--fg));
+    }
+  }
+
+  /* Selected stage: a wider ring on the dot and a full-colour title */
+  .programme-stop.is-selected .programme-dot,
+  .programme-stop.is-reached.is-selected .programme-dot {
+    border-color: rgb(var(--modules));
+    background: rgb(var(--modules));
+    box-shadow: 0 0 0 0.3125rem rgb(var(--surface)), 0 0 0 0.40625rem rgb(var(--modules));
+  }
+
+  .programme-stop.is-selected .programme-title {
+    color: rgb(var(--fg));
+  }
+
+  /* Detail panels: one at a time once the script runs */
+  .programme-panel + .programme-panel {
+    margin-top: var(--section-sm);
+  }
+
+  [data-stage-detail].is-ready .programme-panel {
+    margin-top: 0;
+  }
+
+  [data-stage-detail].is-ready .programme-panel:not(.is-active) {
+    display: none;
+  }
+
+  .programme-controls {
+    display: none;
+  }
+
+  [data-stage-detail].is-ready .programme-controls {
+    display: flex;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    [data-stage-detail].is-ready .programme-panel.is-active {
+      animation: stage-in var(--dur-slow) var(--ease-out) both;
+    }
+  }
+
+  @keyframes stage-in {
+    from {
+      opacity: 0;
+      transform: translateY(0.5rem);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
   /* Reached */
   .programme-stop.is-reached .programme-dot {
     border-color: rgb(var(--modules));
@@ -303,9 +423,6 @@ const mSite = "M0 28 C0 33 52 33 52 38 V68 C52 74 0 74 0 80";
     color: rgb(var(--modules));
   }
 
-  .programme-stop.is-reached .programme-title {
-    color: rgb(var(--fg));
-  }
 
   @media (prefers-reduced-motion: reduce) {
     .programme-dot,
@@ -347,6 +464,37 @@ const mSite = "M0 28 C0 33 52 33 52 38 V68 C52 74 0 74 0 80";
     const request = () => {
       if (!frame) frame = requestAnimationFrame(update);
     };
+
+    // Stage selection: the stops and the previous/next buttons choose which panel shows
+    const detail = root.querySelector<HTMLElement>("[data-stage-detail]");
+    const panels = [...root.querySelectorAll<HTMLElement>("[data-stage-panel]")];
+    const order = panels.map((panel) => panel.dataset.stagePanel!);
+    const select = (index: string, reveal: boolean) => {
+      for (const panel of panels) panel.classList.toggle("is-active", panel.dataset.stagePanel === index);
+      for (const button of root.querySelectorAll<HTMLButtonElement>("[data-stage-select]")) {
+        const on = button.dataset.stageSelect === index;
+        button.setAttribute("aria-pressed", String(on));
+        button.closest("[data-stop]")?.classList.toggle("is-selected", on);
+      }
+      // On phones the panel sits below a tall diagram, so bring it into view
+      if (reveal && detail && !wide.matches) {
+        const top = detail.getBoundingClientRect().top;
+        if (top > window.innerHeight * 0.6) detail.scrollIntoView({ behavior: still.matches ? "auto" : "smooth", block: "start" });
+      }
+    };
+    root.addEventListener("click", (event) => {
+      const target = event.target as HTMLElement;
+      const stop = target.closest<HTMLElement>("[data-stage-select]");
+      if (stop) return select(stop.dataset.stageSelect!, true);
+      const step = target.closest<HTMLElement>("[data-stage-step]");
+      if (step) {
+        const current = panels.find((panel) => panel.classList.contains("is-active"))?.dataset.stagePanel ?? order[0];
+        const next = order[order.indexOf(current) + Number(step.dataset.stageStep)];
+        if (next) select(next, false);
+      }
+    });
+    detail?.classList.add("is-ready");
+    select(order[0], false);
 
     window.addEventListener("scroll", request, { passive: true });
     window.addEventListener("resize", request);
