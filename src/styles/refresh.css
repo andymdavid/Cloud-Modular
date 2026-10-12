@@ -9,6 +9,12 @@
     box-sizing: border-box;
   }
 
+  /* Stop horizontal trackpad swipes from triggering browser back/forward */
+  html,
+  body {
+    overscroll-behavior-x: none;
+  }
+
   html {
     scroll-behavior: smooth;
     background: rgb(var(--ink));
@@ -73,6 +79,20 @@
     padding-inline: var(--gutter);
   }
 
+  /* Wide row (olympic.no media tiles): breaks out to half the page margin from md up, full margin on phones */
+  .wide-row {
+    width: 100%;
+    max-width: var(--page-max);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  @media (min-width: 48rem) {
+    .wide-row {
+      padding-inline: calc(var(--gutter) / 2);
+    }
+  }
+
   /* 12-column grid used for asymmetric editorial layouts */
   .grid-12 {
     display: grid;
@@ -86,6 +106,8 @@
 
   /* Components use token variables directly rather than @apply with custom
      Tailwind keys, so they compile regardless of the Tailwind config state. */
+  /* Buttons (cf. olympic.no): one small, solid style everywhere. Soft sage fill, mono ALL CAPS label,
+     slight radius; fills with ink on hover. .btn-outline and .btn-solid are kept as aliases. */
   .btn,
   .btn-outline,
   .btn-solid {
@@ -94,47 +116,48 @@
     justify-content: center;
     gap: 0.5rem;
     height: 2rem;
-    padding-inline: 1.5rem;
-    border: var(--rule) solid rgb(var(--fg));
-    font-size: var(--text-small);
+    padding-inline: 0.875rem;
+    border: 0;
+    border-radius: var(--radius-media);
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
     font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
     line-height: 1;
     white-space: nowrap;
-    color: rgb(var(--fg));
-    background: transparent;
+    color: rgb(var(--button-fg));
+    background: rgb(var(--button-bg));
     transition:
       background-color var(--dur-base) var(--ease-standard),
-      border-color var(--dur-base) var(--ease-standard),
       color var(--dur-base) var(--ease-standard);
   }
 
-  .btn-outline:hover {
-    background: rgb(var(--fg));
-    color: rgb(var(--surface));
-  }
-
-  .btn-solid {
-    background: rgb(var(--button-solid-bg));
-    border-color: rgb(var(--button-solid-bg));
-    color: rgb(var(--button-solid-fg));
-  }
-
+  .btn:hover,
+  .btn-outline:hover,
   .btn-solid:hover {
-    background: transparent;
-    border-color: rgb(var(--fg));
-    color: rgb(var(--fg));
+    background: rgb(var(--ink));
+    color: rgb(var(--paper));
   }
 
+  [data-theme="dark"] .btn:hover,
+  [data-theme="dark"] .btn-outline:hover,
+  [data-theme="dark"] .btn-solid:hover {
+    background: rgb(var(--paper));
+    color: rgb(var(--ink));
+  }
+
+  /* Square icon buttons in the same fill as the buttons */
   .icon-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 2.25rem;
-    height: 2.25rem;
-    border: var(--rule) solid rgb(var(--fg));
-    border-radius: var(--radius-pill);
-    color: rgb(var(--fg));
-    background: transparent;
+    width: 2rem;
+    height: 2rem;
+    border: 0;
+    border-radius: var(--radius-media);
+    color: rgb(var(--button-fg));
+    background: rgb(var(--button-bg));
     transition:
       background-color var(--dur-base) var(--ease-standard),
       color var(--dur-base) var(--ease-standard),
@@ -142,8 +165,24 @@
   }
 
   .icon-btn:hover {
-    background: rgb(var(--fg));
-    color: rgb(var(--surface));
+    background: rgb(var(--ink));
+    color: rgb(var(--paper));
+  }
+
+  /* Small mono ALL CAPS label above a section title, on cards and in the footer (cf. olympic.no) */
+  .label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    line-height: 1.4;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: rgb(var(--label));
+  }
+
+  .label-muted {
+    color: rgb(var(--fg-subtle));
   }
 
   .icon-btn:disabled {
@@ -172,6 +211,7 @@
   }
 
   .no-scrollbar {
+    overscroll-behavior-x: contain;
     scrollbar-width: none;
   }
 
@@ -227,6 +267,17 @@
 .text-h3 {
   font-family: var(--font-display);
   text-wrap: balance;
+}
+
+/* Section and feature titles are set in ALL CAPS */
+.text-feature {
+  font-family: var(--font-display);
+  text-wrap: balance;
+}
+
+.text-h2,
+.text-feature {
+  text-transform: uppercase;
 }
 
 /* Hero H1: Baskervville with tight letter and line spacing */

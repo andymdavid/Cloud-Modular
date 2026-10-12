@@ -23,7 +23,10 @@
   --ink-raised: 22 22 24;     /* #161618  raised surface on dark */
   --graphite: 36 36 38;       /* #242426  solid buttons (Modscape) */
   --charcoal: 34 34 34;       /* #222222  footer panel (Bloom) */
+  --slate: 30 34 38;          /* #1E2226  footer (olympic.no) */
   --gold: 198 154 72;         /* #C69A48  brand gold (logo cloud) */
+  --gold-deep: 140 106 44;    /* #8C6A2C  deeper gold, kept in case the labels need more contrast */
+  --label-gold: 201 161 74;   /* #C9A14A  section labels and card hover */
   --grey-600: 88 88 90;       /* #58585A  secondary text on light */
   --grey-500: 117 117 117;    /* #757575  captions, meta on light */
   --grey-400: 187 186 186;    /* #BBBABA  secondary text on dark (Graya) */
@@ -31,16 +34,16 @@
   --grey-200: 217 217 217;    /* #D9D9D9  image placeholders */
   --stone: 237 237 237;       /* #EDEDED  alt surface, footer panels, tiles */
   --mist: 242 242 244;        /* #F2F2F4  quiet panels (plans, specs) */
-  --paper: 255 255 255;       /* #FFFFFF */
+  --paper: 248 248 249;       /* #F8F8F9  page background and light text on dark (olympic.no) */
   --forest: 42 49 40;         /* #2A3128  brand accent, used sparingly */
   --sage: 213 219 209;        /* #D5DBD1  brand tint tile (cf. Modscape pastel tiles) */
 
   /* ---------- Primitives: type ---------- */
-  /* Display: Gantari, the closest free match to the GRAYA wordmark.
-     Scored per letter against the logo outlines, Gantari 600 overlays the
-     G, R, A and Y almost exactly. The wordmark itself is weight 600. */
-  --font-display: "Gantari", "Gotham", "Proxima Nova", "Helvetica Neue", Arial, sans-serif;
-  --font-text: "Inter Tight", "Helvetica Neue", Arial, sans-serif;
+  /* One family in two voices (cf. olympic.no): Geist for headings and text, Geist Mono for labels,
+     buttons, tags and numbers. */
+  --font-display: "Geist", "Helvetica Neue", Arial, sans-serif;
+  --font-text: "Geist", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
   /* Hero H1 only: a classic serif set tight against the sans system. Baskervville (ANRT) is a
      finer cut than Libre Baskerville, whose lightest weight reads bold at display sizes. */
   --font-hero: "Baskervville", "Libre Baskerville", Baskerville, Georgia, serif;
@@ -52,8 +55,11 @@
   --text-display: clamp(2.5rem, 1.57rem + 3.81vw, 4.5rem);     /* 40 → 72 */
   --text-h1: clamp(2.25rem, 1.8rem + 1.9vw, 3.25rem);          /* 36 → 52 */
   --text-statement: clamp(1.5rem, 1.13rem + 1.52vw, 2.5rem);   /* 24 → 40 */
-  --text-h2: clamp(1.5rem, 1.31rem + 0.76vw, 2rem);            /* 24 → 32 */
+  --text-h2: clamp(1.875rem, 1.75rem + 0.35vw, 2.0625rem);     /* 30 → 33, ALL CAPS section titles (olympic.no) */
   --text-h3: clamp(1.25rem, 1.16rem + 0.38vw, 1.5rem);         /* 20 → 24 */
+  --text-feature: clamp(2.6rem, 2.33rem + 1.11vw, 3.3333rem);  /* 42 → 53 @ 1440, centred feature titles (olympic.no) */
+  --text-intro: clamp(1.375rem, 1.14rem + 0.95vw, 2rem);       /* 22 → 32, opening paragraphs */
+  --text-about: clamp(1.0625rem, 0.97rem + 0.24vw, 1.25rem);   /* 17 → 19 @ 1440, About paragraph */
   --text-lead: clamp(1.125rem, 1.08rem + 0.19vw, 1.25rem);     /* 18 → 20 */
   --text-body: 1rem;                                            /* 16 */
   --text-small: 0.875rem;                                       /* 14 */
@@ -62,6 +68,7 @@
 
   --leading-none: 1.02;
   --leading-tight: 1.1;
+  --leading-title: 1.1;           /* ALL CAPS section titles */
   --leading-snug: 1.3;
   --leading-body: 1.45;
   --leading-statement: 1.35;
@@ -69,15 +76,18 @@
 
   --tracking-display: -0.035em;   /* large numerals */
   --tracking-hero: -0.04em;       /* serif hero H1 */
-  --tracking-title: -0.025em;     /* section titles */
+  --tracking-title: 0;            /* ALL CAPS section titles, regular weight (olympic.no width) */
   --tracking-heading: -0.01em;    /* card headings */
   --tracking-body: 0;
   --tracking-micro: 0.06em;
+  --tracking-label: 0.04em;       /* mono labels and buttons */
+  --text-label: 0.6875rem;        /* 11: mono labels and buttons */
 
   /* ---------- Primitives: space & layout ---------- */
-  --gutter: clamp(1rem, 0.85rem + 0.38vw, 1.25rem);            /* 16 → 20, page edge */
+  /* Page side margin, matched to olympic.no: 16 @ 390, 36 @ 1024, 40 @ 1440, then 2.78vw above that */
+  --gutter: max(clamp(1rem, 0.23rem + 3.15vw, 2.5rem), 2.78vw);
   --gap: clamp(1.25rem, 0.8rem + 1.9vw, 2.5rem);               /* 20 → 40, column gap */
-  --gap-sm: clamp(0.75rem, 0.6rem + 0.5vw, 1.25rem);           /* 12 → 20, card gap */
+  --gap-sm: clamp(0.75rem, 0.43rem + 1.04vw, 1.25rem);         /* 12 → 20 @ 1440, column and card gap (olympic.no) */
   --section: clamp(4.5rem, 3.4rem + 4.6vw, 7.5rem);            /* 72 → 120 */
   --section-sm: clamp(3rem, 2.4rem + 2.3vw, 4.5rem);           /* 48 → 72 */
   --header-h: 4.5rem;                                           /* 72 */
@@ -90,9 +100,10 @@
   /* ---------- Primitives: shape & motion ---------- */
   --radius-none: 0;
   --radius-xs: 2px;
+  --radius-media: 4px;            /* images, cards, buttons */
   --radius-pill: 999px;
   --rule: 1px;
-  --rule-alpha: 0.2;              /* section dividers match the FAQ item lines */
+  --rule-alpha: 0.1;              /* soft section dividers; the FAQ item lines match */
 
   --ease-standard: cubic-bezier(0.25, 0.1, 0.25, 1);
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -116,9 +127,13 @@
   --accent: var(--forest);
   --button-solid-bg: var(--graphite);
   --button-solid-fg: var(--paper);
+  --button-bg: var(--sage);
+  --button-fg: var(--ink);
+  --label: var(--label-gold);
 }
 
 [data-theme="dark"] {
+  --label: var(--label-gold);
   --surface: var(--ink);
   --surface-alt: var(--ink-raised);
   --surface-quiet: var(--ink-raised);
@@ -131,6 +146,7 @@
 }
 
 [data-theme="light"] {
+  --label: var(--label-gold);
   --surface: var(--paper);
   --surface-alt: var(--stone);
   --surface-quiet: var(--mist);
