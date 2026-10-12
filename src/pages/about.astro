@@ -5,6 +5,7 @@ import SplitSection from "@/components/refresh/SplitSection.astro";
 import SectionHead from "@/components/refresh/SectionHead.astro";
 import CardRow from "@/components/refresh/CardRow.astro";
 import MediaCard from "@/components/refresh/MediaCard.astro";
+import GetStarted from "@/components/refresh/GetStarted.astro";
 import { site, team } from "@/data/site";
 
 const title = "About Us | Modular Construction Experts Perth WA";
@@ -26,7 +27,7 @@ const breadcrumbSchema = {
   <!-- Full-width image under the intro -->
   <div class="wide-row pb-section" data-reveal>
     <div class="aspect-[4/3] overflow-hidden rounded bg-stone sm:aspect-[21/9]">
-      <img src="/1.webp" alt="Street of contemporary modular homes set against wooded hills" width="2688" height="1792" fetchpriority="high" class="h-full w-full object-cover" />
+      <img src="/interior.webp" alt="Light-filled modular home interior with a timber kitchen island opening onto a deck" width="1748" height="900" fetchpriority="high" class="h-full w-full object-cover" />
     </div>
   </div>
 
@@ -54,8 +55,8 @@ const breadcrumbSchema = {
           <MediaCard
             image={member.image}
             alt={member.name}
-            width={1024}
-            height={1024}
+            width={1254}
+            height={1254}
             imagePosition={member.position}
             meta={member.role}
             title={member.name}
@@ -67,11 +68,5 @@ const breadcrumbSchema = {
     </CardRow>
   </section>
 
-  <SplitSection id="get-started" label="Get started">
-    <p class="text-about">Ready to transform your next development? Let’s discuss how Cloud Modular can deliver your project faster, more cost-effectively and sustainably.</p>
-    <div class="mt-10 flex flex-wrap gap-1">
-      <a href={site.enquiryHref} class="btn">Enquire now</a>
-      <a href="/partner-with-us/" class="btn">Partner with us</a>
-    </div>
-  </SplitSection>
+  <GetStarted />
 </RefreshLayout>

@@ -268,31 +268,31 @@ export const faqItems = [
 
 export const team = [
   {
-    image: "/Thomas_Tierney.webp",
+    image: "/people/thomas.webp",
     name: "Thomas Tierney",
     role: "Director",
     bio: "Thomas brings a rare combination of commercial, construction, and international development experience. With over ten years as a property developer/QS in Ireland and London, Thomas has delivered many successful residential and commercial projects, and has a strong foundation in every phase of the development lifecycle.",
-    position: "center",
+    position: "center 30%",
   },
   {
-    image: "/Nigel_David_Alt.webp",
+    image: "/people/nigel.webp",
     name: "Nigel David",
     role: "Co-Founder / Director",
     bio: "Nigel has over thirty years of procurement experience in the building and construction industry specialising in export market development, international procurement management, compliance and logistics, and trade development.",
-    position: "center",
+    position: "center 30%",
   },
   {
-    image: "/Andy_David_Alt.webp",
+    image: "/people/andy.webp",
     name: "Andy David",
     role: "Co-Founder",
     bio: "Andy has extensive experience in technology, particularly artificial intelligence, and across management consulting and capital raising projects, digital transformation, growth, and business performance improvement.",
-    position: "center 18%",
+    position: "center 30%",
   },
   {
-    image: "/Mike_Liang_Alt.webp",
+    image: "/people/mike.webp",
     name: "Mike Liang",
     role: "China Lead",
     bio: "Leading the company's China operations, Mike is an engineer with a strong technical background across architectural design, smart building systems, and environmental protection equipment, delivering practical and sustainable construction solutions.",
-    position: "center 24%",
+    position: "center 30%",
   },
 ] as const;

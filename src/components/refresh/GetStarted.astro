@@ -1,0 +1,14 @@
+---
+import SplitSection from "@/components/refresh/SplitSection.astro";
+import { site } from "@/data/site";
+
+/** Closing call to action before the footer: a split section with the enquiry buttons. Used on every page. */
+---
+
+<SplitSection id="get-started" label="Get started">
+  <p class="text-about">Ready to transform your next development? Let’s discuss how Cloud Modular can deliver your project faster, more cost-effectively and sustainably.</p>
+  <div class="mt-10 flex flex-wrap gap-1">
+    <a href={site.enquiryHref} class="btn">Enquire now</a>
+    <a href="/partner-with-us/" class="btn">Partner with us</a>
+  </div>
+</SplitSection>
