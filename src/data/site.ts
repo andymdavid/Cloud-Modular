@@ -156,31 +156,31 @@ export const sectors = [
   },
 ] as const;
 
-// Alt home Projects grid (one row of four). Seashells Jurien Bay is real; the other three are
-// placeholders reusing its renders until more projects are ready.
+// Alt home Projects grid (one row of three). Seashells Jurien Bay and Capel Village are real (Capel still
+// uses a Jurien Bay render as its image); the third is a placeholder until more projects are ready.
 export const projects = [
   {
     name: "Seashells Jurien Bay",
+    sector: "Residential",
+    location: "Jurien Bay, WA",
     image: "/projects/jurien-bay-apartments.webp",
     imageAlt: "Seashells Jurien Bay apartments with rooftop terraces at sunset",
     imagePosition: "center",
   },
   {
-    name: "Project Name",
+    name: "Capel Village",
+    sector: "Residential",
+    location: "Capel, WA",
     image: "/projects/jurien-bay-townhouses.webp",
     imageAlt: "Modular townhouses with timber-framed verandahs and native garden beds",
     imagePosition: "62% center",
   },
   {
     name: "Project Name",
+    sector: "Residential",
+    location: "Location",
     image: "/projects/jurien-bay-dusk.webp",
     imageAlt: "Modular townhouses lit at dusk",
-    imagePosition: "center",
-  },
-  {
-    name: "Project Name",
-    image: "/projects/jurien-bay-terraces.webp",
-    imageAlt: "Terraced modular apartments beside a landscaped street",
     imagePosition: "center",
   },
 ] as const;

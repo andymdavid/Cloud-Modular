@@ -2,23 +2,34 @@
 import RefreshLayout from "@/layouts/RefreshLayout.astro";
 import SectionHead from "@/components/refresh/SectionHead.astro";
 import HomeExplorer from "@/components/refresh/HomeExplorer.astro";
-import { advantages, faqItems, projects, qualityRows, sectors, site } from "@/data/site";
+import FaqSection from "@/components/refresh/FaqSection.astro";
+import { projects, sectors, site } from "@/data/site";
 
 // Test page for the design refresh. Kept out of search and the sitemap until it replaces `/`.
 const title = "Cloud Modular | Alternate Home (Design Refresh)";
 const description =
   "Architecturally designed modular buildings, manufactured offsite and certified to Australian Standards.";
 
-// The wide Factory image leads the section, so pillar 02 uses a material detail instead
-const pillars = qualityRows.map((row) =>
-  row.index === "02" ? { ...row, image: "/Card4.webp", imagePosition: "center" } : row,
-);
-
-const stats = [
-  { value: "70%", label: "Less landfill than traditional construction" },
-  { value: "Up to 20%", label: "Lower labour and material waste" },
-  { value: "6", label: "Sectors delivered across Australia" },
-  { value: "2", label: "Offices: Perth and Foshan" },
+// The Cloud Modular difference: two tiles leading to their own pages
+const features = [
+  {
+    label: "Quality, compliance & assurance",
+    title: "Verified before it reaches site",
+    href: "/quality/",
+    image: "/Factory-1.webp",
+    width: 1672,
+    height: 941,
+    imagePosition: "center",
+  },
+  {
+    label: "Why Cloud Modular",
+    title: "Faster, cleaner, more certain",
+    href: "/why-cloud-modular/",
+    image: "/Why-Cloud-Modular.webp",
+    width: 1254,
+    height: 1254,
+    imagePosition: "center",
+  },
 ];
 ---
 
@@ -45,95 +56,98 @@ const stats = [
         <h1 class="col-span-12 text-hero lg:col-span-9">Premium modular spaces, built in weeks, not years.</h1>
         <div class="col-span-12 flex flex-col items-start gap-5 sm:col-span-8 lg:col-span-3 lg:items-end lg:text-right">
           <p class="max-w-[34ch] text-body text-fg/85">Architecturally designed, manufactured offsite and certified to Australian Standards.</p>
-          <a href={site.enquiryHref} class="btn-solid">Enquire now</a>
+          <a href={site.enquiryHref} class="btn">Enquire now</a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- About: Graya-style staggered, asymmetric image columns. First after the full-bleed hero, so no divider -->
-  <section data-theme="light" class="pb-section">
+  <!-- About: 50/50 (cf. olympic.no): label in the left half, one paragraph and a button in the right half.
+       First after the full-bleed hero, so no divider and a short top pad -->
+  <section id="about" data-theme="light" class="scroll-mt-header pb-12 pt-gutter">
     <div class="shell">
-      <div class="grid-12 gap-y-10 pt-section">
-        <h2 class="col-span-12 self-start text-h2 md:col-span-3" data-reveal>About</h2>
-        <div class="col-span-12 space-y-5 md:col-span-6 lg:col-span-5" data-reveal>
-          <p class="text-lead">Cloud Modular offers clarity and certainty to a changing construction landscape.</p>
-          <p class="text-body text-fg-muted">
-            Labour shortages, rising costs and tighter compliance make traditional builds harder to deliver predictably. We partner with leading architectural, engineering and procurement teams to take a more controlled approach, with clear design, offsite manufacturing and assured compliance from the start.
+      <div class="grid-12 gap-y-6">
+        <h2 class="label col-span-12 md:col-span-6" data-reveal>About Cloud Modular</h2>
+        <div class="col-span-12 md:col-span-6 md:col-start-7" data-reveal>
+          <p class="text-about">
+            Cloud Modular offers clarity and certainty to a changing construction landscape. Labour shortages, rising costs and tighter compliance make traditional builds harder to deliver predictably. We partner with leading architectural, engineering and procurement teams to take a more controlled approach, with clear design, offsite manufacturing and assured compliance from the start.
           </p>
-          <a href="/about/" class="btn-outline">Our story</a>
-        </div>
-      </div>
-
-      <div class="grid-12 mt-16 items-start gap-y-8 sm:mt-20">
-        <div class="col-span-10 md:col-span-5 md:col-start-2 lg:col-span-4 lg:col-start-4" data-reveal>
-          <div class="aspect-[3/4] overflow-hidden bg-stone">
-            <img src="/About1.webp" alt="Cloud Modular coastal home exterior at dusk" width="1856" height="2464" loading="lazy" class="h-full w-full object-cover" />
-          </div>
-        </div>
-        <div class="col-span-7 col-start-6 md:col-span-3 md:col-start-9 md:mt-40 lg:col-start-9" data-reveal style="--reveal-delay:150ms">
-          <div class="aspect-[3/4] overflow-hidden bg-stone">
-            <img src="/about2.webp" alt="Garden path leading to a modular home" width="1856" height="2464" loading="lazy" class="h-full w-full object-cover" />
-          </div>
+          <a href="/about/" class="btn mt-10">Our story</a>
         </div>
       </div>
     </div>
+  </section>
+
+  <!-- Projects (cf. olympic.no "Navigating with insight"): label and title left, "All projects" right, then three
+       equal cards across the full width. Each card: image with a sector tag, mono location, project name.
+       Card images match the Sectors cards' height at every width: below lg the same swipe-row widths and 4:5
+       ratio; at lg a third of the row at 13:15 (= a Sectors card, a 3.25th of the row at 4:5). -->
+  <section id="projects" data-theme="light" class="scroll-mt-header pb-section">
+    <div class="shell">
+      <div class="rule pt-section" data-reveal>
+        <p class="label">Projects</p>
+        <div class="mt-6 flex items-end justify-between gap-6">
+          <h2 class="text-h2">Selected work</h2>
+          <a href="/our-work/" class="btn shrink-0">All projects</a>
+        </div>
+      </div>
+    </div>
+
+    <ul data-scroll-row class="no-scrollbar mt-12 flex snap-x snap-proximity gap-gap-sm overflow-x-auto scroll-px-gutter px-gutter sm:mt-16 lg:mx-auto lg:grid lg:max-w-page lg:grid-cols-3 lg:overflow-visible" aria-label="Projects">
+      {projects.map((project, index) => (
+        <li class="w-[78vw] shrink-0 snap-start sm:w-[44vw] lg:w-auto" data-reveal style={`--reveal-delay:${index * 80}ms`}>
+          <a href="/our-work/" class="project-card group block" data-project-card>
+            <div class="project-media relative aspect-[4/5] overflow-hidden bg-stone lg:aspect-[13/15]">
+              <img src={project.image} alt={project.imageAlt} loading="lazy" class="h-full w-full object-cover transition-transform duration-slow ease-cm-out group-hover:scale-[1.03]" style={`object-position:${project.imagePosition}`} />
+              <span class="project-tag absolute left-4 top-4 sm:left-5 sm:top-5">{project.sector}</span>
+              <!-- Arrow that follows the pointer over the image on hover (olympic.no) -->
+              <span class="project-cursor" aria-hidden="true" data-project-cursor>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 2.5v5h8M8.5 4.5 11 7.5 8.5 10.5" stroke="currentColor" stroke-width="1.2" /></svg>
+              </span>
+            </div>
+            <p class="label label-muted mt-5">{project.location}</p>
+            <h3 class="project-title mt-3 max-w-[70%] text-about">{project.name}</h3>
+          </a>
+        </li>
+      ))}
+    </ul>
   </section>
 
   <!-- How it's made: copy left, a live 3D model of one home right; opens to a full-screen view with all tools -->
   <HomeExplorer />
 
-  <!-- Projects: Graya collection grid. Title in the left column (as About and FAQ), a small label and
-       a row of portrait cards right, project name set over the top-left of each image -->
-  <section id="projects" data-theme="light" class="scroll-mt-header pb-section">
+  <!-- The Cloud Modular difference: centred label and title (olympic.no "Fleet focus"), then two image tiles
+       (olympic.no media-link tiles) linking to the Quality and Why Cloud Modular pages. The tiles sit at half the
+       page margin, wider than the rest of the page. -->
+  <section id="difference" data-theme="light" class="scroll-mt-header pb-section">
     <div class="shell">
-      <div class="grid-12 rule gap-y-6 pt-section">
-        <h2 class="col-span-12 self-start text-h2 md:col-span-3" data-reveal>Projects</h2>
-        <div class="col-span-12 md:col-span-9">
-          <div class="flex items-center justify-between gap-6" data-reveal>
-            <p class="text-small">Selected work</p>
-            <a href="/our-work/" class="btn-outline">All projects</a>
+      <div class="rule pt-section text-center" data-reveal>
+        <p class="label">The Cloud Modular difference</p>
+        <h2 class="mx-auto mt-5 max-w-[24ch] text-h2 sm:mt-6">Certainty, built in</h2>
+      </div>
+    </div>
+
+    <div class="wide-row mt-section-sm grid gap-gap-sm md:grid-cols-2">
+      {features.map((feature, index) => (
+        <a href={feature.href} data-theme="dark" class="feature-tile group relative block overflow-hidden rounded bg-ink" data-reveal style={`--reveal-delay:${index * 100}ms`}>
+          <img src={feature.image} alt="" width={feature.width} height={feature.height} loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-transform duration-slow ease-cm-out group-hover:scale-[1.03]" style={`object-position:${feature.imagePosition}`} />
+          <span class="absolute inset-0 bg-[linear-gradient(180deg,rgb(11_11_12/0.55)_0%,rgb(11_11_12/0.1)_45%,rgb(11_11_12/0.35)_100%)]" aria-hidden="true"></span>
+          <div class="relative flex h-full flex-col justify-between p-tile">
+            <div>
+              <p class="label text-sage">{feature.label}</p>
+              <h3 class="mt-8 max-w-[16ch] text-h2 text-fg">{feature.title}</h3>
+            </div>
+            <span class="btn self-start">Explore</span>
           </div>
-
-          <ul class="mt-10 grid grid-cols-2 gap-gap-sm sm:mt-12 lg:grid-cols-4">
-            {projects.map((project, index) => (
-              <li data-reveal style={`--reveal-delay:${index * 80}ms`}>
-                <a href="/our-work/" class="group relative block aspect-[3/4] overflow-hidden bg-stone">
-                  <img src={project.image} alt={project.imageAlt} loading="lazy" class="h-full w-full object-cover transition-transform duration-slow ease-cm-out group-hover:scale-[1.03]" style={`object-position:${project.imagePosition}`} />
-                  <span class="absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgb(11_11_12/0.35),rgb(11_11_12/0))]" aria-hidden="true"></span>
-                  <h3 class="absolute left-3 top-3 text-small uppercase tracking-[0.04em] text-white sm:left-4 sm:top-4">{project.name}</h3>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      <!-- Full-height project image closes the section, inside the dividers -->
-      <div class="relative mt-gap h-[100svh] min-h-[560px] overflow-hidden bg-stone" data-reveal>
-        <video
-          src="/projects/jurien-bay-drone.mp4"
-          poster="/projects/jurien-bay-drone-start.webp"
-          data-end-poster="/projects/jurien-bay-drone-end.webp"
-          width="1284"
-          height="716"
-          muted
-          playsinline
-          preload="none"
-          aria-label="Aerial flyover of the Seashells Jurien Bay development beside the coast"
-          data-play-once
-          class="h-full w-full object-cover"
-        ></video>
-        <span class="absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgb(11_11_12/0.35),rgb(11_11_12/0))]" aria-hidden="true"></span>
-        <p class="absolute left-3 top-3 text-small uppercase tracking-[0.04em] text-white sm:left-4 sm:top-4">Seashells Jurien Bay</p>
-      </div>
+        </a>
+      ))}
     </div>
   </section>
 
   <!-- Sectors carousel -->
   <section id="sectors" data-theme="light" class="scroll-mt-header pb-section" data-carousel>
     <div class="shell">
-      <SectionHead title="Sectors" intro="Our system adapts across commercial, residential, civic and specialist asset classes, giving clients a faster and more controlled path to delivery.">
+      <SectionHead label="Sectors" title="One system, many sectors" intro="Our system adapts across commercial, residential, civic and specialist asset classes, giving clients a faster and more controlled path to delivery.">
         <Fragment slot="actions">
           <button type="button" class="icon-btn" data-carousel-prev aria-label="Previous sectors" disabled>
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M8.5 2.5 4 7l4.5 4.5" stroke="currentColor" stroke-width="1.2" /></svg>
@@ -146,18 +160,21 @@ const stats = [
     </div>
 
     <ul
-      class="no-scrollbar mt-10 flex snap-x snap-mandatory gap-gap-sm overflow-x-auto scroll-px-gutter px-gutter sm:mt-12"
+      class="no-scrollbar mt-10 flex snap-x snap-proximity gap-gap-sm overflow-x-auto scroll-px-gutter px-gutter sm:mt-12"
       data-carousel-track
+      data-scroll-row
       aria-label="Sectors"
     >
       {sectors.map((sector, index) => (
         <li class="w-[78vw] shrink-0 snap-start sm:w-[44vw] lg:w-[calc((100vw-2*var(--gutter)-2*var(--gap-sm))/3.25)]" data-reveal style={`--reveal-delay:${index * 80}ms`}>
-          <figure class="group">
-            <div class="aspect-[4/5] overflow-hidden bg-stone">
+          <!-- Same hover as the project cards (corners round up, name turns gold), with no arrow: sectors have no pages -->
+          <figure class="project-card group">
+            <div class="project-media aspect-[4/5] overflow-hidden bg-stone">
               <img src={sector.image} alt={sector.title} width="928" height="1232" loading="lazy" class="h-full w-full object-cover transition-transform duration-slow ease-cm-out group-hover:scale-[1.03]" />
             </div>
-            <figcaption class="mt-3">
-              <p class="text-body font-medium">{sector.label}</p>
+            <figcaption class="mt-4">
+              <p class="label label-muted">{String(index + 1).padStart(2, "0")}</p>
+              <p class="project-title mt-2 text-body font-medium">{sector.label}</p>
               <p class="mt-1 max-w-[40ch] text-caption text-fg-subtle">{sector.description}</p>
             </figcaption>
           </figure>
@@ -166,106 +183,101 @@ const stats = [
     </ul>
   </section>
 
-  <!-- Quality: module header + full-width image, then three numbered pillars -->
-  <section id="quality" data-theme="light" class="scroll-mt-header pb-section">
-    <div class="shell">
-      <SectionHead title="Quality, Compliance & Assurance" intro="Factory-controlled production and verified engineering give clients confidence in every module before it reaches site.">
-        <a slot="actions" href="/about/" class="btn-outline">How we work</a>
-      </SectionHead>
-
-      <div class="mt-10 aspect-[4/3] overflow-hidden bg-stone sm:mt-12 sm:aspect-[21/9]" data-reveal>
-        <img src="/Factory-1.webp" alt="Inside a modular manufacturing facility" width="1672" height="941" loading="lazy" class="h-full w-full object-cover" />
-      </div>
-
-      <div class="mt-gap grid gap-x-gap-sm gap-y-12 md:grid-cols-3">
-        {pillars.map((row, index) => (
-          <article class="group" data-reveal style={`--reveal-delay:${index * 100}ms`}>
-            <div class="aspect-[4/3] overflow-hidden bg-stone">
-              <img src={row.image} alt={row.title} width="1456" height="816" loading="lazy" class="h-full w-full object-cover transition-transform duration-slow ease-cm-out group-hover:scale-[1.03]" style={`object-position:${row.imagePosition}`} />
-            </div>
-            <p class="mt-4 text-caption tabular-nums text-fg-subtle">{row.index}</p>
-            <h3 class="mt-2 text-h3">{row.title}</h3>
-            <p class="mt-2 max-w-[42ch] text-small text-fg-muted">{row.description}</p>
-          </article>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Stats: Modscape project-page numerals -->
-  <section data-theme="light" class="pb-section">
-    <div class="shell">
-      <SectionHead title="Why Modular" intro="Most of the build happens offsite, which shortens programmes, reduces site disruption and improves cost certainty." />
-      <dl class="mt-12 grid grid-cols-2 gap-x-gap-sm gap-y-10 lg:grid-cols-4">
-        {stats.map((stat, index) => (
-          <div class="flex flex-col" data-reveal style={`--reveal-delay:${index * 80}ms`}>
-            <dt class="order-2 mt-2 max-w-[24ch] text-small text-fg-muted">{stat.label}</dt>
-            <dd class="order-1 text-h1 tabular-nums">{stat.value}</dd>
-          </div>
-        ))}
-      </dl>
-
-      <div class="mt-section-sm grid gap-gap-sm sm:grid-cols-2 lg:grid-cols-3">
-        {advantages.map((card, index) => (
-          <article
-            class:list={["flex min-h-[18rem] flex-col justify-between p-5 sm:p-6", index % 2 === 0 ? "bg-stone" : "bg-sage"]}
-            data-reveal
-            style={`--reveal-delay:${(index % 3) * 80}ms`}
-          >
-            <p class="text-lead">{card.points[0]}</p>
-            <h3 class="mt-10 text-small font-medium">{card.title}</h3>
-          </article>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ: label column + accordion, Modscape spec-sheet layout -->
-  <section id="faq" data-theme="light" class="scroll-mt-header pb-section">
-    <div class="shell">
-      <div class="grid-12 rule gap-y-8 pt-section">
-        <h2 class="col-span-12 self-start text-h2 md:col-span-4" data-reveal>Questions</h2>
-        <div class="col-span-12 border-b border-line/[var(--rule-alpha)] md:col-span-8 lg:col-span-7 lg:col-start-6" data-reveal>
-          {faqItems.map((item) => (
-            <details class="faq line-item group">
-              <summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-4 text-body font-medium">
-                <span>{item.question}</span>
-                <span class="relative h-3 w-3 shrink-0" aria-hidden="true">
-                  <span class="absolute left-0 top-1/2 h-px w-3 bg-fg"></span>
-                  <span class="absolute left-1/2 top-0 h-3 w-px bg-fg transition-transform duration-base group-open:scale-y-0"></span>
-                </span>
-              </summary>
-              <p class="max-w-[60ch] pb-5 text-small text-fg-muted">{item.answer}</p>
-            </details>
-          ))}
-        </div>
-      </div>
-    </div>
-  </section>
+  <!-- FAQ: this page's questions (projects and delivery); the full list lives at /faq/ -->
+  <FaqSection id="faq" topic="general" />
 </RefreshLayout>
 
 <style>
-  .faq summary::-webkit-details-marker {
-    display: none;
+  /* Project card hover (olympic.no): corners round up, the title turns gold, an arrow follows the pointer */
+  /* Corners are clipped with clip-path, as olympic.no does: border-radius + overflow doesn't reliably clip the
+     scaled (separately composited) image while the radius animates, so corners lagged or stuck square */
+  .project-media {
+    clip-path: inset(0 round var(--radius-media));
+    transition: clip-path 0.6s var(--ease-out); /* starts at once; the reference curve barely moves for 0.3s */
   }
 
-
-  @media (prefers-reduced-motion: no-preference) {
-    .hero-media {
-      animation: hero-settle 2.4s var(--ease-out) both;
-    }
+  .project-title {
+    transition: color 0.6s var(--ease-standard);
   }
 
-  @keyframes hero-settle {
-    from {
-      transform: scale(1.06);
-      opacity: 0.6;
+  .project-cursor {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: var(--radius-media);
+    background: rgb(var(--label-gold));
+    color: rgb(var(--paper));
+    opacity: 0;
+    transform: translate(var(--x, 50%), var(--y, 50%)) translate(-50%, -50%) scale(0.6);
+    transition:
+      opacity var(--dur-base) var(--ease-standard),
+      transform var(--dur-base) var(--ease-out);
+    pointer-events: none;
+  }
+
+  @media (hover: hover) {
+    .project-card:hover .project-media,
+    .project-card:focus-visible .project-media {
+      clip-path: inset(0 round 0.75rem);
     }
-    to {
-      transform: scale(1);
+
+    .project-card:hover .project-title,
+    .project-card:focus-visible .project-title {
+      color: rgb(var(--label-gold));
+    }
+
+    .project-card:hover .project-cursor {
       opacity: 1;
+      transform: translate(var(--x, 50%), var(--y, 50%)) translate(-50%, -50%) scale(1);
     }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .project-media,
+    .project-title,
+    .project-cursor {
+      transition: none;
+    }
+  }
+
+  /* Feature tiles (olympic.no media-link tiles): 690 × 638 at 1440 in a wide row, taller on phones; content
+     inset 38 / 46px at 1440 */
+  .feature-tile {
+    aspect-ratio: 357 / 509;
+  }
+
+  @media (min-width: 48rem) {
+    .feature-tile {
+      aspect-ratio: 690 / 638;
+    }
+  }
+
+  .p-tile {
+    padding: clamp(1.5rem, 0.99rem + 2.1vw, 2.875rem) clamp(1.5rem, 1.175rem + 1.33vw, 2.375rem);
+  }
+
+  /* Outlined mono tag set on a project image (olympic.no "Insight" tag) */
+  .project-tag {
+    display: inline-flex;
+    align-items: center;
+    height: 1.625rem;
+    padding-inline: 0.625rem;
+    border: var(--rule) solid rgb(var(--paper) / 0.5);
+    border-radius: var(--radius-media);
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: rgb(var(--paper));
+    background: rgb(11 11 12 / 0.15);
+    backdrop-filter: blur(4px);
+  }
+
 </style>
 
 <script>
@@ -296,33 +308,56 @@ const stats = [
 </script>
 
 <script>
-  // Play-once videos: start loading as they approach, play once when half in view, then hold the
-  // final frame. Reduced motion shows the final frame as a still and never plays.
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  document.querySelectorAll<HTMLVideoElement>("[data-play-once]").forEach((video) => {
-    if (reduceMotion) {
-      if (video.dataset.endPoster) video.poster = video.dataset.endPoster;
-      return;
-    }
-    // Separate observers: a root margin also inflates intersectionRatio, so it can't gate playback
-    const preload = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-        video.preload = "auto";
-        preload.disconnect();
+  // Sideways card rows (Projects below lg, Sectors): a mostly vertical wheel or trackpad gesture over a row
+  // scrolls the page instead of nudging the row sideways, which made it jump between snap points and caught
+  // the page scroll. Clearly sideways gestures still move the row.
+  document.querySelectorAll<HTMLElement>("[data-scroll-row]").forEach((row) => {
+    row.addEventListener(
+      "wheel",
+      (event) => {
+        if (event.ctrlKey || Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+        if (row.scrollWidth <= row.clientWidth) return;
+        event.preventDefault();
+        const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? window.innerHeight : 1;
+        window.scrollBy({ top: event.deltaY * unit, behavior: "instant" });
       },
-      { rootMargin: "50% 0px" },
+      { passive: false },
     );
-    const play = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-        video.play().catch(() => {});
-        play.disconnect();
-      },
-      { threshold: 0.5 },
-    );
-    preload.observe(video);
-    play.observe(video);
+  });
+</script>
+
+<script>
+  // Project cards: the hover arrow tracks the pointer over the image. It sits where the pointer enters, then
+  // follows it; keyboard focus and touch never show it.
+  document.querySelectorAll<HTMLElement>("[data-project-card]").forEach((card) => {
+    const cursor = card.querySelector<HTMLElement>("[data-project-cursor]");
+    const media = cursor?.parentElement;
+    if (!cursor || !media) return;
+    let frame = 0;
+    const place = (event: PointerEvent) => {
+      const rect = media.getBoundingClientRect();
+      cursor.style.setProperty("--x", `${event.clientX - rect.left}px`);
+      cursor.style.setProperty("--y", `${event.clientY - rect.top}px`);
+    };
+    // Snap to the entry point without animating from the last exit point
+    media.addEventListener("pointerenter", (event) => {
+      if (event.pointerType !== "mouse") return;
+      cursor.style.transition = "none";
+      place(event);
+      void cursor.offsetWidth;
+      cursor.style.transition = "";
+    });
+    media.addEventListener("pointermove", (event) => {
+      if (event.pointerType !== "mouse") return;
+      const rect = media.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        cursor.style.setProperty("--x", `${x}px`);
+        cursor.style.setProperty("--y", `${y}px`);
+      });
+    });
   });
 </script>
 
