@@ -181,6 +181,7 @@ export const faqTopics = [
   { id: "general", label: "Projects and delivery", href: "/" },
   { id: "quality", label: "Quality, compliance & assurance", href: "/quality/" },
   { id: "why", label: "Why Cloud Modular", href: "/why-cloud-modular/" },
+  { id: "approach", label: "Process and engagement", href: "/our-approach/" },
 ] as const;
 
 export type FaqTopic = (typeof faqTopics)[number]["id"];
@@ -214,6 +215,7 @@ export const faqItems = [
   {
     topic: "general",
     question: "Can modular buildings be customised to my project?",
+    alsoOn: ["approach"],
     answer:
       "Yes. Modules are designed to suit site constraints, planning requirements and spatial needs. We adapt layouts and configurations based on project intent.",
   },
@@ -226,13 +228,14 @@ export const faqItems = [
   {
     topic: "why",
     question: "What's the typical project timeline?",
-    alsoOn: ["general"],
+    alsoOn: ["general", "approach"],
     answer:
       "Timelines vary by scale and complexity, but offsite manufacturing means construction and site works can run concurrently, significantly reducing the overall program.",
   },
   {
     topic: "general",
     question: "How are modules transported and installed?",
+    alsoOn: ["approach"],
     answer:
       "Modules are shipped, unloaded and craned into position using established lifting and transport methods. We coordinate with local contractors for foundations, services and final works.",
   },
@@ -285,4 +288,150 @@ export const team = [
     bio: "Leading the company's China operations, Mike is an engineer with a strong technical background across architectural design, smart building systems, and environmental protection equipment, delivering practical and sustainable construction solutions.",
     position: "center 30%",
   },
+] as const;
+
+// /our-approach/. A first draft for review, shaped by industry practice rather than confirmed process detail.
+// Anything with `confirm: true` shows a "To confirm" marker on the page; set it to false (or remove it) once the
+// fact is checked. Partners are placeholders until confirmed.
+export const partners = {
+  design: { name: "Kellett Design Group", role: "Design partner", confirm: true },
+  builder: { name: "MVP Group", role: "Builder partner", confirm: true },
+} as const;
+
+export const approachStages = [
+  {
+    index: "01",
+    title: "Brief and feasibility",
+    summary: "We start with your site, yield, programme and budget, and test whether modular is the right fit.",
+    points: ["Site review and constraints", "Early module layout and yield", "Indicative cost range and programme"],
+    signOff: "Go-ahead to design",
+    duration: "TBC",
+    confirm: true,
+  },
+  {
+    index: "02",
+    title: "Design for manufacture",
+    summary: `Working with ${partners.design.name} or your own architect, we resolve the design around module sizes, transport limits and lifting.`,
+    points: ["Plans, elevations and finishes", "Structural engineering, including wind region for cyclone sites", "Updated estimate"],
+    signOff: "Design and budget",
+    duration: "TBC",
+    confirm: true,
+  },
+  {
+    index: "03",
+    title: "Approvals and documentation",
+    summary: "Planning, building approval and the detailed drawings the factory builds from, prepared in parallel where we can.",
+    points: ["Development approval where required", "Building permit, lodged by the registered builder", "Shop drawings for every module"],
+    signOff: "Approved drawings and contract",
+    duration: "TBC",
+    confirm: true,
+  },
+  {
+    index: "04",
+    title: "Manufacture in Foshan",
+    summary: "Modules are built in the factory in Foshan while the site is prepared. The two run at the same time.",
+    points: ["Structure, services and fit-out built in", "Progress reporting to the client", "Site works and footings under way in parallel"],
+    signOff: "Production progress",
+    duration: "TBC",
+    confirm: true,
+  },
+  {
+    index: "05",
+    title: "Inspection and factory sign-off",
+    summary: "Independent checks at key stages confirm accuracy, workmanship and compliance before anything ships.",
+    points: ["Staged quality inspections", "Engineering sign-off", "Compliance documentation for import"],
+    signOff: "Modules accepted for shipping",
+    duration: "TBC",
+    confirm: true,
+  },
+  {
+    index: "06",
+    title: "Shipping and clearance",
+    summary: "Modules are shipped to the nearest suitable port and cleared through customs and biosecurity.",
+    points: ["Sea freight from China", "Customs and biosecurity clearance", "Road transport planned to site, including regional and remote routes"],
+    signOff: "Delivery schedule",
+    duration: "TBC",
+    confirm: true,
+  },
+  {
+    index: "07",
+    title: "Delivery and installation",
+    summary: "Modules arrive in sequence and are craned onto prepared footings, then joined and connected.",
+    points: ["Crane lifts in an agreed sequence", "Modules joined and made weathertight", "Services connected"],
+    signOff: "Installation complete",
+    duration: "TBC",
+    confirm: true,
+  },
+  {
+    index: "08",
+    title: "Completion and handover",
+    summary: "Final finishes, inspections and certification, then the keys, manuals and warranties.",
+    points: ["Final inspections and certification", "Defects walk-through", "Handover documents and warranties"],
+    signOff: "Practical completion",
+    duration: "TBC",
+    confirm: true,
+  },
+] as const;
+
+// Parallel programme: shared phases, then factory and site tracks side by side, then shared again. Columns are
+// phases, not to scale, until real durations are confirmed.
+export const approachTimeline = {
+  start: { title: "Brief, design and approvals", cols: 3 },
+  factory: ["Manufacture", "Inspection", "Shipping and clearance"],
+  site: ["Site establishment", "Footings and slab", "Services ready"],
+  end: [{ title: "Installation" }, { title: "Handover" }],
+  confirm: true,
+} as const;
+
+export const engagementModels = [
+  {
+    title: "Design and deliver",
+    suits: "Developers who want one team from brief to handover.",
+    summary: `We lead design, manufacture, shipping and installation. ${partners.builder.name} holds the building permit and runs site works.`,
+    confirm: true,
+  },
+  {
+    title: "Early involvement",
+    suits: "Developers and government clients with a consultant team in place.",
+    summary: "We join at feasibility so the design suits manufacture before it's fixed, then carry it through to supply.",
+    confirm: true,
+  },
+  {
+    title: "Supply to your builder",
+    suits: "Builders and head contractors.",
+    summary: "We design for manufacture, build, ship and deliver the modules. Your builder handles the site, permit and connections.",
+    confirm: true,
+  },
+  {
+    title: "Tender response",
+    suits: "Projects already in procurement.",
+    summary: "You have a design. We price it, adapt it for modular and show where it gains time or cost.",
+    confirm: true,
+  },
+] as const;
+
+// Who does what under "Design and deliver". "lead" or "support" per party; omitted means no role.
+export type Role = "lead" | "support";
+export const responsibilities: { item: string; cloud?: Role; builder?: Role; client?: Role }[] = [
+  { item: "Brief, budget and site information", client: "lead", cloud: "support" },
+  { item: "Design for manufacture", cloud: "lead", client: "support" },
+  { item: "Structural engineering and certification", cloud: "lead" },
+  { item: "Planning approval", client: "lead", cloud: "support" },
+  { item: "Building permit", builder: "lead", cloud: "support" },
+  { item: "Survey and soil report", client: "lead" },
+  { item: "Manufacture and quality checks", cloud: "lead" },
+  { item: "Shipping, customs and biosecurity", cloud: "lead" },
+  { item: "Transport to site and crane", cloud: "lead", builder: "support" },
+  { item: "Site works, footings and services", builder: "lead" },
+  { item: "Installation", cloud: "lead", builder: "support" },
+  { item: "Finishing, connections and handover", builder: "lead", cloud: "support" },
+];
+
+export const paymentMilestones = [
+  "Engagement and design",
+  "Production start",
+  "Factory sign-off",
+  "Shipping",
+  "Delivery and installation",
+  "Practical completion",
 ] as const;

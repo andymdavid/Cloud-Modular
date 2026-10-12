@@ -1,0 +1,54 @@
+---
+import ToConfirm from "@/components/refresh/ToConfirm.astro";
+
+/**
+ * Numbered stage list (process steps): one ruled row per stage. Index and title in the left half; summary, points
+ * and the sign-off / duration line from the centre line. Stacks on phones. Used by /our-approach/.
+ */
+export interface Stage {
+  index: string;
+  title: string;
+  summary: string;
+  points?: readonly string[];
+  signOff?: string;
+  duration?: string;
+  confirm?: boolean;
+}
+
+interface Props {
+  stages: readonly Stage[];
+  class?: string;
+}
+
+const { stages, class: className } = Astro.props;
+---
+
+<ol class:list={["border-b border-line/[var(--rule-alpha)]", className]}>
+  {stages.map((stage) => (
+    <li class="line-item grid-12 gap-y-4 py-8 sm:py-10" data-reveal>
+      <div class="col-span-12 flex items-baseline gap-4 md:col-span-6">
+        <span class="label w-8 shrink-0">{stage.index}</span>
+        <h3 class="text-h3">{stage.title}</h3>
+      </div>
+      <div class="col-span-12 pl-12 md:col-span-6 md:col-start-7 md:pl-0">
+        <p class="max-w-measure text-body">{stage.summary}</p>
+        {stage.points && (
+          <ul class="mt-4 max-w-measure space-y-1 text-small text-fg-muted">
+            {stage.points.map((point) => <li class="flex gap-3"><span aria-hidden="true">–</span>{point}</li>)}
+          </ul>
+        )}
+        {(stage.signOff || stage.duration || stage.confirm) && (
+          <dl class="mt-6 flex flex-wrap items-center gap-x-8 gap-y-2">
+            {stage.signOff && (
+              <div class="flex gap-2"><dt class="label label-muted">You sign off</dt><dd class="label text-fg">{stage.signOff}</dd></div>
+            )}
+            {stage.duration && (
+              <div class="flex gap-2"><dt class="label label-muted">Duration</dt><dd class="label text-fg">{stage.duration}</dd></div>
+            )}
+            {stage.confirm && <ToConfirm />}
+          </dl>
+        )}
+      </div>
+    </li>
+  ))}
+</ol>

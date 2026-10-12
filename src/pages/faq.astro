@@ -21,7 +21,7 @@ const faqSchema = {
 <RefreshLayout title={title} description={description} canonical="/faq/" structuredData={faqSchema}>
   <PageIntro label="FAQ" title="Your questions, answered" lead={description} />
 
-  {faqTopics.map((topic) => (
+  {faqTopics.filter((topic) => faqItems.some((item) => item.topic === topic.id)).map((topic) => (
     <FaqSection topic={topic.id} label={topic.label} more={false} ownOnly />
   ))}
 </RefreshLayout>

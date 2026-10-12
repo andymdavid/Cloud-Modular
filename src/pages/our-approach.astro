@@ -1,0 +1,272 @@
+---
+import RefreshLayout from "@/layouts/RefreshLayout.astro";
+import PageIntro from "@/components/refresh/PageIntro.astro";
+import SplitSection from "@/components/refresh/SplitSection.astro";
+import SectionHead from "@/components/refresh/SectionHead.astro";
+import StageList from "@/components/refresh/StageList.astro";
+import ToConfirm from "@/components/refresh/ToConfirm.astro";
+import FaqSection from "@/components/refresh/FaqSection.astro";
+import GetStarted from "@/components/refresh/GetStarted.astro";
+import {
+  approachStages,
+  approachTimeline,
+  engagementModels,
+  partners,
+  paymentMilestones,
+  responsibilities,
+  site,
+  type Role,
+} from "@/data/site";
+
+const title = "Our Approach | Modular Construction Process | Cloud Modular";
+const description =
+  "How a Cloud Modular project runs, from brief to handover: the stages, the ways to engage us, and who does what.";
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: site.url },
+    { "@type": "ListItem", position: 2, name: "Our Approach", item: `${site.url}/our-approach/` },
+  ],
+};
+
+const parties: { key: "cloud" | "builder" | "client"; label: string }[] = [
+  { key: "cloud", label: "Cloud Modular" },
+  { key: "builder", label: partners.builder.name },
+  { key: "client", label: "You" },
+];
+const roleText: Record<Role, string> = { lead: "Leads", support: "Supports" };
+---
+
+<RefreshLayout title={title} description={description} canonical="/our-approach/" structuredData={breadcrumbSchema}>
+  <PageIntro label="Our approach" title="From brief to handover" lead="One accountable team across Perth and Foshan, from the first site review to the keys. Here’s how a project runs, how you can engage us, and who does what." />
+
+  <!-- Full-width image under the intro -->
+  <div class="wide-row pb-section" data-reveal>
+    <div class="aspect-[4/3] overflow-hidden rounded bg-stone sm:aspect-[21/9]">
+      <img src="/1.webp" alt="A street of contemporary modular homes in timber and dark cladding at sunset" width="2688" height="1792" fetchpriority="high" class="h-full w-full object-cover" style="object-position:center 62%" />
+    </div>
+  </div>
+
+  <SplitSection id="how-we-work" label="How we work">
+    <p class="text-about">We manage the whole delivery chain: design for manufacture, production in Foshan, shipping and clearance, then installation with our builder partner. The factory and the site work at the same time, so the programme is shorter and the risk sits with one team.</p>
+    <p class="mt-8 max-w-measure text-body text-fg-muted">The process is built for developers and organisations delivering at scale, and for the sites that are hardest to build on conventionally: cyclone regions, regional towns and remote locations.</p>
+  </SplitSection>
+
+  <!-- The process: eight numbered stages -->
+  <section id="process" data-theme="light" class="scroll-mt-header pb-section">
+    <div class="shell">
+      <SectionHead label="The process" title="Eight stages, one team" intro="Each stage ends with a clear decision from you, so nothing moves to the factory until the design, approvals and price are settled." />
+      <StageList stages={approachStages} class="mt-12 sm:mt-16" />
+    </div>
+  </section>
+
+  <!-- Timeline: dark band. Shared phases, then factory and site in parallel, then shared again. Not to scale. -->
+  <section id="timeline" data-theme="dark" class="scroll-mt-header py-section">
+    <div class="shell">
+      <div class="grid-12 gap-y-6">
+        <div class="col-span-12 lg:col-span-5" data-reveal>
+          <p class="label">Timeline</p>
+          <h2 class="mt-5 text-h2 sm:mt-6">Factory and site, at the same time</h2>
+        </div>
+        <div class="col-span-12 self-end lg:col-span-6 lg:col-start-7" data-reveal>
+          <p class="max-w-measure text-body text-fg-muted">On a conventional build, site works come first and construction follows. With modular, the modules are made while the site is prepared, so the two programmes overlap.</p>
+          {approachTimeline.confirm && <ToConfirm class="mt-5" note="Indicative durations, ideally from the Seashells Jurien Bay programme" />}
+        </div>
+      </div>
+
+      <div class="timeline mt-section-sm" data-reveal>
+        <div class="tl-bar tl-start bg-surface-alt">
+          <span class="label label-muted">Together</span>
+          <span class="mt-2 block text-body">{approachTimeline.start.title}</span>
+        </div>
+
+        <p class="tl-lane-label label text-sage">In the factory</p>
+        {approachTimeline.factory.map((step, index) => (
+          <div data-theme="light" class="tl-bar tl-factory bg-sage" style={`--col:${index + 4}`}>
+            {index === 0 && <span class="label label-muted mb-2 hidden md:block">In the factory</span>}
+            <span class="text-small">{step}</span>
+          </div>
+        ))}
+
+        <p class="tl-lane-label label text-sage">On site</p>
+        {approachTimeline.site.map((step, index) => (
+          <div class="tl-bar tl-site" style={`--col:${index + 4}`}>
+            {index === 0 && <span class="label label-muted mb-2 hidden md:block">On site</span>}
+            <span class="text-small">{step}</span>
+          </div>
+        ))}
+
+        {approachTimeline.end.map((step, index) => (
+          <div class="tl-bar tl-end bg-surface-alt" style={`--col:${index + 7}`}>
+            <span class="label label-muted">Together</span>
+            <span class="mt-2 block text-body">{step.title}</span>
+          </div>
+        ))}
+      </div>
+      <p class="mt-6 text-caption text-fg-subtle">Phases shown in order, not to scale.</p>
+    </div>
+  </section>
+
+  <!-- Ways to engage: four tiles -->
+  <section id="engage" data-theme="light" class="scroll-mt-header py-section">
+    <div class="shell">
+      <SectionHead label="Ways to engage" title="Start where it suits you" intro="Come to us with a site, a design or a tender. We deliver nationally, with no minimum project size." rule={false} />
+      <div class="mt-12 grid gap-gap-sm sm:mt-16 sm:grid-cols-2 lg:grid-cols-4">
+        {engagementModels.map((model, index) => (
+          <article
+            class:list={["flex min-h-[20rem] flex-col justify-between rounded p-5 sm:p-6", index % 2 === 0 ? "bg-surface-alt" : "bg-sage"]}
+            data-reveal
+            style={`--reveal-delay:${index * 80}ms`}
+          >
+            <div>
+              <p class="label label-muted">{String(index + 1).padStart(2, "0")}</p>
+              <h3 class="mt-4 text-h3">{model.title}</h3>
+              <p class="mt-4 text-small">{model.summary}</p>
+            </div>
+            <div class="mt-10">
+              <p class="label label-muted">Suits</p>
+              <p class="mt-2 text-small text-fg-muted">{model.suits}</p>
+              {model.confirm && <ToConfirm class="mt-4" />}
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Who does what: responsibility table for the design-and-deliver model -->
+  <SplitSection id="who-does-what" label="Who does what">
+    <p class="text-about">On a design-and-deliver project, this is who leads each part of the work. Under the other models, your own builder or consultants take on the site-side roles.</p>
+    <div class="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2">
+      <span class="flex items-center gap-2 text-caption text-fg-muted"><span class="role-mark role-lead" aria-hidden="true"></span>Leads</span>
+      <span class="flex items-center gap-2 text-caption text-fg-muted"><span class="role-mark role-support" aria-hidden="true"></span>Supports</span>
+      <ToConfirm note={`Responsibilities and the ${partners.builder.name} role`} />
+    </div>
+    <div class="mt-8 w-full overflow-x-auto">
+      <table class="w-full border-b border-line/[var(--rule-alpha)] text-left">
+        <thead>
+          <tr>
+            <th scope="col" class="pb-3 pr-4"><span class="sr-only">Scope</span></th>
+            {parties.map((party) => <th scope="col" class="w-[22%] pb-3 align-bottom sm:w-[18%]"><span class="label label-muted text-center">{party.label}</span></th>)}
+          </tr>
+        </thead>
+        <tbody>
+          {responsibilities.map((row) => (
+            <tr class="border-t border-line/[var(--rule-alpha)]">
+              <th scope="row" class="py-3 pr-4 text-small font-normal">{row.item}</th>
+              {parties.map((party) => {
+                const role = row[party.key];
+                return (
+                  <td class="py-3 text-center">
+                    {role ? (
+                      <>
+                        <span class:list={["role-mark", `role-${role}`]} aria-hidden="true"></span>
+                        <span class="sr-only">{roleText[role]}</span>
+                      </>
+                    ) : (
+                      <span class="sr-only">No role</span>
+                    )}
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </SplitSection>
+
+  <!-- Contract and payments -->
+  <SplitSection id="contract" label="Contract and payments">
+    <p class="text-about">The price firms up as the design does: an indicative range at feasibility, an updated estimate at design, then a fixed price in the contract before production starts. Payments follow progress.</p>
+    <div class="mt-4"><ToConfirm note="When the price is fixed, contract form, milestones and percentages" /></div>
+    <ol class="mt-8 w-full border-b border-line/[var(--rule-alpha)]">
+      {paymentMilestones.map((milestone, index) => (
+        <li class="line-item flex items-baseline gap-4 py-4">
+          <span class="label w-8 shrink-0">{String(index + 1).padStart(2, "0")}</span>
+          <span class="text-body">{milestone}</span>
+        </li>
+      ))}
+    </ol>
+  </SplitSection>
+
+  <FaqSection id="faq" topic="approach" />
+
+  <GetStarted />
+</RefreshLayout>
+
+<style>
+  /* Timeline: stacked on phones; from md, eight equal phase columns with the factory and site lanes on two rows
+     between the shared start and end phases */
+  .timeline {
+    display: grid;
+    gap: var(--gap-sm);
+  }
+
+  .tl-bar {
+    border-radius: var(--radius-media);
+    padding: 1rem;
+  }
+
+  .tl-site {
+    border: 1px solid rgb(var(--line) / 0.25);
+  }
+
+  .tl-lane-label {
+    margin-top: 0.75rem;
+  }
+
+  @media (min-width: 48rem) {
+    .timeline {
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+      grid-template-rows: auto auto;
+    }
+
+    .tl-lane-label {
+      display: none;
+    }
+
+    .tl-start {
+      grid-column: 1 / span 3;
+      grid-row: 1 / span 2;
+    }
+
+    .tl-factory,
+    .tl-site,
+    .tl-end {
+      grid-column: var(--col);
+    }
+
+    .tl-factory {
+      grid-row: 1;
+    }
+
+    .tl-site {
+      grid-row: 2;
+    }
+
+    .tl-end {
+      grid-row: 1 / span 2;
+    }
+
+    .tl-factory,
+    .tl-site {
+      min-height: 6.5rem;
+    }
+  }
+
+  /* Who does what: filled dot leads, ring supports */
+  .role-mark {
+    display: inline-block;
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 9999px;
+    border: 1px solid rgb(var(--fg));
+    vertical-align: middle;
+  }
+
+  .role-lead {
+    background: rgb(var(--fg));
+  }
+</style>
