@@ -25,14 +25,20 @@ const stats = [
 <RefreshLayout title={title} description={description} canonical="/alt-home/" noindex overlayHeader>
   <!-- Hero: full-bleed image, oversized display line bottom-left (Modscape), dark chrome (Graya) -->
   <section data-hero data-theme="dark" class="relative h-[100svh] min-h-[560px] overflow-hidden">
-    <img
-      src="/1.webp"
-      alt="Street of contemporary modular homes set against wooded hills"
-      width="2688"
-      height="1792"
-      fetchpriority="high"
+    <video
+      src="/Website%20hero%2016_9.mp4"
+      poster="/hero-poster.webp"
+      width="1920"
+      height="1080"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+      aria-hidden="true"
+      data-hero-video
       class="hero-media absolute inset-0 h-full w-full object-cover"
-    />
+    ></video>
     <div class="absolute inset-0 bg-[linear-gradient(180deg,rgb(11_11_12/0.55)_0%,rgb(11_11_12/0)_28%,rgb(11_11_12/0)_50%,rgb(11_11_12/0.6)_100%)]" aria-hidden="true"></div>
     <div class="shell relative flex h-full flex-col justify-end pb-10 sm:pb-14">
       <div class="grid-12 items-end gap-y-6">
@@ -201,6 +207,7 @@ const stats = [
     display: none;
   }
 
+
   @media (prefers-reduced-motion: no-preference) {
     .hero-media {
       animation: hero-settle 2.4s var(--ease-out) both;
@@ -244,4 +251,13 @@ const stats = [
     window.addEventListener("resize", update);
     update();
   });
+</script>
+
+<script>
+  // Hold the hero video on its poster frame for visitors who prefer reduced motion
+  const heroVideo = document.querySelector<HTMLVideoElement>("[data-hero-video]");
+  if (heroVideo && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    heroVideo.removeAttribute("autoplay");
+    heroVideo.pause();
+  }
 </script>
