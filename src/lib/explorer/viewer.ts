@@ -44,6 +44,9 @@ const DEFAULT_POLAR = THREE.MathUtils.degToRad(60); // elevated three-quarter, c
 const DEFAULT_AZIMUTH = THREE.MathUtils.degToRad(145); // front (-z) leading, north side (+x) in view
 const MIN_POLAR = 0.12;
 const MAX_POLAR = THREE.MathUtils.degToRad(82); // never below the ground plane
+/** Full view: the orbit and zoom centre sits this fraction of the half-height below the screen centre (7% of the
+ *  view height), so the house stays a little low, clear of the hints and buttons along the top, at any angle and zoom. */
+const FULL_VIEW_DROP = 0.14;
 const CLICK_SLOP = 6; // px of pointer travel still treated as a click rather than a drag
 const HIGHLIGHT = new THREE.Color("#c69a48");
 
@@ -159,6 +162,12 @@ export function createExplorer(options: ExplorerOptions): Explorer {
     camera.right = FRUSTUM * aspect;
     camera.top = FRUSTUM;
     camera.bottom = -FRUSTUM;
+    // Full view: shift the picture down by a fixed number of pixels. A view offset is applied after zoom (an
+    // asymmetric frustum would scale with zoom and drift back to centre), so the house stays low at any zoom.
+    const width = host.clientWidth;
+    const height = Math.max(1, host.clientHeight);
+    if (mode === "full") camera.setViewOffset(width, height, 0, (-height * FULL_VIEW_DROP) / 2, width, height);
+    else camera.clearViewOffset();
     camera.updateProjectionMatrix();
   };
 
@@ -199,7 +208,6 @@ export function createExplorer(options: ExplorerOptions): Explorer {
   const frame = (bounds = visibleBounds()) => {
     const centre = bounds.isEmpty() ? DEFAULT_TARGET.clone() : bounds.getCenter(new THREE.Vector3());
     const aspect = host.clientWidth / Math.max(1, host.clientHeight);
-    const margin = small() ? 0.88 : 0.8;
 
     if (mode === "compact") {
       let zoom = Infinity;
@@ -213,18 +221,20 @@ export function createExplorer(options: ExplorerOptions): Explorer {
       aimAt(centre, DEFAULT_AZIMUTH);
       fittedZoom = zoom * (small() ? 0.94 : 0.9);
     } else {
-      aimAt(centre, DEFAULT_AZIMUTH);
+      // Orbit around a point in the house itself (centred in plan, a little below mid-height), so rotating never
+      // swings the house off-centre. That point sits FULL_VIEW_DROP below the screen centre (view offset), so fit
+      // the house's projected extents around it: less room below than above.
+      const size = bounds.isEmpty() ? new THREE.Vector3(10, 8, 10) : bounds.getSize(new THREE.Vector3());
+      const pivot = centre.clone().setY((bounds.isEmpty() ? 0 : bounds.min.y) + size.y * 0.42);
+      aimAt(pivot, DEFAULT_AZIMUTH);
       const { min, max } = projectedExtents();
-      // Fit to the projected vertices rather than the box corners, which overstate a long, low house.
-      // Leave a band at the bottom for the stage's own controls, and centre the model above it.
-      const bottomBand = 0.08;
-      fittedZoom = Math.min((2 * FRUSTUM * aspect) / (max.x - min.x), (2 * FRUSTUM * (1 - bottomBand)) / (max.y - min.y)) * margin;
-      const right = new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld, 0);
-      const up = new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld, 1);
-      const shiftY = (min.y + max.y) / 2 - (FRUSTUM * bottomBand) / fittedZoom;
-      const shift = right.multiplyScalar((min.x + max.x) / 2).add(up.multiplyScalar(shiftY));
-      controls.target.add(shift);
-      camera.position.add(shift);
+      const halfWidth = Math.max(-min.x, max.x);
+      fittedZoom =
+        Math.min(
+          (FRUSTUM * aspect) / halfWidth,
+          (FRUSTUM * (1 + FULL_VIEW_DROP)) / Math.max(1e-3, max.y),
+          (FRUSTUM * (1 - FULL_VIEW_DROP)) / Math.max(1e-3, -min.y),
+        ) * (small() ? 0.94 : 0.92);
     }
     camera.zoom = fittedZoom;
     camera.updateProjectionMatrix();
@@ -398,6 +408,7 @@ export function createExplorer(options: ExplorerOptions): Explorer {
       canvas.style.touchAction = full ? "none" : "pan-y";
       if (!full && hovered) hovered = null;
       cameraTouched = false;
+      updateFrustum();
       frame();
       paint();
       if (full) canvas.focus({ preventScroll: true });
