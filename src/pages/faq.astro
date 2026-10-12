@@ -1,0 +1,34 @@
+---
+import RefreshLayout from "@/layouts/RefreshLayout.astro";
+import FaqSection from "@/components/refresh/FaqSection.astro";
+import { faqItems, faqTopics } from "@/data/site";
+
+// Design-refresh page: every question, grouped by the page it belongs to. Kept out of search and the sitemap until launch.
+const title = "FAQ | Cloud Modular";
+const description = "Answers on compliance, quality, cost, timelines and delivery for Cloud Modular buildings.";
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqItems.map((item) => ({
+    "@type": "Question",
+    name: item.question,
+    acceptedAnswer: { "@type": "Answer", text: item.answer },
+  })),
+};
+---
+
+<RefreshLayout title={title} description={description} canonical="/faq/" noindex structuredData={faqSchema}>
+  <!-- Page intro: centred label and title (olympic.no "Fleet focus"), clear of the fixed header -->
+  <section data-theme="light" class="pb-section-sm pt-[calc(var(--header-h)+var(--section))]">
+    <div class="shell text-center" data-reveal>
+      <p class="label">FAQ</p>
+      <h1 class="mx-auto mt-8 max-w-[18ch] text-feature">Your questions, answered</h1>
+      <p class="mx-auto mt-8 max-w-measure text-about text-fg-muted">{description}</p>
+    </div>
+  </section>
+
+  {faqTopics.map((topic) => (
+    <FaqSection topic={topic.id} label={topic.label} more={false} ownOnly />
+  ))}
+</RefreshLayout>

@@ -185,58 +185,81 @@ export const projects = [
   },
 ] as const;
 
+// Each question carries the page it belongs to (`topic`, also its group on /faq/) and any other pages it should
+// appear on (`alsoOn`). The refresh pages show their own short set; /faq/ shows all, grouped in faqTopics order.
+export const faqTopics = [
+  { id: "general", label: "Projects and delivery", href: "/alt-home/" },
+  { id: "quality", label: "Quality, compliance & assurance", href: "/quality/" },
+  { id: "why", label: "Why Cloud Modular", href: "/why-cloud-modular/" },
+] as const;
+
+export type FaqTopic = (typeof faqTopics)[number]["id"];
+
 export const faqItems = [
   {
+    topic: "quality",
     question: "How do your modules comply with Australian standards?",
     answer:
       "All modules are engineered to Australian standards and certified before leaving the factory. We provide full documentation and drawings for building surveyors and local authorities.",
   },
   {
+    topic: "quality",
     question: "Where are the modules built?",
+    alsoOn: ["general"],
     answer:
       "Modules are manufactured in controlled factory environments offshore, where the process is stable, repeatable and closely audited for accuracy and consistency.",
   },
   {
+    topic: "quality",
     question: "How do you ensure quality when manufacturing offshore?",
     answer:
       "We use controlled factory settings, third-party inspections and engineering sign-off at key points in the process. Nothing ships until it meets structural, architectural and compliance requirements.",
   },
   {
+    topic: "why",
     question: "What's the advantage of modular over traditional construction?",
     answer:
       "Most of the build happens offsite, which shortens timelines, reduces site disruption and improves cost certainty.",
   },
   {
+    topic: "general",
     question: "Can modular buildings be customised to my project?",
     answer:
       "Yes. Modules are designed to suit site constraints, planning requirements and spatial needs. We adapt layouts and configurations based on project intent.",
   },
   {
+    topic: "general",
     question: "What types of buildings do you deliver?",
     answer:
       "We work across commercial, multi-residential, health and aged care, education, community, infrastructure and accommodation projects.",
   },
   {
+    topic: "why",
     question: "What's the typical project timeline?",
+    alsoOn: ["general"],
     answer:
       "Timelines vary by scale and complexity, but offsite manufacturing means construction and site works can run concurrently, significantly reducing the overall program.",
   },
   {
+    topic: "general",
     question: "How are modules transported and installed?",
     answer:
       "Modules are shipped, unloaded and craned into position using established lifting and transport methods. We coordinate with local contractors for foundations, services and final works.",
   },
   {
+    topic: "quality",
     question: "Do modular buildings have the same lifespan as traditional buildings?",
     answer:
       "Yes. Modules are engineered as permanent structures and use materials and systems comparable to traditional builds.",
   },
   {
+    topic: "why",
     question: "What are the cost benefits?",
     answer:
       "Factory production reduces waste, labour time and rework, providing more cost certainty and a more predictable project budget.",
   },
   {
+    topic: "why",
     question: "Can modular buildings meet sustainability targets?",
     answer:
       "Yes. Controlled production reduces waste, and the precision of the process supports higher-performing building envelopes and reduced embodied carbon depending on specification.",
