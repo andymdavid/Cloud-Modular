@@ -20,6 +20,11 @@ const { overlayHeader = false, navLinks, ...seo } = Astro.props;
 <html lang="en-AU">
   <head>
     <script is:inline>document.documentElement.classList.add("js");</script>
+    <script is:inline>
+      // Always open at the top on reload (the hero leads every page); keep #anchor links working
+      if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+      if (!location.hash) window.scrollTo(0, 0);
+    </script>
     <SeoHead
       {...seo}
       themeColor="#0B0B0C"
@@ -33,6 +38,16 @@ const { overlayHeader = false, navLinks, ...seo } = Astro.props;
     <SiteFooter />
 
     <script>
+      // Scroll to in-page sections without writing the #hash to the URL, so a reload opens at the
+      // hero rather than the last section visited. Shared #links still land on their section.
+      document.addEventListener("click", (event) => {
+        const link = (event.target as Element).closest<HTMLAnchorElement>('a[href^="#"]:not(.skip-link)');
+        const target = link && link.hash.length > 1 ? document.getElementById(link.hash.slice(1)) : null;
+        if (!target || event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey) return;
+        event.preventDefault();
+        target.scrollIntoView();
+      });
+
       const targets = document.querySelectorAll<HTMLElement>("[data-reveal]");
       const reveal = new IntersectionObserver(
         (entries) => {
