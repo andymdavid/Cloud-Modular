@@ -270,7 +270,7 @@ export const team = [
   {
     image: "/people/thomas.webp",
     name: "Thomas Tierney",
-    role: "Director",
+    role: "Co-Founder / Director",
     bio: "Thomas brings a rare combination of commercial, construction, and international development experience. With over ten years as a property developer/QS in Ireland and London, Thomas has delivered many successful residential and commercial projects, and has a strong foundation in every phase of the development lifecycle.",
     position: "center 30%",
   },
