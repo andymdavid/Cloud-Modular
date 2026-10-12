@@ -15,24 +15,28 @@ interface Props {
 const {
   overlay = false,
   links = [
-    { label: "Sectors", href: "#sectors" },
-    { label: "Quality", href: "#quality" },
+    // Home sections point at the refresh home (/alt-home/) until it replaces /
+    { label: "Projects", href: "/alt-home/#projects" },
+    { label: "Sectors", href: "/alt-home/#sectors" },
+    { label: "Quality", href: "/quality/" },
+    { label: "Why Cloud Modular", href: "/why-cloud-modular/" },
     { label: "About", href: "/about/" },
-    { label: "FAQ", href: "#faq" },
+    { label: "FAQ", href: "/faq/" },
     { label: "Contact", href: "#contact" },
   ],
 } = Astro.props;
 ---
 
-<!-- Bloom-style header: no background or divider, just the logo and menu icon.
-     Its theme follows whichever section is underneath, so it stays legible. -->
+<!-- Header (olympic.no): transparent, logo and menu icon at the page margin. Its colour follows the section
+     underneath; scrolling down slides it away, scrolling up brings it back, and once off the top the
+     wordmark collapses to the cloud. -->
 <header
   data-site-header
   data-theme={overlay ? "dark" : "light"}
   class="site-header pointer-events-none fixed inset-x-0 top-0 z-50"
 >
   <div class="shell">
-    <div class="flex h-header items-center justify-between gap-6">
+    <div class="header-row flex items-center justify-between gap-6 pt-gutter">
       <a href="/" class="site-logo pointer-events-auto shrink-0" aria-label="Cloud Modular home">
         <Logo class="h-[20px] w-auto sm:h-[24px]" />
       </a>
@@ -77,42 +81,57 @@ const {
     background: transparent;
   }
 
-  /* Full-width legibility fade behind the header. Always on over dark photography (ink);
-     on light sections only while the logo or menu icon clashes with content (surface colour). */
+  /* Slide away while scrolling down, back in while scrolling up (olympic.no timing) */
   .site-header {
-    --scrim: var(--paper);
-    --scrim-top: 0.94;
-    --scrim-mid: 0.8;
+    transition: transform 1.2s cubic-bezier(0.22, 0.7, 0.2, 1);
   }
 
-  .site-header[data-theme="dark"] {
-    --scrim: var(--ink);
-    --scrim-top: 0.5;
-    --scrim-mid: 0.25;
-  }
-
-  .site-header::before {
-    content: "";
-    position: absolute;
-    inset: 0 0 auto;
-    height: 100%; /* never spills past the header onto a neighbouring light section */
-    z-index: -1; /* behind the logo and icon (the header is its own stacking context) */
-    background: linear-gradient(180deg, rgb(var(--scrim) / var(--scrim-top)) 0%, rgb(var(--scrim) / var(--scrim-mid)) 55%, rgb(var(--scrim) / 0) 100%);
-    opacity: 0;
-    transition: opacity var(--dur-base) var(--ease-standard);
-    pointer-events: none;
-  }
-
-  .site-header[data-theme="dark"]::before,
-  .site-header.has-overlap::before {
-    opacity: 1;
+  .site-header.is-hidden {
+    transform: translateY(-100%);
   }
 
   /* Until the first theme sync, apply colours instantly so a reload never shows a stale state */
-  .site-header:not(.is-ready)::before,
   .site-header:not(.is-ready) .site-logo,
   .site-header:not(.is-ready) .menu-icon {
     transition: none;
+  }
+
+  /* At the top of the page the row sits at the page margin (olympic.no). Once scrolling, it rises to the original
+     lightweight position: logo and menu icon centred in a 72px bar (the 44px row centred, so 14px from the top). */
+  .header-row {
+    transition: transform 0.8s cubic-bezier(0.22, 0.7, 0.2, 1);
+  }
+
+  .site-header.is-compact .header-row {
+    transform: translateY(calc((var(--header-h) - 2.75rem) / 2 - var(--gutter)));
+  }
+
+  /* Wordmark collapse: the letters slide up out of the logo and fade, and the cloud glides to the left edge.
+     Transforms are in the SVG's own units (viewBox 1799 × 349; the cloud starts at x 626). */
+  .site-logo :global(.logo-letters),
+  .site-logo :global(.logo-mark) {
+    transform-box: view-box;
+    transition:
+      transform 0.8s cubic-bezier(0.22, 0.7, 0.2, 1),
+      opacity 0.4s var(--ease-standard);
+  }
+
+  .site-header.is-compact .site-logo :global(.logo-letters) {
+    transform: translateY(-349px);
+    opacity: 0;
+  }
+
+  .site-header.is-compact .site-logo :global(.logo-mark) {
+    transform: translateX(-626px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-header,
+    .header-row,
+    .site-logo :global(.logo-letters),
+    .site-logo :global(.logo-mark) {
+      transition: none;
+    }
   }
 
   .site-logo {
@@ -250,31 +269,16 @@ const {
 <script>
   const header = document.querySelector<HTMLElement>("[data-site-header]");
 
-  // Match the header's theme to the section beneath it. Dark only when a dark section covers the
-  // whole header, so the white logo and its fade never sit over a light section.
+  // Match the header's colour to the section beneath it: dark once a dark section reaches the header's
+  // midpoint and still covers it (olympic.no switches the same way, with no background behind the header)
   const themedSections = [...document.querySelectorAll<HTMLElement>("main [data-theme], footer[data-theme]")];
-  // Does any visible content (text, media, controls, filled panels) sit beneath the header strip?
-  const CONTENT_TAGS = new Set(["P", "H1", "H2", "H3", "H4", "H5", "H6", "A", "BUTTON", "IMG", "VIDEO", "SVG", "PATH", "LI", "DT", "DD", "SUMMARY", "FIGCAPTION", "LABEL", "INPUT", "SPAN"]);
-  const isContent = (el: Element) => {
-    if (CONTENT_TAGS.has(el.tagName.toUpperCase())) return true;
-    if (el.matches("html, body, main, section, [data-theme]")) return false;
-    return getComputedStyle(el).backgroundColor !== "rgba(0, 0, 0, 0)";
-  };
-  // Is the logo or menu icon clashing with content? Sample a small grid over each one's box.
-  const contentBeneath = (target: Element) => {
-    const r = target.getBoundingClientRect();
-    const pad = 6;
-    for (let i = 0; i <= 4; i++) {
-      for (let j = 0; j <= 2; j++) {
-        const x = r.left - pad + ((r.width + pad * 2) * i) / 4;
-        const y = r.top - pad + ((r.height + pad * 2) * j) / 2;
-        const hit = document.elementsFromPoint(x, y).find((el) => !el.closest("[data-site-header], [data-menu-root]"));
-        if (hit && isContent(hit)) return true;
-      }
-    }
-    return false;
-  };
-  const scrimTargets = header ? [...header.querySelectorAll(".site-logo, .menu-icon")] : [];
+
+  // Scroll state: hide while scrolling down past the first half-screen, show on any scroll up, and collapse
+  // the wordmark once the page has moved off the top. Never hidden while the menu is open or the header has focus.
+  const HIDE_AFTER = () => window.innerHeight * 0.5;
+  const COMPACT_AFTER = 80;
+  const DELTA = 6; // ignore tiny scroll jitters
+  let lastY = window.scrollY;
 
   let ticking = false;
   const syncTheme = () => {
@@ -284,10 +288,20 @@ const {
     let theme = "light";
     for (const section of themedSections) {
       const rect = section.getBoundingClientRect();
-      if (section.dataset.theme === "dark" && rect.top <= 0 && rect.bottom >= bottom) theme = "dark";
+      // A dark section counts once it reaches the header's midpoint, so landing exactly on its top edge
+      // (a jump link, a sub-pixel scroll position) still switches the header
+      if (section.dataset.theme === "dark" && rect.top <= bottom / 2 && rect.bottom >= bottom) theme = "dark";
     }
     if (header.dataset.theme !== theme) header.dataset.theme = theme;
-    header.classList.toggle("has-overlap", theme === "light" && scrimTargets.some((target) => contentBeneath(target)));
+
+    const y = Math.max(0, window.scrollY);
+    header.classList.toggle("is-compact", y > COMPACT_AFTER);
+    const menuOpen = document.documentElement.classList.contains("menu-open");
+    const focused = header.contains(document.activeElement);
+    if (y <= HIDE_AFTER() || menuOpen || focused) header.classList.remove("is-hidden");
+    else if (y - lastY > DELTA) header.classList.add("is-hidden");
+    else if (lastY - y > DELTA) header.classList.remove("is-hidden");
+    if (Math.abs(y - lastY) > DELTA) lastY = y;
   };
   const requestSync = () => {
     if (ticking) return;
@@ -299,6 +313,7 @@ const {
   // Re-check once layout settles (late styles, fonts, media) and after a back/forward restore
   window.addEventListener("load", requestSync);
   window.addEventListener("pageshow", requestSync);
+  header?.addEventListener("focusin", () => header.classList.remove("is-hidden"));
   syncTheme();
   requestAnimationFrame(() => requestAnimationFrame(() => header?.classList.add("is-ready")));
 
