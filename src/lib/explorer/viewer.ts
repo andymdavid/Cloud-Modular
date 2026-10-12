@@ -6,10 +6,15 @@ import { explode, type GroupId } from "@/data/explorer/jurien-type-b";
 import { levelRank, views, type ViewId } from "@/data/explorer/jurien-type-b-info";
 
 /**
- * Interactive viewer for the 3D home explorer. Renders on demand (nothing runs while idle), and only
- * captures pointer, wheel and touch input while the visitor has entered explore mode, so the page
- * scrolls normally past it.
+ * Interactive viewer for the 3D home explorer. Renders on demand (nothing runs while idle).
+ *
+ * Two modes share one canvas:
+ *   compact  in the page: horizontal drag turns the home at a fixed height; wheel and vertical swipes
+ *            still scroll the page, and there is no zoom, pan or picking
+ *   full     in the full-screen view: orbit, zoom, pan, picking and keyboard control
  */
+
+export type ExplorerMode = "compact" | "full";
 
 export interface ExplorerOptions {
   host: HTMLElement;
@@ -20,7 +25,7 @@ export interface ExplorerOptions {
 }
 
 export interface Explorer {
-  setActive(active: boolean): void;
+  setMode(mode: ExplorerMode): void;
   setExplode(amount: number): void;
   setView(id: ViewId): void;
   select(id: GroupId | null): void;
@@ -133,6 +138,7 @@ export function createExplorer(options: ExplorerOptions): Explorer {
   controls.zoomToCursor = false;
   controls.rotateSpeed = 0.8;
 
+  let mode: ExplorerMode = "compact";
   let fittedZoom = 1;
   let cameraTouched = false; // stop auto-framing once the visitor moves the camera themselves
 
@@ -156,16 +162,9 @@ export function createExplorer(options: ExplorerOptions): Explorer {
     camera.updateProjectionMatrix();
   };
 
-  /** Place the camera at the default angle and zoom so the visible model fits with comfortable margins. */
-  const frame = (bounds = visibleBounds()) => {
-    const centre = bounds.isEmpty() ? DEFAULT_TARGET.clone() : bounds.getCenter(new THREE.Vector3());
-    const offset = new THREE.Vector3().setFromSphericalCoords(80, DEFAULT_POLAR, DEFAULT_AZIMUTH);
-    controls.target.copy(centre);
-    camera.position.copy(centre).add(offset);
-    camera.lookAt(centre);
+  /** Projected extents of the visible model, in view space, for the camera's current orientation. */
+  const projectedExtents = () => {
     camera.updateMatrixWorld(true);
-
-    // Fit to the projected vertices rather than the box corners, which overstate a long, low house
     const toView = new THREE.Matrix4();
     const point = new THREE.Vector3();
     const min = { x: Infinity, y: Infinity };
@@ -183,22 +182,50 @@ export function createExplorer(options: ExplorerOptions): Explorer {
       }
     }
     if (!Number.isFinite(min.x)) Object.assign(min, { x: -10, y: -10 }), Object.assign(max, { x: 10, y: 10 });
+    return { min, max };
+  };
 
-    // Leave a band at the bottom for the stage's own buttons
+  const aimAt = (target: THREE.Vector3, azimuth: number) => {
+    controls.target.copy(target);
+    camera.position.copy(target).add(new THREE.Vector3().setFromSphericalCoords(80, DEFAULT_POLAR, azimuth));
+    camera.lookAt(target);
+  };
+
+  /**
+   * Place the camera at the default angle and zoom so the visible model fits with comfortable margins.
+   * Full view fits the default angle tightly. Compact view can only turn, so it fits the home at every
+   * angle around it: turning never crops it and the zoom never has to change.
+   */
+  const frame = (bounds = visibleBounds()) => {
+    const centre = bounds.isEmpty() ? DEFAULT_TARGET.clone() : bounds.getCenter(new THREE.Vector3());
     const aspect = host.clientWidth / Math.max(1, host.clientHeight);
     const margin = small() ? 0.88 : 0.8;
-    const bottomBand = 0.08;
-    const width = max.x - min.x;
-    const height = max.y - min.y;
-    fittedZoom = Math.min((2 * FRUSTUM * aspect) / width, (2 * FRUSTUM * (1 - bottomBand)) / height) * margin;
 
-    // Move the target so the projected extents sit centred in the area above that band
-    const right = new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld, 0);
-    const up = new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld, 1);
-    const shiftY = (min.y + max.y) / 2 - (FRUSTUM * bottomBand) / fittedZoom;
-    const shift = right.multiplyScalar((min.x + max.x) / 2).add(up.multiplyScalar(shiftY));
-    controls.target.add(shift);
-    camera.position.add(shift);
+    if (mode === "compact") {
+      let zoom = Infinity;
+      for (let step = 0; step < 16; step++) {
+        aimAt(centre, (step / 16) * Math.PI * 2);
+        const { min, max } = projectedExtents();
+        const halfWidth = Math.max(-min.x, max.x);
+        const halfHeight = Math.max(-min.y, max.y);
+        zoom = Math.min(zoom, (FRUSTUM * aspect) / halfWidth, FRUSTUM / halfHeight);
+      }
+      aimAt(centre, DEFAULT_AZIMUTH);
+      fittedZoom = zoom * (small() ? 0.94 : 0.9);
+    } else {
+      aimAt(centre, DEFAULT_AZIMUTH);
+      const { min, max } = projectedExtents();
+      // Fit to the projected vertices rather than the box corners, which overstate a long, low house.
+      // Leave a band at the bottom for the stage's own controls, and centre the model above it.
+      const bottomBand = 0.08;
+      fittedZoom = Math.min((2 * FRUSTUM * aspect) / (max.x - min.x), (2 * FRUSTUM * (1 - bottomBand)) / (max.y - min.y)) * margin;
+      const right = new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld, 0);
+      const up = new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld, 1);
+      const shiftY = (min.y + max.y) / 2 - (FRUSTUM * bottomBand) / fittedZoom;
+      const shift = right.multiplyScalar((min.x + max.x) / 2).add(up.multiplyScalar(shiftY));
+      controls.target.add(shift);
+      camera.position.add(shift);
+    }
     camera.zoom = fittedZoom;
     camera.updateProjectionMatrix();
     controls.minZoom = fittedZoom * 0.6;
@@ -290,7 +317,7 @@ export function createExplorer(options: ExplorerOptions): Explorer {
     down = { x: event.clientX, y: event.clientY, time: performance.now() };
   };
   const onPointerUp = (event: PointerEvent) => {
-    if (!down) return;
+    if (!down || mode !== "full") return;
     const travel = Math.hypot(event.clientX - down.x, event.clientY - down.y);
     const quick = performance.now() - down.time < 600;
     down = null;
@@ -300,7 +327,7 @@ export function createExplorer(options: ExplorerOptions): Explorer {
     options.onSelect(selected);
   };
   const onPointerMove = (event: PointerEvent) => {
-    if (event.pointerType !== "mouse" || event.buttons) return;
+    if (mode !== "full" || event.pointerType !== "mouse" || event.buttons) return;
     if (!hoverQueued) {
       requestAnimationFrame(() => {
         const queued = hoverQueued;
@@ -357,17 +384,23 @@ export function createExplorer(options: ExplorerOptions): Explorer {
   };
 
   const api: Explorer = {
-    setActive(active) {
-      controls.enabled = active;
-      canvas.tabIndex = active ? 0 : -1;
-      canvas.style.cursor = active ? "grab" : "";
-      // Touch: let the page scroll until the visitor opts in
-      canvas.style.touchAction = active ? "none" : "pan-y";
-      if (active) canvas.focus({ preventScroll: true });
-      else if (hovered) {
-        hovered = null;
-        paint();
-      }
+    setMode(next) {
+      mode = next;
+      const full = mode === "full";
+      controls.enabled = true;
+      controls.enableZoom = full; // off: the wheel scrolls the page
+      controls.enablePan = full;
+      controls.minPolarAngle = full ? MIN_POLAR : DEFAULT_POLAR; // compact turns at a fixed height
+      controls.maxPolarAngle = full ? MAX_POLAR : DEFAULT_POLAR;
+      canvas.tabIndex = full ? 0 : -1;
+      canvas.style.cursor = "grab";
+      // Touch: compact leaves vertical swipes to the page, so only sideways drags turn the home
+      canvas.style.touchAction = full ? "none" : "pan-y";
+      if (!full && hovered) hovered = null;
+      cameraTouched = false;
+      frame();
+      paint();
+      if (full) canvas.focus({ preventScroll: true });
     },
     setExplode(amount) {
       explodeAmount = THREE.MathUtils.clamp(amount, 0, 1);
@@ -447,8 +480,7 @@ export function createExplorer(options: ExplorerOptions): Explorer {
 
   renderer.setSize(host.clientWidth, host.clientHeight, false);
   updateFrustum();
-  api.setActive(false);
-  frame();
+  api.setMode("compact");
   requestRender();
   return api;
 }
