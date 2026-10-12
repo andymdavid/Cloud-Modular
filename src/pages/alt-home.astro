@@ -51,8 +51,84 @@ const stats = [
     </div>
   </section>
 
-  <!-- 3D home explorer: replaces the text-only intro statement (it repeated the hero and About copy) -->
+  <!-- About: Graya-style staggered, asymmetric image columns. First after the full-bleed hero, so no divider -->
+  <section data-theme="light" class="pb-section">
+    <div class="shell">
+      <div class="grid-12 gap-y-10 pt-section">
+        <h2 class="col-span-12 self-start text-h2 md:col-span-3" data-reveal>About</h2>
+        <div class="col-span-12 space-y-5 md:col-span-6 lg:col-span-5" data-reveal>
+          <p class="text-lead">Cloud Modular offers clarity and certainty to a changing construction landscape.</p>
+          <p class="text-body text-fg-muted">
+            Labour shortages, rising costs and tighter compliance make traditional builds harder to deliver predictably. We partner with leading architectural, engineering and procurement teams to take a more controlled approach, with clear design, offsite manufacturing and assured compliance from the start.
+          </p>
+          <a href="/about/" class="btn-outline">Our story</a>
+        </div>
+      </div>
+
+      <div class="grid-12 mt-16 items-start gap-y-8 sm:mt-20">
+        <div class="col-span-10 md:col-span-5 md:col-start-2 lg:col-span-4 lg:col-start-4" data-reveal>
+          <div class="aspect-[3/4] overflow-hidden bg-stone">
+            <img src="/About1.webp" alt="Cloud Modular coastal home exterior at dusk" width="1856" height="2464" loading="lazy" class="h-full w-full object-cover" />
+          </div>
+        </div>
+        <div class="col-span-7 col-start-6 md:col-span-3 md:col-start-9 md:mt-40 lg:col-start-9" data-reveal style="--reveal-delay:150ms">
+          <div class="aspect-[3/4] overflow-hidden bg-stone">
+            <img src="/about2.webp" alt="Garden path leading to a modular home" width="1856" height="2464" loading="lazy" class="h-full w-full object-cover" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it's made: copy left, a live 3D model of one home right; opens to a full-screen view with all tools -->
   <HomeExplorer />
+
+  <!-- Projects: Graya collection grid. Title in the left column (as About and FAQ), a small label and
+       a row of portrait cards right, project name set over the top-left of each image -->
+  <section id="projects" data-theme="light" class="scroll-mt-header pb-section">
+    <div class="shell">
+      <div class="grid-12 rule gap-y-6 pt-section">
+        <h2 class="col-span-12 self-start text-h2 md:col-span-3" data-reveal>Projects</h2>
+        <div class="col-span-12 md:col-span-9">
+          <div class="flex items-center justify-between gap-6" data-reveal>
+            <p class="text-small">Selected work</p>
+            <a href="/our-work/" class="btn-outline">All projects</a>
+          </div>
+
+          <ul class="mt-10 grid grid-cols-2 gap-gap-sm sm:mt-12 lg:grid-cols-4">
+            {projects.map((project, index) => (
+              <li data-reveal style={`--reveal-delay:${index * 80}ms`}>
+                <a href="/our-work/" class="group relative block aspect-[3/4] overflow-hidden bg-stone">
+                  <img src={project.image} alt={project.imageAlt} loading="lazy" class="h-full w-full object-cover transition-transform duration-slow ease-cm-out group-hover:scale-[1.03]" style={`object-position:${project.imagePosition}`} />
+                  <span class="absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgb(11_11_12/0.35),rgb(11_11_12/0))]" aria-hidden="true"></span>
+                  <h3 class="absolute left-3 top-3 text-small uppercase tracking-[0.04em] text-white sm:left-4 sm:top-4">{project.name}</h3>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Full-height project image closes the section, inside the dividers -->
+      <div class="relative mt-gap h-[100svh] min-h-[560px] overflow-hidden bg-stone" data-reveal>
+        <video
+          src="/projects/jurien-bay-drone.mp4"
+          poster="/projects/jurien-bay-drone-start.webp"
+          data-end-poster="/projects/jurien-bay-drone-end.webp"
+          width="1284"
+          height="716"
+          muted
+          playsinline
+          preload="none"
+          aria-label="Aerial flyover of the Seashells Jurien Bay development beside the coast"
+          data-play-once
+          class="h-full w-full object-cover"
+        ></video>
+        <span class="absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgb(11_11_12/0.35),rgb(11_11_12/0))]" aria-hidden="true"></span>
+        <p class="absolute left-3 top-3 text-small uppercase tracking-[0.04em] text-white sm:left-4 sm:top-4">Seashells Jurien Bay</p>
+      </div>
+    </div>
+  </section>
 
   <!-- Sectors carousel -->
   <section id="sectors" data-theme="light" class="scroll-mt-header pb-section" data-carousel>
@@ -112,82 +188,6 @@ const stats = [
             <p class="mt-2 max-w-[42ch] text-small text-fg-muted">{row.description}</p>
           </article>
         ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- About: Graya-style staggered, asymmetric image columns -->
-  <section data-theme="light" class="pb-section">
-    <div class="shell">
-      <div class="grid-12 rule gap-y-10 pt-section">
-        <h2 class="col-span-12 self-start text-h2 md:col-span-3" data-reveal>About</h2>
-        <div class="col-span-12 space-y-5 md:col-span-6 lg:col-span-5" data-reveal>
-          <p class="text-lead">Cloud Modular offers clarity and certainty to a changing construction landscape.</p>
-          <p class="text-body text-fg-muted">
-            Labour shortages, rising costs and tighter compliance make traditional builds harder to deliver predictably. We partner with leading architectural, engineering and procurement teams to take a more controlled approach, with clear design, offsite manufacturing and assured compliance from the start.
-          </p>
-          <a href="/about/" class="btn-outline">Our story</a>
-        </div>
-      </div>
-
-      <div class="grid-12 mt-16 items-start gap-y-8 sm:mt-20">
-        <div class="col-span-10 md:col-span-5 md:col-start-2 lg:col-span-4 lg:col-start-4" data-reveal>
-          <div class="aspect-[3/4] overflow-hidden bg-stone">
-            <img src="/About1.webp" alt="Cloud Modular coastal home exterior at dusk" width="1856" height="2464" loading="lazy" class="h-full w-full object-cover" />
-          </div>
-        </div>
-        <div class="col-span-7 col-start-6 md:col-span-3 md:col-start-9 md:mt-40 lg:col-start-9" data-reveal style="--reveal-delay:150ms">
-          <div class="aspect-[3/4] overflow-hidden bg-stone">
-            <img src="/about2.webp" alt="Garden path leading to a modular home" width="1856" height="2464" loading="lazy" class="h-full w-full object-cover" />
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Projects: Graya collection grid. Title in the left column (as About and FAQ), a small label and
-       a row of portrait cards right, project name set over the top-left of each image -->
-  <section id="projects" data-theme="light" class="scroll-mt-header pb-section">
-    <div class="shell">
-      <div class="grid-12 rule gap-y-6 pt-section">
-        <h2 class="col-span-12 self-start text-h2 md:col-span-3" data-reveal>Projects</h2>
-        <div class="col-span-12 md:col-span-9">
-          <div class="flex items-center justify-between gap-6" data-reveal>
-            <p class="text-small">Selected work</p>
-            <a href="/our-work/" class="btn-outline">All projects</a>
-          </div>
-
-          <ul class="mt-10 grid grid-cols-2 gap-gap-sm sm:mt-12 lg:grid-cols-4">
-            {projects.map((project, index) => (
-              <li data-reveal style={`--reveal-delay:${index * 80}ms`}>
-                <a href="/our-work/" class="group relative block aspect-[3/4] overflow-hidden bg-stone">
-                  <img src={project.image} alt={project.imageAlt} loading="lazy" class="h-full w-full object-cover transition-transform duration-slow ease-cm-out group-hover:scale-[1.03]" style={`object-position:${project.imagePosition}`} />
-                  <span class="absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgb(11_11_12/0.35),rgb(11_11_12/0))]" aria-hidden="true"></span>
-                  <h3 class="absolute left-3 top-3 text-small uppercase tracking-[0.04em] text-white sm:left-4 sm:top-4">{project.name}</h3>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      <!-- Full-height project image closes the section, inside the dividers -->
-      <div class="relative mt-gap h-[100svh] min-h-[560px] overflow-hidden bg-stone" data-reveal>
-        <video
-          src="/projects/jurien-bay-drone.mp4"
-          poster="/projects/jurien-bay-drone-start.webp"
-          data-end-poster="/projects/jurien-bay-drone-end.webp"
-          width="1284"
-          height="716"
-          muted
-          playsinline
-          preload="none"
-          aria-label="Aerial flyover of the Seashells Jurien Bay development beside the coast"
-          data-play-once
-          class="h-full w-full object-cover"
-        ></video>
-        <span class="absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgb(11_11_12/0.35),rgb(11_11_12/0))]" aria-hidden="true"></span>
-        <p class="absolute left-3 top-3 text-small uppercase tracking-[0.04em] text-white sm:left-4 sm:top-4">Seashells Jurien Bay</p>
       </div>
     </div>
   </section>
