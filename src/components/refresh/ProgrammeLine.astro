@@ -33,7 +33,7 @@ const dMain = "M0 50 H30 C35 50 35 22 40 22 H70 C75 22 75 50 80 50 H90";
 const dSite = "M30 50 C35 50 35 78 40 78 H70 C75 78 75 50 80 50";
 // Phone paths
 const mMain = "M0 5 V95";
-const mSite = "M0 30 C0 36 52 36 52 42 V68 C52 74 0 74 0 80";
+const mSite = "M0 28 C0 33 52 33 52 38 V68 C52 74 0 74 0 80";
 ---
 
 <div class:list={["programme", className]} data-programme style="--p:1">
@@ -52,8 +52,8 @@ const mSite = "M0 30 C0 36 52 36 52 42 V68 C52 74 0 74 0 80";
       </>
     ))}
 
-    <p class="label programme-lane programme-lane--modules">Modules · Foshan</p>
-    <p class="label programme-lane programme-lane--site">Site · Australia</p>
+    <p class="programme-lane programme-lane--modules"><span class="programme-lane-key" aria-hidden="true"></span>Modules · Foshan</p>
+    <p class="programme-lane programme-lane--site"><span class="programme-lane-key" aria-hidden="true"></span>Site · Australia</p>
 
     <ol class="programme-stops">
       {stops.map((stop) => (
@@ -113,7 +113,7 @@ const mSite = "M0 30 C0 36 52 36 52 42 V68 C52 74 0 74 0 80";
   }
 
   .programme-lines.is-base path {
-    stroke: rgb(var(--fg) / 0.14);
+    stroke: rgb(var(--fg) / 0.18);
   }
 
   .programme-lines.is-drawn .track-main {
@@ -148,32 +148,56 @@ const mSite = "M0 30 C0 36 52 36 52 42 V68 C52 74 0 74 0 80";
   }
 
   /* Track names */
+  /* Track names: outlined tags, as on the home page project cards, keyed by the track colour */
   .programme-lane {
     position: absolute;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: 1.625rem;
+    padding-inline: 0.625rem;
+    border: var(--rule) solid rgb(var(--fg) / 0.35);
+    border-radius: var(--radius-media);
+    background: rgb(var(--surface));
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
     white-space: nowrap;
+    color: rgb(var(--fg));
+  }
+
+  .programme-lane-key {
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: 9999px;
+    background: rgb(var(--modules));
+  }
+
+  .programme-lane--site .programme-lane-key {
+    background: rgb(var(--site));
   }
 
   .programme-lane--modules {
-    color: rgb(var(--modules));
-    top: 37.5%;
+    top: 38.75%;
     left: 1.25rem;
   }
 
   .programme-lane--site {
-    color: rgb(var(--site));
-    top: 37.5%;
+    top: 38.75%;
     left: calc(52% + 1.25rem);
   }
 
   @media (min-width: 48rem) {
     /* Above the first stop of each track */
     .programme-lane--modules {
-      top: calc(22% - 2.75rem);
+      top: calc(22% - 3.25rem);
       left: 40%;
     }
 
     .programme-lane--site {
-      top: calc(78% - 2.75rem);
+      top: calc(78% - 3.25rem);
       left: 40%;
     }
   }

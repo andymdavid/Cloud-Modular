@@ -1,0 +1,56 @@
+---
+import ToConfirm from "@/components/refresh/ToConfirm.astro";
+
+/**
+ * Image panel (olympic.no investor "Company structure"): a full-bleed 50/50 split. The image fills the left half
+ * edge to edge; the right half is a slate panel with the label and ALL CAPS title at the top and the slot pinned
+ * to the bottom. Full viewport height from md; on phones the image stacks above the panel.
+ */
+interface Props {
+  id?: string;
+  label: string;
+  title: string;
+  image: string;
+  alt: string;
+  width: number;
+  height: number;
+  imagePosition?: string;
+  /** Draft content: show a "To confirm" marker beside the label. */
+  confirm?: boolean;
+}
+
+const { id, label, title, image, alt, width, height, imagePosition = "center", confirm = false } = Astro.props;
+---
+
+<section id={id} data-theme="dark" data-surface="slate" class="scroll-mt-header grid md:min-h-[100svh] md:grid-cols-2">
+  <div class="relative aspect-[4/5] overflow-hidden bg-stone md:aspect-auto">
+    <img src={image} alt={alt} width={width} height={height} loading="lazy" class="absolute inset-0 h-full w-full object-cover" style={`object-position:${imagePosition}`} />
+  </div>
+
+  <div class="image-panel-body flex flex-col justify-between gap-16 py-section">
+    <div data-reveal>
+      <div class="flex items-center gap-3">
+        <p class="label">{label}</p>
+        {confirm && <ToConfirm />}
+      </div>
+      <h2 class="mt-8 max-w-[16ch] text-feature">{title}</h2>
+    </div>
+    <div class="w-full max-w-[34rem]" data-reveal>
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Content inset from the image edge (olympic.no sits it well in from the centre line) */
+  .image-panel-body {
+    padding-inline: var(--gutter);
+  }
+
+  @media (min-width: 48rem) {
+    .image-panel-body {
+      padding-left: clamp(2rem, 8vw, 10rem);
+      padding-right: var(--gutter);
+    }
+  }
+</style>

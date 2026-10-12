@@ -2,41 +2,67 @@
 import { responsibilities, roles, type RoleId } from "@/data/site";
 
 /**
- * Who does what (/our-approach/): every task, grouped by stage, against the roles on a project. A filled dot leads,
- * a ring is involved. A full-width table from md; on phones each task lists who leads and who's involved.
+ * Who does what (/our-approach/): every task, grouped by stage, against the roles on a project. Cloud Modular and
+ * the delivery partners it appoints share one shaded group; wherever a partner leads, Cloud Modular manages the
+ * task, so the client column only carries the decisions that are theirs. A filled dot leads, a gold dot manages,
+ * a ring is involved. A full-width table from md; on phones each task lists who leads, manages and is involved.
  */
 interface Props {
   class?: string;
 }
 
 const { class: className } = Astro.props;
+
+type Mark = "lead" | "manage" | "with";
+const partnerIds = roles.filter((role) => role.partner).map((role) => role.id) as RoleId[];
+const team = roles.filter((role) => role.id !== "client");
+const client = roles.find((role) => role.id === "client")!;
 const roleLabel = (id: RoleId) => roles.find((role) => role.id === id)!.label;
+const markText: Record<Mark, string> = { lead: "Leads", manage: "Manages", with: "Involved" };
+const markOrder: Mark[] = ["lead", "manage", "with"];
+
+const markFor = (task: { lead: RoleId; with?: RoleId[] }, id: RoleId): Mark | undefined => {
+  if (task.lead === id) return "lead";
+  if (id === "cloud" && partnerIds.includes(task.lead)) return "manage";
+  if (task.with?.includes(id)) return "with";
+  return undefined;
+};
 ---
 
 <div class={className}>
   <div class="flex flex-wrap items-center gap-x-6 gap-y-2" data-reveal>
     <span class="flex items-center gap-2 text-caption text-fg-muted"><span class="role-mark is-lead" aria-hidden="true"></span>Leads</span>
+    <span class="flex items-center gap-2 text-caption text-fg-muted"><span class="role-mark is-manage" aria-hidden="true"></span>Managed by Cloud Modular</span>
     <span class="flex items-center gap-2 text-caption text-fg-muted"><span class="role-mark is-with" aria-hidden="true"></span>Involved</span>
   </div>
 
-  <!-- md and up: table -->
+  <!-- md and up: table. The Cloud Modular team columns sit on one shaded band; You stands apart. -->
   <table class="role-table mt-8 hidden w-full text-left md:table" data-reveal>
     <colgroup>
       <col class="w-[28%]" />
-      {roles.map(() => <col class="w-[12%]" />)}
+      {team.map(() => <col class="team-col w-[12%]" />)}
+      <col class="w-[12%]" />
     </colgroup>
     <thead>
       <tr>
+        <td></td>
+        <th scope="colgroup" colspan={team.length} class="px-4 pb-2 pt-5">
+          <span class="label block text-center">Cloud Modular and its delivery partners</span>
+        </th>
+        <td></td>
+      </tr>
+      <tr class="role-head">
         <th scope="col" class="pb-4 align-bottom"><span class="sr-only">Task</span></th>
-        {roles.map((role) => (
-          <th scope="col" class="pb-4 align-bottom"><span class="label label-muted block text-center">{role.label}</span></th>
+        {team.map((role) => (
+          <th scope="col" class="px-1 pb-4 pt-2 align-bottom"><span class="label label-muted block text-center">{role.label}</span></th>
         ))}
+        <th scope="col" class="client-col px-1 pb-4 pt-2 align-bottom"><span class="label label-muted block text-center">{client.label}</span></th>
       </tr>
     </thead>
     {responsibilities.stages.map((stage) => (
       <tbody>
         <tr>
-          <th scope="colgroup" colspan={roles.length + 1} class="stage-row pb-3 pt-10 font-normal">
+          <th scope="colgroup" colspan={roles.length + 1} class="pb-3 pt-10 font-normal">
             <span class="flex items-baseline gap-4">
               <span class="label">{stage.index}</span>
               <span class="text-body font-medium">{stage.title}</span>
@@ -47,14 +73,13 @@ const roleLabel = (id: RoleId) => roles.find((role) => role.id === id)!.label;
           <tr class="task-row">
             <th scope="row" class="py-3 pl-10 pr-4 text-small font-normal text-fg-muted">{task.task}</th>
             {roles.map((role) => {
-              const lead = task.lead === role.id;
-              const involved = task.with?.includes(role.id);
+              const mark = markFor(task, role.id);
               return (
-                <td class="py-3 text-center">
-                  {lead || involved ? (
+                <td class:list={["py-3 text-center", { "client-col": role.id === "client" }]}>
+                  {mark ? (
                     <>
-                      <span class:list={["role-mark", lead ? "is-lead" : "is-with"]} aria-hidden="true"></span>
-                      <span class="sr-only">{lead ? "Leads" : "Involved"}</span>
+                      <span class:list={["role-mark", `is-${mark}`]} aria-hidden="true"></span>
+                      <span class="sr-only">{markText[mark]}</span>
                     </>
                   ) : (
                     <span class="sr-only">Not involved</span>
@@ -68,7 +93,7 @@ const roleLabel = (id: RoleId) => roles.find((role) => role.id === id)!.label;
     ))}
   </table>
 
-  <!-- Phones: stage groups with lead and involved roles under each task -->
+  <!-- Phones: stage groups with who leads, manages and is involved under each task -->
   <ol class="mt-6 md:hidden">
     {responsibilities.stages.map((stage) => (
       <li class="pt-8" data-reveal>
@@ -77,17 +102,26 @@ const roleLabel = (id: RoleId) => roles.find((role) => role.id === id)!.label;
           <span class="text-body font-medium">{stage.title}</span>
         </p>
         <ul class="mt-3 border-b border-line/[var(--rule-alpha)]">
-          {stage.tasks.map((task) => (
-            <li class="border-t border-line/[var(--rule-alpha)] py-3">
-              <p class="text-small">{task.task}</p>
-              <p class="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-caption text-fg-muted">
-                <span class="flex items-center gap-2"><span class="role-mark is-lead" aria-hidden="true"></span><span class="sr-only">Leads:</span>{roleLabel(task.lead)}</span>
-                {task.with?.map((id) => (
-                  <span class="flex items-center gap-2"><span class="role-mark is-with" aria-hidden="true"></span><span class="sr-only">Involved:</span>{roleLabel(id)}</span>
-                ))}
-              </p>
-            </li>
-          ))}
+          {stage.tasks.map((task) => {
+            const marks = roles
+              .map((role) => ({ id: role.id, mark: markFor(task, role.id) }))
+              .filter((item): item is { id: RoleId; mark: Mark } => Boolean(item.mark))
+              .sort((a, b) => markOrder.indexOf(a.mark) - markOrder.indexOf(b.mark));
+            return (
+              <li class="border-t border-line/[var(--rule-alpha)] py-3">
+                <p class="text-small">{task.task}</p>
+                <p class="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-caption text-fg-muted">
+                  {marks.map((item) => (
+                    <span class="flex items-center gap-2">
+                      <span class:list={["role-mark", `is-${item.mark}`]} aria-hidden="true"></span>
+                      <span class="sr-only">{markText[item.mark]}:</span>
+                      {roleLabel(item.id)}
+                    </span>
+                  ))}
+                </p>
+              </li>
+            );
+          })}
         </ul>
       </li>
     ))}
@@ -99,8 +133,18 @@ const roleLabel = (id: RoleId) => roles.find((role) => role.id === id)!.label;
     table-layout: fixed;
   }
 
-  .role-table thead th {
+  /* One shaded band down the Cloud Modular team columns, from the group heading to the last row */
+  .team-col {
+    background: rgb(var(--fg) / 0.035);
+  }
+
+  .role-head th {
     border-bottom: var(--rule) solid rgb(var(--line) / var(--rule-alpha));
+  }
+
+  /* You: set apart from the team band */
+  .client-col {
+    border-left: var(--rule) solid rgb(var(--line) / var(--rule-alpha));
   }
 
   .task-row {
@@ -108,7 +152,8 @@ const roleLabel = (id: RoleId) => roles.find((role) => role.id === id)!.label;
     transition: background-color var(--dur-fast) var(--ease-standard);
   }
 
-  tbody:last-of-type .task-row:last-child {
+  /* Close each stage group with a rule */
+  tbody .task-row:last-child {
     border-bottom: var(--rule) solid rgb(var(--line) / var(--rule-alpha));
   }
 
@@ -130,6 +175,11 @@ const roleLabel = (id: RoleId) => roles.find((role) => role.id === id)!.label;
 
   .role-mark.is-lead {
     background: rgb(var(--fg));
+  }
+
+  .role-mark.is-manage {
+    border-color: rgb(var(--gold));
+    background: rgb(var(--gold));
   }
 
   .role-mark.is-with {

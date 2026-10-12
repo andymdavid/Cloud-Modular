@@ -390,38 +390,48 @@ export const approachProgramme = {
 
 export const engagementModels = {
   confirm: true,
+  intro: "Come to us with a site, a design or a tender. We deliver nationally, with no minimum project size, and the route you choose sets who does what.",
   items: [
     {
       title: "Design and deliver",
-      suits: "Developers who want one team from brief to handover",
-      summary: "We lead design, manufacture, shipping and installation. Our builder partner holds the building permit and runs the site.",
+      summary: "One team from feasibility to handover. We lead design for manufacture, production, shipping and installation, and appoint and manage the architect, engineer, building surveyor and builder for you.",
+      we: ["Design, engineering and approvals, through our partners", "Manufacture, inspection and shipping", "Installation, completion and handover"],
+      you: ["Your brief and budget", "Sign-off at each stage"],
+      suits: "Developers and organisations who want one point of contact",
     },
     {
       title: "Early involvement",
-      suits: "Developers and government clients with a consultant team",
-      summary: "We join at feasibility, so the design suits manufacture before it's fixed, then carry it through to supply.",
+      summary: "We join your project team at feasibility, alongside your architect and consultants, so the design is set up for manufacture before it's fixed. From there we carry it into supply, or into design and deliver.",
+      we: ["Modular feasibility and yield", "Design for manufacture input", "Cost and programme advice"],
+      you: ["Your consultant team and planning", "The choice of delivery route"],
+      suits: "Developers and government clients with a consultant team in place",
     },
     {
       title: "Supply to your builder",
+      summary: "Your builder runs the site and we supply the modules. We resolve the design for manufacture with your team, then build, inspect, ship and deliver them to site.",
+      we: ["Module engineering and shop drawings", "Manufacture, inspection and shipping", "Delivery to site"],
+      you: ["Building permit and site works", "Footings, services and connections"],
       suits: "Builders and head contractors",
-      summary: "We design for manufacture, build, ship and deliver the modules. Your builder handles the site, permit and connections.",
     },
     {
       title: "Tender response",
+      summary: "Send us the tender documents. We price the project for modular, show where design changes could save time or cost, and set out the programme.",
+      we: ["Modular pricing and programme", "Options to save time or cost"],
+      you: ["Tender documents and timeline"],
       suits: "Projects already in procurement",
-      summary: "You have a design. We price it, adapt it for modular and show where it saves time or cost.",
     },
   ],
 } as const;
 
-// Who does what on a design-and-deliver project, stage by stage. Roles are jobs, not companies.
+// Who does what on a design-and-deliver project, stage by stage. Roles are jobs, not companies. Partner roles are
+// appointed and managed by Cloud Modular, so wherever a partner leads, Cloud Modular shows as managing the task.
 export const roles = [
-  { id: "cloud", label: "Cloud Modular" },
-  { id: "architect", label: "Architect" },
-  { id: "engineer", label: "Engineer" },
-  { id: "surveyor", label: "Building surveyor" },
-  { id: "builder", label: "Builder" },
-  { id: "client", label: "You" },
+  { id: "cloud", label: "Cloud Modular", partner: false },
+  { id: "architect", label: "Architect", partner: true },
+  { id: "engineer", label: "Engineer", partner: true },
+  { id: "surveyor", label: "Building surveyor", partner: true },
+  { id: "builder", label: "Builder", partner: true },
+  { id: "client", label: "You", partner: false },
 ] as const;
 
 export type RoleId = (typeof roles)[number]["id"];
@@ -453,8 +463,8 @@ export const responsibilities: {
       index: "03",
       title: "Approvals and documentation",
       tasks: [
-        { task: "Site survey and soil report", lead: "client" },
-        { task: "Planning approval", lead: "client", with: ["architect"] },
+        { task: "Site survey and soil report", lead: "engineer", with: ["client"] },
+        { task: "Planning approval", lead: "architect", with: ["client"] },
         { task: "Design compliance certification", lead: "surveyor", with: ["engineer"] },
         { task: "Building permit", lead: "builder", with: ["surveyor"] },
         { task: "Shop drawings", lead: "cloud", with: ["engineer"] },

@@ -145,6 +145,12 @@
   --button-solid-fg: var(--ink);
 }
 
+/* Dark sections in the footer's slate (olympic.no investor panels): data-theme="dark" data-surface="slate" */
+[data-theme="dark"][data-surface="slate"] {
+  --surface: var(--slate);
+  --surface-alt: var(--ink-raised);
+}
+
 [data-theme="light"] {
   --label: var(--label-gold);
   --surface: var(--paper);
