@@ -1,0 +1,54 @@
+---
+import RefreshLayout from "@/layouts/RefreshLayout.astro";
+import FaqSection from "@/components/refresh/FaqSection.astro";
+import { qualityRows } from "@/data/site";
+
+// Design-refresh page (from the alt home's former Quality section). Kept out of search and the sitemap until launch.
+const title = "Quality, Compliance & Assurance | Cloud Modular";
+const description =
+  "Factory-controlled production and verified engineering give clients confidence in every module before it reaches site.";
+
+// The wide Factory image leads the page, so pillar 02 uses a material detail instead
+const pillars = qualityRows.map((row) =>
+  row.index === "02" ? { ...row, image: "/Card4.webp", imagePosition: "center" } : row,
+);
+---
+
+<RefreshLayout title={title} description={description} canonical="/quality/" noindex>
+  <!-- Page intro: centred label and title (olympic.no "Fleet focus"), clear of the fixed header -->
+  <section data-theme="light" class="pb-section-sm pt-[calc(var(--header-h)+var(--section))]">
+    <div class="shell text-center" data-reveal>
+      <p class="label">Quality, compliance & assurance</p>
+      <h1 class="mx-auto mt-8 max-w-[18ch] text-feature">Verified before it reaches site</h1>
+      <p class="mx-auto mt-8 max-w-measure text-about text-fg-muted">Factory-controlled production and verified engineering give clients confidence in every module before it reaches site.</p>
+    </div>
+  </section>
+
+  <!-- Full-width factory image, then three numbered pillars -->
+  <section id="quality" data-theme="light" class="scroll-mt-header pb-section">
+    <div class="shell">
+      <div class="aspect-[4/3] overflow-hidden rounded bg-stone sm:mt-12 sm:aspect-[21/9]" data-reveal>
+        <img src="/Factory-1.webp" alt="Inside a modular manufacturing facility" width="1672" height="941" loading="lazy" class="h-full w-full object-cover" />
+      </div>
+
+      <div class="mt-gap grid gap-x-gap-sm gap-y-12 md:grid-cols-3">
+        {pillars.map((row, index) => (
+          <article class="group" data-reveal style={`--reveal-delay:${index * 100}ms`}>
+            <div class="aspect-[4/3] overflow-hidden rounded bg-stone">
+              <img src={row.image} alt={row.title} width="1456" height="816" loading="lazy" class="h-full w-full object-cover transition-transform duration-slow ease-cm-out group-hover:scale-[1.03]" style={`object-position:${row.imagePosition}`} />
+            </div>
+            <p class="label mt-4">{row.index}</p>
+            <h3 class="mt-2 text-h3">{row.title}</h3>
+            <p class="mt-2 max-w-[42ch] text-small text-fg-muted">{row.description}</p>
+          </article>
+        ))}
+      </div>
+
+      <div class="mt-section-sm flex justify-center" data-reveal>
+        <a href="/about/" class="btn">How we work</a>
+      </div>
+    </div>
+  </section>
+
+  <FaqSection id="faq" topic="quality" />
+</RefreshLayout>
