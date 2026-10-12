@@ -9,13 +9,14 @@ import ProgrammeLine from "@/components/refresh/ProgrammeLine.astro";
 import RoleMatrix from "@/components/refresh/RoleMatrix.astro";
 import ToConfirm from "@/components/refresh/ToConfirm.astro";
 import ImagePanel from "@/components/refresh/ImagePanel.astro";
+import Accordion from "@/components/refresh/Accordion.astro";
 import FaqSection from "@/components/refresh/FaqSection.astro";
 import GetStarted from "@/components/refresh/GetStarted.astro";
 import { approachProgramme, approachStages, engagementModels, responsibilities, site } from "@/data/site";
 
 const title = "Our Approach | Modular Construction Process | Cloud Modular";
 const description =
-  "How a Cloud Modular project runs, from brief to handover: the stages, the programme, who does what and the ways to engage us.";
+  "How a Cloud Modular project runs from brief to handover, including the stages, the programme, who does what and the ways to engage us.";
 const breadcrumbSchema = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -37,7 +38,7 @@ const breadcrumbSchema = {
   </div>
 
   <SplitSection id="how-we-work" label="How we work">
-    <p class="text-about">We manage the whole delivery chain: design for manufacture, production in Foshan, shipping and clearance, then installation on site. Modules are built while the site is prepared, so the programme is shorter and the risk sits with one team. It’s a process built for delivery at scale, including cyclone regions and regional and remote sites.</p>
+    <p class="text-about">We manage the whole delivery chain, from design for manufacture and production in Foshan to shipping, clearance and installation on site. Modules are built while the site is prepared, so the programme is shorter and one team carries the risk. The process is built for delivery at scale, including in cyclone regions and on regional and remote sites.</p>
     <a href="#process" class="btn mt-10">See the process</a>
   </SplitSection>
 
@@ -86,7 +87,7 @@ const breadcrumbSchema = {
           </div>
           <h2 class="mt-5 max-w-[16ch] text-h2 sm:mt-6">Factory and site, at the same time</h2>
         </div>
-        <p class="col-span-12 max-w-measure self-end text-body text-fg-muted md:col-span-6 md:col-start-7" data-reveal>On a conventional build, the site comes first and construction follows. Here the modules are made while the site is prepared, and the two tracks meet at installation.</p>
+        <p class="col-span-12 max-w-measure self-end text-body text-fg-muted md:col-span-6 md:col-start-7" data-reveal>The modules are made in Foshan while your site is prepared, and the two tracks meet at installation. This is how modular shortens the programme.</p>
       </div>
 
       <ProgrammeLine class="mt-section" />
@@ -106,35 +107,7 @@ const breadcrumbSchema = {
   <!-- Ways to engage (olympic.no investor panel): image left, slate panel right with an accordion of the four routes -->
   <ImagePanel id="engage" label="Ways to engage" title="Start where it suits you" image="/approach/engage.webp" alt="Modular townhouses with rooftop terraces at sunset" width={1055} height={1491} confirm={engagementModels.confirm}>
     <p class="text-body text-fg-muted">{engagementModels.intro}</p>
-    <div class="mt-10 border-b border-line/[var(--rule-alpha)]">
-      {engagementModels.items.map((model, index) => (
-        <details name="engage" class="engage line-item group" open={index === 0}>
-          <summary class="flex cursor-pointer list-none items-center gap-4 py-5">
-            <span class="label w-6 shrink-0 text-fg-subtle transition-colors duration-base group-open:text-label">{String(index + 1).padStart(2, "0")}</span>
-            <span class="flex-1 text-body font-medium">{model.title}</span>
-            <span class="tag hidden sm:inline-flex">{model.tag}</span>
-            <span class="relative ml-2 h-3 w-3 shrink-0" aria-hidden="true">
-              <span class="absolute left-0 top-1/2 h-px w-3 bg-fg"></span>
-              <span class="absolute left-1/2 top-0 h-3 w-px bg-fg transition-transform duration-base group-open:scale-y-0"></span>
-            </span>
-          </summary>
-          <div class="pb-8 sm:pl-10">
-            <span class="tag mb-5 sm:hidden">{model.tag}</span>
-            <p class="text-about">{model.lead} <span class="text-fg-subtle">{model.detail}</span></p>
-            <div class="mt-8 grid grid-cols-2 gap-x-gap-sm">
-              <p class="label label-muted pb-3">Cloud Modular</p>
-              <p class="label label-muted pb-3">You</p>
-              {Array.from({ length: Math.max(model.we.length, model.you.length) }, (_, row) => (
-                <>
-                  <p class="border-t border-line/[var(--rule-alpha)] py-2.5 text-small">{model.we[row] ?? ""}</p>
-                  <p class="border-t border-line/[var(--rule-alpha)] py-2.5 text-small text-fg-muted">{model.you[row] ?? ""}</p>
-                </>
-              ))}
-            </div>
-          </div>
-        </details>
-      ))}
-    </div>
+    <Accordion items={engagementModels.items} name="engage" openFirst class="mt-10" />
   </ImagePanel>
 
   <FaqSection id="faq" topic="approach" rule={false} />
@@ -142,36 +115,3 @@ const breadcrumbSchema = {
   <GetStarted />
 </RefreshLayout>
 
-<style>
-  .engage summary::-webkit-details-marker {
-    display: none;
-  }
-
-  /* Open and close smoothly where the browser can animate to auto height */
-  @supports (interpolate-size: allow-keywords) {
-    .engage {
-      interpolate-size: allow-keywords;
-    }
-
-    .engage::details-content {
-      height: 0;
-      overflow: hidden;
-      opacity: 0;
-      transition:
-        height var(--dur-slow) var(--ease-out),
-        opacity var(--dur-slow) var(--ease-out),
-        content-visibility var(--dur-slow) allow-discrete;
-    }
-
-    .engage[open]::details-content {
-      height: auto;
-      opacity: 1;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .engage::details-content {
-      transition: none;
-    }
-  }
-</style>
