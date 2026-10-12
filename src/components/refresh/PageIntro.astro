@@ -1,0 +1,22 @@
+---
+/**
+ * Page intro (olympic.no "Fleet focus"): centred label, a large ALL CAPS title (the page's h1) and an optional
+ * lead, clear of the fixed header. Used at the top of every page without a full-bleed hero.
+ */
+interface Props {
+  label: string;
+  title: string;
+  lead?: string;
+}
+
+const { label, title, lead } = Astro.props;
+---
+
+<section data-theme="light" class="pb-section-sm pt-[calc(var(--header-h)+var(--section))]">
+  <div class="shell text-center" data-reveal>
+    <p class="label">{label}</p>
+    <h1 class="mx-auto mt-8 max-w-[18ch] text-feature">{title}</h1>
+    {lead && <p class="mx-auto mt-8 max-w-measure text-about text-fg-muted">{lead}</p>}
+    <slot />
+  </div>
+</section>

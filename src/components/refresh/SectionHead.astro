@@ -1,7 +1,8 @@
 ---
 /**
- * Module header: divider, section padding, a small mono label, the ALL CAPS title, a short intro on the
- * left, and optional actions (button or carousel arrows) aligned right.
+ * Module header: divider, section padding, a small mono label, the ALL CAPS title, then either an intro with
+ * actions aligned right (Sectors) or, with no intro, the actions beside the title (Projects).
+ * `align="center"` centres label and title (olympic.no "Fleet focus"; The Cloud Modular difference).
  */
 interface Props {
   /** Small mono label above the title, naming the section (cf. olympic.no). */
@@ -11,16 +12,27 @@ interface Props {
   as?: "h2" | "h3";
   /** Omit the divider (e.g. directly after a full-bleed image); the section supplies its own top padding. */
   rule?: boolean;
+  align?: "left" | "center";
 }
 
-const { label, title, intro, as: Heading = "h2", rule = true } = Astro.props;
+const { label, title, intro, as: Heading = "h2", rule = true, align = "left" } = Astro.props;
+const hasActions = Astro.slots.has("actions");
 ---
 
-<div class:list={{ "rule pt-section": rule }} data-reveal>
+<div class:list={{ "rule pt-section": rule, "text-center": align === "center" }} data-reveal>
   {label && <p class="label mb-5 sm:mb-6">{label}</p>}
-  <Heading class="text-h2">{title}</Heading>
-  <div class="mt-6 flex flex-col gap-5 sm:mt-8 sm:flex-row sm:items-end sm:justify-between sm:gap-gap">
-    {intro && <p class="max-w-measure text-body font-medium">{intro}</p>}
-    {Astro.slots.has("actions") && <div class="flex shrink-0 items-center gap-2"><slot name="actions" /></div>}
-  </div>
+  {intro || !hasActions || align === "center" ? (
+    <Heading class:list={["text-h2", { "mx-auto max-w-[24ch]": align === "center" }]}>{title}</Heading>
+  ) : (
+    <div class="flex items-end justify-between gap-6">
+      <Heading class="text-h2">{title}</Heading>
+      <div class="flex shrink-0 items-center gap-2"><slot name="actions" /></div>
+    </div>
+  )}
+  {intro && (
+    <div class="mt-6 flex flex-col gap-5 sm:mt-8 sm:flex-row sm:items-end sm:justify-between sm:gap-gap">
+      <p class="max-w-measure text-body font-medium">{intro}</p>
+      {hasActions && <div class="flex shrink-0 items-center gap-2"><slot name="actions" /></div>}
+    </div>
+  )}
 </div>

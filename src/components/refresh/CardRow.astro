@@ -1,0 +1,92 @@
+---
+/**
+ * Row of cards. Pass <li> items in the slot.
+ * - "grid": a sideways-swiping row below lg, three equal columns from lg (Projects).
+ * - "carousel": always a sideways row showing 3¼ cards at lg; pair with prev/next buttons marked
+ *   data-carousel-prev / data-carousel-next inside an ancestor with data-carousel (Sectors).
+ * A mostly vertical wheel or trackpad gesture over the row scrolls the page rather than nudging the row.
+ */
+interface Props {
+  label: string;
+  variant?: "grid" | "carousel";
+  class?: string;
+}
+
+const { label, variant = "grid", class: className } = Astro.props;
+---
+
+<ul
+  class:list={[
+    "card-row no-scrollbar flex snap-x snap-proximity gap-gap-sm overflow-x-auto scroll-px-gutter px-gutter",
+    variant === "grid" ? "card-row--grid lg:mx-auto lg:grid lg:max-w-page lg:grid-cols-3 lg:overflow-visible" : "card-row--carousel",
+    className,
+  ]}
+  aria-label={label}
+  data-card-row
+  data-carousel-track={variant === "carousel" ? "" : undefined}
+>
+  <slot />
+</ul>
+
+<style>
+  .card-row > :global(li) {
+    flex-shrink: 0;
+    width: 78vw;
+    scroll-snap-align: start;
+  }
+
+  @media (min-width: 40rem) {
+    .card-row > :global(li) {
+      width: 44vw;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .card-row--grid > :global(li) {
+      width: auto;
+    }
+
+    .card-row--carousel > :global(li) {
+      width: calc((100vw - 2 * var(--gutter) - 2 * var(--gap-sm)) / 3.25);
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-card-row]").forEach((row) => {
+    row.addEventListener(
+      "wheel",
+      (event) => {
+        if (event.ctrlKey || Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+        if (row.scrollWidth <= row.clientWidth) return;
+        event.preventDefault();
+        const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? window.innerHeight : 1;
+        window.scrollBy({ top: event.deltaY * unit, behavior: "instant" });
+      },
+      { passive: false },
+    );
+  });
+
+  // Carousel prev/next buttons step one card at a time and disable at either end
+  document.querySelectorAll<HTMLElement>("[data-carousel]").forEach((root) => {
+    const track = root.querySelector<HTMLElement>("[data-carousel-track]");
+    const prev = root.querySelector<HTMLButtonElement>("[data-carousel-prev]");
+    const next = root.querySelector<HTMLButtonElement>("[data-carousel-next]");
+    if (!track || !prev || !next) return;
+    const step = () => {
+      const item = track.firstElementChild as HTMLElement | null;
+      const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+      return item ? item.offsetWidth + gap : track.clientWidth;
+    };
+    const update = () => {
+      const max = track.scrollWidth - track.clientWidth - 2;
+      prev.disabled = track.scrollLeft <= 2;
+      next.disabled = track.scrollLeft >= max;
+    };
+    prev.addEventListener("click", () => track.scrollBy({ left: -step(), behavior: "smooth" }));
+    next.addEventListener("click", () => track.scrollBy({ left: step(), behavior: "smooth" }));
+    track.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    update();
+  });
+</script>

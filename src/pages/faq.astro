@@ -1,5 +1,6 @@
 ---
 import RefreshLayout from "@/layouts/RefreshLayout.astro";
+import PageIntro from "@/components/refresh/PageIntro.astro";
 import FaqSection from "@/components/refresh/FaqSection.astro";
 import { faqItems, faqTopics } from "@/data/site";
 
@@ -19,14 +20,7 @@ const faqSchema = {
 ---
 
 <RefreshLayout title={title} description={description} canonical="/faq/" noindex structuredData={faqSchema}>
-  <!-- Page intro: centred label and title (olympic.no "Fleet focus"), clear of the fixed header -->
-  <section data-theme="light" class="pb-section-sm pt-[calc(var(--header-h)+var(--section))]">
-    <div class="shell text-center" data-reveal>
-      <p class="label">FAQ</p>
-      <h1 class="mx-auto mt-8 max-w-[18ch] text-feature">Your questions, answered</h1>
-      <p class="mx-auto mt-8 max-w-measure text-about text-fg-muted">{description}</p>
-    </div>
-  </section>
+  <PageIntro label="FAQ" title="Your questions, answered" lead={description} />
 
   {faqTopics.map((topic) => (
     <FaqSection topic={topic.id} label={topic.label} more={false} ownOnly />

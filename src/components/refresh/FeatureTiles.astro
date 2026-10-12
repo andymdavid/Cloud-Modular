@@ -1,0 +1,56 @@
+---
+/**
+ * Pair of large image tiles (olympic.no media-link tiles) in a wide row: label, ALL CAPS title and an
+ * "Explore" button over a darkened image. 690 × 638 at 1440, taller and stacked on phones.
+ */
+export interface FeatureTile {
+  label: string;
+  title: string;
+  href: string;
+  image: string;
+  width: number;
+  height: number;
+  imagePosition?: string;
+  cta?: string;
+}
+
+interface Props {
+  items: FeatureTile[];
+  class?: string;
+}
+
+const { items, class: className } = Astro.props;
+---
+
+<div class:list={["wide-row grid gap-gap-sm md:grid-cols-2", className]}>
+  {items.map((item, index) => (
+    <a href={item.href} data-theme="dark" class="feature-tile group relative block overflow-hidden rounded bg-ink" data-reveal style={`--reveal-delay:${index * 100}ms`}>
+      <img src={item.image} alt="" width={item.width} height={item.height} loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-transform duration-slow ease-cm-out group-hover:scale-[1.03]" style={`object-position:${item.imagePosition ?? "center"}`} />
+      <span class="absolute inset-0 bg-[linear-gradient(180deg,rgb(11_11_12/0.55)_0%,rgb(11_11_12/0.1)_45%,rgb(11_11_12/0.35)_100%)]" aria-hidden="true"></span>
+      <div class="feature-tile-body relative flex h-full flex-col justify-between">
+        <div>
+          <p class="label text-sage">{item.label}</p>
+          <h3 class="mt-8 max-w-[16ch] text-h2 text-fg">{item.title}</h3>
+        </div>
+        <span class="btn self-start">{item.cta ?? "Explore"}</span>
+      </div>
+    </a>
+  ))}
+</div>
+
+<style>
+  .feature-tile {
+    aspect-ratio: 357 / 509;
+  }
+
+  @media (min-width: 48rem) {
+    .feature-tile {
+      aspect-ratio: 690 / 638;
+    }
+  }
+
+  /* Content inset 38 / 46px at 1440 */
+  .feature-tile-body {
+    padding: clamp(1.5rem, 0.99rem + 2.1vw, 2.875rem) clamp(1.5rem, 1.175rem + 1.33vw, 2.375rem);
+  }
+</style>

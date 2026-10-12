@@ -1,0 +1,157 @@
+---
+/**
+ * Image card (olympic.no news tile): image with an optional outlined tag, a mono meta line, the title and an
+ * optional description. Hover rounds the corners, turns the title gold and gently zooms the image; linked
+ * cards (with `href`) also show a gold arrow that follows the pointer. Unlinked cards render as a figure.
+ */
+interface Props {
+  image: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  imagePosition?: string;
+  href?: string;
+  tag?: string;
+  meta?: string;
+  title: string;
+  description?: string;
+  /** "feature" (larger title, as Projects) or "compact" (body-size title with a description, as Sectors). */
+  size?: "feature" | "compact";
+  /** Aspect classes for the image box. */
+  ratio?: string;
+}
+
+const {
+  image,
+  alt,
+  width,
+  height,
+  imagePosition = "center",
+  href,
+  tag,
+  meta,
+  title,
+  description,
+  size = "feature",
+  ratio = "aspect-[4/5]",
+} = Astro.props;
+const Tag = href ? "a" : "figure";
+const Title = href ? "h3" : "p";
+---
+
+<Tag href={href} class="media-card group block" data-media-card={href ? "" : undefined}>
+  <div class:list={["media-card-image relative overflow-hidden bg-stone", ratio]}>
+    <img src={image} alt={alt} width={width} height={height} loading="lazy" class="h-full w-full object-cover transition-transform duration-slow ease-cm-out group-hover:scale-[1.03]" style={`object-position:${imagePosition}`} />
+    {tag && <span class="media-card-tag absolute left-4 top-4 sm:left-5 sm:top-5">{tag}</span>}
+    {href && (
+      <span class="media-card-cursor" aria-hidden="true" data-media-cursor>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 2.5v5h8M8.5 4.5 11 7.5 8.5 10.5" stroke="currentColor" stroke-width="1.2" /></svg>
+      </span>
+    )}
+  </div>
+  {meta && <p class:list={["label label-muted", size === "feature" ? "mt-5" : "mt-4"]}>{meta}</p>}
+  <Title class:list={["media-card-title", size === "feature" ? "mt-3 max-w-[70%] text-about" : "mt-2 text-body font-medium"]}>{title}</Title>
+  {description && <p class="mt-1 max-w-[40ch] text-caption text-fg-subtle">{description}</p>}
+</Tag>
+
+<style>
+  /* Corners are clipped with clip-path (as olympic.no does): border-radius + overflow doesn't reliably clip the
+     zoomed image, which is composited separately, while the radius animates */
+  .media-card-image {
+    clip-path: inset(0 round var(--radius-media));
+    transition: clip-path 0.6s var(--ease-out);
+  }
+
+  .media-card-title {
+    transition: color 0.6s var(--ease-standard);
+  }
+
+  .media-card-cursor {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: var(--radius-media);
+    background: rgb(var(--label-gold));
+    color: rgb(var(--paper));
+    opacity: 0;
+    transform: translate(var(--x, 50%), var(--y, 50%)) translate(-50%, -50%) scale(0.6);
+    transition:
+      opacity var(--dur-base) var(--ease-standard),
+      transform var(--dur-base) var(--ease-out);
+    pointer-events: none;
+  }
+
+  /* Outlined mono tag on the image (olympic.no "Insight" tag) */
+  .media-card-tag {
+    display: inline-flex;
+    align-items: center;
+    height: 1.625rem;
+    padding-inline: 0.625rem;
+    border: var(--rule) solid rgb(var(--paper) / 0.5);
+    border-radius: var(--radius-media);
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: rgb(var(--paper));
+    background: rgb(11 11 12 / 0.15);
+    backdrop-filter: blur(4px);
+  }
+
+  @media (hover: hover) {
+    .media-card:hover .media-card-image,
+    .media-card:focus-visible .media-card-image {
+      clip-path: inset(0 round 0.75rem);
+    }
+
+    .media-card:hover .media-card-title,
+    .media-card:focus-visible .media-card-title {
+      color: rgb(var(--label-gold));
+    }
+
+    .media-card:hover .media-card-cursor {
+      opacity: 1;
+      transform: translate(var(--x, 50%), var(--y, 50%)) translate(-50%, -50%) scale(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .media-card-image,
+    .media-card-title,
+    .media-card-cursor {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  // The hover arrow sits where the pointer enters the image, then follows it; keyboard focus and touch never show it
+  document.querySelectorAll<HTMLElement>("[data-media-card]").forEach((card) => {
+    const cursor = card.querySelector<HTMLElement>("[data-media-cursor]");
+    const media = cursor?.parentElement;
+    if (!cursor || !media) return;
+    let frame = 0;
+    const place = (event: PointerEvent) => {
+      const rect = media.getBoundingClientRect();
+      cursor.style.setProperty("--x", `${event.clientX - rect.left}px`);
+      cursor.style.setProperty("--y", `${event.clientY - rect.top}px`);
+    };
+    media.addEventListener("pointerenter", (event) => {
+      if (event.pointerType !== "mouse") return;
+      cursor.style.transition = "none";
+      place(event);
+      void cursor.offsetWidth;
+      cursor.style.transition = "";
+    });
+    media.addEventListener("pointermove", (event) => {
+      if (event.pointerType !== "mouse") return;
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => place(event));
+    });
+  });
+</script>

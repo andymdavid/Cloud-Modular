@@ -1,6 +1,10 @@
 ---
 import RefreshLayout from "@/layouts/RefreshLayout.astro";
 import SectionHead from "@/components/refresh/SectionHead.astro";
+import SplitSection from "@/components/refresh/SplitSection.astro";
+import CardRow from "@/components/refresh/CardRow.astro";
+import MediaCard from "@/components/refresh/MediaCard.astro";
+import FeatureTiles, { type FeatureTile } from "@/components/refresh/FeatureTiles.astro";
 import HomeExplorer from "@/components/refresh/HomeExplorer.astro";
 import FaqSection from "@/components/refresh/FaqSection.astro";
 import { projects, sectors, site } from "@/data/site";
@@ -11,7 +15,7 @@ const description =
   "Architecturally designed modular buildings, manufactured offsite and certified to Australian Standards.";
 
 // The Cloud Modular difference: two tiles leading to their own pages
-const features = [
+const features: FeatureTile[] = [
   {
     label: "Quality, compliance & assurance",
     title: "Verified before it reaches site",
@@ -62,86 +66,50 @@ const features = [
     </div>
   </section>
 
-  <!-- About: 50/50 (cf. olympic.no): label in the left half, one paragraph and a button in the right half.
-       First after the full-bleed hero, so no divider and a short top pad -->
-  <section id="about" data-theme="light" class="scroll-mt-header pb-12 pt-gutter">
-    <div class="shell">
-      <div class="grid-12 gap-y-6">
-        <h2 class="label col-span-12 md:col-span-6" data-reveal>About Cloud Modular</h2>
-        <div class="col-span-12 md:col-span-6 md:col-start-7" data-reveal>
-          <p class="text-about">
-            Cloud Modular offers clarity and certainty to a changing construction landscape. Labour shortages, rising costs and tighter compliance make traditional builds harder to deliver predictably. We partner with leading architectural, engineering and procurement teams to take a more controlled approach, with clear design, offsite manufacturing and assured compliance from the start.
-          </p>
-          <a href="/about/" class="btn mt-10">Our story</a>
-        </div>
-      </div>
-    </div>
-  </section>
+  <!-- About: split section, first after the full-bleed hero, so no divider and a short top pad -->
+  <SplitSection id="about" label="About Cloud Modular" rule={false} spacing="tight">
+    <p class="text-about">
+      Cloud Modular offers clarity and certainty to a changing construction landscape. Labour shortages, rising costs and tighter compliance make traditional builds harder to deliver predictably. We partner with leading architectural, engineering and procurement teams to take a more controlled approach, with clear design, offsite manufacturing and assured compliance from the start.
+    </p>
+    <a href="/about/" class="btn mt-10">Our story</a>
+  </SplitSection>
 
-  <!-- Projects (cf. olympic.no "Navigating with insight"): label and title left, "All projects" right, then three
-       equal cards across the full width. Each card: image with a sector tag, mono location, project name.
-       Card images match the Sectors cards' height at every width: below lg the same swipe-row widths and 4:5
-       ratio; at lg a third of the row at 13:15 (= a Sectors card, a 3.25th of the row at 4:5). -->
+  <!-- Projects (olympic.no "Navigating with insight"): three cards whose images match the Sectors cards' height
+       at every width (4:5 in the swipe row; 13:15 at a third of the row from lg = a 3.25th of the row at 4:5) -->
   <section id="projects" data-theme="light" class="scroll-mt-header pb-section">
     <div class="shell">
-      <div class="rule pt-section" data-reveal>
-        <p class="label">Projects</p>
-        <div class="mt-6 flex items-end justify-between gap-6">
-          <h2 class="text-h2">Selected work</h2>
-          <a href="/our-work/" class="btn shrink-0">All projects</a>
-        </div>
-      </div>
+      <SectionHead label="Projects" title="Selected work">
+        <a slot="actions" href="/our-work/" class="btn">All projects</a>
+      </SectionHead>
     </div>
 
-    <ul data-scroll-row class="no-scrollbar mt-12 flex snap-x snap-proximity gap-gap-sm overflow-x-auto scroll-px-gutter px-gutter sm:mt-16 lg:mx-auto lg:grid lg:max-w-page lg:grid-cols-3 lg:overflow-visible" aria-label="Projects">
+    <CardRow label="Projects" class="mt-12 sm:mt-16">
       {projects.map((project, index) => (
-        <li class="w-[78vw] shrink-0 snap-start sm:w-[44vw] lg:w-auto" data-reveal style={`--reveal-delay:${index * 80}ms`}>
-          <a href="/our-work/" class="project-card group block" data-project-card>
-            <div class="project-media relative aspect-[4/5] overflow-hidden bg-stone lg:aspect-[13/15]">
-              <img src={project.image} alt={project.imageAlt} loading="lazy" class="h-full w-full object-cover transition-transform duration-slow ease-cm-out group-hover:scale-[1.03]" style={`object-position:${project.imagePosition}`} />
-              <span class="project-tag absolute left-4 top-4 sm:left-5 sm:top-5">{project.sector}</span>
-              <!-- Arrow that follows the pointer over the image on hover (olympic.no) -->
-              <span class="project-cursor" aria-hidden="true" data-project-cursor>
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 2.5v5h8M8.5 4.5 11 7.5 8.5 10.5" stroke="currentColor" stroke-width="1.2" /></svg>
-              </span>
-            </div>
-            <p class="label label-muted mt-5">{project.location}</p>
-            <h3 class="project-title mt-3 max-w-[70%] text-about">{project.name}</h3>
-          </a>
+        <li data-reveal style={`--reveal-delay:${index * 80}ms`}>
+          <MediaCard
+            href="/our-work/"
+            image={project.image}
+            alt={project.imageAlt}
+            imagePosition={project.imagePosition}
+            tag={project.sector}
+            meta={project.location}
+            title={project.name}
+            ratio="aspect-[4/5] lg:aspect-[13/15]"
+          />
         </li>
       ))}
-    </ul>
+    </CardRow>
   </section>
 
   <!-- How it's made: copy left, a live 3D model of one home right; opens to a full-screen view with all tools -->
   <HomeExplorer />
 
-  <!-- The Cloud Modular difference: centred label and title (olympic.no "Fleet focus"), then two image tiles
-       (olympic.no media-link tiles) linking to the Quality and Why Cloud Modular pages. The tiles sit at half the
-       page margin, wider than the rest of the page. -->
+  <!-- The Cloud Modular difference: centred heading, then two feature tiles leading to their own pages -->
   <section id="difference" data-theme="light" class="scroll-mt-header pb-section">
     <div class="shell">
-      <div class="rule pt-section text-center" data-reveal>
-        <p class="label">The Cloud Modular difference</p>
-        <h2 class="mx-auto mt-5 max-w-[24ch] text-h2 sm:mt-6">Certainty, built in</h2>
-      </div>
+      <SectionHead label="The Cloud Modular difference" title="Certainty, built in" align="center" />
     </div>
-
-    <div class="wide-row mt-section-sm grid gap-gap-sm md:grid-cols-2">
-      {features.map((feature, index) => (
-        <a href={feature.href} data-theme="dark" class="feature-tile group relative block overflow-hidden rounded bg-ink" data-reveal style={`--reveal-delay:${index * 100}ms`}>
-          <img src={feature.image} alt="" width={feature.width} height={feature.height} loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-transform duration-slow ease-cm-out group-hover:scale-[1.03]" style={`object-position:${feature.imagePosition}`} />
-          <span class="absolute inset-0 bg-[linear-gradient(180deg,rgb(11_11_12/0.55)_0%,rgb(11_11_12/0.1)_45%,rgb(11_11_12/0.35)_100%)]" aria-hidden="true"></span>
-          <div class="relative flex h-full flex-col justify-between p-tile">
-            <div>
-              <p class="label text-sage">{feature.label}</p>
-              <h3 class="mt-8 max-w-[16ch] text-h2 text-fg">{feature.title}</h3>
-            </div>
-            <span class="btn self-start">Explore</span>
-          </div>
-        </a>
-      ))}
-    </div>
+    <FeatureTiles items={features} class="mt-section-sm" />
   </section>
 
   <!-- Sectors carousel -->
@@ -159,28 +127,22 @@ const features = [
       </SectionHead>
     </div>
 
-    <ul
-      class="no-scrollbar mt-10 flex snap-x snap-proximity gap-gap-sm overflow-x-auto scroll-px-gutter px-gutter sm:mt-12"
-      data-carousel-track
-      data-scroll-row
-      aria-label="Sectors"
-    >
+    <CardRow label="Sectors" variant="carousel" class="mt-10 sm:mt-12">
       {sectors.map((sector, index) => (
-        <li class="w-[78vw] shrink-0 snap-start sm:w-[44vw] lg:w-[calc((100vw-2*var(--gutter)-2*var(--gap-sm))/3.25)]" data-reveal style={`--reveal-delay:${index * 80}ms`}>
-          <!-- Same hover as the project cards (corners round up, name turns gold), with no arrow: sectors have no pages -->
-          <figure class="project-card group">
-            <div class="project-media aspect-[4/5] overflow-hidden bg-stone">
-              <img src={sector.image} alt={sector.title} width="928" height="1232" loading="lazy" class="h-full w-full object-cover transition-transform duration-slow ease-cm-out group-hover:scale-[1.03]" />
-            </div>
-            <figcaption class="mt-4">
-              <p class="label label-muted">{String(index + 1).padStart(2, "0")}</p>
-              <p class="project-title mt-2 text-body font-medium">{sector.label}</p>
-              <p class="mt-1 max-w-[40ch] text-caption text-fg-subtle">{sector.description}</p>
-            </figcaption>
-          </figure>
+        <li data-reveal style={`--reveal-delay:${index * 80}ms`}>
+          <MediaCard
+            image={sector.image}
+            alt={sector.title}
+            width={928}
+            height={1232}
+            meta={String(index + 1).padStart(2, "0")}
+            title={sector.label}
+            description={sector.description}
+            size="compact"
+          />
         </li>
       ))}
-    </ul>
+    </CardRow>
   </section>
 
   <!-- FAQ: this page's questions (projects and delivery); the full list lives at /faq/ -->
@@ -188,178 +150,24 @@ const features = [
 </RefreshLayout>
 
 <style>
-  /* Project card hover (olympic.no): corners round up, the title turns gold, an arrow follows the pointer */
-  /* Corners are clipped with clip-path, as olympic.no does: border-radius + overflow doesn't reliably clip the
-     scaled (separately composited) image while the radius animates, so corners lagged or stuck square */
-  .project-media {
-    clip-path: inset(0 round var(--radius-media));
-    transition: clip-path 0.6s var(--ease-out); /* starts at once; the reference curve barely moves for 0.3s */
-  }
-
-  .project-title {
-    transition: color 0.6s var(--ease-standard);
-  }
-
-  .project-cursor {
-    position: absolute;
-    left: 0;
-    top: 0;
-    display: grid;
-    place-items: center;
-    width: 2rem;
-    height: 2rem;
-    border-radius: var(--radius-media);
-    background: rgb(var(--label-gold));
-    color: rgb(var(--paper));
-    opacity: 0;
-    transform: translate(var(--x, 50%), var(--y, 50%)) translate(-50%, -50%) scale(0.6);
-    transition:
-      opacity var(--dur-base) var(--ease-standard),
-      transform var(--dur-base) var(--ease-out);
-    pointer-events: none;
-  }
-
-  @media (hover: hover) {
-    .project-card:hover .project-media,
-    .project-card:focus-visible .project-media {
-      clip-path: inset(0 round 0.75rem);
+  /* The hero video eases in: a slow settle from a slight zoom */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-media {
+      animation: hero-settle 2.4s var(--ease-out) both;
     }
+  }
 
-    .project-card:hover .project-title,
-    .project-card:focus-visible .project-title {
-      color: rgb(var(--label-gold));
+  @keyframes hero-settle {
+    from {
+      transform: scale(1.06);
+      opacity: 0.6;
     }
-
-    .project-card:hover .project-cursor {
+    to {
+      transform: scale(1);
       opacity: 1;
-      transform: translate(var(--x, 50%), var(--y, 50%)) translate(-50%, -50%) scale(1);
     }
   }
-
-  @media (prefers-reduced-motion: reduce) {
-    .project-media,
-    .project-title,
-    .project-cursor {
-      transition: none;
-    }
-  }
-
-  /* Feature tiles (olympic.no media-link tiles): 690 × 638 at 1440 in a wide row, taller on phones; content
-     inset 38 / 46px at 1440 */
-  .feature-tile {
-    aspect-ratio: 357 / 509;
-  }
-
-  @media (min-width: 48rem) {
-    .feature-tile {
-      aspect-ratio: 690 / 638;
-    }
-  }
-
-  .p-tile {
-    padding: clamp(1.5rem, 0.99rem + 2.1vw, 2.875rem) clamp(1.5rem, 1.175rem + 1.33vw, 2.375rem);
-  }
-
-  /* Outlined mono tag set on a project image (olympic.no "Insight" tag) */
-  .project-tag {
-    display: inline-flex;
-    align-items: center;
-    height: 1.625rem;
-    padding-inline: 0.625rem;
-    border: var(--rule) solid rgb(var(--paper) / 0.5);
-    border-radius: var(--radius-media);
-    font-family: var(--font-mono);
-    font-size: var(--text-label);
-    font-weight: var(--weight-medium);
-    letter-spacing: var(--tracking-label);
-    text-transform: uppercase;
-    color: rgb(var(--paper));
-    background: rgb(11 11 12 / 0.15);
-    backdrop-filter: blur(4px);
-  }
-
 </style>
-
-<script>
-  document.querySelectorAll<HTMLElement>("[data-carousel]").forEach((root) => {
-    const track = root.querySelector<HTMLElement>("[data-carousel-track]");
-    const prev = root.querySelector<HTMLButtonElement>("[data-carousel-prev]");
-    const next = root.querySelector<HTMLButtonElement>("[data-carousel-next]");
-    if (!track || !prev || !next) return;
-
-    const step = () => {
-      const item = track.firstElementChild as HTMLElement | null;
-      const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
-      return item ? item.offsetWidth + gap : track.clientWidth;
-    };
-
-    const update = () => {
-      const max = track.scrollWidth - track.clientWidth - 2;
-      prev.disabled = track.scrollLeft <= 2;
-      next.disabled = track.scrollLeft >= max;
-    };
-
-    prev.addEventListener("click", () => track.scrollBy({ left: -step(), behavior: "smooth" }));
-    next.addEventListener("click", () => track.scrollBy({ left: step(), behavior: "smooth" }));
-    track.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-    update();
-  });
-</script>
-
-<script>
-  // Sideways card rows (Projects below lg, Sectors): a mostly vertical wheel or trackpad gesture over a row
-  // scrolls the page instead of nudging the row sideways, which made it jump between snap points and caught
-  // the page scroll. Clearly sideways gestures still move the row.
-  document.querySelectorAll<HTMLElement>("[data-scroll-row]").forEach((row) => {
-    row.addEventListener(
-      "wheel",
-      (event) => {
-        if (event.ctrlKey || Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
-        if (row.scrollWidth <= row.clientWidth) return;
-        event.preventDefault();
-        const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? window.innerHeight : 1;
-        window.scrollBy({ top: event.deltaY * unit, behavior: "instant" });
-      },
-      { passive: false },
-    );
-  });
-</script>
-
-<script>
-  // Project cards: the hover arrow tracks the pointer over the image. It sits where the pointer enters, then
-  // follows it; keyboard focus and touch never show it.
-  document.querySelectorAll<HTMLElement>("[data-project-card]").forEach((card) => {
-    const cursor = card.querySelector<HTMLElement>("[data-project-cursor]");
-    const media = cursor?.parentElement;
-    if (!cursor || !media) return;
-    let frame = 0;
-    const place = (event: PointerEvent) => {
-      const rect = media.getBoundingClientRect();
-      cursor.style.setProperty("--x", `${event.clientX - rect.left}px`);
-      cursor.style.setProperty("--y", `${event.clientY - rect.top}px`);
-    };
-    // Snap to the entry point without animating from the last exit point
-    media.addEventListener("pointerenter", (event) => {
-      if (event.pointerType !== "mouse") return;
-      cursor.style.transition = "none";
-      place(event);
-      void cursor.offsetWidth;
-      cursor.style.transition = "";
-    });
-    media.addEventListener("pointermove", (event) => {
-      if (event.pointerType !== "mouse") return;
-      const rect = media.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        cursor.style.setProperty("--x", `${x}px`);
-        cursor.style.setProperty("--y", `${y}px`);
-      });
-    });
-  });
-</script>
 
 <script>
   // Hold the hero video on its poster frame for visitors who prefer reduced motion

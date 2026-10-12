@@ -1,5 +1,6 @@
 ---
 import RefreshLayout from "@/layouts/RefreshLayout.astro";
+import PageIntro from "@/components/refresh/PageIntro.astro";
 import FaqSection from "@/components/refresh/FaqSection.astro";
 import { qualityRows } from "@/data/site";
 
@@ -15,14 +16,7 @@ const pillars = qualityRows.map((row) =>
 ---
 
 <RefreshLayout title={title} description={description} canonical="/quality/" noindex>
-  <!-- Page intro: centred label and title (olympic.no "Fleet focus"), clear of the fixed header -->
-  <section data-theme="light" class="pb-section-sm pt-[calc(var(--header-h)+var(--section))]">
-    <div class="shell text-center" data-reveal>
-      <p class="label">Quality, compliance & assurance</p>
-      <h1 class="mx-auto mt-8 max-w-[18ch] text-feature">Verified before it reaches site</h1>
-      <p class="mx-auto mt-8 max-w-measure text-about text-fg-muted">Factory-controlled production and verified engineering give clients confidence in every module before it reaches site.</p>
-    </div>
-  </section>
+  <PageIntro label="Quality, compliance & assurance" title="Verified before it reaches site" lead="Factory-controlled production and verified engineering give clients confidence in every module before it reaches site." />
 
   <!-- Full-width factory image, then three numbered pillars -->
   <section id="quality" data-theme="light" class="scroll-mt-header pb-section">

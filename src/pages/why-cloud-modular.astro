@@ -1,5 +1,6 @@
 ---
 import RefreshLayout from "@/layouts/RefreshLayout.astro";
+import PageIntro from "@/components/refresh/PageIntro.astro";
 import FaqSection from "@/components/refresh/FaqSection.astro";
 import { advantages } from "@/data/site";
 
@@ -17,14 +18,7 @@ const stats = [
 ---
 
 <RefreshLayout title={title} description={description} canonical="/why-cloud-modular/" noindex>
-  <!-- Page intro: centred label and title (olympic.no "Fleet focus"), clear of the fixed header -->
-  <section data-theme="light" class="pb-section-sm pt-[calc(var(--header-h)+var(--section))]">
-    <div class="shell text-center" data-reveal>
-      <p class="label">Why Cloud Modular</p>
-      <h1 class="mx-auto mt-8 max-w-[18ch] text-feature">Faster, cleaner, more certain</h1>
-      <p class="mx-auto mt-8 max-w-measure text-about text-fg-muted">Most of the build happens offsite, which shortens programmes, reduces site disruption and improves cost certainty.</p>
-    </div>
-  </section>
+  <PageIntro label="Why Cloud Modular" title="Faster, cleaner, more certain" lead="Most of the build happens offsite, which shortens programmes, reduces site disruption and improves cost certainty." />
 
   <!-- Dark 50/50 split (cf. olympic.no "Origin matters"): label and title left, numerals in sage right, then the
        advantage tiles -->
