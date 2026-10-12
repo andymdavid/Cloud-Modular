@@ -181,6 +181,24 @@
     color: rgb(var(--label));
   }
 
+  /* Outlined tag (as the home page project cards): mono ALL CAPS in a hairline box with a slight radius */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    height: 1.5rem;
+    padding-inline: 0.5rem;
+    border: var(--rule) solid rgb(var(--fg) / 0.3);
+    border-radius: var(--radius-media);
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    line-height: 1;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: rgb(var(--fg-muted));
+  }
+
   .label-muted {
     color: rgb(var(--fg-subtle));
   }

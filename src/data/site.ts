@@ -388,37 +388,43 @@ export const approachProgramme = {
   finish: ["07", "08"],
 } as const;
 
+// Each route opens to a two-tone statement (`lead` in full colour, `detail` muted, as olympic.no) and a short
+// table of what each side takes on. `tag` names who it suits, shown on the closed row.
 export const engagementModels = {
   confirm: true,
   intro: "Come to us with a site, a design or a tender. We deliver nationally, with no minimum project size, and the route you choose sets who does what.",
   items: [
     {
       title: "Design and deliver",
-      summary: "One team from feasibility to handover. We lead design for manufacture, production, shipping and installation, and appoint and manage the architect, engineer, building surveyor and builder for you.",
-      we: ["Design, engineering and approvals, through our partners", "Manufacture, inspection and shipping", "Installation, completion and handover"],
-      you: ["Your brief and budget", "Sign-off at each stage"],
-      suits: "Developers and organisations who want one point of contact",
+      tag: "One point of contact",
+      lead: "One team from feasibility to handover.",
+      detail: "We lead design, manufacture, shipping and installation, and appoint and manage every specialist along the way.",
+      we: ["Design and approvals, through our partners", "Manufacture, inspection and shipping", "Installation and handover"],
+      you: ["Brief and budget", "Sign-off at each stage"],
     },
     {
       title: "Early involvement",
-      summary: "We join your project team at feasibility, alongside your architect and consultants, so the design is set up for manufacture before it's fixed. From there we carry it into supply, or into design and deliver.",
-      we: ["Modular feasibility and yield", "Design for manufacture input", "Cost and programme advice"],
-      you: ["Your consultant team and planning", "The choice of delivery route"],
-      suits: "Developers and government clients with a consultant team in place",
+      tag: "Consultant-led",
+      lead: "Modular from the first sketch.",
+      detail: "We join your architect and consultants at feasibility, so the design suits manufacture before it's fixed, then carry it into supply or full delivery.",
+      we: ["Feasibility and yield", "Design for manufacture input", "Cost and programme advice"],
+      you: ["Consultant team and planning", "Choice of delivery route"],
     },
     {
       title: "Supply to your builder",
-      summary: "Your builder runs the site and we supply the modules. We resolve the design for manufacture with your team, then build, inspect, ship and deliver them to site.",
+      tag: "Builders",
+      lead: "Your site, our modules.",
+      detail: "We resolve the design for manufacture with your team, then build, inspect, ship and deliver the modules to site.",
       we: ["Module engineering and shop drawings", "Manufacture, inspection and shipping", "Delivery to site"],
       you: ["Building permit and site works", "Footings, services and connections"],
-      suits: "Builders and head contractors",
     },
     {
       title: "Tender response",
-      summary: "Send us the tender documents. We price the project for modular, show where design changes could save time or cost, and set out the programme.",
+      tag: "In procurement",
+      lead: "A modular price for your design.",
+      detail: "Send us the tender documents. We price the project for modular, show where changes could save time or cost, and set out the programme.",
       we: ["Modular pricing and programme", "Options to save time or cost"],
       you: ["Tender documents and timeline"],
-      suits: "Projects already in procurement",
     },
   ],
 } as const;
