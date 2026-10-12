@@ -3,24 +3,18 @@ import RefreshLayout from "@/layouts/RefreshLayout.astro";
 import PageIntro from "@/components/refresh/PageIntro.astro";
 import SplitSection from "@/components/refresh/SplitSection.astro";
 import SectionHead from "@/components/refresh/SectionHead.astro";
-import StageList from "@/components/refresh/StageList.astro";
+import CardRow from "@/components/refresh/CardRow.astro";
+import MediaCard from "@/components/refresh/MediaCard.astro";
+import ProgrammeLine from "@/components/refresh/ProgrammeLine.astro";
+import RoleMatrix from "@/components/refresh/RoleMatrix.astro";
 import ToConfirm from "@/components/refresh/ToConfirm.astro";
 import FaqSection from "@/components/refresh/FaqSection.astro";
 import GetStarted from "@/components/refresh/GetStarted.astro";
-import {
-  approachStages,
-  approachTimeline,
-  engagementModels,
-  partners,
-  paymentMilestones,
-  responsibilities,
-  site,
-  type Role,
-} from "@/data/site";
+import { approachProgramme, approachStages, engagementModels, responsibilities, site } from "@/data/site";
 
 const title = "Our Approach | Modular Construction Process | Cloud Modular";
 const description =
-  "How a Cloud Modular project runs, from brief to handover: the stages, the ways to engage us, and who does what.";
+  "How a Cloud Modular project runs, from brief to handover: the stages, the programme, who does what and the ways to engage us.";
 const breadcrumbSchema = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -29,17 +23,10 @@ const breadcrumbSchema = {
     { "@type": "ListItem", position: 2, name: "Our Approach", item: `${site.url}/our-approach/` },
   ],
 };
-
-const parties: { key: "cloud" | "builder" | "client"; label: string }[] = [
-  { key: "cloud", label: "Cloud Modular" },
-  { key: "builder", label: partners.builder.name },
-  { key: "client", label: "You" },
-];
-const roleText: Record<Role, string> = { lead: "Leads", support: "Supports" };
 ---
 
 <RefreshLayout title={title} description={description} canonical="/our-approach/" structuredData={breadcrumbSchema}>
-  <PageIntro label="Our approach" title="From brief to handover" lead="One accountable team across Perth and Foshan, from the first site review to the keys. Here’s how a project runs, how you can engage us, and who does what." />
+  <PageIntro label="Our approach" title="From brief to handover" lead="One accountable team across Perth and Foshan, from the first site review to the keys." />
 
   <!-- Full-width image under the intro -->
   <div class="wide-row pb-section" data-reveal>
@@ -49,143 +36,84 @@ const roleText: Record<Role, string> = { lead: "Leads", support: "Supports" };
   </div>
 
   <SplitSection id="how-we-work" label="How we work">
-    <p class="text-about">We manage the whole delivery chain: design for manufacture, production in Foshan, shipping and clearance, then installation with our builder partner. The factory and the site work at the same time, so the programme is shorter and the risk sits with one team.</p>
-    <p class="mt-8 max-w-measure text-body text-fg-muted">The process is built for developers and organisations delivering at scale, and for the sites that are hardest to build on conventionally: cyclone regions, regional towns and remote locations.</p>
+    <p class="text-about">We manage the whole delivery chain: design for manufacture, production in Foshan, shipping and clearance, then installation on site. Modules are built while the site is prepared, so the programme is shorter and the risk sits with one team. It’s a process built for delivery at scale, including cyclone regions and regional and remote sites.</p>
+    <a href="#process" class="btn mt-10">See the process</a>
   </SplitSection>
 
-  <!-- The process: eight numbered stages -->
-  <section id="process" data-theme="light" class="scroll-mt-header pb-section">
+  <!-- The process: one image card per stage, in the Sectors carousel -->
+  <section id="process" data-theme="light" class="scroll-mt-header pb-section" data-carousel>
     <div class="shell">
-      <SectionHead label="The process" title="Eight stages, one team" intro="Each stage ends with a clear decision from you, so nothing moves to the factory until the design, approvals and price are settled." />
-      <StageList stages={approachStages} class="mt-12 sm:mt-16" />
+      <SectionHead label="The process" title="Eight stages, one team" intro="Each stage ends with a decision from you, so nothing goes into production until the design and approvals are settled." confirm={approachStages.confirm}>
+        <Fragment slot="actions">
+          <button type="button" class="icon-btn" data-carousel-prev aria-label="Previous stages" disabled>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M8.5 2.5 4 7l4.5 4.5" stroke="currentColor" stroke-width="1.2" /></svg>
+          </button>
+          <button type="button" class="icon-btn" data-carousel-next aria-label="Next stages">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M5.5 2.5 10 7l-4.5 4.5" stroke="currentColor" stroke-width="1.2" /></svg>
+          </button>
+        </Fragment>
+      </SectionHead>
     </div>
+
+    <CardRow label="Process stages" variant="carousel" class="mt-10 sm:mt-12">
+      {approachStages.items.map((stage, index) => (
+        <li data-reveal style={`--reveal-delay:${Math.min(index, 3) * 80}ms`}>
+          <MediaCard
+            image={stage.image}
+            alt={stage.alt}
+            width={stage.width}
+            height={stage.height}
+            meta={stage.index}
+            title={stage.title}
+            description={stage.summary}
+            footnote={`You sign off · ${stage.signOff}`}
+            size="compact"
+          />
+        </li>
+      ))}
+    </CardRow>
   </section>
 
-  <!-- Timeline: dark band. Shared phases, then factory and site in parallel, then shared again. Not to scale. -->
-  <section id="timeline" data-theme="dark" class="scroll-mt-header py-section">
+  <!-- The programme: a route that splits into the modules and site tracks, drawn on scroll -->
+  <section id="programme" data-theme="dark" class="scroll-mt-header py-section">
     <div class="shell">
       <div class="grid-12 gap-y-6">
-        <div class="col-span-12 lg:col-span-5" data-reveal>
-          <p class="label">Timeline</p>
-          <h2 class="mt-5 text-h2 sm:mt-6">Factory and site, at the same time</h2>
+        <div class="col-span-12 md:col-span-6" data-reveal>
+          <div class="flex items-center gap-3">
+            <p class="label">The programme</p>
+            {approachProgramme.confirm && <ToConfirm />}
+          </div>
+          <h2 class="mt-5 max-w-[16ch] text-h2 sm:mt-6">Factory and site, at the same time</h2>
         </div>
-        <div class="col-span-12 self-end lg:col-span-6 lg:col-start-7" data-reveal>
-          <p class="max-w-measure text-body text-fg-muted">On a conventional build, site works come first and construction follows. With modular, the modules are made while the site is prepared, so the two programmes overlap.</p>
-          {approachTimeline.confirm && <ToConfirm class="mt-5" note="Indicative durations, ideally from the Seashells Jurien Bay programme" />}
-        </div>
+        <p class="col-span-12 max-w-measure self-end text-body text-fg-muted md:col-span-6 md:col-start-7" data-reveal>On a conventional build, the site comes first and construction follows. Here the modules are made while the site is prepared, and the two tracks meet at installation.</p>
       </div>
 
-      <div class="timeline mt-section-sm" data-reveal>
-        <div class="tl-bar tl-start bg-surface-alt">
-          <span class="label label-muted">Together</span>
-          <span class="mt-2 block text-body">{approachTimeline.start.title}</span>
-        </div>
+      <ProgrammeLine class="mt-section" />
 
-        <p class="tl-lane-label label text-sage">In the factory</p>
-        {approachTimeline.factory.map((step, index) => (
-          <div data-theme="light" class="tl-bar tl-factory bg-sage" style={`--col:${index + 4}`}>
-            {index === 0 && <span class="label label-muted mb-2 hidden md:block">In the factory</span>}
-            <span class="text-small">{step}</span>
-          </div>
-        ))}
-
-        <p class="tl-lane-label label text-sage">On site</p>
-        {approachTimeline.site.map((step, index) => (
-          <div class="tl-bar tl-site" style={`--col:${index + 4}`}>
-            {index === 0 && <span class="label label-muted mb-2 hidden md:block">On site</span>}
-            <span class="text-small">{step}</span>
-          </div>
-        ))}
-
-        {approachTimeline.end.map((step, index) => (
-          <div class="tl-bar tl-end bg-surface-alt" style={`--col:${index + 7}`}>
-            <span class="label label-muted">Together</span>
-            <span class="mt-2 block text-body">{step.title}</span>
-          </div>
-        ))}
-      </div>
-      <p class="mt-6 text-caption text-fg-subtle">Phases shown in order, not to scale.</p>
+      <p class="mt-10 text-caption text-fg-subtle md:mt-8">Stages in order, not to scale.</p>
     </div>
   </section>
 
-  <!-- Ways to engage: four tiles -->
-  <section id="engage" data-theme="light" class="scroll-mt-header py-section">
+  <!-- Who does what: every task, stage by stage, against the roles on a project -->
+  <section id="who-does-what" data-theme="light" class="scroll-mt-header py-section">
     <div class="shell">
-      <SectionHead label="Ways to engage" title="Start where it suits you" intro="Come to us with a site, a design or a tender. We deliver nationally, with no minimum project size." rule={false} />
-      <div class="mt-12 grid gap-gap-sm sm:mt-16 sm:grid-cols-2 lg:grid-cols-4">
-        {engagementModels.map((model, index) => (
-          <article
-            class:list={["flex min-h-[20rem] flex-col justify-between rounded p-5 sm:p-6", index % 2 === 0 ? "bg-surface-alt" : "bg-sage"]}
-            data-reveal
-            style={`--reveal-delay:${index * 80}ms`}
-          >
-            <div>
-              <p class="label label-muted">{String(index + 1).padStart(2, "0")}</p>
-              <h3 class="mt-4 text-h3">{model.title}</h3>
-              <p class="mt-4 text-small">{model.summary}</p>
-            </div>
-            <div class="mt-10">
-              <p class="label label-muted">Suits</p>
-              <p class="mt-2 text-small text-fg-muted">{model.suits}</p>
-              {model.confirm && <ToConfirm class="mt-4" />}
-            </div>
-          </article>
-        ))}
-      </div>
+      <SectionHead label="Who does what" title="Every role, stage by stage" intro="On a design-and-deliver project, this is who leads each task and who’s involved. Under the other ways to engage, your own builder and consultants take on the site roles." rule={false} confirm={responsibilities.confirm} />
+      <RoleMatrix class="mt-10 sm:mt-12" />
     </div>
   </section>
 
-  <!-- Who does what: responsibility table for the design-and-deliver model -->
-  <SplitSection id="who-does-what" label="Who does what">
-    <p class="text-about">On a design-and-deliver project, this is who leads each part of the work. Under the other models, your own builder or consultants take on the site-side roles.</p>
-    <div class="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2">
-      <span class="flex items-center gap-2 text-caption text-fg-muted"><span class="role-mark role-lead" aria-hidden="true"></span>Leads</span>
-      <span class="flex items-center gap-2 text-caption text-fg-muted"><span class="role-mark role-support" aria-hidden="true"></span>Supports</span>
-      <ToConfirm note={`Responsibilities and the ${partners.builder.name} role`} />
-    </div>
-    <div class="mt-8 w-full overflow-x-auto">
-      <table class="w-full border-b border-line/[var(--rule-alpha)] text-left">
-        <thead>
-          <tr>
-            <th scope="col" class="pb-3 pr-4"><span class="sr-only">Scope</span></th>
-            {parties.map((party) => <th scope="col" class="w-[22%] pb-3 align-bottom sm:w-[18%]"><span class="label label-muted text-center">{party.label}</span></th>)}
-          </tr>
-        </thead>
-        <tbody>
-          {responsibilities.map((row) => (
-            <tr class="border-t border-line/[var(--rule-alpha)]">
-              <th scope="row" class="py-3 pr-4 text-small font-normal">{row.item}</th>
-              {parties.map((party) => {
-                const role = row[party.key];
-                return (
-                  <td class="py-3 text-center">
-                    {role ? (
-                      <>
-                        <span class:list={["role-mark", `role-${role}`]} aria-hidden="true"></span>
-                        <span class="sr-only">{roleText[role]}</span>
-                      </>
-                    ) : (
-                      <span class="sr-only">No role</span>
-                    )}
-                  </td>
-                );
-              })}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  </SplitSection>
-
-  <!-- Contract and payments -->
-  <SplitSection id="contract" label="Contract and payments">
-    <p class="text-about">The price firms up as the design does: an indicative range at feasibility, an updated estimate at design, then a fixed price in the contract before production starts. Payments follow progress.</p>
-    <div class="mt-4"><ToConfirm note="When the price is fixed, contract form, milestones and percentages" /></div>
-    <ol class="mt-8 w-full border-b border-line/[var(--rule-alpha)]">
-      {paymentMilestones.map((milestone, index) => (
-        <li class="line-item flex items-baseline gap-4 py-4">
-          <span class="label w-8 shrink-0">{String(index + 1).padStart(2, "0")}</span>
-          <span class="text-body">{milestone}</span>
+  <!-- Ways to engage: hairline rows, as the FAQ -->
+  <SplitSection id="engage" label="Ways to engage" confirm={engagementModels.confirm}>
+    <p class="text-about">Come to us with a site, a design or a tender. We deliver nationally, with no minimum project size.</p>
+    <ol class="mt-10 w-full border-b border-line/[var(--rule-alpha)]">
+      {engagementModels.items.map((model, index) => (
+        <li class="line-item grid grid-cols-[2rem_1fr] gap-x-4 py-5 sm:grid-cols-[3rem_1fr]">
+          <span class="label pt-1">{String(index + 1).padStart(2, "0")}</span>
+          <div>
+            <h3 class="text-body font-medium">{model.title}</h3>
+            <p class="mt-2 max-w-[60ch] text-small text-fg-muted">{model.summary}</p>
+            <p class="label label-muted mt-4">Suits · {model.suits}</p>
+          </div>
         </li>
       ))}
     </ol>
@@ -195,78 +123,3 @@ const roleText: Record<Role, string> = { lead: "Leads", support: "Supports" };
 
   <GetStarted />
 </RefreshLayout>
-
-<style>
-  /* Timeline: stacked on phones; from md, eight equal phase columns with the factory and site lanes on two rows
-     between the shared start and end phases */
-  .timeline {
-    display: grid;
-    gap: var(--gap-sm);
-  }
-
-  .tl-bar {
-    border-radius: var(--radius-media);
-    padding: 1rem;
-  }
-
-  .tl-site {
-    border: 1px solid rgb(var(--line) / 0.25);
-  }
-
-  .tl-lane-label {
-    margin-top: 0.75rem;
-  }
-
-  @media (min-width: 48rem) {
-    .timeline {
-      grid-template-columns: repeat(8, minmax(0, 1fr));
-      grid-template-rows: auto auto;
-    }
-
-    .tl-lane-label {
-      display: none;
-    }
-
-    .tl-start {
-      grid-column: 1 / span 3;
-      grid-row: 1 / span 2;
-    }
-
-    .tl-factory,
-    .tl-site,
-    .tl-end {
-      grid-column: var(--col);
-    }
-
-    .tl-factory {
-      grid-row: 1;
-    }
-
-    .tl-site {
-      grid-row: 2;
-    }
-
-    .tl-end {
-      grid-row: 1 / span 2;
-    }
-
-    .tl-factory,
-    .tl-site {
-      min-height: 6.5rem;
-    }
-  }
-
-  /* Who does what: filled dot leads, ring supports */
-  .role-mark {
-    display: inline-block;
-    width: 0.625rem;
-    height: 0.625rem;
-    border-radius: 9999px;
-    border: 1px solid rgb(var(--fg));
-    vertical-align: middle;
-  }
-
-  .role-lead {
-    background: rgb(var(--fg));
-  }
-</style>

@@ -4,6 +4,8 @@
  * actions aligned right (Sectors) or, with no intro, the actions beside the title (Projects).
  * `align="center"` centres label and title (olympic.no "Fleet focus"; The Cloud Modular difference).
  */
+import ToConfirm from "@/components/refresh/ToConfirm.astro";
+
 interface Props {
   /** Small mono label above the title, naming the section (cf. olympic.no). */
   label?: string;
@@ -13,14 +15,20 @@ interface Props {
   /** Omit the divider (e.g. directly after a full-bleed image); the section supplies its own top padding. */
   rule?: boolean;
   align?: "left" | "center";
+  /** Draft content: show a "To confirm" marker beside the label. */
+  confirm?: boolean;
 }
 
-const { label, title, intro, as: Heading = "h2", rule = true, align = "left" } = Astro.props;
+const { label, title, intro, as: Heading = "h2", rule = true, align = "left", confirm = false } = Astro.props;
 const hasActions = Astro.slots.has("actions");
 ---
 
 <div class:list={{ "rule pt-section": rule, "text-center": align === "center" }} data-reveal>
-  {label && <p class="label mb-5 sm:mb-6">{label}</p>}
+  {label && (confirm ? (
+    <div class:list={["mb-5 flex items-center gap-3 sm:mb-6", { "justify-center": align === "center" }]}><p class="label">{label}</p><ToConfirm /></div>
+  ) : (
+    <p class="label mb-5 sm:mb-6">{label}</p>
+  ))}
   {intro || !hasActions || align === "center" ? (
     <Heading class:list={["text-h2", { "mx-auto max-w-[24ch]": align === "center" }]}>{title}</Heading>
   ) : (

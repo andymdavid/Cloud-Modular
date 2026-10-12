@@ -1,4 +1,6 @@
 ---
+import ToConfirm from "@/components/refresh/ToConfirm.astro";
+
 /**
  * Split section (olympic.no "Olympic Subsea ASA"): the label in the left half (it's the section heading), the
  * content in the right half. Used by About, How It's Made, FAQ and most text sections. Stacks on phones.
@@ -10,16 +12,22 @@ interface Props {
   rule?: boolean;
   /** "section" (full section rhythm) or "tight" (short top pad, straight after a full-bleed hero). */
   spacing?: "section" | "tight";
+  /** Draft content: show a "To confirm" marker under the label. */
+  confirm?: boolean;
   class?: string;
 }
 
-const { id, label, rule = true, spacing = "section", class: className } = Astro.props;
+const { id, label, rule = true, spacing = "section", confirm = false, class: className } = Astro.props;
 ---
 
 <section id={id} data-theme="light" class:list={["scroll-mt-header", spacing === "tight" ? "pb-12 pt-gutter" : "pb-section", className]}>
   <div class="shell">
     <div class:list={["grid-12 gap-y-6", { rule, "pt-section": spacing === "section" }]}>
-      <h2 class="label col-span-12 md:col-span-6" data-reveal>{label}</h2>
+      {confirm ? (
+        <div class="col-span-12 flex items-start gap-3 md:col-span-6" data-reveal><h2 class="label">{label}</h2><ToConfirm /></div>
+      ) : (
+        <h2 class="label col-span-12 md:col-span-6" data-reveal>{label}</h2>
+      )}
       <div class="col-span-12 flex flex-col items-start md:col-span-6 md:col-start-7" data-reveal>
         <slot />
       </div>

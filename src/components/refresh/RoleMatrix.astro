@@ -1,0 +1,138 @@
+---
+import { responsibilities, roles, type RoleId } from "@/data/site";
+
+/**
+ * Who does what (/our-approach/): every task, grouped by stage, against the roles on a project. A filled dot leads,
+ * a ring is involved. A full-width table from md; on phones each task lists who leads and who's involved.
+ */
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+const roleLabel = (id: RoleId) => roles.find((role) => role.id === id)!.label;
+---
+
+<div class={className}>
+  <div class="flex flex-wrap items-center gap-x-6 gap-y-2" data-reveal>
+    <span class="flex items-center gap-2 text-caption text-fg-muted"><span class="role-mark is-lead" aria-hidden="true"></span>Leads</span>
+    <span class="flex items-center gap-2 text-caption text-fg-muted"><span class="role-mark is-with" aria-hidden="true"></span>Involved</span>
+  </div>
+
+  <!-- md and up: table -->
+  <table class="role-table mt-8 hidden w-full text-left md:table" data-reveal>
+    <colgroup>
+      <col class="w-[28%]" />
+      {roles.map(() => <col class="w-[12%]" />)}
+    </colgroup>
+    <thead>
+      <tr>
+        <th scope="col" class="pb-4 align-bottom"><span class="sr-only">Task</span></th>
+        {roles.map((role) => (
+          <th scope="col" class="pb-4 align-bottom"><span class="label label-muted block text-center">{role.label}</span></th>
+        ))}
+      </tr>
+    </thead>
+    {responsibilities.stages.map((stage) => (
+      <tbody>
+        <tr>
+          <th scope="colgroup" colspan={roles.length + 1} class="stage-row pb-3 pt-10 font-normal">
+            <span class="flex items-baseline gap-4">
+              <span class="label">{stage.index}</span>
+              <span class="text-body font-medium">{stage.title}</span>
+            </span>
+          </th>
+        </tr>
+        {stage.tasks.map((task) => (
+          <tr class="task-row">
+            <th scope="row" class="py-3 pl-10 pr-4 text-small font-normal text-fg-muted">{task.task}</th>
+            {roles.map((role) => {
+              const lead = task.lead === role.id;
+              const involved = task.with?.includes(role.id);
+              return (
+                <td class="py-3 text-center">
+                  {lead || involved ? (
+                    <>
+                      <span class:list={["role-mark", lead ? "is-lead" : "is-with"]} aria-hidden="true"></span>
+                      <span class="sr-only">{lead ? "Leads" : "Involved"}</span>
+                    </>
+                  ) : (
+                    <span class="sr-only">Not involved</span>
+                  )}
+                </td>
+              );
+            })}
+          </tr>
+        ))}
+      </tbody>
+    ))}
+  </table>
+
+  <!-- Phones: stage groups with lead and involved roles under each task -->
+  <ol class="mt-6 md:hidden">
+    {responsibilities.stages.map((stage) => (
+      <li class="pt-8" data-reveal>
+        <p class="flex items-baseline gap-4">
+          <span class="label">{stage.index}</span>
+          <span class="text-body font-medium">{stage.title}</span>
+        </p>
+        <ul class="mt-3 border-b border-line/[var(--rule-alpha)]">
+          {stage.tasks.map((task) => (
+            <li class="border-t border-line/[var(--rule-alpha)] py-3">
+              <p class="text-small">{task.task}</p>
+              <p class="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-caption text-fg-muted">
+                <span class="flex items-center gap-2"><span class="role-mark is-lead" aria-hidden="true"></span><span class="sr-only">Leads:</span>{roleLabel(task.lead)}</span>
+                {task.with?.map((id) => (
+                  <span class="flex items-center gap-2"><span class="role-mark is-with" aria-hidden="true"></span><span class="sr-only">Involved:</span>{roleLabel(id)}</span>
+                ))}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </li>
+    ))}
+  </ol>
+</div>
+
+<style>
+  .role-table {
+    table-layout: fixed;
+  }
+
+  .role-table thead th {
+    border-bottom: var(--rule) solid rgb(var(--line) / var(--rule-alpha));
+  }
+
+  .task-row {
+    border-top: var(--rule) solid rgb(var(--line) / var(--rule-alpha));
+    transition: background-color var(--dur-fast) var(--ease-standard);
+  }
+
+  tbody:last-of-type .task-row:last-child {
+    border-bottom: var(--rule) solid rgb(var(--line) / var(--rule-alpha));
+  }
+
+  @media (hover: hover) {
+    .task-row:hover {
+      background: rgb(var(--fg) / 0.03);
+    }
+  }
+
+  .role-mark {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 9999px;
+    border: 1.5px solid rgb(var(--fg));
+    vertical-align: middle;
+  }
+
+  .role-mark.is-lead {
+    background: rgb(var(--fg));
+  }
+
+  .role-mark.is-with {
+    border-color: rgb(var(--fg) / 0.45);
+  }
+</style>
