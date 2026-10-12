@@ -4,7 +4,6 @@ import PageIntro from "@/components/refresh/PageIntro.astro";
 import FaqSection from "@/components/refresh/FaqSection.astro";
 import { advantages } from "@/data/site";
 
-// Design-refresh page (from the alt home's former Why Modular section). Kept out of search and the sitemap until launch.
 const title = "Why Cloud Modular | Cloud Modular";
 const description =
   "Most of the build happens offsite, which shortens programmes, reduces site disruption and improves cost certainty.";
@@ -17,7 +16,7 @@ const stats = [
 ];
 ---
 
-<RefreshLayout title={title} description={description} canonical="/why-cloud-modular/" noindex>
+<RefreshLayout title={title} description={description} canonical="/why-cloud-modular/">
   <PageIntro label="Why Cloud Modular" title="Faster, cleaner, more certain" lead="Most of the build happens offsite, which shortens programmes, reduces site disruption and improves cost certainty." />
 
   <!-- Dark 50/50 split (cf. olympic.no "Origin matters"): label and title left, numerals in sage right, then the

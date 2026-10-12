@@ -6,14 +6,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        forest: "#2a3128",
-        "forest-dark": "#1f241e",
-        "warm-white": "#f8f9f7",
-        charcoal: "#1a1a1a",
-        "mid-gray": "#6b6b6b",
-        "light-gray": "#e8e8e8",
-
-        // Design-refresh tokens (src/styles/tokens.css)
+        // Design tokens (src/styles/tokens.css)
         ink: channel("ink"),
         "ink-raised": channel("ink-raised"),
         graphite: channel("graphite"),
@@ -34,9 +27,6 @@ export default {
         accent: channel("accent"),
       },
       fontFamily: {
-        sans: ["var(--font-sans)", "Inter", "sans-serif"],
-        serif: ["var(--font-serif)", "Instrument Serif", "serif"],
-        "host-grotesk": ["var(--font-host-grotesk)", "Host Grotesk", "sans-serif"],
         display: ["var(--font-display)"],
         text: ["var(--font-text)"],
         mono: ["var(--font-mono)"],
@@ -68,18 +58,11 @@ export default {
         pill: "var(--radius-pill)",
       },
       maxWidth: {
-        container: "1200px",
-        "container-wide": "1400px",
-        prose: "800px",
         measure: "var(--measure)",
         "measure-wide": "var(--measure-wide)",
         page: "var(--page-max)",
       },
-      boxShadow: {
-        subtle: "0 15px 45px rgba(0,0,0,0.08)",
-      },
       transitionTimingFunction: {
-        standard: "cubic-bezier(0.4, 0, 0.2, 1)",
         "cm-standard": "var(--ease-standard)",
         "cm-out": "var(--ease-out)",
       },

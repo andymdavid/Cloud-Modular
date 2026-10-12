@@ -6,10 +6,12 @@ export default defineConfig({
   output: "static",
   trailingSlash: "always",
   devToolbar: { enabled: false },
+  // The redesigned home was previewed at /alt-home/ before it replaced /
+  redirects: { "/alt-home/": "/" },
   integrations: [
     sitemap({
-      // Design-refresh test pages stay out of the sitemap until they replace live routes
-      filter: (page) => !["/alt-home/", "/quality/", "/why-cloud-modular/", "/faq/"].some((path) => page.includes(path)),
+      // Redirect stubs are not pages
+      filter: (page) => !page.includes("/alt-home/"),
     }),
   ],
 });

@@ -25,11 +25,7 @@ const { overlayHeader = false, navLinks, ...seo } = Astro.props;
       if ("scrollRestoration" in history) history.scrollRestoration = "manual";
       if (!location.hash) window.scrollTo(0, 0);
     </script>
-    <SeoHead
-      {...seo}
-      themeColor="#0B0B0C"
-      fontsHref="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Baskervville:wght@400&display=swap"
-    />
+    <SeoHead {...seo} />
   </head>
   <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>

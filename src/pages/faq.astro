@@ -4,7 +4,6 @@ import PageIntro from "@/components/refresh/PageIntro.astro";
 import FaqSection from "@/components/refresh/FaqSection.astro";
 import { faqItems, faqTopics } from "@/data/site";
 
-// Design-refresh page: every question, grouped by the page it belongs to. Kept out of search and the sitemap until launch.
 const title = "FAQ | Cloud Modular";
 const description = "Answers on compliance, quality, cost, timelines and delivery for Cloud Modular buildings.";
 
@@ -19,7 +18,7 @@ const faqSchema = {
 };
 ---
 
-<RefreshLayout title={title} description={description} canonical="/faq/" noindex structuredData={faqSchema}>
+<RefreshLayout title={title} description={description} canonical="/faq/" structuredData={faqSchema}>
   <PageIntro label="FAQ" title="Your questions, answered" lead={description} />
 
   {faqTopics.map((topic) => (

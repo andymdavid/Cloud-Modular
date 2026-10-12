@@ -4,7 +4,6 @@ import PageIntro from "@/components/refresh/PageIntro.astro";
 import FaqSection from "@/components/refresh/FaqSection.astro";
 import { qualityRows } from "@/data/site";
 
-// Design-refresh page (from the alt home's former Quality section). Kept out of search and the sitemap until launch.
 const title = "Quality, Compliance & Assurance | Cloud Modular";
 const description =
   "Factory-controlled production and verified engineering give clients confidence in every module before it reaches site.";
@@ -15,7 +14,7 @@ const pillars = qualityRows.map((row) =>
 );
 ---
 
-<RefreshLayout title={title} description={description} canonical="/quality/" noindex>
+<RefreshLayout title={title} description={description} canonical="/quality/">
   <PageIntro label="Quality, compliance & assurance" title="Verified before it reaches site" lead="Factory-controlled production and verified engineering give clients confidence in every module before it reaches site." />
 
   <!-- Full-width factory image, then three numbered pillars -->

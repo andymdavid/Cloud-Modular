@@ -20,16 +20,6 @@ export const site = {
   ],
 } as const;
 
-export const navigation = [
-  { label: "About Us", href: "/about/" },
-  { label: "What We Do", href: "/#quality-compliance-assurance" },
-] as const;
-
-export const footerNavigation = [
-  { label: "Home", href: "/" },
-  ...navigation,
-] as const;
-
 export const qualityRows = [
   {
     index: "01",
@@ -188,7 +178,7 @@ export const projects = [
 // Each question carries the page it belongs to (`topic`, also its group on /faq/) and any other pages it should
 // appear on (`alsoOn`). The refresh pages show their own short set; /faq/ shows all, grouped in faqTopics order.
 export const faqTopics = [
-  { id: "general", label: "Projects and delivery", href: "/alt-home/" },
+  { id: "general", label: "Projects and delivery", href: "/" },
   { id: "quality", label: "Quality, compliance & assurance", href: "/quality/" },
   { id: "why", label: "Why Cloud Modular", href: "/why-cloud-modular/" },
 ] as const;
