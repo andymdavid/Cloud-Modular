@@ -15,8 +15,6 @@ interface Props {
   meta?: string;
   title: string;
   description?: string;
-  /** Small mono line under the description (e.g. a stage's sign-off). */
-  footnote?: string;
   /** "feature" (larger title, as Projects) or "compact" (body-size title with a description, as Sectors). */
   size?: "feature" | "compact";
   /** Aspect classes for the image box. */
@@ -34,7 +32,6 @@ const {
   meta,
   title,
   description,
-  footnote,
   size = "feature",
   ratio = "aspect-[4/5]",
 } = Astro.props;
@@ -55,7 +52,6 @@ const Title = href ? "h3" : "p";
   {meta && <p class:list={["label label-muted", size === "feature" ? "mt-5" : "mt-4"]}>{meta}</p>}
   <Title class:list={["media-card-title", size === "feature" ? "mt-3 max-w-[70%] text-about" : "mt-2 text-body font-medium"]}>{title}</Title>
   {description && <p class="mt-1 max-w-[40ch] text-caption text-fg-subtle">{description}</p>}
-  {footnote && <p class="label label-muted mt-3">{footnote}</p>}
 </Tag>
 
 <style>
