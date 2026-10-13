@@ -41,7 +41,7 @@ export const sampleLayers: Record<SampleKind, SampleLayer[]> = {
     { id: "board", name: "Fibre cement board", detail: "9 mm", material: "fibreCement" },
     { id: "membrane", name: "Breathable membrane", detail: "0.35 mm, fixed on site", material: "membrane" },
     { id: "battens", name: "Battens", detail: "Fixed on site", material: "batten" },
-    { id: "cladding", name: "Aluminium cladding", detail: "2 mm, fluorocarbon coated, fixed on site", material: "cladding" },
+    { id: "cladding", name: "Timber-look aluminium cladding", detail: "2 mm, fluorocarbon coated, fixed on site", material: "cladding" },
   ],
   // Bottom (the room) up
   ceiling: [

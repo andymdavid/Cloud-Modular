@@ -111,7 +111,7 @@ export const WALL = {
   board: 0.009, // fibre cement
   membrane: 0.00035, // breathable membrane, fixed on site (proposal drawing; its table puts it inside the board)
   batten: 0.025, // keel (thickness indicative), fixed on site
-  cladding: 0.002, // aluminium, fixed on site
+  cladding: 0.002, // aluminium, fixed on site; timber-look as drawn in the proposal and the architect's perspective
 };
 
 export const CEILING = {

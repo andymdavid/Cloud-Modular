@@ -43,7 +43,7 @@ export const moduleParts: (ExplorerPart & { id: GroupId })[] = [
       { label: "Framing", value: "150 mm light-gauge steel studs" },
       { label: "Insulation", value: "125 mm rock wool board" },
       { label: "Sheathing", value: "9 mm fibre cement board" },
-      { label: "Fixed on site", value: "Breathable membrane, battens and 2 mm aluminium cladding" },
+      { label: "Fixed on site", value: "Breathable membrane, battens and 2 mm timber-look aluminium cladding" },
     ],
   },
   {
