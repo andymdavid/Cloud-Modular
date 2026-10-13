@@ -21,8 +21,15 @@ const stats = [
 <RefreshLayout title={title} description={description} canonical="/why-cloud-modular/">
   <PageIntro label="Why Cloud Modular" title="Faster, cleaner, more certain" lead="Most of the build happens offsite, which shortens programmes, reduces site disruption and improves cost certainty." />
 
+  <!-- Full-width image under the intro, as on the other pages -->
+  <div class="wide-row" data-reveal>
+    <div class="aspect-[4/3] overflow-hidden rounded bg-stone sm:aspect-[21/9]">
+      <img src="/why/hero.webp" alt="A module wrapped for transport in white film carrying the Cloud Modular mark, lit by the evening sun" width="1672" height="941" fetchpriority="high" class="h-full w-full object-cover" style="object-position:center 40%" />
+    </div>
+  </div>
+
   <!-- Why now: the market case, with its two headline figures -->
-  <SplitSection id="why-now" label="Why now">
+  <SplitSection id="why-now" label="Why now" rule={false}>
     <p class="text-about">{whyNow.intro}</p>
     <dl class="mt-10 grid w-full grid-cols-2 gap-x-gap-sm">
       {whyNow.stats.map((stat) => (
