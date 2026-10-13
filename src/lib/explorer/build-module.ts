@@ -184,7 +184,7 @@ function tiles(base: string, grout: string, count: number, seed = 13) {
   }, seed);
 }
 
-function createMaterials(anisotropy: number): Record<MaterialKey, THREE.Material> {
+export function createMaterials(anisotropy: number): Record<MaterialKey, THREE.Material> {
   const std = (color: string, roughness = 0.85, metalness = 0, extra: THREE.MeshStandardMaterialParameters = {}) =>
     new THREE.MeshStandardMaterial({ color, roughness, metalness, ...extra });
   const mapped = (texture: THREE.Texture, tile: number, roughness = 0.85, metalness = 0, extra: THREE.MeshStandardMaterialParameters = {}) =>
@@ -464,7 +464,7 @@ function addFloor(out: Out) {
 }
 
 /** Corrugated deck over the whole module: a sine profile across x, run along z. */
-function corrugated(x0: number, x1: number, z0: number, z1: number, base: number) {
+export function corrugated(x0: number, x1: number, z0: number, z1: number, base: number) {
   const pitch = 0.076;
   const amplitude = 0.009;
   const thickness = 0.003;

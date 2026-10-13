@@ -1,22 +1,25 @@
 ---
+import { sampleLayers, type SampleKind } from "@/data/explorer/build-ups";
+
 /**
  * Floor, walls and ceiling on /quality/: the ModuleExplorer layout (label left, one paragraph right), then three
- * portrait stages across the wide row, each with a title and one plain description underneath. The stages are
- * placeholders until each build-up has its own 3D render (layers labelled with their thicknesses). They stack on
- * phones rather than swipe, so swiping never fights with turning a model.
+ * portrait stages across the wide row, each with a title and one plain description underneath. Each stage turns
+ * a 3D sample of its build-up (sideways drag); hovering or tapping a layer names it and gives its thickness. The
+ * samples load as the section approaches. They stack on phones rather than swipe, so swiping never fights with
+ * turning a model.
  */
 interface Props {
   id?: string;
   label: string;
   body: string;
-  items: readonly { title: string; body: string }[];
+  items: readonly { kind: SampleKind; title: string; body: string }[];
   rule?: boolean;
 }
 
 const { id, label, body, items, rule = true } = Astro.props;
 ---
 
-<section id={id} data-theme="light" class="scroll-mt-header pb-section">
+<section id={id} data-theme="light" class="scroll-mt-header pb-section" data-samples>
   <div class="shell">
     <div class:list={["grid-12 gap-y-6 pt-section", { rule }]}>
       <h2 class="label col-span-12 md:col-span-6" data-reveal>{label}</h2>
@@ -29,12 +32,159 @@ const { id, label, body, items, rule = true } = Astro.props;
   <div class="wide-row mt-section-sm grid gap-x-gap-sm gap-y-12 md:grid-cols-3">
     {items.map((item, index) => (
       <article data-reveal style={`--reveal-delay:${index * 100}ms`}>
-        <div class="relative aspect-[4/5] overflow-hidden rounded bg-surface-quiet">
-          <p class="absolute inset-0 flex items-center justify-center text-caption text-fg-muted">3D model in progress</p>
+        <div
+          class="sample-stage relative aspect-[4/5] overflow-hidden rounded bg-surface-quiet"
+          data-sample={item.kind}
+          data-layers={JSON.stringify(sampleLayers[item.kind].map(({ id, name, detail }) => ({ id, name, detail })))}
+        >
+          <div class="sample-canvas absolute inset-0" data-canvas-host></div>
+          <p class="pointer-events-none absolute left-4 top-4 max-w-[28ch] text-caption text-fg-muted sm:left-5 sm:top-5" role="status" aria-live="polite" data-status></p>
+          <!-- The hovered or tapped layer, or a hint until there is one -->
+          <div class="pointer-events-none absolute bottom-4 left-4 right-4 sm:bottom-5 sm:left-5 sm:right-5" aria-live="polite" data-caption>
+            <p class="sample-hint text-caption text-fg-muted" data-hint>
+              <span class="hint-fine">Drag to turn. Point at a layer to name it.</span>
+              <span class="hint-coarse">Swipe sideways to turn. Tap a layer to name it.</span>
+            </p>
+            <div hidden data-layer>
+              <p class="text-small font-medium" data-layer-name></p>
+              <p class="label label-muted mt-1" data-layer-detail></p>
+            </div>
+          </div>
         </div>
         <h3 class="mt-4 text-body font-medium">{item.title}</h3>
         <p class="mt-1 max-w-[46ch] text-small text-fg-muted">{item.body}</p>
+        <p class="sr-only">Layers, in order: {sampleLayers[item.kind].map((layer) => `${layer.name}, ${layer.detail}`).join("; ")}.</p>
       </article>
     ))}
   </div>
 </section>
+
+<style>
+  /* The canvas only takes pointer input once the sample has loaded */
+  .sample-canvas {
+    pointer-events: none;
+  }
+
+  .sample-stage[data-ready] .sample-canvas {
+    pointer-events: auto;
+  }
+
+  .sample-hint {
+    transition: opacity var(--dur-base) var(--ease-standard);
+  }
+
+  .sample-stage:not([data-ready]) .sample-hint {
+    opacity: 0;
+  }
+
+  .hint-coarse {
+    display: none;
+  }
+
+  @media (pointer: coarse) {
+    .hint-fine {
+      display: none;
+    }
+
+    .hint-coarse {
+      display: inline;
+    }
+  }
+</style>
+
+<script>
+  import type { Explorer } from "@/lib/explorer/viewer";
+  import type { SampleKind } from "@/data/explorer/build-ups";
+
+  interface Layer {
+    id: string;
+    name: string;
+    detail: string;
+  }
+
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  document.querySelectorAll<HTMLElement>("[data-samples]").forEach((section) => {
+    const stages = [...section.querySelectorAll<HTMLElement>("[data-sample]")];
+    const explorers: Explorer[] = [];
+
+    const init = async (stage: HTMLElement) => {
+      const $ = <T extends Element>(selector: string) => stage.querySelector<T>(selector)!;
+      const layers = new Map((JSON.parse(stage.dataset.layers ?? "[]") as Layer[]).map((layer) => [layer.id, layer]));
+      const status = $<HTMLElement>("[data-status]");
+      const hint = $<HTMLElement>("[data-hint]");
+      const layerBox = $<HTMLElement>("[data-layer]");
+      const layerName = $<HTMLElement>("[data-layer-name]");
+      const layerDetail = $<HTMLElement>("[data-layer-detail]");
+
+      let hovered: string | null = null;
+      let selected: string | null = null;
+      const showLayer = () => {
+        const layer = layers.get(hovered ?? selected ?? "");
+        hint.hidden = !!layer;
+        layerBox.hidden = !layer;
+        if (!layer) return;
+        layerName.textContent = layer.name;
+        layerDetail.textContent = layer.detail;
+      };
+
+      status.textContent = "Loading 3D sample…";
+      try {
+        const [{ createExplorer, webglAvailable }, { sampleScene }] = await Promise.all([
+          import("@/lib/explorer/viewer"),
+          import("@/lib/explorer/sample-scene"),
+        ]);
+        if (!webglAvailable()) {
+          status.textContent = "3D view isn't available in this browser.";
+          return;
+        }
+        const scene = sampleScene(stage.dataset.sample as SampleKind);
+        let explorer: Explorer | null = null;
+        explorer = createExplorer({
+          host: $<HTMLElement>("[data-canvas-host]"),
+          scene,
+          reducedMotion,
+          inspect: true,
+          onHover: (id) => {
+            hovered = id;
+            showLayer();
+          },
+          onSelect: (id) => {
+            selected = id;
+            showLayer();
+          },
+          onExit: () => {},
+          onError: () => {
+            status.textContent = "The 3D view stopped responding. Reload the page to try again.";
+            stage.removeAttribute("data-ready");
+            explorer?.dispose();
+          },
+        });
+        explorer.setExplode(scene.initialExplode ?? 0);
+        explorers.push(explorer);
+        if (import.meta.env.DEV) Object.assign(window, { [`__cmSample_${stage.dataset.sample}`]: explorer });
+        status.textContent = "";
+        stage.setAttribute("data-ready", "");
+      } catch (error) {
+        console.error("[samples]", error);
+        status.textContent = "The 3D sample couldn't load.";
+      }
+    };
+
+    // Load all three as the section approaches, so the page itself is never held up
+    const approach = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        approach.disconnect();
+        stages.forEach(init);
+      },
+      { rootMargin: "50% 0px" },
+    );
+    approach.observe(section);
+
+    window.addEventListener("pagehide", (event) => {
+      if (event.persisted) return;
+      explorers.forEach((explorer) => explorer.dispose());
+    });
+  });
+</script>

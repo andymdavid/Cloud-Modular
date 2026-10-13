@@ -56,20 +56,23 @@ export const qualityChecks = {
   ],
 } as const;
 
-// The three build-ups from the Rowland Street, Subiaco proposal, each to become its own 3D render. The floor and
+// The three build-ups from the Rowland Street, Subiaco proposal, each with its own 3D sample (`kind`). The floor and
 // ceiling layer order is read from the doc's callouts and should be checked against the drawings.
 export const buildUps = {
   body: "Each module's floor, walls and ceiling are built up in layers in our manufacturing facility, for strength, fire safety, insulation and weather protection. The models show each build-up from our Rowland Street project, with the thickness of every layer.",
   items: [
     {
+      kind: "floor",
       title: "Floor",
       body: "The floor is finished in 6\u00a0mm rigid-core vinyl on a 10\u00a0mm self-levelling screed and 24\u00a0mm fibre cement board. Below it, cold-formed steel joists hold 100\u00a0mm of rock wool, sealed with a waterproof breathable membrane and closed with galvanised steel sheet.",
     },
     {
+      kind: "walls",
       title: "Walls",
       body: "Inside, the walls are finished in a 4\u00a0mm decorative board over 13\u00a0mm fire-rated plasterboard and a vapour barrier. Light-gauge steel studs hold 125\u00a0mm of rock wool under 9\u00a0mm fibre cement board and a breathable membrane. The aluminium cladding is fixed on site.",
     },
     {
+      kind: "ceiling",
       title: "Ceiling",
       body: "The ceiling is lined with 13\u00a0mm fire-rated plasterboard below a 50\u00a0mm cavity for services. Above it, cold-formed steel joists hold 100\u00a0mm of rock wool under a 1.6\u00a0mm corrugated steel roof deck. Where modules meet, their roofs are welded together and sealed.",
     },

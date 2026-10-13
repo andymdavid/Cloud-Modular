@@ -61,6 +61,8 @@ export interface ExplorerScene {
     target: Vec3;
     /** Panning keeps the orbit target inside this box. */
     panLimit: readonly [Vec3, Vec3];
+    /** Shadow offset along surface normals in metres; smaller for small models. Default 0.03. */
+    shadowNormalBias?: number;
   };
 }
 
@@ -69,6 +71,9 @@ export interface ExplorerOptions {
   scene: ExplorerScene;
   reducedMotion: boolean;
   onSelect(id: string | null): void;
+  /** Hover and tap parts in the page (compact) view too, not only in the full view. */
+  inspect?: boolean;
+  onHover?(id: string | null): void;
   onExit(): void;
   onError(reason: string): void;
 }
@@ -145,7 +150,7 @@ export function createExplorer(options: ExplorerOptions): Explorer {
   const extent = stage.shadowExtent;
   Object.assign(sun.shadow.camera, { left: -extent, right: extent, top: extent, bottom: -extent, near: 1, far: stage.shadowFar });
   sun.shadow.bias = -0.0004;
-  sun.shadow.normalBias = 0.03;
+  sun.shadow.normalBias = stage.shadowNormalBias ?? 0.03;
   sun.shadow.radius = 4;
   scene.add(sun, sun.target);
 
@@ -382,8 +387,9 @@ export function createExplorer(options: ExplorerOptions): Explorer {
   const onPointerDown = (event: PointerEvent) => {
     down = { x: event.clientX, y: event.clientY, time: performance.now() };
   };
+  const picking = () => mode === "full" || !!options.inspect;
   const onPointerUp = (event: PointerEvent) => {
-    if (!down || mode !== "full") return;
+    if (!down || !picking()) return;
     const travel = Math.hypot(event.clientX - down.x, event.clientY - down.y);
     const quick = performance.now() - down.time < 600;
     down = null;
@@ -393,7 +399,7 @@ export function createExplorer(options: ExplorerOptions): Explorer {
     options.onSelect(selected);
   };
   const onPointerMove = (event: PointerEvent) => {
-    if (mode !== "full" || event.pointerType !== "mouse" || event.buttons) return;
+    if (!picking() || event.pointerType !== "mouse" || event.buttons) return;
     if (!hoverQueued) {
       requestAnimationFrame(() => {
         const queued = hoverQueued;
@@ -404,6 +410,7 @@ export function createExplorer(options: ExplorerOptions): Explorer {
         if (id !== hovered) {
           hovered = id;
           paint();
+          options.onHover?.(id);
         }
       });
     }
@@ -413,6 +420,7 @@ export function createExplorer(options: ExplorerOptions): Explorer {
     if (hovered) {
       hovered = null;
       paint();
+      options.onHover?.(null);
     }
   };
   const onKeyDown = (event: KeyboardEvent) => {
@@ -462,7 +470,7 @@ export function createExplorer(options: ExplorerOptions): Explorer {
       canvas.style.cursor = "grab";
       // Touch: compact leaves vertical swipes to the page, so only sideways drags turn the home
       canvas.style.touchAction = full ? "none" : "pan-y";
-      if (!full && hovered) hovered = null;
+      if (!full && hovered && !options.inspect) hovered = null;
       cameraTouched = false;
       updateFrustum();
       frame();
