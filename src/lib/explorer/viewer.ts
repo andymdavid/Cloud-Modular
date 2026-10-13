@@ -1,12 +1,11 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
-import { buildModel, type MeshTag } from "./build-model";
-import { explode, type GroupId } from "@/data/explorer/jurien-type-b";
-import { levelRank, views, type ViewId } from "@/data/explorer/jurien-type-b-info";
 
 /**
- * Interactive viewer for the 3D home explorer. Renders on demand (nothing runs while idle).
+ * Interactive viewer shared by the 3D explorers (the Jurien Bay home, the module and the build-up samples). Each
+ * passes an ExplorerScene: how to build its model, how far each group moves when separated, any floor views, and
+ * the size of its stage (shadow area, ground, pan limits). Renders on demand (nothing runs while idle).
  *
  * Two modes share one canvas:
  *   compact  in the page: horizontal drag turns the home at a fixed height; wheel and vertical swipes
@@ -16,10 +15,54 @@ import { levelRank, views, type ViewId } from "@/data/explorer/jurien-type-b-inf
 
 export type ExplorerMode = "compact" | "full";
 
+type Vec3 = readonly [x: number, y: number, z: number];
+
+/** Stored on each mesh's userData by the scene's builder. */
+export interface MeshTag {
+  group: string | null;
+  level: string;
+  material: string;
+}
+
+export interface SceneModel {
+  /** Added to the scene as is; builders centre the model on the origin in plan. */
+  object: THREE.Group;
+  groups: Map<string, THREE.Group>;
+  meshes: THREE.Mesh[];
+  materials: Record<string, THREE.Material>;
+  dispose(): void;
+}
+
+export interface ExplorerScene {
+  /** Accessible name for the canvas. */
+  label: string;
+  build(options: { anisotropy: number }): SceneModel;
+  /** Offset of each group at full separation, in metres. */
+  explode: Record<string, Vec3>;
+  /** Visibility tiers: a view shows meshes whose level ranks at or below its maxRank. */
+  views?: readonly { id: string; maxRank: number }[];
+  levelRank?: Record<string, number>;
+  stage: {
+    /** Half-size of the sun's shadow camera, and its far plane. */
+    shadowExtent: number;
+    shadowFar: number;
+    sun: Vec3;
+    /** Soft pool of ground under the model: radius, stretch along z, height. */
+    groundRadius: number;
+    groundStretch: number;
+    groundY: number;
+    /** Orbit target used when nothing is visible. */
+    target: Vec3;
+    /** Panning keeps the orbit target inside this box. */
+    panLimit: readonly [Vec3, Vec3];
+  };
+}
+
 export interface ExplorerOptions {
   host: HTMLElement;
+  scene: ExplorerScene;
   reducedMotion: boolean;
-  onSelect(id: GroupId | null): void;
+  onSelect(id: string | null): void;
   onExit(): void;
   onError(reason: string): void;
 }
@@ -27,9 +70,9 @@ export interface ExplorerOptions {
 export interface Explorer {
   setMode(mode: ExplorerMode): void;
   setExplode(amount: number): void;
-  setView(id: ViewId): void;
-  select(id: GroupId | null): void;
-  isGroupVisible(id: GroupId): boolean;
+  setView(id: string): void;
+  select(id: string | null): void;
+  isGroupVisible(id: string): boolean;
   resetView(): void;
   rotate(dTheta: number, dPhi: number): void;
   zoom(factor: number): void;
@@ -39,7 +82,6 @@ export interface Explorer {
 }
 
 const FRUSTUM = 14; // half-height of the orthographic view in metres at zoom 1
-const DEFAULT_TARGET = new THREE.Vector3(0, 3.6, 0);
 const DEFAULT_POLAR = THREE.MathUtils.degToRad(60); // elevated three-quarter, close to isometric
 const DEFAULT_AZIMUTH = THREE.MathUtils.degToRad(145); // front (-z) leading, north side (+x) in view
 const MIN_POLAR = 0.12;
@@ -60,7 +102,9 @@ export function webglAvailable() {
 }
 
 export function createExplorer(options: ExplorerOptions): Explorer {
-  const { host, reducedMotion } = options;
+  const { host, reducedMotion, scene: definition } = options;
+  const { stage } = definition;
+  const defaultTarget = new THREE.Vector3(...stage.target);
   if (!webglAvailable()) throw new Error("webgl-unavailable");
 
   const small = () => host.clientWidth < 768;
@@ -75,7 +119,7 @@ export function createExplorer(options: ExplorerOptions): Explorer {
   canvas.className = "block h-full w-full outline-none";
   canvas.tabIndex = -1;
   canvas.setAttribute("role", "img");
-  canvas.setAttribute("aria-label", "Interactive 3D model of the Jurien Bay Type B residence");
+  canvas.setAttribute("aria-label", definition.label);
   host.appendChild(canvas);
 
   // Scene, light and ground ------------------------------------------------------------------------
@@ -87,18 +131,22 @@ export function createExplorer(options: ExplorerOptions): Explorer {
 
   scene.add(new THREE.HemisphereLight("#ffffff", "#e2ddd3", 0.6));
   const sun = new THREE.DirectionalLight("#fff4e6", 2.6);
-  sun.position.set(12, 24, -15);
+  sun.position.set(...stage.sun);
   sun.castShadow = true;
   sun.shadow.mapSize.setScalar(small() ? 1024 : 2048);
-  Object.assign(sun.shadow.camera, { left: -24, right: 24, top: 24, bottom: -24, near: 1, far: 90 });
+  const extent = stage.shadowExtent;
+  Object.assign(sun.shadow.camera, { left: -extent, right: extent, top: extent, bottom: -extent, near: 1, far: stage.shadowFar });
   sun.shadow.bias = -0.0004;
   sun.shadow.normalBias = 0.03;
   sun.shadow.radius = 4;
   scene.add(sun, sun.target);
 
-  const groundShadow = new THREE.Mesh(new THREE.PlaneGeometry(140, 140), new THREE.ShadowMaterial({ opacity: 0.16 }));
+  const groundShadow = new THREE.Mesh(
+    new THREE.PlaneGeometry(stage.groundRadius * 5.4, stage.groundRadius * 5.4),
+    new THREE.ShadowMaterial({ opacity: 0.16 }),
+  );
   groundShadow.rotation.x = -Math.PI / 2;
-  groundShadow.position.y = -0.205;
+  groundShadow.position.y = stage.groundY + 0.005;
   groundShadow.receiveShadow = true;
   scene.add(groundShadow);
 
@@ -116,16 +164,16 @@ export function createExplorer(options: ExplorerOptions): Explorer {
     return new THREE.CanvasTexture(c);
   })();
   const ground = new THREE.Mesh(
-    new THREE.CircleGeometry(26, 64),
+    new THREE.CircleGeometry(stage.groundRadius, 64),
     new THREE.MeshBasicMaterial({ map: discTexture, transparent: true, depthWrite: false }),
   );
   ground.rotation.x = -Math.PI / 2;
-  ground.position.y = -0.21;
-  ground.scale.set(1, 1.35, 1); // the house is long; stretch the pool of ground along it
+  ground.position.y = stage.groundY;
+  ground.scale.set(1, stage.groundStretch, 1); // stretch the pool of ground along a long model
   scene.add(ground);
 
   // Model ----------------------------------------------------------------------------------------
-  const model = buildModel({ anisotropy: Math.min(8, renderer.capabilities.getMaxAnisotropy()) });
+  const model = definition.build({ anisotropy: Math.min(8, renderer.capabilities.getMaxAnisotropy()) });
   scene.add(model.object);
   const pickable = model.meshes.filter((mesh) => (mesh.userData as MeshTag).group);
 
@@ -206,7 +254,7 @@ export function createExplorer(options: ExplorerOptions): Explorer {
    * angle around it: turning never crops it and the zoom never has to change.
    */
   const frame = (bounds = visibleBounds()) => {
-    const centre = bounds.isEmpty() ? DEFAULT_TARGET.clone() : bounds.getCenter(new THREE.Vector3());
+    const centre = bounds.isEmpty() ? defaultTarget.clone() : bounds.getCenter(new THREE.Vector3());
     const aspect = host.clientWidth / Math.max(1, host.clientHeight);
 
     if (mode === "compact") {
@@ -243,8 +291,8 @@ export function createExplorer(options: ExplorerOptions): Explorer {
     controls.update();
   };
 
-  // Keep panning near the house
-  const panLimit = new THREE.Box3(new THREE.Vector3(-12, -0.5, -20), new THREE.Vector3(12, 12, 20));
+  // Keep panning near the model
+  const panLimit = new THREE.Box3(new THREE.Vector3(...stage.panLimit[0]), new THREE.Vector3(...stage.panLimit[1]));
   const clampTarget = () => {
     const clamped = controls.target.clone().clamp(panLimit.min, panLimit.max);
     if (clamped.equals(controls.target)) return;
@@ -297,8 +345,8 @@ export function createExplorer(options: ExplorerOptions): Explorer {
     return material;
   };
 
-  let hovered: GroupId | null = null;
-  let selected: GroupId | null = null;
+  let hovered: string | null = null;
+  let selected: string | null = null;
   const paint = () => {
     for (const mesh of model.meshes) {
       const tag = mesh.userData as MeshTag;
@@ -312,7 +360,7 @@ export function createExplorer(options: ExplorerOptions): Explorer {
   // Picking ------------------------------------------------------------------------------------------
   const raycaster = new THREE.Raycaster();
   const pointer = new THREE.Vector2();
-  const pick = (clientX: number, clientY: number): GroupId | null => {
+  const pick = (clientX: number, clientY: number): string | null => {
     const rect = canvas.getBoundingClientRect();
     pointer.set(((clientX - rect.left) / rect.width) * 2 - 1, -((clientY - rect.top) / rect.height) * 2 + 1);
     raycaster.setFromCamera(pointer, camera);
@@ -388,7 +436,7 @@ export function createExplorer(options: ExplorerOptions): Explorer {
 
   // Public API -------------------------------------------------------------------------------------
   let explodeAmount = 0;
-  const groupVisible = (id: GroupId) => {
+  const groupVisible = (id: string) => {
     const group = model.groups.get(id);
     return !!group && group.children.some((child) => child.visible);
   };
@@ -416,7 +464,7 @@ export function createExplorer(options: ExplorerOptions): Explorer {
     setExplode(amount) {
       explodeAmount = THREE.MathUtils.clamp(amount, 0, 1);
       for (const [id, group] of model.groups) {
-        const [x, y, z] = explode[id];
+        const [x, y, z] = definition.explode[id] ?? [0, 0, 0];
         // Exactly the authored position at 0: no accumulated offsets
         group.position.set(x * explodeAmount, y * explodeAmount, z * explodeAmount);
       }
@@ -424,8 +472,8 @@ export function createExplorer(options: ExplorerOptions): Explorer {
       requestRender();
     },
     setView(id) {
-      const maxRank = views.find((view) => view.id === id)?.maxRank ?? 3;
-      for (const mesh of model.meshes) mesh.visible = levelRank[(mesh.userData as MeshTag).level] <= maxRank;
+      const maxRank = definition.views?.find((view) => view.id === id)?.maxRank ?? Infinity;
+      for (const mesh of model.meshes) mesh.visible = (definition.levelRank?.[(mesh.userData as MeshTag).level] ?? 0) <= maxRank;
       if (selected && !groupVisible(selected)) {
         api.select(null);
         options.onSelect(null);

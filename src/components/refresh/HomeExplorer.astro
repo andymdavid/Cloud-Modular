@@ -528,13 +528,17 @@ const expandIcon = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" 
       loading ??= (async () => {
         setStatus("Loading 3D model…");
         try {
-          const { createExplorer, webglAvailable } = await import("@/lib/explorer/viewer");
+          const [{ createExplorer, webglAvailable }, { jurienScene }] = await Promise.all([
+            import("@/lib/explorer/viewer"),
+            import("@/lib/explorer/jurien-scene"),
+          ]);
           if (!webglAvailable()) {
             fail("3D view isn't available in this browser. Showing a still of the model instead.");
             return null;
           }
           explorer = createExplorer({
             host,
+            scene: jurienScene,
             reducedMotion,
             onSelect: showDetails,
             onExit: () => dialog.close(),
