@@ -2,6 +2,7 @@
 import RefreshLayout from "@/layouts/RefreshLayout.astro";
 import PageIntro from "@/components/refresh/PageIntro.astro";
 import FaqSection from "@/components/refresh/FaqSection.astro";
+import GetStarted from "@/components/refresh/GetStarted.astro";
 import { faqItems, faqTopics } from "@/data/site";
 
 const title = "FAQ | Cloud Modular";
@@ -24,4 +25,6 @@ const faqSchema = {
   {faqTopics.filter((topic) => faqItems.some((item) => item.topic === topic.id)).map((topic) => (
     <FaqSection topic={topic.id} label={topic.label} more={false} ownOnly />
   ))}
+
+  <GetStarted />
 </RefreshLayout>

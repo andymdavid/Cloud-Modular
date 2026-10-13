@@ -3,6 +3,7 @@ import RefreshLayout from "@/layouts/RefreshLayout.astro";
 import PageIntro from "@/components/refresh/PageIntro.astro";
 import SplitSection from "@/components/refresh/SplitSection.astro";
 import FaqSection from "@/components/refresh/FaqSection.astro";
+import GetStarted from "@/components/refresh/GetStarted.astro";
 import { advantages, whyNow } from "@/data/site";
 
 const title = "Why Cloud Modular | Cloud Modular";
@@ -68,4 +69,6 @@ const stats = [
   </section>
 
   <FaqSection id="faq" topic="why" rule={false} />
+
+  <GetStarted />
 </RefreshLayout>
