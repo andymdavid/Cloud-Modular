@@ -371,21 +371,22 @@ export const faqItems = [
 ] as const;
 
 // Delivery partners on /about/, shown as single-colour logos (alpha masks in /partners/, made from the files in
-// Design-Docs/Partner Logos). Width and height are the mask's pixels, used to balance the logos' optical size.
+// Design-Docs/Partner Logos). Width and height are the mask's pixels and `ink` the share of the mask that is
+// filled; together they balance the logos' optical size.
 export const partners = [
-  { slug: "kellett", name: "Kellett Design Group", width: 626, height: 67 },
-  { slug: "mvp-group", name: "MVP Group", width: 321, height: 177 },
-  { slug: "mvp-consultants", name: "MVP Consultants", width: 369, height: 204 },
-  { slug: "cdi-group", name: "CDI Group", width: 420, height: 93 },
-  { slug: "buildsource", name: "Buildsource", width: 536, height: 84 },
-  { slug: "decobu", name: "Decobu", width: 712, height: 132 },
-  { slug: "hart", name: "Hart & Co.", width: 487, height: 216 },
-  { slug: "pbm", name: "Perth Building and Maintenance", width: 223, height: 223 },
-  { slug: "steadfast", name: "Steadfast Roofing", width: 412, height: 236 },
-  { slug: "geniux", name: "Geniux Cleantech", width: 788, height: 294 },
-  { slug: "peerless", name: "Peerless Finance", width: 511, height: 103 },
-  { slug: "seashells", name: "Seashells", width: 344, height: 222 },
-  { slug: "jurien-bay-resort", name: "Jurien Bay Resort", width: 555, height: 316 },
+  { slug: "kellett", name: "Kellett Design Group", width: 626, height: 67, ink: 0.255 },
+  { slug: "mvp-group", name: "MVP Group", width: 321, height: 177, ink: 0.172 },
+  { slug: "mvp-consultants", name: "MVP Consultants", width: 369, height: 204, ink: 0.191 },
+  { slug: "cdi-group", name: "CDI Group", width: 420, height: 93, ink: 0.402 },
+  { slug: "buildsource", name: "Buildsource", width: 536, height: 84, ink: 0.301 },
+  { slug: "decobu", name: "Decobu", width: 712, height: 132, ink: 0.5 },
+  { slug: "hart", name: "Hart & Co.", width: 487, height: 216, ink: 0.198 },
+  { slug: "pbm", name: "Perth Building and Maintenance", width: 223, height: 223, ink: 0.365 },
+  { slug: "steadfast", name: "Steadfast Roofing", width: 412, height: 236, ink: 0.104 },
+  { slug: "geniux", name: "Geniux Cleantech", width: 788, height: 294, ink: 0.338 },
+  { slug: "peerless", name: "Peerless Finance", width: 511, height: 103, ink: 0.149 },
+  { slug: "seashells", name: "Seashells", width: 344, height: 222, ink: 0.106 },
+  { slug: "jurien-bay-resort", name: "Jurien Bay Resort", width: 555, height: 316, ink: 0.094 },
 ] as const;
 
 export const team = [
