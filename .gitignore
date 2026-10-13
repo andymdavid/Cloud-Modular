@@ -40,4 +40,5 @@ yarn-error.log*
 
 # project docs
 Design-Docs/**/*.md
+Design-Docs/**/*.pdf
 SEO-STRATEGY.md
