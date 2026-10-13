@@ -69,7 +69,7 @@ export const buildUps = {
     {
       kind: "walls",
       title: "Walls",
-      body: "Inside, the walls are finished in a 4\u00a0mm decorative board over 13\u00a0mm fire-rated plasterboard and a vapour barrier. Light-gauge steel studs hold 125\u00a0mm of rock wool under 9\u00a0mm fibre cement board and a breathable membrane. The aluminium cladding is fixed on site.",
+      body: "Inside, the walls are finished in a 4\u00a0mm decorative board over 13\u00a0mm fire-rated plasterboard and a vapour barrier. Light-gauge steel studs hold 125\u00a0mm of rock wool behind 9\u00a0mm fibre cement board. The breathable membrane, battens and aluminium cladding are fixed on site.",
     },
     {
       kind: "ceiling",

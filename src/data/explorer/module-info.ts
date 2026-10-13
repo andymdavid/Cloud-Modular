@@ -37,12 +37,13 @@ export const moduleParts: (ExplorerPart & { id: GroupId })[] = [
   {
     id: "walls",
     name: "Wall system",
-    summary: "Light-gauge steel studs filled with rock wool, lined inside with fire-rated plasterboard and sheathed outside in fibre cement board and a breathable membrane. The cladding is fixed on site.",
+    summary: "Light-gauge steel studs filled with rock wool, lined inside with fire-rated plasterboard and sheathed outside in fibre cement board. The breathable membrane, battens and cladding are fixed on site.",
     facts: [
       { label: "Lining", value: "4 mm finish board on 13 mm fire-rated plasterboard" },
-      { label: "Insulation", value: "125 mm rock wool" },
+      { label: "Framing", value: "150 mm light-gauge steel studs" },
+      { label: "Insulation", value: "125 mm rock wool board" },
       { label: "Sheathing", value: "9 mm fibre cement board" },
-      { label: "Cladding", value: "2 mm aluminium on battens, fixed on site" },
+      { label: "Fixed on site", value: "Breathable membrane, battens and 2 mm aluminium cladding" },
     ],
   },
   {

@@ -90,7 +90,7 @@ export const PROFILES = {
   floorJoist: { depth: 0.16, flange: 0.06, spacing: 0.4 }, // C160×60×20×2.0 at 400 mm
   roofJoist: { depth: 0.14, flange: 0.05, spacing: 1.2 }, // C140×50×20×2.0 at 1200 mm
   brace: { width: 0.08, thickness: 0.012 }, // indicative flat bar; the proposal shows X-bracing, not its size
-  stud: { width: 0.075, depth: 0.15, spacing: 0.6 }, // light-gauge studs; depth and spacing indicative
+  stud: { width: 0.075, depth: 0.15, spacing: 0.6 }, // 150 light-gauge studs (proposal 3.3); width and spacing indicative
 };
 
 /** Layer thicknesses in metres (proposal 3.3). Very thin sheets are drawn at a visible minimum. */
@@ -109,7 +109,7 @@ export const WALL = {
   vapour: 0.00035, // PE vapour barrier
   insulation: 0.125, // rock wool between the studs
   board: 0.009, // fibre cement
-  membrane: 0.00035, // breathable membrane
+  membrane: 0.00035, // breathable membrane, fixed on site (proposal drawing; its table puts it inside the board)
   batten: 0.025, // keel (thickness indicative), fixed on site
   cladding: 0.002, // aluminium, fixed on site
 };
