@@ -34,24 +34,25 @@ const stats = [
     <p class="mt-10 max-w-measure text-body text-fg-muted">{whyNow.body}</p>
   </SplitSection>
 
-  <!-- Slate 50/50 split (cf. olympic.no "Origin matters"): label, title and button left, numerals in sage right,
-       then the six advantages as numbered columns under hairline rules -->
-  <section id="why-modular" data-theme="dark" data-surface="slate" class="scroll-mt-header py-section">
-    <div class="shell">
-      <div class="grid-12 gap-y-12">
-        <div class="col-span-12 lg:col-span-5" data-reveal>
-          <p class="label">By the numbers</p>
-          <h2 class="mt-5 text-h2 sm:mt-6">Our modular advantage</h2>
-          <a href="/quality/" class="btn mt-10">How every module is made and checked</a>
+  <!-- By the numbers: the four figures in the Why now style -->
+  <SplitSection id="numbers" label="By the numbers">
+    <dl class="grid w-full grid-cols-2 gap-x-gap-sm gap-y-10">
+      {stats.map((stat, index) => (
+        <div class="flex flex-col border-t border-line/[var(--rule-alpha)] pt-5" data-reveal style={`--reveal-delay:${index * 80}ms`}>
+          <dt class="order-2 mt-3 max-w-[24ch] text-small text-fg-muted">{stat.label}</dt>
+          <dd class="order-1 text-h1 tabular-nums">{stat.value}</dd>
         </div>
-        <dl class="col-span-12 grid grid-cols-2 gap-x-gap-sm gap-y-10 self-end lg:col-span-6 lg:col-start-7">
-          {stats.map((stat, index) => (
-            <div class="flex flex-col border-t border-line/[var(--rule-alpha)] pt-5" data-reveal style={`--reveal-delay:${index * 80}ms`}>
-              <dt class="order-2 mt-3 max-w-[24ch] text-small text-fg-muted">{stat.label}</dt>
-              <dd class="order-1 text-h1 tabular-nums text-sage">{stat.value}</dd>
-            </div>
-          ))}
-        </dl>
+      ))}
+    </dl>
+  </SplitSection>
+
+  <!-- Advantages on slate: label, title and button, then six numbered columns under hairline rules -->
+  <section id="advantages" data-theme="dark" data-surface="slate" class="scroll-mt-header py-section">
+    <div class="shell">
+      <div data-reveal>
+        <p class="label">Advantages</p>
+        <h2 class="mt-5 text-h2 sm:mt-6">Our modular advantage</h2>
+        <a href="/quality/" class="btn mt-10">How every module is made and checked</a>
       </div>
 
       <ol class="mt-section-sm grid gap-x-gap-sm gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
