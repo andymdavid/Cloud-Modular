@@ -1,0 +1,669 @@
+---
+/**
+ * A 3D model section (How It's Made on the home page, The module on /quality/): copy on the left, a live model
+ * below it in the wide row. In the page the model only turns (sideways drag), so it never gets in the way of
+ * scrolling; "Open 3D view" moves the same canvas into a full-screen dialog with the full tools. An optional still
+ * stays in place until WebGL is ready (and for no-JS or no-WebGL visitors). three.js loads only as the section
+ * approaches the viewport. `scene` picks the model (see the loader map in the script); parts, views and wording
+ * come in as props.
+ */
+import type { ExplorerPart } from "@/lib/explorer/parts";
+
+interface Props {
+  /** Section id; also prefixes the ids inside, so several explorers can share a page. */
+  id: string;
+  scene: "jurien" | "module";
+  /** Divider above the section; off when it follows a full-bleed image. */
+  rule?: boolean;
+  label: string;
+  body: string;
+  /** Name shown on the stage and in the full view. */
+  stageLabel: string;
+  /** What the hint says you turn, e.g. "the home". */
+  subject: string;
+  /** Parts in the order of the part list. */
+  parts: readonly ExplorerPart[];
+  /** Visibility views (the Show chips); the first is the default. None hides the control. */
+  views?: readonly { id: string; label: string }[];
+  /** Small heading above a selected part's name. */
+  partKind: string;
+  /** Note under the assembly slider. */
+  explodeNote: string;
+  fallback?: { src: string; alt: string; width: number; height: number };
+}
+
+const { id, scene, rule = true, label, body, stageLabel, subject, parts, views = [], partKind, explodeNote, fallback } = Astro.props;
+const uid = `explorer-${id}`;
+
+const expandIcon = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M8.5 2.5h3v3M5.5 11.5h-3v-3M11.5 2.5 8 6M2.5 11.5 6 8" stroke="currentColor" stroke-width="1.2" /></svg>`;
+---
+
+<section
+  id={id}
+  data-theme="light"
+  class="scroll-mt-header pb-section"
+  data-explorer
+  data-scene={scene}
+  data-parts={JSON.stringify(parts)}
+  data-default-view={views[0]?.id ?? ""}
+>
+  <!-- Row 1, as About: label in the left half; one paragraph and the button in the right half -->
+  <div class="shell">
+    <div class:list={["grid-12 gap-y-6 pt-section", { rule }]}>
+      <h2 class="label col-span-12 md:col-span-6" data-reveal>{label}</h2>
+      <div class="col-span-12 flex flex-col items-start md:col-span-6 md:col-start-7" data-reveal>
+        <p class="text-about">{body}</p>
+        <button type="button" class="btn mt-10" data-js-only data-open>
+          <Fragment set:html={expandIcon} />
+          Open 3D view
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 2: the model, the same width and height as the two Difference tiles together (wide row) -->
+  <div class="wide-row mt-section-sm">
+    <div data-reveal style="--reveal-delay:100ms">
+        <div class="explorer-stage relative overflow-hidden rounded bg-surface-quiet" data-stage>
+          {fallback && (
+            <img
+              src={fallback.src}
+              alt={fallback.alt}
+              width={fallback.width}
+              height={fallback.height}
+              loading="lazy"
+              decoding="async"
+              class="explorer-fallback absolute inset-0 h-full w-full object-contain"
+              data-fallback
+            />
+          )}
+          <!-- The canvas lives here in the page and moves into the dialog's stage when the full view opens -->
+          <div class="absolute inset-0" data-compact-slot>
+            <div class="explorer-canvas absolute inset-0" data-canvas-host></div>
+          </div>
+
+          <p class="label pointer-events-none absolute left-4 top-4 sm:left-5 sm:top-5">{stageLabel}</p>
+          <p class="pointer-events-none absolute left-4 top-10 max-w-[28ch] text-caption text-fg-muted sm:left-5 sm:top-11" role="status" aria-live="polite" data-status></p>
+
+          <p class="explorer-hint pointer-events-none absolute bottom-4 left-4 text-caption text-fg-muted sm:bottom-5 sm:left-5" aria-hidden="true" data-hint>
+            <span class="hint-fine">Drag to turn {subject}</span>
+            <span class="hint-coarse">Swipe sideways to turn {subject}</span>
+          </p>
+          <button type="button" class="icon-btn absolute right-4 top-4 sm:right-5 sm:top-5" aria-label="Open 3D view" data-js-only data-open>
+            <Fragment set:html={expandIcon} />
+          </button>
+        </div>
+    </div>
+  </div>
+
+  <!-- Full view: same canvas, every tool. Esc or Close returns to the page where the visitor left it. -->
+  <dialog class="explorer-dialog" aria-label={`${stageLabel}, 3D view`} data-dialog>
+    <div class="flex h-full flex-col overflow-y-auto lg:overflow-hidden">
+      <div class="relative min-h-[55svh] flex-1 bg-surface-quiet lg:min-h-0" data-full-slot>
+        <div class="pointer-events-none absolute inset-0 z-10">
+          <div class="absolute bottom-3 left-4 right-4 sm:bottom-auto sm:left-5 sm:right-auto sm:top-5 sm:max-w-[34ch]">
+            <p class="label">{stageLabel}</p>
+            <p class="mt-3 text-caption text-fg-muted">
+              <span class="hint-fine">Drag to rotate, scroll to zoom, right-drag to pan. Click a part for details. Arrow keys also rotate.</span>
+              <span class="hint-coarse">Drag to rotate, pinch to zoom, two fingers to pan. Tap a part for details.</span>
+            </p>
+          </div>
+          <div class="pointer-events-auto absolute right-4 top-4 flex items-center gap-2 sm:right-5 sm:top-5">
+            <button type="button" class="icon-btn" data-rotate="-1" aria-label="Rotate left">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 7a4 4 0 1 0 1.2-2.85M3 2.5v2.2h2.2" stroke="currentColor" stroke-width="1.2" /></svg>
+            </button>
+            <button type="button" class="icon-btn" data-rotate="1" aria-label="Rotate right">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M11 7a4 4 0 1 1-1.2-2.85M11 2.5v2.2H8.8" stroke="currentColor" stroke-width="1.2" /></svg>
+            </button>
+            <button type="button" class="icon-btn" data-zoom="out" aria-label="Zoom out">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 7h8" stroke="currentColor" stroke-width="1.2" /></svg>
+            </button>
+            <button type="button" class="icon-btn" data-zoom="in" aria-label="Zoom in">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 7h8M7 3v8" stroke="currentColor" stroke-width="1.2" /></svg>
+            </button>
+            <button type="button" class="btn ml-2" data-close>Close</button>
+          </div>
+        </div>
+
+        <!-- Details: overlays the stage's bottom-left on large screens, sits below the stage on small ones -->
+        <aside class="explorer-details" hidden data-details aria-labelledby={`${uid}-details-title`}>
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <p class="label label-muted">{partKind}</p>
+              <h3 id={`${uid}-details-title`} class="mt-1 text-body font-medium" data-details-title></h3>
+            </div>
+            <button type="button" class="icon-btn shrink-0" data-details-close aria-label="Clear selection">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="m2.5 2.5 7 7m0-7-7 7" stroke="currentColor" stroke-width="1.2" /></svg>
+            </button>
+          </div>
+          <p class="mt-2 text-small text-fg-muted" data-details-summary></p>
+          <dl class="mt-3 divide-y divide-line/10 border-t border-line/10 text-small" data-details-facts></dl>
+        </aside>
+      </div>
+
+      <div class="grid gap-x-gap gap-y-4 border-t border-line/[var(--rule-alpha)] px-4 py-4 sm:px-6 lg:grid-cols-[minmax(0,1fr)_auto_auto] lg:items-end" data-controls>
+        <div class="min-w-0 lg:max-w-[34rem]">
+          <div class="flex items-baseline justify-between gap-4">
+            <label for={`${uid}-explode`} class="label label-muted">Assembly</label>
+            <span class="label tabular-nums text-fg" aria-hidden="true" data-explode-readout>Assembled</span>
+          </div>
+          <div class="explorer-slider mt-2">
+            <input id={`${uid}-explode`} type="range" min="0" max="100" step="1" value="0" class="explorer-range" style="--fill:0%" aria-valuetext="Assembled" data-explode />
+            <div class="explorer-ticks" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+          </div>
+          <div class="mt-1 flex justify-between" aria-hidden="true">
+            <span class="label label-muted">Assembled</span>
+            <span class="label label-muted">Separated</span>
+          </div>
+          <p class="mt-2 text-caption text-fg-subtle">{explodeNote}</p>
+        </div>
+
+        <div class:list={{ invisible: views.length === 0 }} aria-hidden={views.length === 0 ? "true" : undefined}>
+          {views.length > 0 && (
+            <>
+              <p class="label label-muted" id={`${uid}-view-label`}>Show</p>
+              <div class="-mx-4 mt-2 flex gap-1.5 overflow-x-auto px-4 sm:mx-0 sm:flex-wrap sm:px-0" role="group" aria-labelledby={`${uid}-view-label`}>
+                {views.map((view, index) => (
+                  <button type="button" class="explorer-chip" aria-pressed={index === 0 ? "true" : "false"} data-view={view.id}>
+                    {view.label}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+
+        <div class="flex flex-wrap items-end gap-3">
+          <div>
+            <label for={`${uid}-part`} class="label label-muted">Part</label>
+            <select id={`${uid}-part`} class="explorer-select mt-2 block" data-part>
+              <option value="">None selected</option>
+              {parts.map((part) => <option value={part.id}>{part.name}</option>)}
+            </select>
+          </div>
+          <button type="button" class="btn" data-reset>Reset view</button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+</section>
+
+<style>
+  html:not(.js) [data-js-only],
+  [data-explorer] [hidden] {
+    display: none !important;
+  }
+
+  /* Stage size matches one Difference tile in height: phones 357:509 (full row width), md+ the row of two
+     tiles at 690:638 each, so the height is half the row (less the gap) scaled to 638/690 */
+  .explorer-stage {
+    aspect-ratio: 357 / 509;
+  }
+
+  @media (min-width: 48rem) {
+    .explorer-stage {
+      aspect-ratio: auto;
+      height: calc((min(100vw, var(--page-max)) - var(--gutter) - var(--gap-sm)) / 2 * 638 / 690);
+    }
+  }
+
+  /* The canvas only takes pointer input once the model has replaced the still. Keyed on the section, not the
+     stage, because the canvas moves into the dialog for the full view. */
+  .explorer-canvas {
+    pointer-events: none;
+  }
+
+  [data-explorer][data-ready] .explorer-canvas {
+    pointer-events: auto;
+  }
+
+  .explorer-fallback {
+    transition: opacity var(--dur-slow) var(--ease-standard);
+  }
+
+  .explorer-stage[data-ready]:not([data-away]) .explorer-fallback {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .explorer-hint,
+  [data-explorer] [data-open] {
+    transition: opacity var(--dur-base) var(--ease-standard);
+  }
+
+  .explorer-stage:not([data-ready]) .explorer-hint,
+  .explorer-stage[data-away] .explorer-hint {
+    opacity: 0;
+  }
+
+  /* Pointer-specific hints: mouse and trackpad vs touch */
+  .hint-coarse {
+    display: none;
+  }
+
+  @media (pointer: coarse) {
+    .hint-fine {
+      display: none;
+    }
+
+    .hint-coarse {
+      display: inline;
+    }
+  }
+
+  .explorer-dialog {
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: rgb(var(--surface));
+    color: rgb(var(--fg));
+  }
+
+  .explorer-dialog::backdrop {
+    background: rgb(var(--surface));
+  }
+
+  .explorer-chip {
+    flex-shrink: 0;
+    height: 2rem;
+    padding-inline: 0.875rem;
+    border: var(--rule) solid rgb(var(--fg) / 0.25);
+    border-radius: var(--radius-media);
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    line-height: 1;
+    color: rgb(var(--fg));
+    transition:
+      background-color var(--dur-base) var(--ease-standard),
+      border-color var(--dur-base) var(--ease-standard),
+      color var(--dur-base) var(--ease-standard);
+  }
+
+  .explorer-chip:hover {
+    border-color: rgb(var(--fg));
+  }
+
+  .explorer-chip[aria-pressed="true"] {
+    background: rgb(var(--fg));
+    border-color: rgb(var(--fg));
+    color: rgb(var(--surface));
+  }
+
+  .explorer-select {
+    height: 2rem;
+    max-width: 16rem;
+    padding-inline: 0.75rem 2rem;
+    border: var(--rule) solid rgb(var(--fg) / 0.25);
+    border-radius: var(--radius-media);
+    background: transparent
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='m1 1 4 4 4-4' stroke='%230B0B0C' stroke-width='1.2'/%3E%3C/svg%3E")
+      no-repeat right 0.75rem center;
+    font-size: var(--text-small);
+    color: rgb(var(--fg));
+    appearance: none;
+  }
+
+  /* Assembly slider: hairline track that fills in ink up to the handle, five ticks, and a square handle in the
+     button language (4px radius) that lifts on hover and drag */
+  .explorer-slider {
+    position: relative;
+    height: 2rem;
+  }
+
+  .explorer-range {
+    --track: rgb(var(--fg) / 0.14);
+    --ink: rgb(var(--fg));
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: 2rem;
+    margin: 0;
+    background: transparent;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  .explorer-range::-webkit-slider-runnable-track {
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(to right, var(--ink) var(--fill), var(--track) var(--fill));
+  }
+
+  .explorer-range::-moz-range-track {
+    height: 2px;
+    border-radius: 2px;
+    background: var(--track);
+  }
+
+  .explorer-range::-moz-range-progress {
+    height: 2px;
+    border-radius: 2px;
+    background: var(--ink);
+  }
+
+  .explorer-range::-webkit-slider-thumb {
+    width: 1.125rem;
+    height: 1.125rem;
+    margin-top: calc(-0.5625rem + 1px);
+    border: 0;
+    border-radius: var(--radius-media);
+    background: var(--ink);
+    box-shadow:
+      0 0 0 4px rgb(var(--surface)),
+      0 2px 8px rgb(11 11 12 / 0.18);
+    transition: transform var(--dur-fast) var(--ease-out);
+    -webkit-appearance: none;
+  }
+
+  .explorer-range::-moz-range-thumb {
+    width: 1.125rem;
+    height: 1.125rem;
+    border: 0;
+    border-radius: var(--radius-media);
+    background: var(--ink);
+    box-shadow:
+      0 0 0 4px rgb(var(--surface)),
+      0 2px 8px rgb(11 11 12 / 0.18);
+    transition: transform var(--dur-fast) var(--ease-out);
+  }
+
+  .explorer-range:hover::-webkit-slider-thumb,
+  .explorer-range:active::-webkit-slider-thumb {
+    transform: scale(1.15);
+  }
+
+  .explorer-range:hover::-moz-range-thumb,
+  .explorer-range:active::-moz-range-thumb {
+    transform: scale(1.15);
+  }
+
+  .explorer-range:focus-visible {
+    outline: none;
+  }
+
+  .explorer-range:focus-visible::-webkit-slider-thumb {
+    box-shadow:
+      0 0 0 4px rgb(var(--surface)),
+      0 0 0 5px rgb(var(--fg));
+  }
+
+  .explorer-range:focus-visible::-moz-range-thumb {
+    box-shadow:
+      0 0 0 4px rgb(var(--surface)),
+      0 0 0 5px rgb(var(--fg));
+  }
+
+  /* Ticks at 0, 25, 50, 75 and 100%, centred on the track under the handle's travel */
+  .explorer-ticks {
+    position: absolute;
+    inset: 0 0.5625rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    pointer-events: none;
+  }
+
+  .explorer-ticks span {
+    width: 1px;
+    height: 0.5rem;
+    background: rgb(var(--fg) / 0.25);
+  }
+
+
+  /* Details panel: below the stage on small screens so it never covers the home */
+  .explorer-details {
+    position: static;
+    background: rgb(var(--surface));
+    padding: 1rem 1rem 0.25rem;
+    border-top: var(--rule) solid rgb(var(--line) / var(--rule-alpha));
+  }
+
+  @media (min-width: 64rem) {
+    [data-full-slot] .explorer-details {
+      position: absolute;
+      z-index: 10;
+      left: 1.25rem;
+      bottom: 1.25rem;
+      width: 19rem;
+      max-height: none;
+      padding: 1rem 1.125rem 0.5rem;
+      border-top: 0;
+      background: rgb(var(--surface) / 0.94);
+      backdrop-filter: blur(6px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .explorer-fallback,
+    .explorer-hint,
+    .explorer-chip,
+    [data-explorer] [data-open] {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import type { Explorer, ExplorerScene } from "@/lib/explorer/viewer";
+  import type { ExplorerPart } from "@/lib/explorer/parts";
+
+  // Each scene loads with the viewer, only when its section approaches
+  const scenes: Record<string, () => Promise<ExplorerScene>> = {
+    jurien: () => import("@/lib/explorer/jurien-scene").then((m) => m.jurienScene),
+    module: () => import("@/lib/explorer/module-scene").then((m) => m.moduleScene),
+  };
+
+  document.querySelectorAll<HTMLElement>("[data-explorer]").forEach(init);
+
+  function init(root: HTMLElement) {
+    const $ = <T extends Element>(selector: string) => root.querySelector<T>(selector)!;
+    const parts = new Map((JSON.parse(root.dataset.parts ?? "[]") as ExplorerPart[]).map((part) => [part.id, part]));
+    const defaultView = root.dataset.defaultView || null;
+    const stage = $<HTMLElement>("[data-stage]");
+    const host = $<HTMLElement>("[data-canvas-host]");
+    const compactSlot = $<HTMLElement>("[data-compact-slot]");
+    const fullSlot = $<HTMLElement>("[data-full-slot]");
+    const dialog = $<HTMLDialogElement>("[data-dialog]");
+    const status = $<HTMLElement>("[data-status]");
+    const openButtons = [...root.querySelectorAll<HTMLButtonElement>("[data-open]")];
+    const explodeInput = $<HTMLInputElement>("[data-explode]");
+    const partSelect = $<HTMLSelectElement>("[data-part]");
+    const viewButtons = [...root.querySelectorAll<HTMLButtonElement>("[data-view]")];
+    const controls = $<HTMLElement>("[data-controls]");
+
+    // One details panel, over the stage on large screens and between the stage and controls on small ones
+    const details = $<HTMLElement>("[data-details]");
+    const detailsTitle = $<HTMLElement>("[data-details-title]");
+    const detailsSummary = $<HTMLElement>("[data-details-summary]");
+    const detailsFacts = $<HTMLElement>("[data-details-facts]");
+    const wide = window.matchMedia("(min-width: 64rem)");
+    const placeDetails = () => {
+      if (wide.matches) fullSlot.appendChild(details);
+      else controls.before(details);
+    };
+    placeDetails();
+    wide.addEventListener("change", placeDetails);
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let explorer: Explorer | null = null;
+    let loading: Promise<Explorer | null> | null = null;
+    let opener: HTMLButtonElement | null = null;
+    let initialExplode = 0; // percent; set from the scene once it loads
+
+    const setStatus = (text: string) => (status.textContent = text);
+
+    const showDetails = (id: string | null) => {
+      partSelect.value = id ?? "";
+      const info = id ? parts.get(id) : undefined;
+      if (!info) {
+        details.hidden = true;
+        return;
+      }
+      detailsTitle.textContent = info.name;
+      detailsSummary.textContent = info.summary;
+      detailsFacts.replaceChildren(
+        ...info.facts.map((fact) => {
+          const row = document.createElement("div");
+          row.className = "flex items-baseline justify-between gap-4 py-2";
+          const dt = document.createElement("dt");
+          dt.className = "text-fg-muted";
+          dt.textContent = fact.label;
+          const dd = document.createElement("dd");
+          dd.className = "text-right";
+          dd.textContent = fact.value;
+          if (fact.source) {
+            const source = document.createElement("span");
+            source.className = "block text-caption text-fg-subtle";
+            source.textContent = fact.source;
+            dd.append(" ", source);
+          }
+          row.append(dt, dd);
+          return row;
+        }),
+      );
+      details.hidden = false;
+    };
+
+    const syncPartOptions = () => {
+      if (!explorer) return;
+      for (const option of partSelect.options) {
+        if (option.value) option.disabled = !explorer.isGroupVisible(option.value);
+      }
+    };
+
+    const setView = (id: string | null) => {
+      if (!id) return;
+      viewButtons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.view === id)));
+      explorer?.setView(id);
+      syncPartOptions();
+    };
+
+    const explodeReadout = $<HTMLElement>("[data-explode-readout]");
+    const setExplode = (value: number) => {
+      explodeInput.value = String(value);
+      explodeInput.style.setProperty("--fill", `${value}%`);
+      explodeReadout.textContent = value === 0 ? "Assembled" : value === 100 ? "Separated" : `${value}%`;
+      explodeInput.setAttribute("aria-valuetext", value === 0 ? "Assembled" : value === 100 ? "Fully separated" : `${value}% separated`);
+      explorer?.setExplode(value / 100);
+    };
+
+    const fail = (message: string) => {
+      if (dialog.open) dialog.close();
+      setStatus(message);
+      stage.removeAttribute("data-ready");
+      root.removeAttribute("data-ready");
+      openButtons.forEach((button) => (button.hidden = true));
+      explorer?.dispose();
+      explorer = null;
+    };
+
+    const still = root.querySelector("[data-fallback]") ? " Showing a still of the model instead." : "";
+    const load = () => {
+      loading ??= (async () => {
+        setStatus("Loading 3D model…");
+        try {
+          const [{ createExplorer, webglAvailable }, scene] = await Promise.all([
+            import("@/lib/explorer/viewer"),
+            scenes[root.dataset.scene ?? ""](),
+          ]);
+          if (!webglAvailable()) {
+            fail(`3D view isn't available in this browser.${still}`);
+            return null;
+          }
+          explorer = createExplorer({
+            host,
+            scene,
+            reducedMotion,
+            onSelect: showDetails,
+            onExit: () => dialog.close(),
+            onError: () => fail("The 3D view stopped responding. Reload the page to try again."),
+          });
+          if (import.meta.env.DEV) Object.assign(window, { [`__cmExplorer_${root.id}`]: explorer });
+          initialExplode = Math.round((scene.initialExplode ?? 0) * 100);
+          setExplode(initialExplode);
+          stage.setAttribute("data-ready", "");
+          root.setAttribute("data-ready", "");
+          setStatus("");
+          syncPartOptions();
+          return explorer;
+        } catch (error) {
+          console.error("[explorer]", error);
+          fail(`The 3D model couldn't load.${still}`);
+          return null;
+        }
+      })();
+      return loading;
+    };
+
+    const open = async (button: HTMLButtonElement) => {
+      if (!(await load()) || dialog.open) return;
+      opener = button;
+      fullSlot.prepend(host);
+      stage.setAttribute("data-away", "");
+      document.documentElement.style.overflow = "hidden";
+      dialog.showModal();
+      explorer?.setMode("full");
+    };
+
+    // Closing (Close, Esc or the browser's own dismissal) puts the canvas back and resets the full-view state
+    dialog.addEventListener("close", () => {
+      document.documentElement.style.overflow = "";
+      compactSlot.append(host);
+      stage.removeAttribute("data-away");
+      explorer?.select(null);
+      showDetails(null);
+      setExplode(initialExplode);
+      setView(defaultView);
+      explorer?.setMode("compact");
+      opener?.focus({ preventScroll: true });
+    });
+
+    openButtons.forEach((button) => button.addEventListener("click", () => open(button)));
+    $<HTMLButtonElement>("[data-close]").addEventListener("click", () => dialog.close());
+
+    explodeInput.addEventListener("input", () => setExplode(Number(explodeInput.value)));
+    viewButtons.forEach((button) => button.addEventListener("click", () => setView(button.dataset.view ?? null)));
+    partSelect.addEventListener("change", () => {
+      const id = partSelect.value || null;
+      explorer?.select(id);
+      showDetails(id);
+    });
+    $<HTMLButtonElement>("[data-details-close]").addEventListener("click", () => {
+      explorer?.select(null);
+      showDetails(null);
+    });
+    $<HTMLButtonElement>("[data-reset]").addEventListener("click", () => explorer?.resetView());
+    for (const button of root.querySelectorAll<HTMLButtonElement>("[data-rotate]")) {
+      button.addEventListener("click", () => explorer?.rotate((Number(button.dataset.rotate) * Math.PI) / 12, 0));
+    }
+    for (const button of root.querySelectorAll<HTMLButtonElement>("[data-zoom]")) {
+      button.addEventListener("click", () => explorer?.zoom(button.dataset.zoom === "in" ? 1.25 : 0.8));
+    }
+
+    // Start loading as the section approaches, so the page itself is never held up
+    const approach = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        approach.disconnect();
+        load();
+      },
+      { rootMargin: "50% 0px" },
+    );
+    approach.observe(root);
+
+    window.addEventListener("pagehide", (event) => {
+      if (event.persisted) return;
+      explorer?.dispose();
+      explorer = null;
+    });
+  }
+</script>

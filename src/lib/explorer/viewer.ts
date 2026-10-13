@@ -22,6 +22,8 @@ export interface MeshTag {
   group: string | null;
   level: string;
   material: string;
+  /** Separates on its own within its group (e.g. one wall of the wall system), using explode[part]. */
+  part?: string;
 }
 
 export interface SceneModel {
@@ -37,8 +39,12 @@ export interface ExplorerScene {
   /** Accessible name for the canvas. */
   label: string;
   build(options: { anisotropy: number }): SceneModel;
-  /** Offset of each group at full separation, in metres. */
+  /** Offset of each group (or part) at full separation, in metres. */
   explode: Record<string, Vec3>;
+  /** Separation (0 to 1) the model shows in the page and returns to when the full view closes. Default 0. */
+  initialExplode?: number;
+  /** Camera angles in degrees: polar from straight down (compact view turns at this height), azimuth around. */
+  camera?: { polar?: number; azimuth?: number };
   /** Visibility tiers: a view shows meshes whose level ranks at or below its maxRank. */
   views?: readonly { id: string; maxRank: number }[];
   levelRank?: Record<string, number>;
@@ -105,6 +111,8 @@ export function createExplorer(options: ExplorerOptions): Explorer {
   const { host, reducedMotion, scene: definition } = options;
   const { stage } = definition;
   const defaultTarget = new THREE.Vector3(...stage.target);
+  const defaultPolar = definition.camera?.polar !== undefined ? THREE.MathUtils.degToRad(definition.camera.polar) : DEFAULT_POLAR;
+  const defaultAzimuth = definition.camera?.azimuth !== undefined ? THREE.MathUtils.degToRad(definition.camera.azimuth) : DEFAULT_AZIMUTH;
   if (!webglAvailable()) throw new Error("webgl-unavailable");
 
   const small = () => host.clientWidth < 768;
@@ -244,7 +252,7 @@ export function createExplorer(options: ExplorerOptions): Explorer {
 
   const aimAt = (target: THREE.Vector3, azimuth: number) => {
     controls.target.copy(target);
-    camera.position.copy(target).add(new THREE.Vector3().setFromSphericalCoords(80, DEFAULT_POLAR, azimuth));
+    camera.position.copy(target).add(new THREE.Vector3().setFromSphericalCoords(80, defaultPolar, azimuth));
     camera.lookAt(target);
   };
 
@@ -266,7 +274,7 @@ export function createExplorer(options: ExplorerOptions): Explorer {
         const halfHeight = Math.max(-min.y, max.y);
         zoom = Math.min(zoom, (FRUSTUM * aspect) / halfWidth, FRUSTUM / halfHeight);
       }
-      aimAt(centre, DEFAULT_AZIMUTH);
+      aimAt(centre, defaultAzimuth);
       fittedZoom = zoom * (small() ? 0.94 : 0.9);
     } else {
       // Orbit around a point in the house itself (centred in plan, a little below mid-height), so rotating never
@@ -274,7 +282,7 @@ export function createExplorer(options: ExplorerOptions): Explorer {
       // the house's projected extents around it: less room below than above.
       const size = bounds.isEmpty() ? new THREE.Vector3(10, 8, 10) : bounds.getSize(new THREE.Vector3());
       const pivot = centre.clone().setY((bounds.isEmpty() ? 0 : bounds.min.y) + size.y * 0.42);
-      aimAt(pivot, DEFAULT_AZIMUTH);
+      aimAt(pivot, defaultAzimuth);
       const { min, max } = projectedExtents();
       const halfWidth = Math.max(-min.x, max.x);
       fittedZoom =
@@ -448,8 +456,8 @@ export function createExplorer(options: ExplorerOptions): Explorer {
       controls.enabled = true;
       controls.enableZoom = full; // off: the wheel scrolls the page
       controls.enablePan = full;
-      controls.minPolarAngle = full ? MIN_POLAR : DEFAULT_POLAR; // compact turns at a fixed height
-      controls.maxPolarAngle = full ? MAX_POLAR : DEFAULT_POLAR;
+      controls.minPolarAngle = full ? MIN_POLAR : defaultPolar; // compact turns at a fixed height
+      controls.maxPolarAngle = full ? MAX_POLAR : defaultPolar;
       canvas.tabIndex = full ? 0 : -1;
       canvas.style.cursor = "grab";
       // Touch: compact leaves vertical swipes to the page, so only sideways drags turn the home
@@ -467,6 +475,14 @@ export function createExplorer(options: ExplorerOptions): Explorer {
         const [x, y, z] = definition.explode[id] ?? [0, 0, 0];
         // Exactly the authored position at 0: no accumulated offsets
         group.position.set(x * explodeAmount, y * explodeAmount, z * explodeAmount);
+      }
+      // Parts move by their own offset, less their group's (which their parent already carries)
+      for (const mesh of model.meshes) {
+        const { group, part } = mesh.userData as MeshTag;
+        if (!part) continue;
+        const [px, py, pz] = definition.explode[part] ?? [0, 0, 0];
+        const [gx, gy, gz] = (group && definition.explode[group]) || [0, 0, 0];
+        mesh.position.set((px - gx) * explodeAmount, (py - gy) * explodeAmount, (pz - gz) * explodeAmount);
       }
       if (!cameraTouched) frame();
       requestRender();

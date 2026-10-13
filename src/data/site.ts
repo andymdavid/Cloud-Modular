@@ -23,7 +23,7 @@ export const site = {
 // /quality/ (Manufacturing and quality). The checks, certification and logistics copy is a best-practice draft
 // for the user to review. The manufacturer is never named or described; it is "our manufacturing facility in Foshan".
 export const moduleSystems = {
-  body: "Every module is made up of eight systems, which are the steel structure, floor, walls, ceiling, electrical, heating and cooling, water supply and drainage, and smart systems. They are built and fitted out in our manufacturing facility in Foshan, so each module arrives with its services and interiors in place. The model shows a typical module from our Rowland Street project in Subiaco, with every layer of its walls, floor and ceiling.",
+  body: "Every module is made up of eight systems, which are the steel structure, floor, walls, ceiling, electrical, heating and cooling, water supply and drainage, and smart systems. They are built and fitted out in our manufacturing facility in Foshan, so each module arrives with its services and interiors in place. This typical module from our Rowland Street project in Subiaco is shown separated into its systems. Turn it to see each side, or open the 3D view to take it apart and put it back together.",
 } as const;
 
 export const qualityChecks = {
