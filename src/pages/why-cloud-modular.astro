@@ -34,14 +34,15 @@ const stats = [
     <p class="mt-10 max-w-measure text-body text-fg-muted">{whyNow.body}</p>
   </SplitSection>
 
-  <!-- Dark 50/50 split (cf. olympic.no "Origin matters"): label and title left, numerals in sage right, then the
-       advantage tiles -->
+  <!-- Slate 50/50 split (cf. olympic.no "Origin matters"): label, title and button left, numerals in sage right,
+       then the six advantages as numbered columns under hairline rules -->
   <section id="why-modular" data-theme="dark" data-surface="slate" class="scroll-mt-header py-section">
     <div class="shell">
       <div class="grid-12 gap-y-12">
         <div class="col-span-12 lg:col-span-5" data-reveal>
           <p class="label">By the numbers</p>
           <h2 class="mt-5 text-h2 sm:mt-6">Our modular advantage</h2>
+          <a href="/quality/" class="btn mt-10">How every module is made and checked</a>
         </div>
         <dl class="col-span-12 grid grid-cols-2 gap-x-gap-sm gap-y-10 self-end lg:col-span-6 lg:col-start-7">
           {stats.map((stat, index) => (
@@ -53,23 +54,15 @@ const stats = [
         </dl>
       </div>
 
-      <div class="mt-section-sm grid gap-gap-sm sm:grid-cols-2 lg:grid-cols-3">
+      <ol class="mt-section-sm grid gap-x-gap-sm gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
         {advantages.map((card, index) => (
-          <article
-            data-theme={index % 2 === 0 ? undefined : "light"}
-            class:list={["flex min-h-[18rem] flex-col justify-between rounded p-5 sm:p-6", index % 2 === 0 ? "bg-surface-alt" : "bg-sage"]}
-            data-reveal
-            style={`--reveal-delay:${(index % 3) * 80}ms`}
-          >
-            <p class="text-lead">{card.points[0]}</p>
-            <h3 class="label mt-10">{card.title}</h3>
-          </article>
+          <li class="border-t border-line/[var(--rule-alpha)] pt-5" data-reveal style={`--reveal-delay:${(index % 3) * 80}ms`}>
+            <p class="label" aria-hidden="true">{String(index + 1).padStart(2, "0")}</p>
+            <h3 class="mt-8 max-w-[18ch] text-lead">{card.title}</h3>
+            <p class="mt-3 max-w-[38ch] text-small text-fg-muted">{card.points[0]}</p>
+          </li>
         ))}
-      </div>
-
-      <div class="mt-section-sm flex justify-center" data-reveal>
-        <a href="/quality/" class="btn">How every module is made and checked</a>
-      </div>
+      </ol>
     </div>
   </section>
 

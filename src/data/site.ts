@@ -171,9 +171,9 @@ export const advantages = [
     ],
   },
   {
-    title: "Offsite manufacturing is faster",
+    title: "Faster through offsite manufacturing",
     points: [
-      "Concurrent site prep and factory production cut total project time by months.",
+      "Site works and factory production run at the same time, which takes months off the programme.",
       "Weather-independent assembly keeps schedules predictable year-round.",
       "Rapid on-site installation minimises disruption and accelerates handover.",
     ],
