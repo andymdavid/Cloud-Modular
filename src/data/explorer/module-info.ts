@@ -4,7 +4,7 @@
  */
 
 import type { ExplorerPart } from "@/lib/explorer/parts";
-import type { GroupId, PartId, Vec3 } from "./module";
+import type { GroupId, Vec3 } from "./module";
 
 const PROPOSAL = "Rowland Street modular proposal";
 
@@ -103,11 +103,17 @@ export const moduleParts: (ExplorerPart & { id: GroupId })[] = [
 /**
  * Offsets at full separation, in metres. The floor layers stay low and everything else rises, so nothing drops
  * below the ground: the floor layers, then the frame with its fit-out and services, the walls pulled out on all
- * four sides (and lower), then the ceiling layers above, as in the proposal's exploded module.
+ * four sides (and lower), each wall in three layers, then the ceiling layers above, as in the proposal's exploded module.
  */
 const FRAME_LIFT = 1.6;
 const WALL_LIFT = 0.7; // lower than the frame, so the walls pulled towards the viewer don't hide the interior
-export const moduleExplode: Record<GroupId | PartId, Vec3> = {
+
+/** A wall's three layers move outwards by increasing distances: lining nearest the frame, then studs, then skin. */
+function wallLayers(wall: string, [dx, , dz]: Vec3, [lining, frame, skin]: [number, number, number]): Record<string, Vec3> {
+  const at = (distance: number): Vec3 => [dx * distance, WALL_LIFT, dz * distance];
+  return { [`${wall}-lining`]: at(lining), [`${wall}-frame`]: at(frame), [`${wall}-skin`]: at(skin) };
+}
+export const moduleExplode: Record<string, Vec3> = {
   structure: [0, FRAME_LIFT, 0],
   floor: [0, 0, 0],
   walls: [0, WALL_LIFT, 0],
@@ -122,10 +128,10 @@ export const moduleExplode: Record<GroupId | PartId, Vec3> = {
   "floor-base": [0, 0, 0],
   "floor-insulation": [0, 0.55, 0],
   "floor-deck": [0, 1.05, 0],
-  "wall-west": [-2.3, WALL_LIFT, 0],
-  "wall-east": [2.3, WALL_LIFT, 0],
-  "wall-front": [0, WALL_LIFT, -2.1],
-  "wall-back": [0, WALL_LIFT, 2.1],
+  ...wallLayers("wall-west", [-1, 0, 0], [1.3, 2.1, 2.9]),
+  ...wallLayers("wall-east", [1, 0, 0], [1.3, 2.1, 2.9]),
+  ...wallLayers("wall-front", [0, 0, -1], [1.2, 1.9, 2.6]),
+  ...wallLayers("wall-back", [0, 0, 1], [1.2, 1.9, 2.6]),
   "ceiling-lining": [0, 3.4, 0],
   "ceiling-insulation": [0, 4.2, 0],
   "ceiling-deck": [0, 5.0, 0],

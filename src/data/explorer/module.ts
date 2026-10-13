@@ -36,10 +36,7 @@ export type PartId =
   | "floor-base"
   | "floor-insulation"
   | "floor-deck"
-  | "wall-west"
-  | "wall-east"
-  | "wall-front"
-  | "wall-back"
+  | `${"wall-west" | "wall-east" | "wall-front" | "wall-back"}-${"lining" | "frame" | "skin"}`
   | "ceiling-lining"
   | "ceiling-insulation"
   | "ceiling-deck";
@@ -163,12 +160,12 @@ export const blocks: Block[] = [
   { group: "furniture", material: "linen", min: [0.3, FFL + 0.5, 2.45], max: [0.66, FFL + 0.64, 3.05], radius: 0.06 },
   { group: "furniture", material: "oak", min: [0.25, FFL, 1.06], max: [0.7, FFL + 0.5, 1.5], radius: 0.01 },
   { group: "furniture", material: "oak", min: [0.25, FFL, 3.3], max: [0.7, FFL + 0.5, 3.74], radius: 0.01 },
-  // Armchair, side table and rug by the window
-  { group: "furniture", material: "fabric", min: [2.35, FFL, 0.45], max: [3.1, FFL + 0.42, 1.2], radius: 0.06 },
-  { group: "furniture", material: "fabric", min: [2.35, FFL + 0.42, 1.05], max: [3.1, FFL + 0.85, 1.2], radius: 0.05 },
-  { group: "furniture", material: "fabric", min: [2.35, FFL + 0.42, 0.45], max: [2.47, FFL + 0.62, 1.05], radius: 0.04 },
-  { group: "furniture", material: "fabric", min: [2.98, FFL + 0.42, 0.45], max: [3.1, FFL + 0.62, 1.05], radius: 0.04 },
-  { group: "furniture", material: "oak", min: [1.85, FFL, 0.6], max: [2.25, FFL + 0.48, 1.0], radius: 0.02 },
+  // Armchair by the window with its back to the east wall, facing into the room, and a side table beside it
+  { group: "furniture", material: "fabric", min: [2.42, FFL, 0.5], max: [3.17, FFL + 0.42, 1.25], radius: 0.06 },
+  { group: "furniture", material: "fabric", min: [3.03, FFL + 0.42, 0.5], max: [3.17, FFL + 0.85, 1.25], radius: 0.05 },
+  { group: "furniture", material: "fabric", min: [2.42, FFL + 0.42, 0.5], max: [3.03, FFL + 0.62, 0.62], radius: 0.04 },
+  { group: "furniture", material: "fabric", min: [2.42, FFL + 0.42, 1.13], max: [3.03, FFL + 0.62, 1.25], radius: 0.04 },
+  { group: "furniture", material: "oak", min: [2.7, FFL, 1.35], max: [3.1, FFL + 0.48, 1.75], radius: 0.02 },
   { group: "furniture", material: "rug", min: [0.9, FFL, 0.4], max: [3.1, FFL + 0.008, 3.6] },
 ];
 

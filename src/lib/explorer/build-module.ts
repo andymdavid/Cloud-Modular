@@ -302,8 +302,24 @@ function addFrame(out: Out) {
 // Walls: each wall is described in its own frame (u along the wall, d through it, outwards positive from the
 // outer face of the frame), with rectangular openings cut through every layer.
 
+/** Each wall separates into three layers: lining inside, studs and rock wool, and the outer skin. */
+type WallLayer = "lining" | "frame" | "skin";
+const LAYER_OF: Partial<Record<MaterialKey, WallLayer>> = {
+  vapour: "lining",
+  plasterboard: "lining",
+  finishBoard: "lining",
+  galv: "frame",
+  rockwool: "frame",
+  fibreCement: "skin",
+  membrane: "skin",
+  batten: "skin",
+  cladding: "skin",
+  glass: "skin",
+  frameDark: "skin",
+};
+
 interface WallFrame {
-  part: PartId;
+  part: "wall-west" | "wall-east" | "wall-front" | "wall-back";
   /** Map wall-local (u along, y up, d outwards) to model space. */
   at(u: number, y: number, d: number): Vec3;
   length: number;
@@ -317,11 +333,12 @@ const walls: WallFrame[] = [
   { part: "wall-back", length: W, at: (u, y, d) => [u, y, L + d], opening: { u: DOOR.span, y: [FFL, DOOR.head] } },
 ];
 
-function wallBox(out: Out, wall: WallFrame, material: MaterialKey, u0: number, u1: number, y0: number, y1: number, d0: number, d1: number, group: GroupId = "walls") {
+function wallBox(out: Out, wall: WallFrame, material: MaterialKey, u0: number, u1: number, y0: number, y1: number, d0: number, d1: number, layer = LAYER_OF[material] ?? "frame") {
   if (u1 - u0 < 1e-4 || y1 - y0 < 1e-4) return;
   const a = wall.at(u0, y0, d0);
   const b = wall.at(u1, y1, d1);
-  out.box(group, material, [Math.min(a[0], b[0]), Math.min(a[1], b[1]), Math.min(a[2], b[2])], [Math.max(a[0], b[0]), Math.max(a[1], b[1]), Math.max(a[2], b[2])], group === "walls" ? wall.part : undefined);
+  const part = `${wall.part}-${layer}` as PartId;
+  out.box("walls", material, [Math.min(a[0], b[0]), Math.min(a[1], b[1]), Math.min(a[2], b[2])], [Math.max(a[0], b[0]), Math.max(a[1], b[1]), Math.max(a[2], b[2])], part);
 }
 
 /** A layer across the wall between u0..u1 and y0..y1 at depth d0..d1, with the wall's opening cut out. */
@@ -421,7 +438,8 @@ function addDoor(out: Out) {
   const [y0, y1] = o.y;
   const f = 0.04;
   const reveal = -PROFILES.stud.depth - WALL.plasterboard - WALL.finish - MIN_SHEET;
-  const piece = (a: number, b: number, c: number, e: number, material: MaterialKey, dd0: number, dd1: number) => wallBox(out, wall, material, a, b, c, e, dd0, dd1);
+  // The door and its frame travel with the studs when the wall separates
+  const piece = (a: number, b: number, c: number, e: number, material: MaterialKey, dd0: number, dd1: number) => wallBox(out, wall, material, a, b, c, e, dd0, dd1, "frame");
   piece(u0, u0 + f, y0, y1, "frameDark", reveal, WALL.board);
   piece(u1 - f, u1, y0, y1, "frameDark", reveal, WALL.board);
   piece(u0, u1, y1 - f, y1, "frameDark", reveal, WALL.board);
