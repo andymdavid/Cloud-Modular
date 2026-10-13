@@ -1,0 +1,61 @@
+---
+import { partners } from "@/data/site";
+
+/**
+ * Delivery partner logos in a grid of hairline-topped cells, every logo in one brand colour (an alpha mask
+ * filled with gold), so mixed artwork reads as one set. Sizes are balanced by aspect ratio: wide wordmarks get
+ * less height than square badges, so each logo carries a similar visual weight.
+ */
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+const sized = partners.map((partner) => {
+  const aspect = partner.width / partner.height;
+  const height = Math.min(3.6, 3.6 * Math.pow(aspect, -0.45)); // rem at desktop
+  const width = Math.min(11, height * aspect);
+  return { ...partner, w: width, h: width / aspect };
+});
+---
+
+<ul class:list={["grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5", className]} aria-label="Delivery partners">
+  {sized.map((partner, index) => (
+    <li class="partner-cell flex items-center justify-center border-t border-line/[var(--rule-alpha)]" data-reveal style={`--reveal-delay:${(index % 5) * 60}ms`}>
+      <span
+        role="img"
+        aria-label={partner.name}
+        class="partner-logo block"
+        style={`--w:${partner.w.toFixed(2)}rem;--h:${partner.h.toFixed(2)}rem;--logo:url(/partners/${partner.slug}.png)`}
+      ></span>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .partner-cell {
+    aspect-ratio: 3 / 2;
+  }
+
+  @media (min-width: 64rem) {
+    .partner-cell {
+      aspect-ratio: 2 / 1;
+    }
+  }
+
+  .partner-logo {
+    --scale: 0.78;
+    width: calc(var(--w) * var(--scale));
+    height: calc(var(--h) * var(--scale));
+    background: rgb(var(--gold));
+    -webkit-mask: var(--logo) center / contain no-repeat;
+    mask: var(--logo) center / contain no-repeat;
+  }
+
+  @media (min-width: 48rem) {
+    .partner-logo {
+      --scale: 1;
+    }
+  }
+</style>

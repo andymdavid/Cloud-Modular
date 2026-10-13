@@ -8,7 +8,7 @@ import ImagePanel from "@/components/refresh/ImagePanel.astro";
 import Accordion from "@/components/refresh/Accordion.astro";
 import FaqSection from "@/components/refresh/FaqSection.astro";
 import GetStarted from "@/components/refresh/GetStarted.astro";
-import { buildUps, certification, factoryToSite, moduleSystems, qualityChecks, site } from "@/data/site";
+import { buildUps, certification, factoryToSite, moduleSystems, productionCapability, qualityChecks, site } from "@/data/site";
 
 const title = "Manufacturing & Quality | Modular Construction | Cloud Modular";
 const description =
@@ -33,8 +33,22 @@ const breadcrumbSchema = {
     </div>
   </div>
 
-  <!-- The module: the eight systems, with the 3D model to come in the stage -->
-  <ModuleExplorer body={moduleSystems.body} rule={false} />
+  <!-- Production capability: the facility behind the modules, with its two headline figures -->
+  <SplitSection id="capability" label="Production capability" rule={false}>
+    <p class="text-about">{productionCapability.intro}</p>
+    <dl class="mt-10 grid w-full grid-cols-2 gap-x-gap-sm">
+      {productionCapability.stats.map((stat) => (
+        <div class="flex flex-col border-t border-line/[var(--rule-alpha)] pt-5">
+          <dt class="order-2 mt-3 max-w-[24ch] text-small text-fg-muted">{stat.label}</dt>
+          <dd class="order-1 text-h1 tabular-nums">{stat.value}</dd>
+        </div>
+      ))}
+    </dl>
+    <p class="mt-10 max-w-measure text-body text-fg-muted">{productionCapability.body}</p>
+  </SplitSection>
+
+  <!-- The module: the eight systems as a 3D model -->
+  <ModuleExplorer body={moduleSystems.body} />
 
   <SplitSection id="checks" label="Quality checks">
     <p class="text-about">{qualityChecks.intro}</p>

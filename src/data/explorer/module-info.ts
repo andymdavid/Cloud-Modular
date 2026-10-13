@@ -6,7 +6,7 @@
 import type { ExplorerPart } from "@/lib/explorer/parts";
 import type { GroupId, Vec3 } from "./module";
 
-const PROPOSAL = "Rowland Street modular proposal";
+const PROPOSAL = "25 On Rowland and Forrest proposal";
 
 /** The eight systems first, then the fit-out, in the order of the part list. */
 export const moduleParts: (ExplorerPart & { id: GroupId })[] = [

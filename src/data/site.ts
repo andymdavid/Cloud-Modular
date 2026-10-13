@@ -2,7 +2,7 @@ export const site = {
   name: "Cloud Modular",
   url: "https://cloudmodular.com.au",
   description:
-    "Precision-engineered modular construction for Perth, Western Australia and nationally.",
+    "Cloud Modular delivers architecturally designed modular buildings, certified to Australian Standards, for faster delivery and greater certainty.",
   email: "nigel@cloudmodular.com.au",
   enquiryHref:
     "mailto:nigel@cloudmodular.com.au?subject=Cloud%20Modular%20Website%20Inquiry",
@@ -22,12 +22,23 @@ export const site = {
 
 // /quality/ (Manufacturing and quality). The checks, certification and logistics copy is a best-practice draft
 // for the user to review. The manufacturer is never named or described; it is "our manufacturing facility in Foshan".
+// From the 2026 Capability Statement (Production Capability), written as our capability without naming the
+// manufacturer, as agreed with the user.
+export const productionCapability = {
+  intro: "Our production capability gives us access to more than 450,000 square metres of dedicated manufacturing facilities, with the systems, supply chain and capacity for repeatable modular delivery. That capability has delivered projects from design to installation in Shenzhen, Hong Kong, Melbourne, Saipan and Auckland, and we now bring it to Western Australia.",
+  body: "Established procurement and production relationships help us control lead times, certification and quality, and plan each delivery. The same model suits a small development or a large multi-unit programme where repeatability and speed matter.",
+  stats: [
+    { value: "450,000+", label: "Square metres of dedicated manufacturing facilities" },
+    { value: "5", label: "Markets with delivered projects, from Shenzhen to Auckland" },
+  ],
+} as const;
+
 export const moduleSystems = {
-  body: "Every module is made up of eight systems, which are the steel structure, floor, walls, ceiling, electrical, heating and cooling, water supply and drainage, and smart systems. They are built and fitted out in our manufacturing facility in Foshan, so each module arrives with its services and interiors in place. This typical module from our Rowland Street project in Subiaco is shown separated into its systems. Turn it to see each side, or open the 3D view to take it apart and put it back together.",
+  body: "Every module is made up of eight systems, which are the steel structure, floor, walls, ceiling, electrical, heating and cooling, water supply and drainage, and smart systems. They are built and fitted out in our manufacturing facility in Foshan, so each module arrives with its services and interiors in place. This typical module from 25 On Rowland and Forrest in Subiaco is shown separated into its systems. Turn it to see each side, or open the 3D view to take it apart and put it back together.",
 } as const;
 
 export const qualityChecks = {
-  intro: "Every module passes a series of inspections before it moves to the next stage of production. Each check is recorded with photographs against the module's number, and the full record is handed over with the building.",
+  intro: "Checks run at key stages of design, production and the lead-up to installation. In the factory, every module passes a series of inspections before it moves to the next stage, and each check is recorded with photographs against the module's number. The full record is handed over with the building.",
   items: [
     {
       title: "Materials on arrival",
@@ -59,7 +70,7 @@ export const qualityChecks = {
 // The three build-ups from the Rowland Street, Subiaco proposal, each with its own 3D sample (`kind`). The floor and
 // ceiling layer order is read from the doc's callouts and should be checked against the drawings.
 export const buildUps = {
-  body: "Each module's floor, walls and ceiling are built up in layers in our manufacturing facility, for strength, fire safety, insulation and weather protection. The models show each build-up from our Rowland Street project, with the thickness of every layer.",
+  body: "Each module's floor, walls and ceiling are built up in layers in our manufacturing facility, for strength, fire safety, insulation and weather protection. The models show each build-up from 25 On Rowland and Forrest, with the thickness of every layer.",
   items: [
     {
       kind: "floor",
@@ -136,6 +147,17 @@ export const factoryToSite = {
       title: "Arrival and repairs",
       body: "Each module is checked on arrival against its record from the final inspection. Any damage in transit is recorded and repaired on site by our installation team, using spare materials shipped with the modules. A licensed electrician tests the connections before the building is powered.",
     },
+  ],
+} as const;
+
+// Why now, from the 2026 Capability Statement's executive summary. The statement gives no source for the
+// population figures; they could not be traced to a Centre for Population or ABS release on 13 Oct 2026.
+export const whyNow = {
+  intro: "Australia's population is projected to grow by 2.18 million people in the five years to 2026–27. At the same time, insolvencies across the construction sector have reduced the number of builders available to meet demand.",
+  body: "These conditions call for buildings that can be delivered with more speed, certainty and control. Modular moves much of the work into the factory, where it can be planned, measured and repeated while the site is prepared.",
+  stats: [
+    { value: "2.18m", label: "Projected population growth in the five years to 2026–27" },
+    { value: "435,200", label: "People added each year on average" },
   ],
 } as const;
 
@@ -235,8 +257,8 @@ export const sectors = [
   },
 ] as const;
 
-// Alt home Projects grid (one row of three). Seashells Jurien Bay and Capel Village are real (Capel still
-// uses a Jurien Bay render as its image); the third is a placeholder until more projects are ready.
+// Home and Our Work Projects grid (one row of three). Capel still uses a Jurien Bay render as its image; the 25 On
+// Rowland and Forrest render comes from the 2026 Capability Statement (705 × 804, until a larger original arrives).
 export const projects = [
   {
     name: "Seashells Jurien Bay",
@@ -255,12 +277,12 @@ export const projects = [
     imagePosition: "62% center",
   },
   {
-    name: "Project Name",
-    sector: "Residential",
-    location: "Location",
-    image: "/projects/jurien-bay-dusk.webp",
-    imageAlt: "Modular townhouses lit at dusk",
-    imagePosition: "center",
+    name: "25 On Rowland and Forrest",
+    sector: "Mixed use",
+    location: "Subiaco, WA",
+    image: "/projects/25-on-rowland-and-forrest.jpg",
+    imageAlt: "Render of a mixed-use building on a Subiaco street corner, with timber-look cladding, glass balconies and planting on the upper floors",
+    imagePosition: "center 40%",
   },
 ] as const;
 
@@ -348,12 +370,30 @@ export const faqItems = [
   },
 ] as const;
 
+// Delivery partners on /about/, shown as single-colour logos (alpha masks in /partners/, made from the files in
+// Design-Docs/Partner Logos). Width and height are the mask's pixels, used to balance the logos' optical size.
+export const partners = [
+  { slug: "kellett", name: "Kellett Design Group", width: 626, height: 67 },
+  { slug: "mvp-group", name: "MVP Group", width: 321, height: 177 },
+  { slug: "mvp-consultants", name: "MVP Consultants", width: 369, height: 204 },
+  { slug: "cdi-group", name: "CDI Group", width: 420, height: 93 },
+  { slug: "buildsource", name: "Buildsource", width: 536, height: 84 },
+  { slug: "decobu", name: "Decobu", width: 712, height: 132 },
+  { slug: "hart", name: "Hart & Co.", width: 487, height: 216 },
+  { slug: "pbm", name: "Perth Building and Maintenance", width: 223, height: 223 },
+  { slug: "steadfast", name: "Steadfast Roofing", width: 412, height: 236 },
+  { slug: "geniux", name: "Geniux Cleantech", width: 788, height: 294 },
+  { slug: "peerless", name: "Peerless Finance", width: 511, height: 103 },
+  { slug: "seashells", name: "Seashells", width: 344, height: 222 },
+  { slug: "jurien-bay-resort", name: "Jurien Bay Resort", width: 555, height: 316 },
+] as const;
+
 export const team = [
   {
     image: "/people/thomas.webp",
     name: "Thomas Tierney",
     role: "Co-Founder / Director",
-    bio: "Thomas brings a rare combination of commercial, construction, and international development experience. With over ten years as a property developer/QS in Ireland and London, Thomas has delivered many successful residential and commercial projects, and has a strong foundation in every phase of the development lifecycle.",
+    bio: "Thomas brings a rare combination of commercial, construction and international development experience. He has delivered many successful residential and commercial projects in Ireland, the UK and Australia.",
     position: "center 30%",
   },
   {

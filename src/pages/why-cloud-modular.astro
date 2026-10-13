@@ -1,8 +1,9 @@
 ---
 import RefreshLayout from "@/layouts/RefreshLayout.astro";
 import PageIntro from "@/components/refresh/PageIntro.astro";
+import SplitSection from "@/components/refresh/SplitSection.astro";
 import FaqSection from "@/components/refresh/FaqSection.astro";
-import { advantages } from "@/data/site";
+import { advantages, whyNow } from "@/data/site";
 
 const title = "Why Cloud Modular | Cloud Modular";
 const description =
@@ -18,6 +19,20 @@ const stats = [
 
 <RefreshLayout title={title} description={description} canonical="/why-cloud-modular/">
   <PageIntro label="Why Cloud Modular" title="Faster, cleaner, more certain" lead="Most of the build happens offsite, which shortens programmes, reduces site disruption and improves cost certainty." />
+
+  <!-- Why now: the market case, with its two headline figures -->
+  <SplitSection id="why-now" label="Why now">
+    <p class="text-about">{whyNow.intro}</p>
+    <dl class="mt-10 grid w-full grid-cols-2 gap-x-gap-sm">
+      {whyNow.stats.map((stat) => (
+        <div class="flex flex-col border-t border-line/[var(--rule-alpha)] pt-5">
+          <dt class="order-2 mt-3 max-w-[24ch] text-small text-fg-muted">{stat.label}</dt>
+          <dd class="order-1 text-h1 tabular-nums">{stat.value}</dd>
+        </div>
+      ))}
+    </dl>
+    <p class="mt-10 max-w-measure text-body text-fg-muted">{whyNow.body}</p>
+  </SplitSection>
 
   <!-- Dark 50/50 split (cf. olympic.no "Origin matters"): label and title left, numerals in sage right, then the
        advantage tiles -->

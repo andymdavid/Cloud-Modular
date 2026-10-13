@@ -3,7 +3,7 @@ import ModelExplorer from "@/components/refresh/ModelExplorer.astro";
 import { moduleParts } from "@/data/explorer/module-info";
 
 /**
- * "The module" on /quality/: a typical Rowland Street module, separated into its eight systems and fit-out as in
+ * "The module" on /quality/: a typical module from 25 On Rowland and Forrest, separated into its eight systems and fit-out as in
  * the proposal's exploded module. Uses the How It's Made layout and viewer from the home page.
  */
 interface Props {
@@ -22,7 +22,7 @@ const { label = "The module", body, rule = true } = Astro.props;
   rule={rule}
   label={label}
   body={body}
-  stageLabel="Typical module, Rowland Street"
+  stageLabel="Typical module, 25 On Rowland and Forrest"
   subject="the module"
   parts={moduleParts}
   partKind="System"
