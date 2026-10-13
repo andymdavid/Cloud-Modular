@@ -171,7 +171,7 @@ export const advantages = [
     ],
   },
   {
-    title: "Faster through offsite manufacturing",
+    title: "Built faster offsite",
     points: [
       "Site works and factory production run at the same time, which takes months off the programme.",
       "Weather-independent assembly keeps schedules predictable year-round.",
