@@ -5,12 +5,11 @@ import SplitSection from "@/components/refresh/SplitSection.astro";
 import SectionHead from "@/components/refresh/SectionHead.astro";
 import ProgrammeLine from "@/components/refresh/ProgrammeLine.astro";
 import RoleMatrix from "@/components/refresh/RoleMatrix.astro";
-import ToConfirm from "@/components/refresh/ToConfirm.astro";
 import ImagePanel from "@/components/refresh/ImagePanel.astro";
 import Accordion from "@/components/refresh/Accordion.astro";
 import FaqSection from "@/components/refresh/FaqSection.astro";
 import GetStarted from "@/components/refresh/GetStarted.astro";
-import { approachProgramme, approachStages, engagementModels, responsibilities, site } from "@/data/site";
+import { engagementModels, site } from "@/data/site";
 
 const title = "Our Approach | Modular Construction Process | Cloud Modular";
 const description =
@@ -46,10 +45,7 @@ const breadcrumbSchema = {
     <div class="shell">
       <div class="grid-12 gap-y-6">
         <div class="col-span-12 md:col-span-6" data-reveal>
-          <div class="flex items-center gap-3">
-            <p class="label">The process</p>
-            {(approachProgramme.confirm || approachStages.confirm) && <ToConfirm />}
-          </div>
+          <p class="label">The process</p>
           <h2 class="mt-5 max-w-[16ch] text-h2 sm:mt-6">Factory and site, at the same time</h2>
         </div>
         <p class="col-span-12 max-w-measure self-end text-body text-fg-muted md:col-span-6 md:col-start-7" data-reveal>The modules are made in Foshan while your site is prepared, and the two tracks meet at installation. This is how modular shortens the programme.</p>
@@ -63,13 +59,13 @@ const breadcrumbSchema = {
   <!-- Who does what: every task, stage by stage, against the roles on a project -->
   <section id="who-does-what" data-theme="light" class="scroll-mt-header py-section">
     <div class="shell">
-      <SectionHead label="Who does what" title="Every role, stage by stage" intro="On a design-and-deliver project, Cloud Modular is your one point of contact. Where a specialist leads a task, we appoint and manage them as our delivery partner, so you deal with one team and step in only for the decisions that are yours." rule={false} confirm={responsibilities.confirm} />
+      <SectionHead label="Who does what" title="Every role, stage by stage" intro="On a design-and-deliver project, Cloud Modular is your one point of contact. Where a specialist leads a task, we appoint and manage them as our delivery partner, so you deal with one team and step in only for the decisions that are yours." rule={false} />
       <RoleMatrix class="mt-10 sm:mt-12" />
     </div>
   </section>
 
   <!-- Ways to engage (olympic.no investor panel): image left, slate panel right with an accordion of the four routes -->
-  <ImagePanel id="engage" label="Ways to engage" title="Start where it suits you" image="/Resi.webp" alt="A multi-residential building with planted balconies against the sky" width={928} height={1232} confirm={engagementModels.confirm}>
+  <ImagePanel id="engage" label="Ways to engage" title="Start where it suits you" image="/Resi.webp" alt="A multi-residential building with planted balconies against the sky" width={928} height={1232}>
     <p class="text-body text-fg-muted">{engagementModels.intro}</p>
     <Accordion items={engagementModels.items} name="engage" openFirst class="mt-10" />
   </ImagePanel>

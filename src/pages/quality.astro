@@ -1,47 +1,61 @@
 ---
 import RefreshLayout from "@/layouts/RefreshLayout.astro";
 import PageIntro from "@/components/refresh/PageIntro.astro";
+import ModuleExplorer from "@/components/refresh/ModuleExplorer.astro";
+import BuildUps from "@/components/refresh/BuildUps.astro";
+import SplitSection from "@/components/refresh/SplitSection.astro";
+import ImagePanel from "@/components/refresh/ImagePanel.astro";
+import Accordion from "@/components/refresh/Accordion.astro";
 import FaqSection from "@/components/refresh/FaqSection.astro";
-import { qualityRows } from "@/data/site";
+import GetStarted from "@/components/refresh/GetStarted.astro";
+import { buildUps, certification, factoryToSite, moduleSystems, qualityChecks, site } from "@/data/site";
 
-const title = "Quality, Compliance & Assurance | Cloud Modular";
+const title = "Manufacturing & Quality | Modular Construction | Cloud Modular";
 const description =
-  "Factory-controlled production and verified engineering give clients confidence in every module before it reaches site.";
-
-// The wide Factory image leads the page, so pillar 02 uses a material detail instead
-const pillars = qualityRows.map((row) =>
-  row.index === "02" ? { ...row, image: "/Card4.webp", imagePosition: "center" } : row,
-);
+  "How Cloud Modular builds every module in its Foshan manufacturing facility, checks it against Australian requirements and delivers it to site in Western Australia.";
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: site.url },
+    { "@type": "ListItem", position: 2, name: "Manufacturing and quality", item: `${site.url}/quality/` },
+  ],
+};
 ---
 
-<RefreshLayout title={title} description={description} canonical="/quality/">
-  <PageIntro label="Quality, compliance & assurance" title="Verified before it reaches site" lead="Factory-controlled production and verified engineering give clients confidence in every module before it reaches site." />
+<RefreshLayout title={title} description={description} canonical="/quality/" structuredData={breadcrumbSchema}>
+  <PageIntro label="Manufacturing and quality" title="How every module is made and checked" lead="We build every module in our manufacturing facility in Foshan, check it against Australian requirements at each stage and manage its journey to your site." />
 
-  <!-- Full-width factory image, then three numbered pillars -->
-  <section id="quality" data-theme="light" class="scroll-mt-header pb-section">
-    <div class="shell">
-      <div class="aspect-[4/3] overflow-hidden rounded bg-stone sm:mt-12 sm:aspect-[21/9]" data-reveal>
-        <img src="/Factory-1.webp" alt="Inside a modular manufacturing facility" width="1672" height="941" loading="lazy" class="h-full w-full object-cover" />
-      </div>
-
-      <div class="mt-gap grid gap-x-gap-sm gap-y-12 md:grid-cols-3">
-        {pillars.map((row, index) => (
-          <article class="group" data-reveal style={`--reveal-delay:${index * 100}ms`}>
-            <div class="aspect-[4/3] overflow-hidden rounded bg-stone">
-              <img src={row.image} alt={row.title} width="1456" height="816" loading="lazy" class="h-full w-full object-cover transition-transform duration-slow ease-cm-out group-hover:scale-[1.03]" style={`object-position:${row.imagePosition}`} />
-            </div>
-            <p class="label mt-4">{row.index}</p>
-            <h3 class="mt-2 text-h3">{row.title}</h3>
-            <p class="mt-2 max-w-[42ch] text-small text-fg-muted">{row.description}</p>
-          </article>
-        ))}
-      </div>
-
-      <div class="mt-section-sm flex justify-center" data-reveal>
-        <a href="/our-approach/" class="btn">How we work</a>
-      </div>
+  <!-- Full-width factory image under the intro (a stand-in; real factory photos are not published) -->
+  <div class="wide-row" data-reveal>
+    <div class="aspect-[4/3] overflow-hidden rounded bg-stone sm:aspect-[21/9]">
+      <img src="/Factory-1.webp" alt="The production floor of a modular manufacturing facility" width="1672" height="941" fetchpriority="high" class="h-full w-full object-cover" />
     </div>
-  </section>
+  </div>
 
-  <FaqSection id="faq" topic="quality" />
+  <!-- The module: the eight systems, with the 3D model to come in the stage -->
+  <ModuleExplorer body={moduleSystems.body} rule={false} />
+
+  <SplitSection id="checks" label="Quality checks">
+    <p class="text-about">{qualityChecks.intro}</p>
+    <Accordion items={qualityChecks.items} name="checks" class="mt-10" />
+  </SplitSection>
+
+  <!-- Floor, walls and ceiling: three build-up stages, each to become its own 3D render -->
+  <BuildUps id="build-ups" label="Floor, walls and ceiling" body={buildUps.body} items={buildUps.items} />
+
+  <SplitSection id="certification" label="Australian certification">
+    <p class="text-about">{certification.intro}</p>
+    <Accordion items={certification.items} name="certification" class="mt-10" />
+  </SplitSection>
+
+  <!-- Factory to site (olympic.no investor panel): the wrapped module left, the logistics accordion right -->
+  <ImagePanel id="factory-to-site" label="Factory to site" title="Sealed for the journey" image="/approach/hero.webp" alt="A module sealed in white shrink wrap carrying the Cloud Modular mark, on a trailer against a clear sky" width={1672} height={941} imagePosition="8% center">
+    <p class="text-body text-fg-muted">{factoryToSite.intro}</p>
+    <Accordion items={factoryToSite.items} name="logistics" openFirst class="mt-10" />
+  </ImagePanel>
+
+  <FaqSection id="faq" topic="quality" rule={false} />
+
+  <GetStarted />
 </RefreshLayout>

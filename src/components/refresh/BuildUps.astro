@@ -1,0 +1,40 @@
+---
+/**
+ * Floor, walls and ceiling on /quality/: the ModuleExplorer layout (label left, one paragraph right), then three
+ * portrait stages across the wide row, each with a title and one plain description underneath. The stages are
+ * placeholders until each build-up has its own 3D render (layers labelled with their thicknesses). They stack on
+ * phones rather than swipe, so swiping never fights with turning a model.
+ */
+interface Props {
+  id?: string;
+  label: string;
+  body: string;
+  items: readonly { title: string; body: string }[];
+  rule?: boolean;
+}
+
+const { id, label, body, items, rule = true } = Astro.props;
+---
+
+<section id={id} data-theme="light" class="scroll-mt-header pb-section">
+  <div class="shell">
+    <div class:list={["grid-12 gap-y-6 pt-section", { rule }]}>
+      <h2 class="label col-span-12 md:col-span-6" data-reveal>{label}</h2>
+      <div class="col-span-12 flex flex-col items-start md:col-span-6 md:col-start-7" data-reveal>
+        <p class="text-about">{body}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="wide-row mt-section-sm grid gap-x-gap-sm gap-y-12 md:grid-cols-3">
+    {items.map((item, index) => (
+      <article data-reveal style={`--reveal-delay:${index * 100}ms`}>
+        <div class="relative aspect-[4/5] overflow-hidden rounded bg-surface-quiet">
+          <p class="absolute inset-0 flex items-center justify-center text-caption text-fg-muted">3D model in progress</p>
+        </div>
+        <h3 class="mt-4 text-body font-medium">{item.title}</h3>
+        <p class="mt-1 max-w-[46ch] text-small text-fg-muted">{item.body}</p>
+      </article>
+    ))}
+  </div>
+</section>

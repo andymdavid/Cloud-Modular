@@ -1,0 +1,58 @@
+---
+import ToConfirm from "@/components/refresh/ToConfirm.astro";
+
+/**
+ * "The module" on /quality/: the How It's Made layout from the home page (label left, one paragraph right, then
+ * the stage in the wide row at the same size). The stage is a placeholder until the 3D module exists. It will
+ * then follow HomeExplorer: a typical Rowland Street module that turns in the page, and an "Open 3D view" with
+ * the eight systems as parts and the wall, floor and ceiling build-ups (with layer thicknesses) as views.
+ */
+interface Props {
+  label?: string;
+  body: string;
+  confirm?: boolean;
+  /** Divider above the section; off when it follows a full-bleed image. */
+  rule?: boolean;
+}
+
+const { label = "The module", body, confirm = false, rule = true } = Astro.props;
+---
+
+<section id="module" data-theme="light" class="scroll-mt-header pb-section">
+  <!-- Row 1, as How It's Made: label in the left half; one paragraph in the right half -->
+  <div class="shell">
+    <div class:list={["grid-12 gap-y-6 pt-section", { rule }]}>
+      <div class="col-span-12 flex items-start gap-3 md:col-span-6" data-reveal>
+        <h2 class="label">{label}</h2>
+        {confirm && <ToConfirm />}
+      </div>
+      <div class="col-span-12 flex flex-col items-start md:col-span-6 md:col-start-7" data-reveal>
+        <p class="text-about">{body}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 2: the stage, the same size as the home page's 3D model -->
+  <div class="wide-row mt-section-sm">
+    <div data-reveal style="--reveal-delay:100ms">
+      <div class="module-stage relative overflow-hidden rounded bg-surface-quiet">
+        <p class="label absolute left-4 top-4 sm:left-5 sm:top-5">Rowland Street, Subiaco</p>
+        <p class="absolute inset-0 flex items-center justify-center text-caption text-fg-muted">3D model in progress</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Matches .explorer-stage in HomeExplorer: phones 357:509, md+ one Difference tile high */
+  .module-stage {
+    aspect-ratio: 357 / 509;
+  }
+
+  @media (min-width: 48rem) {
+    .module-stage {
+      aspect-ratio: auto;
+      height: calc((min(100vw, var(--page-max)) - var(--gutter) - var(--gap-sm)) / 2 * 638 / 690);
+    }
+  }
+</style>
