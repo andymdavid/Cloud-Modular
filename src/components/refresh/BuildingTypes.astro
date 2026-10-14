@@ -1,11 +1,14 @@
 ---
 import SectionHead from "@/components/refresh/SectionHead.astro";
+import ModelExplorer from "@/components/refresh/ModelExplorer.astro";
 import type { BuildingType } from "@/data/projects";
+import { typeModels } from "@/data/explorer/type-models";
 
 /**
  * A project's building types: chips to pick a type, the wide 3D stage (the size of the home's How It's Made
- * model), then the chosen type's description and figures. The stage is a placeholder until each type has its
- * own 3D model, which will mount here like ModelExplorer. Without JS every type's details show in turn.
+ * model), then the chosen type's description and figures. A type with a `model` shows it in the stage through
+ * ModelExplorer (turn in the page, full 3D view), loading only when its type is first shown; the others show a
+ * placeholder until their model exists. Without JS every type's details show in turn.
  */
 interface Props {
   id?: string;
@@ -31,10 +34,18 @@ const { id = "types", label, title, intro, items } = Astro.props;
   </div>
 
   <div class="wide-row mt-10" data-reveal>
-    <div class="type-stage relative overflow-hidden rounded bg-surface-quiet">
-      <p class="label absolute left-4 top-4 sm:left-5 sm:top-5" data-stage-label>{items[0].name}</p>
-      <p class="absolute inset-0 flex items-center justify-center text-caption text-fg-muted">3D model in progress</p>
-    </div>
+    {items.map((item, index) => (
+      <div class="type-stage-slot" data-stage-for={item.id} data-first={index === 0 ? "" : undefined}>
+        {item.model ? (
+          <ModelExplorer id={`${id}-model-${item.id}`} bare stageLabel={item.name} {...typeModels[item.model]} />
+        ) : (
+          <div class="type-stage relative overflow-hidden rounded bg-surface-quiet">
+            <p class="label absolute left-4 top-4 sm:left-5 sm:top-5">{item.name}</p>
+            <p class="absolute inset-0 flex items-center justify-center text-caption text-fg-muted">3D model in progress</p>
+          </div>
+        )}
+      </div>
+    ))}
   </div>
 
   <div class="shell">
@@ -74,8 +85,10 @@ const { id = "types", label, title, intro, items } = Astro.props;
     }
   }
 
-  /* With JS, only the chosen type's panel shows */
-  :global(html.js) [data-types] .type-panel:not([data-active]) {
+  /* With JS, only the chosen type's stage and panel show; without it, only the first stage */
+  :global(html.js) [data-types] .type-panel:not([data-active]),
+  :global(html.js) [data-types] .type-stage-slot:not([data-active]),
+  :global(html:not(.js)) [data-types] .type-stage-slot:not([data-first]) {
     display: none;
   }
 
@@ -111,19 +124,17 @@ const { id = "types", label, title, intro, items } = Astro.props;
   document.querySelectorAll<HTMLElement>("[data-types]").forEach((section) => {
     const tabs = [...section.querySelectorAll<HTMLButtonElement>("[data-type]")];
     const panels = [...section.querySelectorAll<HTMLElement>("[data-panel]")];
-    const stageLabel = section.querySelector<HTMLElement>("[data-stage-label]")!;
+    const stages = [...section.querySelectorAll<HTMLElement>("[data-stage-for]")];
 
     const select = (id: string, focus = false) => {
       tabs.forEach((tab) => {
         const on = tab.dataset.type === id;
         tab.setAttribute("aria-selected", String(on));
         tab.tabIndex = on ? 0 : -1;
-        if (on) {
-          stageLabel.textContent = tab.textContent?.trim() ?? "";
-          if (focus) tab.focus();
-        }
+        if (on && focus) tab.focus();
       });
       panels.forEach((panel) => panel.toggleAttribute("data-active", panel.dataset.panel === id));
+      stages.forEach((stage) => stage.toggleAttribute("data-active", stage.dataset.stageFor === id));
     };
 
     tabs.forEach((tab, index) => {

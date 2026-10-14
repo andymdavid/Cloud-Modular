@@ -9,6 +9,8 @@
  * Every project is still in progress (the user's wording). Images are artist's impressions.
  */
 
+import type { TypeModelId } from "./explorer/type-models";
+
 export interface ProjectImage {
   src: string;
   alt: string;
@@ -26,6 +28,8 @@ export interface BuildingType {
   id: string;
   name: string;
   body: string;
+  /** A 3D model of this type (src/data/explorer/type-models.ts); without one the stage shows a placeholder. */
+  model?: TypeModelId;
   facts: { value: string; label: string }[];
 }
 
@@ -139,8 +143,13 @@ const seashells: Project = {
       {
         id: "bay-view",
         name: "Bay View Villa",
-        body: "The largest residences on the estate, with four bedrooms. Together with the Hasting Street villas there are 27 four-bedroom homes.",
-        facts: [{ value: "4", label: "Bedrooms" }],
+        body: "A two-storey villa with four bedrooms, a balcony under a rendered frame and an optional roof terrace reached by a spiral stair. Together with the Hasting Street villas there are 27 four-bedroom homes. The model is built from the villa's design drawings.",
+        model: "jurien-type-b",
+        facts: [
+          { value: "4", label: "Bedrooms" },
+          { value: "2", label: "Storeys, plus a roof terrace" },
+          { value: "249 m²", label: "House area over two floors" },
+        ],
       },
       {
         id: "hasting-street",

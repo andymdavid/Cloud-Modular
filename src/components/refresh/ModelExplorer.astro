@@ -15,8 +15,10 @@ interface Props {
   scene: "jurien" | "module";
   /** Divider above the section; off when it follows a full-bleed image. */
   rule?: boolean;
-  label: string;
-  body: string;
+  /** Only the stage and full view, for a host section that supplies its own heading and row (BuildingTypes). */
+  bare?: boolean;
+  label?: string;
+  body?: string;
   /** Name shown on the stage and in the full view. */
   stageLabel: string;
   /** What the hint says you turn, e.g. "the home". */
@@ -32,7 +34,7 @@ interface Props {
   fallback?: { src: string; alt: string; width: number; height: number };
 }
 
-const { id, scene, rule = true, label, body, stageLabel, subject, parts, views = [], partKind, explodeNote, fallback } = Astro.props;
+const { id, scene, rule = true, bare = false, label, body, stageLabel, subject, parts, views = [], partKind, explodeNote, fallback } = Astro.props;
 const uid = `explorer-${id}`;
 
 const expandIcon = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M8.5 2.5h3v3M5.5 11.5h-3v-3M11.5 2.5 8 6M2.5 11.5 6 8" stroke="currentColor" stroke-width="1.2" /></svg>`;
@@ -41,13 +43,14 @@ const expandIcon = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" 
 <section
   id={id}
   data-theme="light"
-  class="scroll-mt-header pb-section"
+  class:list={["scroll-mt-header", { "pb-section": !bare }]}
   data-explorer
   data-scene={scene}
   data-parts={JSON.stringify(parts)}
   data-default-view={views[0]?.id ?? ""}
 >
   <!-- Row 1, as About: label in the left half; one paragraph and the button in the right half -->
+  {!bare && (
   <div class="shell">
     <div class:list={["grid-12 gap-y-6 pt-section", { rule }]}>
       <h2 class="label col-span-12 md:col-span-6" data-reveal>{label}</h2>
@@ -60,9 +63,10 @@ const expandIcon = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" 
       </div>
     </div>
   </div>
+  )}
 
   <!-- Row 2: the model, the same width and height as the two Difference tiles together (wide row) -->
-  <div class="wide-row mt-section-sm">
+  <div class:list={{ "wide-row mt-section-sm": !bare }}>
     <div data-reveal style="--reveal-delay:100ms">
         <div class="explorer-stage relative overflow-hidden rounded bg-surface-quiet" data-stage>
           {fallback && (
