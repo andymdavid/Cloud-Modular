@@ -45,7 +45,7 @@ const breadcrumbSchema = {
     </div>
   </section>
 
-  <!-- All projects: the same cards as the home page (no links until each project has its own page) -->
+  <!-- All projects: the same cards as the home page (each links to its project page) -->
   <section id="projects" data-theme="light" class="scroll-mt-header pb-section">
     <div class="shell">
       <SectionHead label="Projects" title="Across Western Australia" />
@@ -54,6 +54,7 @@ const breadcrumbSchema = {
       {projects.map((project, index) => (
         <li data-reveal style={`--reveal-delay:${index * 80}ms`}>
           <MediaCard
+            href={`/our-work/${project.slug}/`}
             image={project.image}
             alt={project.imageAlt}
             imagePosition={project.imagePosition}

@@ -257,10 +257,10 @@ export const sectors = [
   },
 ] as const;
 
-// Home and Our Work Projects grid (one row of three). Capel still uses a Jurien Bay render as its image; the 25 On
-// Rowland and Forrest render comes from the 2026 Capability Statement (705 × 804, until a larger original arrives).
+// Home and Our Work Projects grid (one row of three), each linking to its page in src/data/projects.ts.
 export const projects = [
   {
+    slug: "seashells-jurien-bay",
     name: "Seashells Jurien Bay",
     sector: "Residential",
     location: "Jurien Bay, WA",
@@ -269,14 +269,16 @@ export const projects = [
     imagePosition: "center",
   },
   {
+    slug: "capel-village",
     name: "Capel Village",
-    sector: "Residential",
+    sector: "Over-55s living",
     location: "Capel, WA",
-    image: "/projects/jurien-bay-townhouses.webp",
-    imageAlt: "Modular townhouses with timber-framed verandahs and native garden beds",
-    imagePosition: "62% center",
+    image: "/projects/capel-village/bush.webp",
+    imageAlt: "Single-storey residences set among tall gum trees along a winding gravel path",
+    imagePosition: "30% center",
   },
   {
+    slug: "25-on-rowland-and-forrest",
     name: "25 On Rowland and Forrest",
     sector: "Mixed use",
     location: "Subiaco, WA",

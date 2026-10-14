@@ -1,0 +1,140 @@
+---
+import SectionHead from "@/components/refresh/SectionHead.astro";
+import type { BuildingType } from "@/data/projects";
+
+/**
+ * A project's building types: chips to pick a type, the wide 3D stage (the size of the home's How It's Made
+ * model), then the chosen type's description and figures. The stage is a placeholder until each type has its
+ * own 3D model, which will mount here like ModelExplorer. Without JS every type's details show in turn.
+ */
+interface Props {
+  id?: string;
+  label: string;
+  title: string;
+  intro: string;
+  items: readonly BuildingType[];
+}
+
+const { id = "types", label, title, intro, items } = Astro.props;
+---
+
+<section id={id} data-theme="light" class="scroll-mt-header pb-section" data-types>
+  <div class="shell">
+    <SectionHead label={label} title={title} intro={intro} />
+    <div class="mt-10 flex flex-wrap gap-1.5" role="tablist" aria-label={label} data-js-only>
+      {items.map((item, index) => (
+        <button type="button" role="tab" id={`${id}-tab-${item.id}`} aria-controls={`${id}-panel-${item.id}`} aria-selected={index === 0 ? "true" : "false"} tabindex={index === 0 ? 0 : -1} class="type-chip" data-type={item.id}>
+          {item.name}
+        </button>
+      ))}
+    </div>
+  </div>
+
+  <div class="wide-row mt-10" data-reveal>
+    <div class="type-stage relative overflow-hidden rounded bg-surface-quiet">
+      <p class="label absolute left-4 top-4 sm:left-5 sm:top-5" data-stage-label>{items[0].name}</p>
+      <p class="absolute inset-0 flex items-center justify-center text-caption text-fg-muted">3D model in progress</p>
+    </div>
+  </div>
+
+  <div class="shell">
+    {items.map((item, index) => (
+      <div id={`${id}-panel-${item.id}`} role="tabpanel" aria-labelledby={`${id}-tab-${item.id}`} class="type-panel grid-12 gap-y-8 pt-10" data-panel={item.id} data-first={index === 0 ? "" : undefined}>
+        <div class="col-span-12 md:col-span-6">
+          <h3 class="text-lead">{item.name}</h3>
+          <p class="mt-3 max-w-measure text-body text-fg-muted">{item.body}</p>
+        </div>
+        <dl class="col-span-12 grid grid-cols-3 gap-x-gap-sm md:col-span-6 md:col-start-7">
+          {item.facts.map((fact) => (
+            <div class="flex flex-col border-t border-line/[var(--rule-alpha)] pt-4">
+              <dt class="order-2 mt-2 text-small text-fg-muted">{fact.label}</dt>
+              <dd class="order-1 font-display text-[length:var(--text-h2)] leading-[var(--leading-title)] tabular-nums">{fact.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  html:not(.js) [data-types] [data-js-only] {
+    display: none;
+  }
+
+  /* Same size as the module and home 3D stages */
+  .type-stage {
+    aspect-ratio: 357 / 509;
+  }
+
+  @media (min-width: 48rem) {
+    .type-stage {
+      aspect-ratio: auto;
+      height: calc((min(100vw, var(--page-max)) - var(--gutter) - var(--gap-sm)) / 2 * 638 / 690);
+    }
+  }
+
+  /* With JS, only the chosen type's panel shows */
+  :global(html.js) [data-types] .type-panel:not([data-active]) {
+    display: none;
+  }
+
+  .type-chip {
+    height: 2rem;
+    padding-inline: 0.875rem;
+    border: var(--rule) solid rgb(var(--fg) / 0.25);
+    border-radius: var(--radius-media);
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: rgb(var(--fg));
+    transition:
+      background-color var(--dur-base) var(--ease-standard),
+      border-color var(--dur-base) var(--ease-standard),
+      color var(--dur-base) var(--ease-standard);
+  }
+
+  .type-chip:hover {
+    border-color: rgb(var(--fg));
+  }
+
+  .type-chip[aria-selected="true"] {
+    background: rgb(var(--fg));
+    border-color: rgb(var(--fg));
+    color: rgb(var(--surface));
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-types]").forEach((section) => {
+    const tabs = [...section.querySelectorAll<HTMLButtonElement>("[data-type]")];
+    const panels = [...section.querySelectorAll<HTMLElement>("[data-panel]")];
+    const stageLabel = section.querySelector<HTMLElement>("[data-stage-label]")!;
+
+    const select = (id: string, focus = false) => {
+      tabs.forEach((tab) => {
+        const on = tab.dataset.type === id;
+        tab.setAttribute("aria-selected", String(on));
+        tab.tabIndex = on ? 0 : -1;
+        if (on) {
+          stageLabel.textContent = tab.textContent?.trim() ?? "";
+          if (focus) tab.focus();
+        }
+      });
+      panels.forEach((panel) => panel.toggleAttribute("data-active", panel.dataset.panel === id));
+    };
+
+    tabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => select(tab.dataset.type!));
+      tab.addEventListener("keydown", (event) => {
+        const step = event.key === "ArrowRight" ? 1 : event.key === "ArrowLeft" ? -1 : 0;
+        if (!step) return;
+        event.preventDefault();
+        select(tabs[(index + step + tabs.length) % tabs.length].dataset.type!, true);
+      });
+    });
+    select(tabs[0].dataset.type!);
+  });
+</script>

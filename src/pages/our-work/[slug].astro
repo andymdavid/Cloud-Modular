@@ -1,0 +1,163 @@
+---
+import RefreshLayout from "@/layouts/RefreshLayout.astro";
+import SplitSection from "@/components/refresh/SplitSection.astro";
+import SectionHead from "@/components/refresh/SectionHead.astro";
+import ProjectGallery from "@/components/refresh/ProjectGallery.astro";
+import BuildingTypes from "@/components/refresh/BuildingTypes.astro";
+import ImagePanel from "@/components/refresh/ImagePanel.astro";
+import Accordion from "@/components/refresh/Accordion.astro";
+import MediaCard from "@/components/refresh/MediaCard.astro";
+import GetStarted from "@/components/refresh/GetStarted.astro";
+import { projectPages, type Project } from "@/data/projects";
+import { projects, site } from "@/data/site";
+
+export function getStaticPaths() {
+  return projectPages.map((project) => ({ params: { slug: project.slug }, props: { project } }));
+}
+
+const { project } = Astro.props as { project: Project };
+const others = projects.filter((card) => card.slug !== project.slug);
+
+const title = `${project.name} | Modular Project, ${project.location} | Cloud Modular`;
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: site.url },
+    { "@type": "ListItem", position: 2, name: "Our Work", item: `${site.url}/our-work/` },
+    { "@type": "ListItem", position: 3, name: project.name, item: `${site.url}/our-work/${project.slug}/` },
+  ],
+};
+---
+
+<RefreshLayout title={title} description={project.description} canonical={`/our-work/${project.slug}/`} structuredData={breadcrumbSchema} overlayHeader>
+  <!-- Hero: the project's lead image full-bleed, name and details bottom-left -->
+  <section data-hero data-theme="dark" class="relative h-[100svh] min-h-[560px] overflow-hidden">
+    <img src={project.hero.src} alt={project.hero.alt} width={project.hero.width} height={project.hero.height} fetchpriority="high" class="hero-media absolute inset-0 h-full w-full object-cover" style={project.hero.position ? `object-position:${project.hero.position}` : undefined} />
+    <div class="absolute inset-0 bg-[linear-gradient(180deg,rgb(11_11_12/0.5)_0%,rgb(11_11_12/0)_28%,rgb(11_11_12/0)_45%,rgb(11_11_12/0.65)_100%)]" aria-hidden="true"></div>
+    <div class="shell relative flex h-full flex-col justify-end pb-10 sm:pb-14">
+      <div class="grid-12 items-end gap-y-6">
+        <div class="col-span-12 lg:col-span-9">
+          <a href="/our-work/" class="label text-sage">Our work</a>
+          <h1 class="mt-5 text-hero">{project.name}</h1>
+        </div>
+        <dl class="col-span-12 flex flex-wrap gap-x-8 gap-y-3 lg:col-span-3 lg:flex-col lg:items-end lg:text-right">
+          <div><dt class="sr-only">Location</dt><dd class="label text-fg">{project.location}</dd></div>
+          <div><dt class="sr-only">Sector</dt><dd class="label text-fg/80">{project.sector}</dd></div>
+          <div><dt class="sr-only">Status</dt><dd class="hero-status label">{project.status}</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- Overview: what the project is, with its headline figures -->
+  <SplitSection id="overview" label="Overview" rule={false} spacing="tight">
+    <p class="text-about">{project.overview.intro}</p>
+    <dl class="mt-10 grid w-full grid-cols-2 gap-x-gap-sm gap-y-10">
+      {project.overview.stats.map((stat, index) => (
+        <div class="flex flex-col border-t border-line/[var(--rule-alpha)] pt-5" data-reveal style={`--reveal-delay:${index * 80}ms`}>
+          <dt class="order-2 mt-3 max-w-[24ch] text-small text-fg-muted">{stat.label}</dt>
+          <dd class="order-1 text-h1 tabular-nums">{stat.value}</dd>
+        </div>
+      ))}
+    </dl>
+    <p class="mt-10 max-w-measure text-body text-fg-muted">{project.overview.body}</p>
+  </SplitSection>
+
+  <ProjectGallery rows={project.gallery} />
+
+  <BuildingTypes label={project.types.label} title={project.types.title} intro={project.types.intro} items={project.types.items} />
+
+  <!-- The product and its finish tiers, as numbered columns (projects with a named product only) -->
+  {project.product && (
+    <section id="product" data-theme="light" class="scroll-mt-header pb-section">
+      <div class="shell">
+        <SectionHead label="Specification" title={project.product.title} intro={project.product.intro} />
+        <ol class="mt-12 grid gap-x-gap-sm gap-y-12 md:grid-cols-2">
+          {project.product.tiers.map((tier, index) => (
+            <li class="border-t border-line/[var(--rule-alpha)] pt-5" data-reveal style={`--reveal-delay:${index * 80}ms`}>
+              <p class="label" aria-hidden="true">{String(index + 1).padStart(2, "0")}</p>
+              <h3 class="mt-8 text-lead">{tier.name}</h3>
+              <p class="mt-3 max-w-[52ch] text-small text-fg-muted">{tier.body}</p>
+            </li>
+          ))}
+        </ol>
+        <p class="mt-12 max-w-measure text-body text-fg-muted" data-reveal>{project.product.common}</p>
+      </div>
+    </section>
+  )}
+
+  <!-- Setting (olympic.no investor panel): the site image left, slate panel right -->
+  <ImagePanel id="setting" label="Setting" title={project.setting.title} image={project.setting.image.src} alt={project.setting.image.alt} width={project.setting.image.width} height={project.setting.image.height} imagePosition={project.setting.image.position}>
+    <p class="text-body text-fg-muted">{project.setting.intro}</p>
+    <Accordion items={project.setting.items} name="setting" openFirst class="mt-10" />
+  </ImagePanel>
+
+  <SplitSection id="delivery" label="Delivery" rule={false}>
+    <p class="text-about">{project.delivery.body}</p>
+    {project.delivery.stats && (
+      <dl class="mt-10 grid w-full grid-cols-2 gap-x-gap-sm gap-y-10 lg:grid-cols-3">
+        {project.delivery.stats.map((stat, index) => (
+          <div class="flex flex-col border-t border-line/[var(--rule-alpha)] pt-5" data-reveal style={`--reveal-delay:${index * 80}ms`}>
+            <dt class="order-2 mt-3 max-w-[24ch] text-small text-fg-muted">{stat.label}</dt>
+            <dd class="order-1 font-display text-[length:var(--text-h2)] leading-[var(--leading-title)] tabular-nums">{stat.value}</dd>
+          </div>
+        ))}
+      </dl>
+    )}
+    <a href="/our-approach/" class="btn mt-10">How we work</a>
+  </SplitSection>
+
+  <!-- Project team: each party by role, in hairline rows -->
+  <SplitSection id="team" label="Project team">
+    <ul class="w-full border-b border-line/[var(--rule-alpha)]">
+      {project.team.map((member) => (
+        <li class="grid grid-cols-2 gap-x-gap-sm border-t border-line/[var(--rule-alpha)] py-4">
+          <span class="text-small text-fg-muted">{member.role}</span>
+          <span class="text-body">{member.name}</span>
+        </li>
+      ))}
+    </ul>
+  </SplitSection>
+
+  <!-- More projects: the other project cards, linked -->
+  <section id="more-projects" data-theme="light" class="scroll-mt-header pb-section">
+    <div class="shell">
+      <SectionHead label="More projects" title="Other work">
+        <Fragment slot="actions">
+          <a href="/our-work/" class="btn">All projects</a>
+        </Fragment>
+      </SectionHead>
+      <ul class="mt-12 grid gap-x-gap-sm gap-y-12 md:grid-cols-2">
+        {others.map((card, index) => (
+          <li data-reveal style={`--reveal-delay:${index * 80}ms`}>
+            <MediaCard
+              href={`/our-work/${card.slug}/`}
+              image={card.image}
+              alt={card.imageAlt}
+              imagePosition={card.imagePosition}
+              tag={card.sector}
+              meta={card.location}
+              title={card.name}
+              ratio="aspect-[4/3]"
+            />
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <GetStarted />
+</RefreshLayout>
+
+<style>
+  .hero-status {
+    display: inline-flex;
+    align-items: center;
+    height: 1.5rem;
+    padding-inline: 0.5rem;
+    border: var(--rule) solid rgb(var(--paper) / 0.5);
+    border-radius: var(--radius-xs);
+    color: rgb(var(--paper));
+  }
+</style>
