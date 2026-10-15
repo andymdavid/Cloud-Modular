@@ -141,6 +141,8 @@ export interface HouseData<G extends string = string> {
   internalStair?: { group: G; x: [number, number]; zStart: number; going: number; risers: number; to: number };
   pergola?: { group: G; posts: Vec2[]; beamZ: number[]; x: [number, number]; z: [number, number]; rafterSpacing: number; base: number; beam: number; top: number };
   tree?: { at: Vec2; height: number; canopy: number };
+  /** Straight square members between two points, e.g. raked steel posts. */
+  struts?: { group: G; level: Level; material: MaterialKey; from: Vec3; to: Vec3; size: number }[];
 }
 
 // ---------------------------------------------------------------------------------------------------

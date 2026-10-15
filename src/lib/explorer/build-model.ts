@@ -427,6 +427,15 @@ export function buildHouse(house: HouseData, { anisotropy = 4 }: { anisotropy?: 
   if (house.internalStair) addInternalStair(out, house.internalStair);
   if (house.pergola) addPergola(out, house.pergola);
   if (house.tree) addTree(out, house.tree);
+  for (const strut of house.struts ?? []) {
+    const from = new THREE.Vector3(...strut.from);
+    const to = new THREE.Vector3(...strut.to);
+    const direction = to.clone().sub(from);
+    const member = new THREE.BoxGeometry(strut.size, direction.length(), strut.size);
+    member.applyQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), direction.clone().normalize()));
+    member.translate(...from.add(to).multiplyScalar(0.5).toArray());
+    out.add(strut.group, strut.level, strut.material, member);
+  }
 
   const object = new THREE.Group();
   object.name = "explorer-model";

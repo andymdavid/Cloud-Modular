@@ -167,8 +167,13 @@ const seashells: Project = {
       {
         id: "three-bed",
         name: "Three-bedroom detached villa",
-        body: "A detached villa, sold fully furnished and let through the resort's on-site management. There are 77 tourism villas on the estate.",
-        facts: [{ value: "3", label: "Bedrooms" }],
+        body: "A two-storey detached villa with two bedrooms downstairs and the master suite upstairs, over a living room open to the roof and a louvred vergola at the front. It is sold fully furnished and let through the resort's on-site management, and there are 77 tourism villas on the estate. The model is built from the villa's design drawings.",
+        model: "three-bed-villa",
+        facts: [
+          { value: "3", label: "Bedrooms" },
+          { value: "2", label: "Storeys" },
+          { value: "93.5 m²", label: "House area over two floors" },
+        ],
       },
       {
         id: "two-bed",

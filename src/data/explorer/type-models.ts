@@ -6,9 +6,10 @@
 import type { ExplorerPart } from "@/lib/explorer/parts";
 import { componentOrder, components, views } from "./jurien-type-b-info";
 import * as hasting from "./hasting-street-info";
+import * as threeBed from "./three-bed-villa-info";
 
 export interface TypeModel {
-  scene: "jurien" | "hasting" | "module";
+  scene: "jurien" | "hasting" | "three-bed" | "module";
   subject: string;
   parts: ExplorerPart[];
   views?: readonly { id: string; label: string }[];
@@ -44,6 +45,21 @@ export const typeModels = {
     fallback: {
       src: "/explorer/hasting-street.webp",
       alt: "Rendered three-quarter view of the Hasting Street Villa model, showing the double garage, the white-framed balcony and the roof terrace with its spiral stair",
+      width: 1600,
+      height: 892,
+    },
+  },
+  // Seashells Jurien Bay, Short Stay 3 Bed Villa (rev C16)
+  "three-bed-villa": {
+    scene: "three-bed",
+    subject: "the villa",
+    parts: threeBed.componentOrder.map((id) => ({ id, ...threeBed.components[id] })),
+    views: threeBed.views,
+    partKind: "Assembly group (illustrative)",
+    explodeNote: "The separated parts are illustrative, not the actual modules.",
+    fallback: {
+      src: "/explorer/three-bed-villa.webp",
+      alt: "Rendered three-quarter view of the 3 Bed Villa model, showing the tall narrow villa, the framed front window and the louvred vergola on angled posts",
       width: 1600,
       height: 892,
     },

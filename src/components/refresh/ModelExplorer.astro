@@ -12,7 +12,7 @@ import type { ExplorerPart } from "@/lib/explorer/parts";
 interface Props {
   /** Section id; also prefixes the ids inside, so several explorers can share a page. */
   id: string;
-  scene: "jurien" | "hasting" | "module";
+  scene: "jurien" | "hasting" | "three-bed" | "module";
   /** Divider above the section; off when it follows a full-bleed image. */
   rule?: boolean;
   /** Only the stage and full view, for a host section that supplies its own heading and row (BuildingTypes). */
@@ -465,6 +465,7 @@ const expandIcon = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" 
     jurien: () => import("@/lib/explorer/jurien-scene").then((m) => m.jurienScene),
     module: () => import("@/lib/explorer/module-scene").then((m) => m.moduleScene),
     hasting: () => import("@/lib/explorer/hasting-scene").then((m) => m.hastingScene),
+    "three-bed": () => import("@/lib/explorer/three-bed-scene").then((m) => m.threeBedScene),
   };
 
   document.querySelectorAll<HTMLElement>("[data-explorer]").forEach(init);
