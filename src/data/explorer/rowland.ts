@@ -337,6 +337,34 @@ for (let storey = 1; storey <= 6; storey++) {
   ] as const) {
     blocks.push(...pot<GroupId>("terraces", level, x, y + 0.2, z, s).map((b) => ({ ...b, part })).filter((b) => b.material === "foliage"));
   }
+  // Planting trailing over the edge of the level 5 gardens and down the corners (cover perspective)
+  const trail = (axis: "x" | "z", from: number, to: number, face: number) => {
+    // Two staggered rows of overlapping clumps, longer and shorter in a fixed irregular sequence
+    for (const [row, offset, out] of [
+      [0, 0, 0.0],
+      [1, 0.17, 0.14],
+    ] as const) {
+      let i = 0;
+      for (let u = from + offset; u <= to; u += 0.34, i++) {
+        const length = row === 0 ? 0.7 + ((i * 37) % 11) / 7 : 0.4 + ((i * 23) % 7) / 8;
+        const width = 0.28 + ((i * 13) % 5) / 25;
+        const top = y + 0.5;
+        const [a0, a1] = [u - width, u + width];
+        const [f0, f1] = [face - 0.08 + out, face + 0.42 + out];
+        blocks.push(
+          axis === "x"
+            ? { group: "terraces", level, part, min: [a0, top - length, f0], max: [a1, top + 0.15, f1], material: "foliage" }
+            : { group: "terraces", level, part, min: [f0, top - length, a0], max: [f1, top + 0.15, a1], material: "foliage" },
+        );
+      }
+    }
+  };
+  trail("x", 0.4, 5.5, DEPTH);
+  trail("x", 14.7, 19.2, DEPTH);
+  trail("x", 28.4, 29.9, DEPTH);
+  trail("z", 8.2, 9.8, LENGTH);
+  trail("z", 0.3, 1.3, LENGTH);
+
   // Glass edge along the street fronts
   blocks.push(...balustrade<GroupId>("terraces", level, [0.15, y, DEPTH - 0.08], [LENGTH - 0.15, y + 1.05, DEPTH - 0.05]).map((b) => ({ ...b, part })));
   blocks.push(...balustrade<GroupId>("terraces", level, [LENGTH - 0.08, y, Z_WALK], [LENGTH - 0.05, y + 1.05, DEPTH - 0.08]).map((b) => ({ ...b, part })));

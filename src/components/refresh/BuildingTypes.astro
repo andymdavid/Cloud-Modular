@@ -135,7 +135,8 @@ const { id = "types", label, title, intro, items, sharedModel, sharedLabel = tit
     const panels = [...section.querySelectorAll<HTMLElement>("[data-panel]")];
     const stages = [...section.querySelectorAll<HTMLElement>("[data-stage-for]")];
 
-    const select = (id: string, focus = false) => {
+    // `chosen`: the visitor picked this type (the first type is shown on load without highlighting anything)
+    const select = (id: string, focus = false, chosen = true) => {
       tabs.forEach((tab) => {
         const on = tab.dataset.type === id;
         tab.setAttribute("aria-selected", String(on));
@@ -147,7 +148,7 @@ const { id = "types", label, title, intro, items, sharedModel, sharedLabel = tit
       // A shared model highlights the chosen type's apartments
       const tab = tabs.find((candidate) => candidate.dataset.type === id);
       const explorer = section.querySelector<HTMLElement>("[data-shared-stage] [data-explorer]");
-      if (tab?.dataset.highlight && explorer) {
+      if (chosen && tab?.dataset.highlight && explorer) {
         explorer.dataset.highlight = tab.dataset.highlight;
         explorer.dispatchEvent(new CustomEvent("explorer:highlight", { detail: JSON.parse(tab.dataset.highlight) }));
       }
@@ -162,6 +163,6 @@ const { id = "types", label, title, intro, items, sharedModel, sharedLabel = tit
         select(tabs[(index + step + tabs.length) % tabs.length].dataset.type!, true);
       });
     });
-    select(tabs[0].dataset.type!);
+    select(tabs[0].dataset.type!, false, false);
   });
 </script>

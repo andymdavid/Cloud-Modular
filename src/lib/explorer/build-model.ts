@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
-import { Collector as SharedCollector, box, stripeTexture, tiled } from "./geometry";
+import { Collector as SharedCollector, boardTexture, box, stripeTexture, tiled } from "./geometry";
 import type { Downpipe, HouseData, Level, MaterialKey, Opening, RoofPrism, Slab, Wall } from "@/data/explorer/house";
 
 /**
@@ -68,7 +68,9 @@ function createMaterials(anisotropy: number): Record<MaterialKey, THREE.Material
     foliage: std("#6f855c", 0.9, 0, { flatShading: true }),
     trunk: std("#7b6553", 0.9),
     // Timber-look aluminium cladding (vertical boards) and the dark cladding on the lofts (25 On Rowland and Forrest)
-    timberClad: std("#ffffff", 0.7, 0.1, { map: tiled(stripeTexture(256, "#9a6a45", "#7f5636", 6, true, 3), 0.9, anisotropy) }),
+    timberClad: std("#ffffff", 0.72, 0.08, {
+      map: tiled(boardTexture(512, ["#7b4a32", "#86553a", "#734530", "#8d5c3f", "#7f4e35", "#6f432d"], "#4a2d1f", 8, 3), 1.2, anisotropy),
+    }),
     darkClad: std("#ffffff", 0.6, 0.2, { map: tiled(stripeTexture(256, "#2f3032", "#232426", 4, true, 3), 0.6, anisotropy) }),
   };
 }

@@ -22,6 +22,30 @@ export function stripeTexture(size: number, base: string, line: string, count: n
   return texture;
 }
 
+/**
+ * Vertical boards that vary slightly in tone, with a dark joint between them (timber-look cladding). `tones` are
+ * picked in a fixed sequence so the texture is the same on every load.
+ */
+export function boardTexture(size: number, tones: readonly string[], joint: string, boards: number, jointWidth = 2) {
+  const canvas = document.createElement("canvas");
+  canvas.width = canvas.height = size;
+  const ctx = canvas.getContext("2d")!;
+  const step = size / boards;
+  for (let i = 0; i < boards; i++) {
+    ctx.fillStyle = tones[(i * 7 + 3) % tones.length];
+    ctx.fillRect(Math.round(i * step), 0, Math.ceil(step), size);
+    // A faint grain along each board
+    ctx.fillStyle = "rgba(0,0,0,0.05)";
+    for (let g = 0; g < 3; g++) ctx.fillRect(Math.round(i * step + ((g * 5 + i * 3) % step)), 0, 1, size);
+  }
+  ctx.fillStyle = joint;
+  for (let i = 0; i < boards; i++) ctx.fillRect(Math.round(i * step), 0, jointWidth, size);
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+  return texture;
+}
+
 /** UVs are written in metres (see planarUVs), so `tile` is the texture's real-world size. */
 export function tiled(texture: THREE.Texture, tile: number, anisotropy: number) {
   texture.repeat.set(1 / tile, 1 / tile);
