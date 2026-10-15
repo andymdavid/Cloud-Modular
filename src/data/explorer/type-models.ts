@@ -8,9 +8,10 @@ import { componentOrder, components, views } from "./jurien-type-b-info";
 import * as hasting from "./hasting-street-info";
 import * as threeBed from "./three-bed-villa-info";
 import * as twoBed from "./two-bed-villa-info";
+import * as rowland from "./rowland-info";
 
 export interface TypeModel {
-  scene: "jurien" | "hasting" | "three-bed" | "two-bed" | "module";
+  scene: "jurien" | "hasting" | "three-bed" | "two-bed" | "rowland" | "module";
   subject: string;
   parts: ExplorerPart[];
   views?: readonly { id: string; label: string }[];
@@ -76,6 +77,21 @@ export const typeModels = {
     fallback: {
       src: "/explorer/two-bed-villa.webp",
       alt: "Rendered three-quarter view of the 2 Bed Villa model, a long single-storey villa with a louvred vergola on angled posts over the front deck",
+      width: 1600,
+      height: 892,
+    },
+  },
+  // 25 On Rowland and Forrest: the whole building, shared by its apartment types (Doepel Marsh DA set, rev A)
+  rowland: {
+    scene: "rowland",
+    subject: "the building",
+    parts: rowland.parts,
+    views: rowland.views,
+    partKind: "Apartment or building part",
+    explodeNote: "The modules shown are illustrative; the drawings do not yet show where the modules divide.",
+    fallback: {
+      src: "/explorer/rowland.webp",
+      alt: "Rendered view of the 25 On Rowland and Forrest model from the street corner, showing the stacked apartment modules in timber-look cladding above the concrete ground floor",
       width: 1600,
       height: 892,
     },

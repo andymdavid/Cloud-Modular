@@ -8,17 +8,22 @@ import { typeModels } from "@/data/explorer/type-models";
  * A project's building types: chips to pick a type, the wide 3D stage (the size of the home's How It's Made
  * model), then the chosen type's description and figures. A type with a `model` shows it in the stage through
  * ModelExplorer (turn in the page, full 3D view), loading only when its type is first shown; the others show a
- * placeholder until their model exists. Without JS every type's details show in turn.
+ * placeholder until their model exists. With `sharedModel` (a whole building) one stage serves every type, and
+ * choosing a type highlights its `highlight` groups in that model. Without JS every type's details show in turn.
  */
+import type { TypeModelId } from "@/data/explorer/type-models";
 interface Props {
   id?: string;
   label: string;
   title: string;
   intro: string;
   items: readonly BuildingType[];
+  sharedModel?: TypeModelId;
+  /** Stage name for a shared model. */
+  sharedLabel?: string;
 }
 
-const { id = "types", label, title, intro, items } = Astro.props;
+const { id = "types", label, title, intro, items, sharedModel, sharedLabel = title } = Astro.props;
 ---
 
 <section id={id} data-theme="light" class="scroll-mt-header pb-section" data-types>
@@ -26,7 +31,7 @@ const { id = "types", label, title, intro, items } = Astro.props;
     <SectionHead label={label} title={title} intro={intro} />
     <div class="mt-10 flex flex-wrap gap-1.5" role="tablist" aria-label={label} data-js-only>
       {items.map((item, index) => (
-        <button type="button" role="tab" id={`${id}-tab-${item.id}`} aria-controls={`${id}-panel-${item.id}`} aria-selected={index === 0 ? "true" : "false"} tabindex={index === 0 ? 0 : -1} class="type-chip" data-type={item.id}>
+        <button type="button" role="tab" id={`${id}-tab-${item.id}`} data-highlight={item.highlight ? JSON.stringify(item.highlight) : undefined} aria-controls={`${id}-panel-${item.id}`} aria-selected={index === 0 ? "true" : "false"} tabindex={index === 0 ? 0 : -1} class="type-chip" data-type={item.id}>
           {item.name}
         </button>
       ))}
@@ -34,7 +39,11 @@ const { id = "types", label, title, intro, items } = Astro.props;
   </div>
 
   <div class="wide-row mt-10" data-reveal>
-    {items.map((item, index) => (
+    {sharedModel ? (
+      <div class="type-stage-slot" data-shared-stage data-first>
+        <ModelExplorer id={`${id}-model`} bare stageLabel={sharedLabel} {...typeModels[sharedModel]} />
+      </div>
+    ) : items.map((item, index) => (
       <div class="type-stage-slot" data-stage-for={item.id} data-first={index === 0 ? "" : undefined}>
         {item.model ? (
           <ModelExplorer id={`${id}-model-${item.id}`} bare stageLabel={item.name} {...typeModels[item.model]} />
@@ -87,7 +96,7 @@ const { id = "types", label, title, intro, items } = Astro.props;
 
   /* With JS, only the chosen type's stage and panel show; without it, only the first stage */
   :global(html.js) [data-types] .type-panel:not([data-active]),
-  :global(html.js) [data-types] .type-stage-slot:not([data-active]),
+  :global(html.js) [data-types] .type-stage-slot:not([data-active]):not([data-shared-stage]),
   :global(html:not(.js)) [data-types] .type-stage-slot:not([data-first]) {
     display: none;
   }
@@ -135,6 +144,13 @@ const { id = "types", label, title, intro, items } = Astro.props;
       });
       panels.forEach((panel) => panel.toggleAttribute("data-active", panel.dataset.panel === id));
       stages.forEach((stage) => stage.toggleAttribute("data-active", stage.dataset.stageFor === id));
+      // A shared model highlights the chosen type's apartments
+      const tab = tabs.find((candidate) => candidate.dataset.type === id);
+      const explorer = section.querySelector<HTMLElement>("[data-shared-stage] [data-explorer]");
+      if (tab?.dataset.highlight && explorer) {
+        explorer.dataset.highlight = tab.dataset.highlight;
+        explorer.dispatchEvent(new CustomEvent("explorer:highlight", { detail: JSON.parse(tab.dataset.highlight) }));
+      }
     };
 
     tabs.forEach((tab, index) => {

@@ -12,7 +12,7 @@ import type { ExplorerPart } from "@/lib/explorer/parts";
 interface Props {
   /** Section id; also prefixes the ids inside, so several explorers can share a page. */
   id: string;
-  scene: "jurien" | "hasting" | "three-bed" | "two-bed" | "module";
+  scene: "jurien" | "hasting" | "three-bed" | "two-bed" | "rowland" | "module";
   /** Divider above the section; off when it follows a full-bleed image. */
   rule?: boolean;
   /** Only the stage and full view, for a host section that supplies its own heading and row (BuildingTypes). */
@@ -467,6 +467,7 @@ const expandIcon = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" 
     hasting: () => import("@/lib/explorer/hasting-scene").then((m) => m.hastingScene),
     "three-bed": () => import("@/lib/explorer/three-bed-scene").then((m) => m.threeBedScene),
     "two-bed": () => import("@/lib/explorer/two-bed-scene").then((m) => m.twoBedScene),
+    rowland: () => import("@/lib/explorer/rowland-scene").then((m) => m.rowlandScene),
   };
 
   document.querySelectorAll<HTMLElement>("[data-explorer]").forEach(init);
@@ -547,6 +548,13 @@ const expandIcon = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" 
       }
     };
 
+    // A host section (BuildingTypes) can tint groups, e.g. every apartment of the chosen type
+    let highlighted: string[] = root.dataset.highlight ? JSON.parse(root.dataset.highlight) : [];
+    root.addEventListener("explorer:highlight", (event) => {
+      highlighted = (event as CustomEvent<string[]>).detail ?? [];
+      explorer?.highlight(highlighted);
+    });
+
     const setView = (id: string | null) => {
       if (!id) return;
       viewButtons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.view === id)));
@@ -597,6 +605,8 @@ const expandIcon = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" 
           if (import.meta.env.DEV) Object.assign(window, { [`__cmExplorer_${root.id}`]: explorer });
           initialExplode = Math.round((scene.initialExplode ?? 0) * 100);
           setExplode(initialExplode);
+          setView(defaultView);
+          explorer.highlight(highlighted);
           stage.setAttribute("data-ready", "");
           root.setAttribute("data-ready", "");
           setStatus("");

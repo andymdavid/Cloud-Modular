@@ -13,6 +13,7 @@ export interface MeshTag {
   group: string | null;
   level: Level;
   material: MaterialKey;
+  part?: string;
 }
 
 export interface BuiltModel {
@@ -66,6 +67,9 @@ function createMaterials(anisotropy: number): Record<MaterialKey, THREE.Material
     pot: std("#8f8a83", 0.9),
     foliage: std("#6f855c", 0.9, 0, { flatShading: true }),
     trunk: std("#7b6553", 0.9),
+    // Timber-look aluminium cladding (vertical boards) and the dark cladding on the lofts (25 On Rowland and Forrest)
+    timberClad: std("#ffffff", 0.7, 0.1, { map: tiled(stripeTexture(256, "#9a6a45", "#7f5636", 6, true, 3), 0.9, anisotropy) }),
+    darkClad: std("#ffffff", 0.6, 0.2, { map: tiled(stripeTexture(256, "#2f3032", "#232426", 4, true, 3), 0.6, anisotropy) }),
   };
 }
 
@@ -116,8 +120,9 @@ class Collector {
   /** Set while building a roof that falls across z: geometry is made with x and z swapped, then swapped back. */
   swap = false;
 
-  add(group: string | null, level: Level, material: MaterialKey, geometry: THREE.BufferGeometry) {
-    this.inner.add({ group, level, material }, this.swap ? swapXZ(geometry) : geometry);
+  add(group: string | null, level: Level, material: MaterialKey, geometry: THREE.BufferGeometry, part?: string) {
+    const tag: MeshTag = part ? { group, level, material, part } : { group, level, material };
+    this.inner.add(tag, this.swap ? swapXZ(geometry) : geometry);
   }
 
   merged() {
@@ -129,7 +134,7 @@ class Collector {
 // Builders
 
 function addWall(out: Collector, wall: Wall) {
-  const { a, b, base, top, group, level, finish } = wall;
+  const { a, b, base, top, group, level, finish, part } = wall;
   const t = wall.thickness ?? 0.2;
   const alongX = a[1] === b[1];
   const start = alongX ? Math.min(a[0], b[0]) : Math.min(a[1], b[1]);
@@ -141,7 +146,7 @@ function addWall(out: Collector, wall: Wall) {
     if (u1 - u0 < 0.005 || y1 - y0 < 0.005) return;
     const min: [number, number, number] = alongX ? [u0, y0, fixed - depth / 2] : [fixed - depth / 2, y0, u0];
     const max: [number, number, number] = alongX ? [u1, y1, fixed + depth / 2] : [fixed + depth / 2, y1, u1];
-    out.add(group, level, material, box(min, max));
+    out.add(group, level, material, box(min, max), part);
   };
 
   const openings = [...(wall.openings ?? [])]
@@ -198,7 +203,7 @@ function addSlab(out: Collector, slab: Slab) {
   const geometry = new THREE.ExtrudeGeometry(shape, { depth: slab.top - slab.bottom, bevelEnabled: false, curveSegments: 32 });
   // Shape (x, z) extrudes along +z; rotating +90° about x puts depth downwards, then lift to the slab top
   geometry.rotateX(Math.PI / 2).translate(0, slab.top, 0);
-  out.add(slab.group, slab.level, slab.material, geometry);
+  out.add(slab.group, slab.level, slab.material, geometry, slab.part);
 }
 
 const GUTTER = { width: 0.12, depth: 0.12, sheet: 0.012 };
@@ -401,7 +406,7 @@ function addPlantFoliage(out: Collector, block: HouseData["blocks"][number]) {
   const [x1, y1, z1] = block.max;
   const r = Math.min(x1 - x0, y1 - y0, z1 - z0) / 2;
   const geometry = new THREE.IcosahedronGeometry(r * 1.15, 1).scale(1, (y1 - y0) / (2 * r), 1).translate((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2);
-  out.add(block.group, block.level, "foliage", geometry);
+  out.add(block.group, block.level, "foliage", geometry, block.part);
 }
 
 // ---------------------------------------------------------------------------------------------------
@@ -416,7 +421,7 @@ export function buildHouse(house: HouseData, { anisotropy = 4 }: { anisotropy?: 
   house.downpipes.forEach((pipe) => addDownpipe(out, house, pipe));
   for (const block of house.blocks) {
     if (block.material === "foliage") addPlantFoliage(out, block);
-    else out.add(block.group, block.level, block.material, box(block.min, block.max));
+    else out.add(block.group, block.level, block.material, box(block.min, block.max), block.part);
   }
   const { posts } = house;
   for (const [px, pz] of posts.at) {

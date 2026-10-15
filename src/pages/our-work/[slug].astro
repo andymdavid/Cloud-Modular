@@ -66,7 +66,7 @@ const breadcrumbSchema = {
 
   <ProjectGallery rows={project.gallery} />
 
-  <BuildingTypes label={project.types.label} title={project.types.title} intro={project.types.intro} items={project.types.items} />
+  <BuildingTypes label={project.types.label} title={project.types.title} intro={project.types.intro} items={project.types.items} sharedModel={project.types.sharedModel} sharedLabel={project.name} />
 
   <!-- The product and its finish tiers, as numbered columns (projects with a named product only) -->
   {project.product && (

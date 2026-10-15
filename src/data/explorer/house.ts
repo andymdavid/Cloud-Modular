@@ -7,8 +7,8 @@
 export type Vec2 = [x: number, z: number];
 export type Vec3 = [x: number, y: number, z: number];
 
-/** Visibility tiers used by the floor controls, lowest first. */
-export type Level = "gf" | "uf" | "roof" | "pergola";
+/** Visibility tier used by the floor controls ("gf", "uf", "roof" and so on); each scene ranks its own. */
+export type Level = string;
 
 export type MaterialKey =
   | "render"
@@ -35,7 +35,9 @@ export type MaterialKey =
   | "steel"
   | "pot"
   | "foliage"
-  | "trunk";
+  | "trunk"
+  | "timberClad"
+  | "darkClad";
 
 export type OpeningKind = "slider" | "window" | "door" | "garage-door" | "opening";
 
@@ -51,6 +53,8 @@ export interface Opening {
 export interface Wall<G extends string = string> {
   group: G;
   level: Level;
+  /** Separates on its own within its group, by the scene's explode[part]. */
+  part?: string;
   a: Vec2;
   b: Vec2;
   base: number;
@@ -63,6 +67,8 @@ export interface Wall<G extends string = string> {
 export interface Slab<G extends string = string> {
   group: G;
   level: Level;
+  /** Separates on its own within its group, by the scene's explode[part]. */
+  part?: string;
   polygon: Vec2[];
   bottom: number;
   top: number;
@@ -74,6 +80,8 @@ export interface Slab<G extends string = string> {
 export interface Block<G extends string = string> {
   group: G | null;
   level: Level;
+  /** Separates on its own within its group, by the scene's explode[part]. */
+  part?: string;
   min: Vec3;
   max: Vec3;
   material: MaterialKey;

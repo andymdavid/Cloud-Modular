@@ -12,6 +12,7 @@
  */
 
 import type { TypeModelId } from "./explorer/type-models";
+import { typeGroups } from "./explorer/rowland-info";
 
 export interface ProjectImage {
   src: string;
@@ -32,6 +33,8 @@ export interface BuildingType {
   body: string;
   /** A 3D model of this type (src/data/explorer/type-models.ts); without one the stage shows a placeholder. */
   model?: TypeModelId;
+  /** With a shared model: the model's groups to highlight while this type is chosen. */
+  highlight?: string[];
   facts: { value: string; label: string }[];
 }
 
@@ -45,7 +48,8 @@ export interface Project {
   hero: ProjectImage;
   overview: { intro: string; stats: { value: string; label: string }[]; body: string };
   gallery: GalleryRow[];
-  types: { label: string; title: string; intro: string; items: BuildingType[] };
+  /** `sharedModel`: one model for every type (a whole building), with each type highlighted in it. */
+  types: { label: string; title: string; intro: string; sharedModel?: TypeModelId; items: BuildingType[] };
   product?: { title: string; intro: string; tiers: { name: string; body: string }[]; common: string };
   setting: { title: string; image: ProjectImage; intro: string; items: { title: string; body: string }[] };
   delivery: { body: string; stats?: { value: string; label: string }[] };
@@ -491,10 +495,12 @@ const rowland: Project = {
   types: {
     label: "Apartments",
     title: "Five apartment types",
-    intro: "Four one-bedroom types fill the middle levels, with two-level loft apartments at the top.",
+    intro: "Four one-bedroom types fill the middle levels, with two-level loft apartments at the top. Choose a type to see where it sits in the building.",
+    sharedModel: "rowland",
     items: [
       {
         id: "a",
+        highlight: typeGroups.A,
         name: "Type A",
         body: "The largest of the one-bedroom apartments.",
         facts: [
@@ -504,6 +510,7 @@ const rowland: Project = {
       },
       {
         id: "b",
+        highlight: typeGroups.B,
         name: "Type B",
         body: "A one-bedroom apartment designed to an accessible standard.",
         facts: [
@@ -513,6 +520,7 @@ const rowland: Project = {
       },
       {
         id: "c",
+        highlight: typeGroups.C,
         name: "Type C",
         body: "A one-bedroom apartment on the middle levels.",
         facts: [
@@ -522,6 +530,7 @@ const rowland: Project = {
       },
       {
         id: "d",
+        highlight: typeGroups.D,
         name: "Type D",
         body: "A one-bedroom apartment, slightly larger on the lower levels than the upper ones.",
         facts: [
@@ -531,6 +540,7 @@ const rowland: Project = {
       },
       {
         id: "e",
+        highlight: typeGroups.E,
         name: "Type E",
         body: "A two-bedroom loft apartment over the top two levels, with its own deck.",
         facts: [

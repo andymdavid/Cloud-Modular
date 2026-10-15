@@ -63,6 +63,9 @@ export interface ExplorerScene {
     panLimit: readonly [Vec3, Vec3];
     /** Shadow offset along surface normals in metres; smaller for small models. Default 0.03. */
     shadowNormalBias?: number;
+    /** Views ranked below this hide the ground (to look into a basement); levels ranked below it show only in
+     *  those views, since the ground is see-through. Default: the ground always shows. */
+    groundMinRank?: number;
   };
 }
 
@@ -83,6 +86,8 @@ export interface Explorer {
   setExplode(amount: number): void;
   setView(id: string): void;
   select(id: string | null): void;
+  /** Tints a set of groups (e.g. every apartment of a type), under any hover or selection. Empty clears it. */
+  highlight(ids: readonly string[]): void;
   isGroupVisible(id: string): boolean;
   resetView(): void;
   rotate(dTheta: number, dPhi: number): void;
@@ -360,11 +365,19 @@ export function createExplorer(options: ExplorerOptions): Explorer {
 
   let hovered: string | null = null;
   let selected: string | null = null;
+  let highlighted = new Set<string>();
   const paint = () => {
     for (const mesh of model.meshes) {
       const tag = mesh.userData as MeshTag;
       const base = model.materials[tag.material];
-      const strength = tag.group && tag.group === selected ? 0.32 : tag.group && tag.group === hovered ? 0.16 : 0;
+      const strength =
+        tag.group && tag.group === selected
+          ? 0.32
+          : tag.group && tag.group === hovered
+            ? 0.16
+            : tag.group && highlighted.has(tag.group)
+              ? 0.45
+              : 0;
       mesh.material = strength ? tint(base, strength) : base;
     }
     requestRender();
@@ -497,7 +510,13 @@ export function createExplorer(options: ExplorerOptions): Explorer {
     },
     setView(id) {
       const maxRank = definition.views?.find((view) => view.id === id)?.maxRank ?? Infinity;
-      for (const mesh of model.meshes) mesh.visible = (definition.levelRank?.[(mesh.userData as MeshTag).level] ?? 0) <= maxRank;
+      const groundMin = stage.groundMinRank ?? -Infinity;
+      const groundShown = maxRank >= groundMin;
+      for (const mesh of model.meshes) {
+        const rank = definition.levelRank?.[(mesh.userData as MeshTag).level] ?? 0;
+        mesh.visible = rank <= maxRank && !(groundShown && rank < groundMin);
+      }
+      ground.visible = groundShadow.visible = groundShown;
       if (selected && !groupVisible(selected)) {
         api.select(null);
         options.onSelect(null);
@@ -507,6 +526,10 @@ export function createExplorer(options: ExplorerOptions): Explorer {
     },
     select(id) {
       selected = id && groupVisible(id) ? id : null;
+      paint();
+    },
+    highlight(ids) {
+      highlighted = new Set(ids);
       paint();
     },
     isGroupVisible: groupVisible,
