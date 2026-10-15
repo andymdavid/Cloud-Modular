@@ -156,8 +156,13 @@ const seashells: Project = {
       {
         id: "hasting-street",
         name: "Hasting Street Villa",
-        body: "A four-bedroom villa that owners can live in, use as a holiday home, lease or let as a short stay.",
-        facts: [{ value: "4", label: "Bedrooms" }],
+        body: "A two-storey villa with four bedrooms, a double garage, a balcony inside a white frame and a roof terrace reached by a spiral stair. Owners can live in it, use it as a holiday home, lease it or let it as a short stay. The model is built from the villa's design drawings.",
+        model: "hasting-street",
+        facts: [
+          { value: "4", label: "Bedrooms" },
+          { value: "2", label: "Storeys, plus a roof terrace" },
+          { value: "223 m²", label: "House area over two floors" },
+        ],
       },
       {
         id: "three-bed",

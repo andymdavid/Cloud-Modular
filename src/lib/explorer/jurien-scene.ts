@@ -1,12 +1,12 @@
-import { buildModel } from "./build-model";
+import { buildHouse } from "./build-model";
 import type { ExplorerScene } from "./viewer";
-import { explode } from "@/data/explorer/jurien-type-b";
+import { bayView, explode } from "@/data/explorer/jurien-type-b";
 import { levelRank, views } from "@/data/explorer/jurien-type-b-info";
 
 /** The Jurien Bay Type B residence on the home page. Stage values are sized for a two-storey house. */
 export const jurienScene: ExplorerScene = {
   label: "Interactive 3D model of the Jurien Bay Type B residence",
-  build: buildModel,
+  build: (options) => buildHouse(bayView, options),
   explode,
   views,
   levelRank,

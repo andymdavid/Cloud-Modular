@@ -1,38 +1,16 @@
 import * as THREE from "three";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import { Collector as SharedCollector, box, stripeTexture, tiled } from "./geometry";
-import {
-  COURTYARD_TREE,
-  EAVE_OVERHANG,
-  INTERNAL_STAIR,
-  LEVELS,
-  PERGOLA,
-  ROOF_RIDGE,
-  SPIRAL,
-  blocks,
-  downpipes,
-  roofs,
-  slabs,
-  solarArrays,
-  verandahPosts,
-  walls,
-  type Downpipe,
-  type GroupId,
-  type Level,
-  type MaterialKey,
-  type Opening,
-  type RoofPrism,
-  type Wall,
-} from "@/data/explorer/jurien-type-b";
+import type { Downpipe, HouseData, Level, MaterialKey, Opening, RoofPrism, Slab, Wall } from "@/data/explorer/house";
 
 /**
- * Builds the explorer model from the plan data. Geometry is collected per (group, level, material) and
+ * Builds a house explorer model from its plan data (a HouseData from src/data/explorer). Geometry is collected per (group, level, material) and
  * merged, so the whole house renders in a few dozen draw calls and the floor controls can toggle meshes
  * without touching geometry.
  */
 
 export interface MeshTag {
-  group: GroupId | null;
+  group: string | null;
   level: Level;
   material: MaterialKey;
 }
@@ -40,13 +18,11 @@ export interface MeshTag {
 export interface BuiltModel {
   /** Add this to the scene. Its child `root` is offset so the house sits centred on the origin. */
   object: THREE.Group;
-  groups: Map<GroupId, THREE.Group>;
+  groups: Map<string, THREE.Group>;
   meshes: THREE.Mesh[];
   materials: Record<MaterialKey, THREE.Material>;
   dispose(): void;
 }
-
-const CENTRE = { x: 5.46, z: 13.65 };
 
 // ---------------------------------------------------------------------------------------------------
 // Materials
@@ -117,11 +93,31 @@ function splitGroups(geometry: THREE.BufferGeometry): THREE.BufferGeometry[] {
   return result;
 }
 
+/** Swaps plan x and z (for roofs that fall across z), keeping faces outward by reversing each triangle. */
+function swapXZ(geometry: THREE.BufferGeometry) {
+  const flat = geometry.index ? geometry.toNonIndexed() : geometry;
+  if (flat !== geometry) geometry.dispose();
+  flat.applyMatrix4(new THREE.Matrix4().set(0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1));
+  for (const name of Object.keys(flat.attributes)) {
+    const attr = flat.getAttribute(name);
+    for (let i = 0; i < attr.count; i += 3) {
+      for (let c = 0; c < attr.itemSize; c++) {
+        const a = attr.getComponent(i + 1, c);
+        attr.setComponent(i + 1, c, attr.getComponent(i + 2, c));
+        attr.setComponent(i + 2, c, a);
+      }
+    }
+  }
+  return flat;
+}
+
 class Collector {
   private inner = new SharedCollector<MeshTag>();
+  /** Set while building a roof that falls across z: geometry is made with x and z swapped, then swapped back. */
+  swap = false;
 
-  add(group: GroupId | null, level: Level, material: MaterialKey, geometry: THREE.BufferGeometry) {
-    this.inner.add({ group, level, material }, geometry);
+  add(group: string | null, level: Level, material: MaterialKey, geometry: THREE.BufferGeometry) {
+    this.inner.add({ group, level, material }, this.swap ? swapXZ(geometry) : geometry);
   }
 
   merged() {
@@ -192,7 +188,7 @@ function addWall(out: Collector, wall: Wall) {
   piece(cursor, end, base, top);
 }
 
-function addSlab(out: Collector, slab: (typeof slabs)[number]) {
+function addSlab(out: Collector, slab: Slab) {
   const shape = new THREE.Shape(slab.polygon.map(([x, z]) => new THREE.Vector2(x, z)));
   if (slab.hole) {
     const hole = new THREE.Path();
@@ -209,14 +205,15 @@ const GUTTER = { width: 0.12, depth: 0.12, sheet: 0.012 };
 const PIPE = { width: 0.1, depth: 0.07 };
 
 /** Roof outline after overhangs: eaves with gutters, and any flagged gable ends, run past the wall to its outer face plus a lip. */
-function roofOutline(roof: RoofPrism) {
+function roofOutline(roof: RoofPrism, defaultOverhang: number) {
+  const overhang = roof.overhang ?? defaultOverhang;
   const lowSide = roof.skillion && roof.skillion[0] < roof.skillion[1] ? "x0" : "x1";
   const gutters = roof.gutters ?? (roof.skillion ? [lowSide] : ["x0", "x1"]);
   const extend = roof.extend ?? [];
-  const x0 = roof.x[0] - (gutters.includes("x0") ? EAVE_OVERHANG : 0);
-  const x1 = roof.x[1] + (gutters.includes("x1") ? EAVE_OVERHANG : 0);
-  const z0 = roof.z[0] - (extend.includes("z0") ? EAVE_OVERHANG : 0);
-  const z1 = roof.z[1] + (extend.includes("z1") ? EAVE_OVERHANG : 0);
+  const x0 = roof.x[0] - (gutters.includes("x0") ? overhang : 0);
+  const x1 = roof.x[1] + (gutters.includes("x1") ? overhang : 0);
+  const z0 = roof.z[0] - (extend.includes("z0") ? overhang : 0);
+  const z1 = roof.z[1] + (extend.includes("z1") ? overhang : 0);
   /** Top of the roof sheet at x (a skillion is extrapolated past its walls along the same fall). */
   const height = (x: number) => {
     let y: number;
@@ -229,11 +226,22 @@ function roofOutline(roof: RoofPrism) {
     }
     return Math.max(roof.base + 0.04, y);
   };
-  return { x0, x1, z0, z1, height, gutters };
+  return { x0, x1, z0, z1, height, gutters, overhang };
 }
 
-function addRoof(out: Collector, roof: RoofPrism) {
-  const { x0, x1, z0, z1, height, gutters } = roofOutline(roof);
+/** A roof that falls across z is built as if it fell across x, with the plan axes swapped, then swapped back. */
+function addRoof(out: Collector, roof: RoofPrism, defaultOverhang: number) {
+  if (roof.axis === "z") {
+    out.swap = true;
+    addRoofAlongX(out, { ...roof, axis: "x", x: roof.z, z: roof.x }, defaultOverhang);
+    out.swap = false;
+  } else {
+    addRoofAlongX(out, roof, defaultOverhang);
+  }
+}
+
+function addRoofAlongX(out: Collector, roof: RoofPrism, defaultOverhang: number) {
+  const { x0, x1, z0, z1, height, gutters } = roofOutline(roof, defaultOverhang);
   const points: [number, number][] = [[x0, roof.base], [x0, height(x0)]];
   if (roof.ridge && roof.ridge.x > x0 && roof.ridge.x < x1) points.push([roof.ridge.x, roof.ridge.y]);
   points.push([x1, height(x1)], [x1, roof.base]);
@@ -270,13 +278,14 @@ function addRoof(out: Collector, roof: RoofPrism) {
 }
 
 /** The gutter a downpipe drains, found by its eave line: returns the gutter's outer edge position and sole height. */
-function gutterFor(pipe: Downpipe, face: number) {
-  for (const roof of roofs) {
-    const { x0, x1, z0, z1, height, gutters } = roofOutline(roof);
+function gutterFor(house: HouseData, pipe: Downpipe, face: number) {
+  for (const roof of house.roofs) {
+    if (roof.axis === "z") continue;
+    const { x0, x1, z0, z1, height, gutters, overhang } = roofOutline(roof, house.eaveOverhang);
     if (pipe.z < z0 || pipe.z > z1) continue;
     for (const side of gutters) {
       const [edge, dir] = side === "x0" ? [x0, -1] : [x1, 1];
-      if (dir === pipe.side && Math.abs(edge - (face + dir * (EAVE_OVERHANG - 0.1))) < 0.03) {
+      if (dir === pipe.side && Math.abs(edge - (face + dir * (overhang - 0.1))) < 0.03) {
         return { edge, sole: height(edge) - 0.01 - GUTTER.depth };
       }
     }
@@ -285,11 +294,11 @@ function gutterFor(pipe: Downpipe, face: number) {
 }
 
 /** Downpipe tight to the wall, with a gooseneck up to the gutter outlet and an offset where the wall face steps. */
-function addDownpipe(out: Collector, pipe: Downpipe) {
+function addDownpipe(out: Collector, house: HouseData, pipe: Downpipe) {
   const { z, side: dir } = pipe;
   const upperFace = pipe.ufFace ?? pipe.gfFace;
-  const { edge, sole } = gutterFor(pipe, upperFace);
-  const piece = (group: GroupId, level: Level, u0: number, u1: number, y0: number, y1: number, face: number) =>
+  const { edge, sole } = gutterFor(house, pipe, upperFace);
+  const piece = (group: string, level: Level, u0: number, u1: number, y0: number, y1: number, face: number) =>
     out.add(group, level, "downpipe", box([face + dir * u0, y0, z - PIPE.width / 2], [face + dir * u1, y1, z + PIPE.width / 2]));
   const topGroup = pipe.uf ?? pipe.gf;
   const topLevel: Level = pipe.uf ? "uf" : "gf";
@@ -303,27 +312,28 @@ function addDownpipe(out: Collector, pipe: Downpipe) {
     return;
   }
   const step = Math.abs(upperFace - pipe.gfFace) > 0.005;
-  const offsetTop = LEVELS.ufSlab + (step ? PIPE.depth : 0);
+  const offsetTop = house.ufSlab + (step ? PIPE.depth : 0);
   piece(pipe.uf, "uf", 0, PIPE.depth, offsetTop, bendLow - PIPE.depth, upperFace);
   if (step) {
     // Offset across the step between the upper and lower wall faces, just above the floor line
     const inner = dir * Math.min(dir * upperFace, dir * pipe.gfFace);
-    piece(pipe.uf, "uf", 0, Math.abs(upperFace - pipe.gfFace) + PIPE.depth, LEVELS.ufSlab, offsetTop, inner);
+    piece(pipe.uf, "uf", 0, Math.abs(upperFace - pipe.gfFace) + PIPE.depth, house.ufSlab, offsetTop, inner);
   }
-  piece(pipe.gf, "gf", 0, PIPE.depth, 0, LEVELS.ufSlab, pipe.gfFace);
+  piece(pipe.gf, "gf", 0, PIPE.depth, 0, house.ufSlab, pipe.gfFace);
 }
 
-function addSolar(out: Collector) {
-  const pitch = ROOF_RIDGE.pitchRight;
+function addSolar(out: Collector, solar: NonNullable<HouseData["solar"]>) {
+  const { ridge, arrays } = solar;
+  const pitch = ridge.pitchRight;
   const angle = Math.atan(pitch);
-  for (const array of solarArrays) {
+  for (const array of arrays) {
     const width = (array.x[1] - array.x[0]) / array.cols;
     const depth = (array.z[1] - array.z[0]) / array.rows;
     for (let c = 0; c < array.cols; c++) {
       for (let r = 0; r < array.rows; r++) {
         const cx = array.x[0] + width * (c + 0.5);
         const cz = array.z[0] + depth * (r + 0.5);
-        const cy = ROOF_RIDGE.y - (cx - ROOF_RIDGE.x) * pitch + 0.07;
+        const cy = ridge.y - (cx - ridge.x) * pitch + 0.07;
         const panel = new THREE.BoxGeometry((width - 0.04) / Math.cos(angle), 0.04, depth - 0.04);
         panel.rotateZ(-angle).translate(cx, cy, cz);
         out.add("roof", "roof", "solar", panel);
@@ -332,14 +342,14 @@ function addSolar(out: Collector) {
   }
 }
 
-function addSpiral(out: Collector) {
-  const { centre, radius, from, to, risers } = SPIRAL;
+function addSpiral(out: Collector, spiral: NonNullable<HouseData["spiral"]>) {
+  const { group, centre, radius, from, to, risers } = spiral;
   const [cx, cz] = centre;
   const rise = (to - from) / risers;
   const step = (Math.PI * 2) / (risers + 1);
-  const start = Math.PI * 0.5; // first tread faces the balcony front
+  const start = spiral.start ?? Math.PI * 0.5; // default: first tread faces the balcony front (+z)
 
-  out.add("spiral", "uf", "steel", new THREE.CylinderGeometry(0.05, 0.05, to - from + 1.0, 12).translate(cx, (from + to + 1.0) / 2, cz));
+  out.add(group, "uf", "steel", new THREE.CylinderGeometry(0.05, 0.05, to - from + 1.0, 12).translate(cx, (from + to + 1.0) / 2, cz));
 
   const rail: THREE.Vector3[] = [];
   for (let i = 0; i < risers; i++) {
@@ -347,35 +357,34 @@ function addSpiral(out: Collector) {
     const y = from + rise * (i + 1);
     const tread = new THREE.BoxGeometry(radius - 0.06, 0.04, 0.3);
     tread.translate((radius - 0.06) / 2 + 0.04, 0, 0).rotateY(-angle).translate(cx, y - 0.02, cz);
-    out.add("spiral", "uf", "steel", tread);
+    out.add(group, "uf", "steel", tread);
     const px = cx + Math.cos(angle) * (radius - 0.03);
     const pz = cz + Math.sin(angle) * (radius - 0.03);
-    out.add("spiral", "uf", "steel", new THREE.CylinderGeometry(0.012, 0.012, 0.9, 6).translate(px, y + 0.45, pz));
+    out.add(group, "uf", "steel", new THREE.CylinderGeometry(0.012, 0.012, 0.9, 6).translate(px, y + 0.45, pz));
     rail.push(new THREE.Vector3(px, y + 0.9, pz));
   }
-  out.add("spiral", "uf", "steel", new THREE.TubeGeometry(new THREE.CatmullRomCurve3(rail), 96, 0.022, 6));
+  out.add(group, "uf", "steel", new THREE.TubeGeometry(new THREE.CatmullRomCurve3(rail), 96, 0.022, 6));
 }
 
-function addInternalStair(out: Collector) {
-  const { x, zStart, going, risers, to } = INTERNAL_STAIR;
+function addInternalStair(out: Collector, stair: NonNullable<HouseData["internalStair"]>) {
+  const { group, x, zStart, going, risers, to } = stair;
   const rise = to / risers;
   for (let i = 0; i < risers - 1; i++) {
-    out.add("tower", "gf", "floor", box([x[0], 0, zStart + i * going], [x[1], rise * (i + 1), zStart + (i + 1) * going]));
+    out.add(group, "gf", "floor", box([x[0], 0, zStart + i * going], [x[1], rise * (i + 1), zStart + (i + 1) * going]));
   }
 }
 
-function addPergola(out: Collector) {
-  const { posts, beamZ, x, z, rafterSpacing } = PERGOLA;
-  const { terrace: base, pergolaBeam: beam, pergolaTop: top } = LEVELS;
-  for (const [px, pz] of posts) out.add("pergola", "pergola", "timber", box([px - 0.06, base, pz - 0.06], [px + 0.06, beam, pz + 0.06]));
-  for (const bz of beamZ) out.add("pergola", "pergola", "timber", box([x[0], beam - 0.18, bz - 0.05], [x[1], beam, bz + 0.05]));
+function addPergola(out: Collector, pergola: NonNullable<HouseData["pergola"]>) {
+  const { group, posts, beamZ, x, z, rafterSpacing, base, beam, top } = pergola;
+  for (const [px, pz] of posts) out.add(group, "pergola", "timber", box([px - 0.06, base, pz - 0.06], [px + 0.06, beam, pz + 0.06]));
+  for (const bz of beamZ) out.add(group, "pergola", "timber", box([x[0], beam - 0.18, bz - 0.05], [x[1], beam, bz + 0.05]));
   for (let rx = x[0] + 0.12; rx <= x[1] - 0.1; rx += rafterSpacing) {
-    out.add("pergola", "pergola", "timber", box([rx - 0.025, beam, z[0]], [rx + 0.025, top, z[1]]));
+    out.add(group, "pergola", "timber", box([rx - 0.025, beam, z[0]], [rx + 0.025, top, z[1]]));
   }
 }
 
-function addTree(out: Collector) {
-  const { at, height, canopy } = COURTYARD_TREE;
+function addTree(out: Collector, tree: NonNullable<HouseData["tree"]>) {
+  const { at, height, canopy } = tree;
   const [tx, tz] = at;
   out.add(null, "gf", "trunk", new THREE.CylinderGeometry(0.07, 0.11, height * 0.6, 8).translate(tx, height * 0.3, tz));
   const clumps: [number, number, number, number][] = [
@@ -386,7 +395,7 @@ function addTree(out: Collector) {
   for (const [dx, y, dz, r] of clumps) out.add(null, "gf", "foliage", new THREE.IcosahedronGeometry(r, 1).translate(tx + dx, y, tz + dz));
 }
 
-function addPlantFoliage(out: Collector, block: (typeof blocks)[number]) {
+function addPlantFoliage(out: Collector, block: HouseData["blocks"][number]) {
   // Planter foliage reads better as a rounded mass than a box
   const [x0, y0, z0] = block.min;
   const [x1, y1, z1] = block.max;
@@ -397,34 +406,35 @@ function addPlantFoliage(out: Collector, block: (typeof blocks)[number]) {
 
 // ---------------------------------------------------------------------------------------------------
 
-export function buildModel({ anisotropy = 4 }: { anisotropy?: number } = {}): BuiltModel {
+export function buildHouse(house: HouseData, { anisotropy = 4 }: { anisotropy?: number } = {}): BuiltModel {
   const materials = createMaterials(anisotropy);
   const out = new Collector();
 
-  walls.forEach((wall) => addWall(out, wall));
-  slabs.forEach((slab) => addSlab(out, slab));
-  roofs.forEach((roof) => addRoof(out, roof));
-  downpipes.forEach((pipe) => addDownpipe(out, pipe));
-  for (const block of blocks) {
+  house.walls.forEach((wall) => addWall(out, wall));
+  house.slabs.forEach((slab) => addSlab(out, slab));
+  house.roofs.forEach((roof) => addRoof(out, roof, house.eaveOverhang));
+  house.downpipes.forEach((pipe) => addDownpipe(out, house, pipe));
+  for (const block of house.blocks) {
     if (block.material === "foliage") addPlantFoliage(out, block);
     else out.add(block.group, block.level, block.material, box(block.min, block.max));
   }
-  for (const [px, pz] of verandahPosts) {
-    out.add("frame", "gf", "render", new THREE.CylinderGeometry(0.045, 0.045, LEVELS.ufSlab, 12).translate(px, LEVELS.ufSlab / 2, pz));
+  const { posts } = house;
+  for (const [px, pz] of posts.at) {
+    out.add(posts.group, "gf", "render", new THREE.CylinderGeometry(0.045, 0.045, posts.height, 12).translate(px, posts.height / 2, pz));
   }
-  addSolar(out);
-  addSpiral(out);
-  addInternalStair(out);
-  addPergola(out);
-  addTree(out);
+  if (house.solar) addSolar(out, house.solar);
+  if (house.spiral) addSpiral(out, house.spiral);
+  if (house.internalStair) addInternalStair(out, house.internalStair);
+  if (house.pergola) addPergola(out, house.pergola);
+  if (house.tree) addTree(out, house.tree);
 
   const object = new THREE.Group();
   object.name = "explorer-model";
   const root = new THREE.Group();
-  root.position.set(-CENTRE.x, 0, -CENTRE.z);
+  root.position.set(-house.centre.x, 0, -house.centre.z);
   object.add(root);
 
-  const groups = new Map<GroupId, THREE.Group>();
+  const groups = new Map<string, THREE.Group>();
   const site = new THREE.Group();
   site.name = "site";
   root.add(site);

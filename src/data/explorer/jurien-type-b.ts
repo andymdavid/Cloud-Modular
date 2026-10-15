@@ -18,11 +18,22 @@
  * so copy can change without touching geometry.
  */
 
-export type Vec2 = [x: number, z: number];
-export type Vec3 = [x: number, y: number, z: number];
+import type {
+  Block as HouseBlock,
+  Downpipe as HouseDownpipe,
+  HouseData,
+  Level,
+  MaterialKey,
+  Opening,
+  RoofPrism as HouseRoof,
+  Slab as HouseSlab,
+  Vec2,
+  Vec3,
+  Wall as HouseWall,
+} from "./house";
+import { balustrade as glassBalustrade, pot as plantPot, slatScreen as battenScreen } from "./house";
 
-/** Visibility tiers used by the floor controls, lowest first. */
-export type Level = "gf" | "uf" | "roof" | "pergola";
+export type { Level, MaterialKey, Opening, Vec2, Vec3 } from "./house";
 
 export type GroupId =
   | "gf-front"
@@ -38,110 +49,14 @@ export type GroupId =
   | "pergola"
   | "roof";
 
-export type MaterialKey =
-  | "render"
-  | "cladding"
-  | "feature"
-  | "interior"
-  | "floor"
-  | "deck"
-  | "concrete"
-  | "frameDark"
-  | "glass"
-  | "rail"
-  | "timber"
-  | "screen"
-  | "roof"
-  | "fascia"
-  | "downpipe"
-  | "solar"
-  | "garageDoor"
-  | "door"
-  | "furniture"
-  | "soft"
-  | "bed"
-  | "steel"
-  | "pot"
-  | "foliage"
-  | "trunk";
-
-export type OpeningKind = "slider" | "window" | "door" | "garage-door" | "opening";
-
-export interface Opening {
-  /** Start and end along the wall, in the plan coordinate that varies along it (x or z). */
-  span: [number, number];
-  /** Absolute heights. Default sill = wall base, head = base + 2.1 (interior doorways). */
-  sill?: number;
-  head?: number;
-  kind?: OpeningKind;
-}
-
-export interface Wall {
-  group: GroupId;
-  level: Level;
-  a: Vec2;
-  b: Vec2;
-  base: number;
-  top: number;
-  finish: MaterialKey;
-  thickness?: number;
-  openings?: Opening[];
-}
-
-export interface Slab {
-  group: GroupId;
-  level: Level;
-  polygon: Vec2[];
-  bottom: number;
-  top: number;
-  material: MaterialKey;
-  /** Circular cut-out, e.g. the spiral stair opening in the roof terrace. */
-  hole?: { centre: Vec2; radius: number };
-}
-
-export interface Block {
-  group: GroupId | null;
-  level: Level;
-  min: Vec3;
-  max: Vec3;
-  material: MaterialKey;
-}
-
-export interface RoofPrism {
-  group: GroupId;
-  level: Level;
-  x: [number, number];
-  z: [number, number];
-  base: number;
-  /** Ridge runs along z. Left/right pitches as rise per metre. */
-  ridge?: { x: number; y: number; pitchLeft: number; pitchRight: number };
-  /** Single-pitch (skillion) roof instead of a ridge: eave heights at x[0] and x[1]. */
-  skillion?: [number, number];
-  /** Finish for the gable ends and the wall between ceiling and eave (default: horizontal cladding). */
-  capFinish?: MaterialKey;
-  /** Eaves that carry a gutter (default: both eaves, or the low side of a skillion). Guttered eaves overhang the wall. */
-  gutters?: ("x0" | "x1")[];
-  /** Gable ends that overhang the wall. Left flush where another roof or the terrace abuts. */
-  extend?: ("z0" | "z1")[];
-}
+export type Wall = HouseWall<GroupId>;
+export type Slab = HouseSlab<GroupId>;
+export type Block = HouseBlock<GroupId>;
+export type RoofPrism = HouseRoof<GroupId>;
+export type Downpipe = HouseDownpipe<GroupId>;
 
 /** Eave and gable overhang, measured from the wall centreline: half the 200 mm wall plus a 50 mm lip. */
 export const EAVE_OVERHANG = 0.15;
-
-/**
- * Squareline downpipe on an x-facing wall, from the gutter above to the ground. Split at the upper floor so each half
- * follows its wing; where the upper wall face sits in or out from the lower one, the pipe offsets across the step.
- */
-export interface Downpipe {
-  z: number;
-  /** Which way the wall faces: -1 towards x = 0, 1 away from it. */
-  side: -1 | 1;
-  /** Outer face of the ground-floor wall (and of the upper-floor wall, when different). */
-  gfFace: number;
-  ufFace?: number;
-  gf: GroupId;
-  uf?: GroupId;
-}
 
 // ---------------------------------------------------------------------------------------------------
 // Levels (sheets 10, 11 and 15)
@@ -361,27 +276,9 @@ export const solarArrays = [
 const FRAME_DEPTH = 0.3;
 const BAL_H = 1.0; // balustrade height above finished floor (indicative; not dimensioned)
 
-/** Glass balustrade with a warm metal top rail (finish per the render; plans show slats). */
-const balustrade = (group: GroupId, level: Level, min: Vec3, max: Vec3): Block[] => [
-  { group, level, min, max: [max[0], max[1] - 0.04, max[2]], material: "glass" },
-  { group, level, min: [min[0] - 0.02, max[1] - 0.04, min[2] - 0.02], max: [max[0] + 0.02, max[1] + 0.01, max[2] + 0.02], material: "rail" },
-];
-
-/** 1.6 m privacy screen of dark vertical battens with a capping rail (elevations 2 and 4). Batten size indicative. */
-function slatScreen(group: GroupId, level: Level, x: number, floor: number, z0: number, z1: number): Block[] {
-  const batten = 0.04;
-  const pitch = 0.11;
-  const count = Math.floor((z1 - z0 - batten) / pitch) + 1;
-  const inset = (z1 - z0 - batten - (count - 1) * pitch) / 2;
-  const top = floor + 1.6;
-  return [
-    ...Array.from({ length: count }, (_, i): Block => {
-      const z = z0 + inset + i * pitch;
-      return { group, level, min: [x - 0.03, floor, z], max: [x + 0.03, top - 0.04, z + batten], material: "screen" };
-    }),
-    { group, level, min: [x - 0.04, top - 0.04, z0], max: [x + 0.04, top, z1], material: "screen" },
-  ];
-}
+const balustrade = (group: GroupId, level: Level, min: Vec3, max: Vec3): Block[] => glassBalustrade(group, level, min, max);
+const slatScreen = (group: GroupId, level: Level, x: number, floor: number, z0: number, z1: number): Block[] =>
+  battenScreen(group, level, x, floor, z0, z1);
 
 /** Balcony and terrace edges: glass front and sides, 1.6 m privacy screens towards the back (elevations 2 and 4). */
 const deckEdges = (group: GroupId, level: Level, floor: number, frontTop: number): Block[] => [
@@ -392,10 +289,7 @@ const deckEdges = (group: GroupId, level: Level, floor: number, frontTop: number
   ...slatScreen(group, level, 9.215, floor, 1.4, 3.0),
 ];
 
-const pot = (group: GroupId, level: Level, x: number, y: number, z: number, size = 1): Block[] => [
-  { group, level, min: [x - 0.2 * size, y, z - 0.2 * size], max: [x + 0.2 * size, y + 0.45 * size, z + 0.2 * size], material: "pot" },
-  { group, level, min: [x - 0.32 * size, y + 0.45 * size, z - 0.32 * size], max: [x + 0.32 * size, y + 1.25 * size, z + 0.32 * size], material: "foliage" },
-];
+const pot = (group: GroupId, level: Level, x: number, y: number, z: number, size = 1): Block[] => plantPot(group, level, x, y, z, size);
 
 export const blocks: Block[] = [
   // White frame around the balcony (elevation 1: fibre cement cladding). Legs 550 wide (sheet 8).
@@ -475,4 +369,22 @@ export const explode: Record<GroupId, Vec3> = {
   spiral: [0, 3.2, -4.4],
   terrace: [0, 5.8, -4.4],
   pergola: [0, 7.9, -4.4],
+};
+
+/** Everything the model builder needs for the Bay View Villa. */
+export const bayView: HouseData<GroupId> = {
+  centre: { x: 5.46, z: 13.65 },
+  ufSlab: L.ufSlab,
+  eaveOverhang: EAVE_OVERHANG,
+  walls,
+  slabs,
+  roofs,
+  downpipes,
+  blocks,
+  posts: { group: "frame", at: verandahPosts, height: L.ufSlab },
+  solar: { ridge: ufRidge, arrays: solarArrays },
+  spiral: { group: "spiral", ...SPIRAL },
+  internalStair: { group: "tower", ...INTERNAL_STAIR },
+  pergola: { group: "pergola", ...PERGOLA, posts: [...PERGOLA.posts], beamZ: [...PERGOLA.beamZ], base: L.terrace, beam: L.pergolaBeam, top: L.pergolaTop },
+  tree: COURTYARD_TREE,
 };
