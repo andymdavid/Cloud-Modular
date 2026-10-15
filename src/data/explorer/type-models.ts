@@ -24,7 +24,7 @@ export const typeModels = {
     parts: componentOrder.map((id) => ({ id, ...components[id] })),
     views,
     partKind: "Assembly group (illustrative)",
-    explodeNote: "The separated parts are illustrative, not the actual modules.",
+    explodeNote: "The separated parts are illustrative, not how the home is built.",
     fallback: {
       src: "/explorer/jurien-type-b.webp",
       alt: "Rendered three-quarter view of the Bay View Villa model, showing the white-framed balcony, roof terrace pergola and spiral stair at the front",
