@@ -7,9 +7,10 @@ import type { ExplorerPart } from "@/lib/explorer/parts";
 import { componentOrder, components, views } from "./jurien-type-b-info";
 import * as hasting from "./hasting-street-info";
 import * as threeBed from "./three-bed-villa-info";
+import * as twoBed from "./two-bed-villa-info";
 
 export interface TypeModel {
-  scene: "jurien" | "hasting" | "three-bed" | "module";
+  scene: "jurien" | "hasting" | "three-bed" | "two-bed" | "module";
   subject: string;
   parts: ExplorerPart[];
   views?: readonly { id: string; label: string }[];
@@ -60,6 +61,21 @@ export const typeModels = {
     fallback: {
       src: "/explorer/three-bed-villa.webp",
       alt: "Rendered three-quarter view of the 3 Bed Villa model, showing the tall narrow villa, the framed front window and the louvred vergola on angled posts",
+      width: 1600,
+      height: 892,
+    },
+  },
+  // Seashells Jurien Bay, Short Stay 2 Bed Villa (rev C05)
+  "two-bed-villa": {
+    scene: "two-bed",
+    subject: "the villa",
+    parts: twoBed.componentOrder.map((id) => ({ id, ...twoBed.components[id] })),
+    views: twoBed.views,
+    partKind: "Assembly group (illustrative)",
+    explodeNote: "The separated parts are illustrative, not the actual modules.",
+    fallback: {
+      src: "/explorer/two-bed-villa.webp",
+      alt: "Rendered three-quarter view of the 2 Bed Villa model, a long single-storey villa with a louvred vergola on angled posts over the front deck",
       width: 1600,
       height: 892,
     },

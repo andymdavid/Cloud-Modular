@@ -178,8 +178,13 @@ const seashells: Project = {
       {
         id: "two-bed",
         name: "Two-bedroom detached villa",
-        body: "A smaller detached villa, sold fully furnished.",
-        facts: [{ value: "2", label: "Bedrooms" }],
+        body: "A single-storey detached villa with two bedrooms, a bathroom and laundry, a powder room, and an open living room that slides onto a deck under a louvred vergola. It is sold fully furnished. The model is built from the villa's design drawings.",
+        model: "two-bed-villa",
+        facts: [
+          { value: "2", label: "Bedrooms" },
+          { value: "1", label: "Storey" },
+          { value: "65 m²", label: "House area" },
+        ],
       },
     ],
   },
