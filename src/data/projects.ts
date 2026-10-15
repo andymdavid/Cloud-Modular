@@ -143,12 +143,12 @@ const seashells: Project = {
       {
         id: "bay-view",
         name: "Bay View Villa",
-        body: "A two-storey villa with four bedrooms, a balcony under a rendered frame and an optional roof terrace reached by a spiral stair. Together with the Hasting Street villas there are 27 four-bedroom homes. The model is built from the villa's design drawings.",
+        body: "A two-storey villa with four bedrooms, a balcony inside a white frame and an optional roof terrace reached by a spiral stair. Together with the Hasting Street villas there are 27 four-bedroom homes. The model is built from the villa's design drawings.",
         model: "jurien-type-b",
         facts: [
           { value: "4", label: "Bedrooms" },
           { value: "2", label: "Storeys, plus a roof terrace" },
-          { value: "249 m²", label: "House area over two floors" },
+          { value: "252 m²", label: "House area over two floors" },
         ],
       },
       {

@@ -366,11 +366,11 @@ function addInternalStair(out: Collector) {
 
 function addPergola(out: Collector) {
   const { posts, beamZ, x, z, rafterSpacing } = PERGOLA;
-  const base = 6.044;
-  for (const [px, pz] of posts) out.add("pergola", "pergola", "timber", box([px - 0.06, base, pz - 0.06], [px + 0.06, 8.264, pz + 0.06]));
-  for (const bz of beamZ) out.add("pergola", "pergola", "timber", box([x[0], 8.084, bz - 0.05], [x[1], 8.264, bz + 0.05]));
+  const { terrace: base, pergolaBeam: beam, pergolaTop: top } = LEVELS;
+  for (const [px, pz] of posts) out.add("pergola", "pergola", "timber", box([px - 0.06, base, pz - 0.06], [px + 0.06, beam, pz + 0.06]));
+  for (const bz of beamZ) out.add("pergola", "pergola", "timber", box([x[0], beam - 0.18, bz - 0.05], [x[1], beam, bz + 0.05]));
   for (let rx = x[0] + 0.12; rx <= x[1] - 0.1; rx += rafterSpacing) {
-    out.add("pergola", "pergola", "timber", box([rx - 0.025, 8.264, z[0]], [rx + 0.025, 8.444, z[1]]));
+    out.add("pergola", "pergola", "timber", box([rx - 0.025, beam, z[0]], [rx + 0.025, top, z[1]]));
   }
 }
 
@@ -410,7 +410,7 @@ export function buildModel({ anisotropy = 4 }: { anisotropy?: number } = {}): Bu
     else out.add(block.group, block.level, block.material, box(block.min, block.max));
   }
   for (const [px, pz] of verandahPosts) {
-    out.add("frame", "gf", "render", new THREE.CylinderGeometry(0.045, 0.045, 2.72, 12).translate(px, 1.36, pz));
+    out.add("frame", "gf", "render", new THREE.CylinderGeometry(0.045, 0.045, LEVELS.ufSlab, 12).translate(px, LEVELS.ufSlab / 2, pz));
   }
   addSolar(out);
   addSpiral(out);
