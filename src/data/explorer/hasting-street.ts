@@ -92,11 +92,11 @@ const win = (u0: number, u1: number, sill: number, head: number, floor = 0, kind
 export const walls: W[] = [
   // Ground floor, bedroom wing: beds 2–4, bath, laundry (sheet 7; windows W-02 to W-05, D-02 on sheet 20)
   { group: "gf-bed", ...gfExt, a: [xw, Z_REAR + c], b: [xe, Z_REAR + c], openings: [win(8.98, 10.98, 0.85, 2.4)] },
-  { group: "gf-bed", ...gfExt, a: [xw, Z_REAR], b: [xw, 7.68], openings: [win(0.8, 2.8, 0.85, 2.4), win(4.9, 6.9, 0.85, 2.4)] },
+  { group: "gf-bed", ...gfExt, a: [xw, Z_REAR + c], b: [xw, 7.68], openings: [win(0.8, 2.8, 0.85, 2.4), win(4.9, 6.9, 0.85, 2.4)] },
   {
     group: "gf-bed",
     ...gfExt,
-    a: [xe, Z_REAR],
+    a: [xe, Z_REAR + c],
     b: [xe, 8.25],
     openings: [win(4.77, 6.37, 0.9, 2.4), { span: [6.59, 7.5], head: 2.4, kind: "door" }],
   },
@@ -112,20 +112,20 @@ export const walls: W[] = [
   { group: "gf-bed", ...gfInt, a: [8.28, 8.25], b: [xe, 8.25] },
 
   // Ground floor, living: activity, store, stair and sitting room (sheet 7; SD-01, W-06, D-01, W-01 on sheet 20)
-  { group: "gf-living", ...gfExt, a: [xw, 7.68], b: [xw, Z_GARAGE_REAR], openings: [win(8.125, 10.125, 0, 2.4, 0, "slider")] },
-  { group: "gf-living", ...gfExt, a: [xe, 8.25], b: [xe, Z_FRONT], openings: [win(9.5, 10.4, 1.87, 2.66)] },
+  { group: "gf-living", ...gfExt, a: [xw, 7.68], b: [xw, Z_GARAGE_REAR + c], openings: [win(8.125, 10.125, 0, 2.4, 0, "slider")] },
+  { group: "gf-living", ...gfExt, a: [xe, 8.25], b: [xe, Z_FRONT - c], openings: [win(9.5, 10.4, 1.87, 2.66)] },
   {
     group: "gf-living",
     ...gfExt,
     finish: "feature",
-    a: [X_GARAGE, Z_FRONT - c],
+    a: [X_GARAGE - c, Z_FRONT - c],
     b: [xe, Z_FRONT - c],
     openings: [{ span: [6.21, 7.32], head: 2.4, kind: "door" }, win(7.89, 8.79, 0, 2.4), win(9.69, 10.59, 0, 2.4)],
   },
   { group: "gf-living", ...gfInt, a: [8.28, 8.25], b: [8.28, 9.33], openings: [door(8.42, 9.24)] },
 
   // Garage (sheet 7): boundary wall to the west, auto sectional doors front and rear, side door to the sitting room
-  { group: "garage", level: "gf", base: -0.08, top: L.ufSlab, finish: "cladding", thickness: EXT, a: [c, Z_GARAGE_REAR], b: [c, Z_GARAGE_FRONT] },
+  { group: "garage", level: "gf", base: -0.08, top: L.ufSlab, finish: "cladding", thickness: EXT, a: [c, Z_GARAGE_REAR + c], b: [c, Z_GARAGE_FRONT - c] },
   {
     group: "garage",
     level: "gf",
@@ -133,8 +133,8 @@ export const walls: W[] = [
     top: L.ufSlab,
     finish: "cladding",
     thickness: EXT,
-    a: [0, Z_GARAGE_FRONT - c],
-    b: [X_GARAGE, Z_GARAGE_FRONT - c],
+    a: [c, Z_GARAGE_FRONT - c],
+    b: [X_GARAGE - c, Z_GARAGE_FRONT - c],
     openings: [{ span: [0.43, 5.63], sill: -0.08, head: 2.4, kind: "garage-door" }],
   },
   {
@@ -144,8 +144,8 @@ export const walls: W[] = [
     top: L.ufSlab,
     finish: "cladding",
     thickness: EXT,
-    a: [0, Z_GARAGE_REAR + c],
-    b: [X_GARAGE, Z_GARAGE_REAR + c],
+    a: [c, Z_GARAGE_REAR + c],
+    b: [X_GARAGE - c, Z_GARAGE_REAR + c],
     openings: [{ span: [0.43, 3.43], sill: -0.08, head: 2.4, kind: "garage-door" }],
   },
   {
@@ -155,35 +155,35 @@ export const walls: W[] = [
     top: L.ufSlab,
     finish: "cladding",
     thickness: EXT,
-    a: [X_GARAGE - c, Z_GARAGE_REAR],
-    b: [X_GARAGE - c, Z_GARAGE_FRONT],
+    a: [X_GARAGE - c, Z_GARAGE_REAR + c],
+    b: [X_GARAGE - c, Z_GARAGE_FRONT - c],
     openings: [{ span: [10.65, 11.47], sill: 0, head: 2.04, kind: "door" }],
   },
 
   // Upper floor, master wing: master suite, walk-in robe, ensuite (sheet 8; W-10, W-11)
   { group: "uf-master", ...ufExt, a: [xw, Z_UF_REAR + c], b: [xe, Z_UF_REAR + c], openings: [win(5.02, 7.12, 0.85, 2.4, L.uf)] },
-  { group: "uf-master", ...ufExt, a: [xw, Z_UF_REAR], b: [xw, 6.7] },
-  { group: "uf-master", ...ufExt, a: [xe, Z_UF_REAR], b: [xe, 6.7], openings: [win(4.98, 5.58, 1.0, 2.4, L.uf)] },
+  { group: "uf-master", ...ufExt, a: [xw, Z_UF_REAR + c], b: [xw, 6.7] },
+  { group: "uf-master", ...ufExt, a: [xe, Z_UF_REAR + c], b: [xe, 6.7], openings: [win(4.98, 5.58, 1.0, 2.4, L.uf)] },
   { group: "uf-master", ...ufInt, a: [8.28, Z_UF_REAR], b: [8.28, 6.6], openings: [{ span: [2.4, 3.3], sill: L.uf, head: L.uf + 2.4 }, { span: [5.3, 6.5], sill: L.uf, head: L.uf + 2.4 }] },
   { group: "uf-master", ...ufInt, a: [8.28, 3.72], b: [xe, 3.72] },
   { group: "uf-master", ...ufInt, a: [8.28, 6.86], b: [xe, 6.86], openings: [ufDoor(8.5, 9.32)] },
   { group: "uf-master", ...ufInt, a: [xw, 6.6], b: [8.28, 6.6], openings: [ufDoor(7.3, 8.12)] },
 
   // Upper floor, living wing: kitchen, dining, living, powder room (sheet 8; W-08, W-09, W-12 to W-14, SD-02, SD-03)
-  { group: "uf-living", ...ufExt, a: [xw, 6.7], b: [xw, Z_FRONT + 0.02], openings: [win(7.46, 10.46, 0.9, 1.7, L.uf), win(11.87, 14.87, 0.4, 2.4, L.uf)] },
+  { group: "uf-living", ...ufExt, a: [xw, 6.7], b: [xw, Z_FRONT - c], openings: [win(7.46, 10.46, 0.9, 1.7, L.uf), win(11.87, 14.87, 0.4, 2.4, L.uf)] },
   {
     group: "uf-living",
     ...ufExt,
     a: [xe, 6.7],
-    b: [xe, Z_FRONT + 0.02],
+    b: [xe, Z_FRONT - c],
     openings: [win(7.19, 7.79, 1.0, 2.4, L.uf), win(9.08, 9.98, 0, 2.4, L.uf), win(13.93, 15.13, 0.4, 2.4, L.uf)],
   },
   {
     group: "uf-living",
     ...ufExt,
     finish: "feature",
-    a: [X_HOUSE, Z_FRONT - c + 0.02],
-    b: [X_EAST, Z_FRONT - c + 0.02],
+    a: [xw, Z_FRONT - c],
+    b: [xe, Z_FRONT - c],
     openings: [win(4.83, 8.14, 0, 2.4, L.uf, "slider"), win(8.395, 10.605, 0, 2.4, L.uf, "slider")],
   },
   { group: "uf-living", ...ufInt, a: [9.8, 6.86], b: [9.8, 8.3] },
@@ -247,11 +247,11 @@ export const slabs: Slab<GroupId>[] = [
   },
   { group: "garage", level: "gf", polygon: rect(0, Z_GARAGE_REAR, X_GARAGE, Z_GARAGE_FRONT), bottom: -0.2, top: -0.08, material: "concrete" },
 
-  // Upper floor: structural slab (the band on the façade) with a floor finish on top
-  { group: "uf-master", level: "uf", polygon: ufMasterFloor, bottom: L.ufSlab, top: L.uf - 0.022, material: "render" },
-  { group: "uf-master", level: "uf", polygon: ufMasterFloor, bottom: L.uf - 0.022, top: L.uf, material: "floor" },
-  { group: "uf-living", level: "uf", polygon: ufLivingFloor, bottom: L.ufSlab, top: L.uf - 0.022, material: "render" },
-  { group: "uf-living", level: "uf", polygon: ufLivingFloor, bottom: L.uf - 0.022, top: L.uf, material: "floor" },
+  // Upper floor: structural slab (the band on the façade) with a thin floor finish on top
+  { group: "uf-master", level: "uf", polygon: ufMasterFloor, bottom: L.ufSlab, top: L.uf, material: "render" },
+  { group: "uf-master", level: "uf", polygon: ufMasterFloor, bottom: L.uf, top: L.uf + 0.003, material: "floor" },
+  { group: "uf-living", level: "uf", polygon: ufLivingFloor, bottom: L.ufSlab, top: L.uf, material: "render" },
+  { group: "uf-living", level: "uf", polygon: ufLivingFloor, bottom: L.uf, top: L.uf + 0.003, material: "floor" },
   // The slab edge carries on under the east wall past the stair void
   { group: "uf-living", level: "uf", polygon: rect(VOID.x[1], VOID.z[0], X_EAST, VOID.z[1]), bottom: L.ufSlab, top: L.uf, material: "render" },
 
@@ -275,7 +275,7 @@ export const roofs: RoofPrism<GroupId>[] = [
     level: "roof",
     axis: "z",
     x: [X_HOUSE, X_EAST],
-    z: [Z_REAR, Z_UF_REAR],
+    z: [Z_REAR, Z_UF_REAR + c],
     base: L.gfCeiling,
     skillion: [3.03, 3.03 + Z_UF_REAR * tan(8)],
     gutters: ["x0"],
@@ -285,7 +285,7 @@ export const roofs: RoofPrism<GroupId>[] = [
   {
     group: "garage-roof",
     level: "roof",
-    x: [0, X_HOUSE],
+    x: [0, X_HOUSE + c],
     z: [Z_GARAGE_REAR, Z_GARAGE_FRONT],
     base: L.gfCeiling,
     skillion: [2.775, 2.775 + X_HOUSE * tan(4)],
@@ -327,20 +327,20 @@ const frameBlocks = (): B[] => {
   const [, z1] = FRAME.z;
   const zf = z1 - FRAME.depth;
   return [
-    // Bottom band, legs and top band, white (perspectives, sheets 21–22)
-    { group: "frame", level: "uf", min: [x0, L.frameSoffit, zf], max: [x1, L.uf, z1], material: "render" },
+    // The balcony and terrace slabs form the frame's bottom and top bands; a lip finishes the bottom band at the
+    // front, and the legs stand between them (perspectives, sheets 21–22)
+    { group: "frame", level: "uf", min: [x0, L.balcony - 0.02, zf], max: [x1, L.uf, z1], material: "render" },
     { group: "frame", level: "uf", min: [x0, L.uf, zf], max: [x0 + FRAME.leg, L.ufCeiling, z1], material: "render" },
     { group: "frame", level: "uf", min: [x1 - FRAME.leg, L.uf, zf], max: [x1, L.ufCeiling, z1], material: "render" },
     // East side closed by a clad wall behind the spiral stair (sheet 8, elevation 4)
-    { group: "frame", level: "uf", min: [x1 - 0.25, L.frameSoffit, FRAME.z[0]], max: [x1, L.ufCeiling, zf], material: "feature" },
+    { group: "frame", level: "uf", min: [x1 - 0.25, L.balcony - 0.02, FRAME.z[0]], max: [x1, L.ufCeiling, zf], material: "feature" },
     // Glass to the front and the open west side
     ...balustrade("frame", "uf", [x0 + FRAME.leg, L.balcony, zf + 0.02], [x1 - FRAME.leg, L.balcony + BAL_H, zf + 0.05]),
     ...balustrade("frame", "uf", [x0 + 0.02, L.balcony, FRAME.z[0] + 0.05], [x0 + 0.05, L.balcony + BAL_H, zf]),
     ...pot("frame", "uf", 4.8, L.balcony, 17.55),
     { group: "frame", level: "uf", min: [6.0, L.balcony, 16.6], max: [7.6, L.balcony + 0.72, 17.4], material: "furniture" },
 
-    // Roof terrace: top band, glass on three sides, 1.6 m batten screen to the east (sheets 9–10)
-    { group: "terrace", level: "roof", min: [x0, L.ufCeiling, zf], max: [x1, L.terrace, z1], material: "render" },
+    // Roof terrace: glass on three sides, 1.6 m batten screen to the east (sheets 9–10)
     ...balustrade("terrace", "roof", [x0 + 0.02, L.terrace, z1 - 0.06], [x1 - 0.2, L.terrace + BAL_H, z1 - 0.03]),
     ...balustrade("terrace", "roof", [x0 + 0.02, L.terrace, FRAME.z[0] + 0.05], [x0 + 0.05, L.terrace + BAL_H, z1 - 0.06]),
     ...balustrade("terrace", "roof", [x0 + 0.05, L.terrace, FRAME.z[0] + 0.03], [x1 - 0.2, L.terrace + BAL_H, FRAME.z[0] + 0.06]),
