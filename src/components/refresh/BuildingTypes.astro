@@ -8,8 +8,9 @@ import { typeModels } from "@/data/explorer/type-models";
  * A project's building types: chips to pick a type, the wide 3D stage (the size of the home's How It's Made
  * model), then the chosen type's description and figures. A type with a `model` shows it in the stage through
  * ModelExplorer (turn in the page, full 3D view), loading only when its type is first shown; the others show a
- * placeholder until their model exists. With `sharedModel` (a whole building) one stage serves every type, and
- * choosing a type highlights its `highlight` groups in that model. Without JS every type's details show in turn.
+ * placeholder until their model exists. With `sharedModel` (a whole building) one stage serves every type and the
+ * chips become toggles: none is chosen at first, choosing one highlights its `highlight` groups in the model and
+ * shows its details, and choosing it again clears both. Without JS every type's details show in turn.
  */
 import type { TypeModelId } from "@/data/explorer/type-models";
 interface Props {
@@ -26,16 +27,26 @@ interface Props {
 const { id = "types", label, title, intro, items, sharedModel, sharedLabel = title } = Astro.props;
 ---
 
-<section id={id} data-theme="light" class="scroll-mt-header pb-section" data-types>
+<section id={id} data-theme="light" class="scroll-mt-header pb-section" data-types data-shared={sharedModel ? "" : undefined}>
   <div class="shell">
     <SectionHead label={label} title={title} intro={intro} />
-    <div class="mt-10 flex flex-wrap gap-1.5" role="tablist" aria-label={label} data-js-only>
-      {items.map((item, index) => (
-        <button type="button" role="tab" id={`${id}-tab-${item.id}`} data-highlight={item.highlight ? JSON.stringify(item.highlight) : undefined} aria-controls={`${id}-panel-${item.id}`} aria-selected={index === 0 ? "true" : "false"} tabindex={index === 0 ? 0 : -1} class="type-chip" data-type={item.id}>
-          {item.name}
-        </button>
-      ))}
-    </div>
+    {sharedModel ? (
+      <div class="mt-10 flex flex-wrap gap-1.5" role="group" aria-label={`Highlight a type in the model`} data-js-only>
+        {items.map((item) => (
+          <button type="button" aria-pressed="false" aria-controls={`${id}-panel-${item.id}`} data-highlight={item.highlight ? JSON.stringify(item.highlight) : undefined} class="type-chip" data-type={item.id}>
+            {item.name}
+          </button>
+        ))}
+      </div>
+    ) : (
+      <div class="mt-10 flex flex-wrap gap-1.5" role="tablist" aria-label={label} data-js-only>
+        {items.map((item, index) => (
+          <button type="button" role="tab" id={`${id}-tab-${item.id}`} aria-controls={`${id}-panel-${item.id}`} aria-selected={index === 0 ? "true" : "false"} tabindex={index === 0 ? 0 : -1} class="type-chip" data-type={item.id}>
+            {item.name}
+          </button>
+        ))}
+      </div>
+    )}
   </div>
 
   <div class="wide-row mt-10" data-reveal>
@@ -58,8 +69,9 @@ const { id = "types", label, title, intro, items, sharedModel, sharedLabel = tit
   </div>
 
   <div class="shell">
+    {sharedModel && <p class="type-prompt pt-10 text-body text-fg-muted" data-js-only data-prompt>Choose a type to highlight its apartments in the building and see its details.</p>}
     {items.map((item, index) => (
-      <div id={`${id}-panel-${item.id}`} role="tabpanel" aria-labelledby={`${id}-tab-${item.id}`} class="type-panel grid-12 gap-y-8 pt-10" data-panel={item.id} data-first={index === 0 ? "" : undefined}>
+      <div id={`${id}-panel-${item.id}`} role={sharedModel ? "region" : "tabpanel"} aria-labelledby={sharedModel ? undefined : `${id}-tab-${item.id}`} aria-label={sharedModel ? item.name : undefined} class="type-panel grid-12 gap-y-8 pt-10" data-panel={item.id} data-first={index === 0 ? "" : undefined}>
         <div class="col-span-12 md:col-span-6">
           <h3 class="text-lead">{item.name}</h3>
           <p class="mt-3 max-w-measure text-body text-fg-muted">{item.body}</p>
@@ -122,7 +134,8 @@ const { id = "types", label, title, intro, items, sharedModel, sharedLabel = tit
     border-color: rgb(var(--fg));
   }
 
-  .type-chip[aria-selected="true"] {
+  .type-chip[aria-selected="true"],
+  .type-chip[aria-pressed="true"] {
     background: rgb(var(--fg));
     border-color: rgb(var(--fg));
     color: rgb(var(--surface));
@@ -135,8 +148,27 @@ const { id = "types", label, title, intro, items, sharedModel, sharedLabel = tit
     const panels = [...section.querySelectorAll<HTMLElement>("[data-panel]")];
     const stages = [...section.querySelectorAll<HTMLElement>("[data-stage-for]")];
 
-    // `chosen`: the visitor picked this type (the first type is shown on load without highlighting anything)
-    const select = (id: string, focus = false, chosen = true) => {
+    // A shared building model: chips toggle a type's highlight and details; none is chosen at first
+    if (section.hasAttribute("data-shared")) {
+      const prompt = section.querySelector<HTMLElement>("[data-prompt]");
+      const explorer = section.querySelector<HTMLElement>("[data-shared-stage] [data-explorer]");
+      stages.forEach((stage) => stage.setAttribute("data-active", ""));
+      const choose = (id: string | null) => {
+        tabs.forEach((tab) => tab.setAttribute("aria-pressed", String(tab.dataset.type === id)));
+        panels.forEach((panel) => panel.toggleAttribute("data-active", panel.dataset.panel === id));
+        if (prompt) prompt.hidden = id !== null;
+        const groups: string[] = id ? JSON.parse(tabs.find((tab) => tab.dataset.type === id)?.dataset.highlight ?? "[]") : [];
+        if (explorer) {
+          explorer.dataset.highlight = JSON.stringify(groups);
+          explorer.dispatchEvent(new CustomEvent("explorer:highlight", { detail: groups }));
+        }
+      };
+      tabs.forEach((tab) => tab.addEventListener("click", () => choose(tab.getAttribute("aria-pressed") === "true" ? null : tab.dataset.type!)));
+      choose(null);
+      return;
+    }
+
+    const select = (id: string, focus = false) => {
       tabs.forEach((tab) => {
         const on = tab.dataset.type === id;
         tab.setAttribute("aria-selected", String(on));
@@ -145,13 +177,6 @@ const { id = "types", label, title, intro, items, sharedModel, sharedLabel = tit
       });
       panels.forEach((panel) => panel.toggleAttribute("data-active", panel.dataset.panel === id));
       stages.forEach((stage) => stage.toggleAttribute("data-active", stage.dataset.stageFor === id));
-      // A shared model highlights the chosen type's apartments
-      const tab = tabs.find((candidate) => candidate.dataset.type === id);
-      const explorer = section.querySelector<HTMLElement>("[data-shared-stage] [data-explorer]");
-      if (chosen && tab?.dataset.highlight && explorer) {
-        explorer.dataset.highlight = tab.dataset.highlight;
-        explorer.dispatchEvent(new CustomEvent("explorer:highlight", { detail: JSON.parse(tab.dataset.highlight) }));
-      }
     };
 
     tabs.forEach((tab, index) => {
@@ -163,6 +188,6 @@ const { id = "types", label, title, intro, items, sharedModel, sharedLabel = tit
         select(tabs[(index + step + tabs.length) % tabs.length].dataset.type!, true);
       });
     });
-    select(tabs[0].dataset.type!, false, false);
+    select(tabs[0].dataset.type!);
   });
 </script>
