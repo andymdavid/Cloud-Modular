@@ -15,7 +15,7 @@ interface Props {
 const {
   rule = true,
   label = "How it's made",
-  body = "Every Cloud Modular home is manufactured offsite, then assembled on site. This Jurien Bay residence was modelled from its design drawings. Turn it to see each side, or open the 3D view to separate it into parts and look inside each floor.",
+  body = "Every Cloud Modular home is designed as a set of modules, manufactured offsite, then assembled on site. This Jurien Bay residence was modelled from its design drawings. Turn it to see each side, or open the 3D view to separate it into parts and look inside each floor.",
 } = Astro.props;
 
 const parts = componentOrder.map((id) => ({ id, ...components[id] }));
@@ -32,7 +32,7 @@ const parts = componentOrder.map((id) => ({ id, ...components[id] }));
   parts={parts}
   views={views}
   partKind="Assembly group (illustrative)"
-  explodeNote="The separated parts are illustrative, not how the home is built."
+  explodeNote="The separated parts are illustrative, not the actual modules."
   fallback={{
     src: "/explorer/jurien-type-b.webp",
     alt: "Rendered three-quarter view of the Jurien Bay Type B residence model, showing the white-framed balcony, roof terrace pergola and spiral stair at the front",

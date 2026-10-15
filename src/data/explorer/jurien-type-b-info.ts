@@ -157,7 +157,7 @@ export type ViewId = (typeof views)[number]["id"];
  * Modelling assumptions, surfaced in the docs. Keep in sync with Design-Docs/08 - 3D Home Explorer.md.
  */
 export const assumptions = [
-  "Assembly groups are presentation groups chosen for clarity. The drawings document no module boundaries.",
+  "Assembly groups are presentation groups chosen for clarity. The drawings predate the modular shop drawings and document no module boundaries.",
   "Balustrades (frameless glass, warm rail) and pergola (timber) follow the reference render; plans show slat balustrades and a white pergola.",
   "Ground floor front wall follows elevation 1 (rev A17, Ch-05): a window with an 850 mm sill to the sitting room and a sliding door to the office. Sheets 7 and 19 still show a full-height slider to the sitting room.",
   "Roof modelled as a single ridge along the house (6.749 m above ground floor) at 15° south / 9° north, continuing over the stair tower; gutters and downpipes shown, parapets and flashings omitted.",

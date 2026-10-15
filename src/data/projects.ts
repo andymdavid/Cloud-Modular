@@ -2,9 +2,9 @@
  * Project pages (/our-work/<slug>/). Sources, all in Design-Docs/ unless noted:
  *   - Seashells Jurien Bay: seashellsjurienbay.com (108 residences, 40,000 m² beachfront, residence types,
  *     amenities, 8-star and energy features, resort operator), the Capel submission (MVP Group develops it and
- *     Cloud Modular manufactures it) and the Kellett building permit sets for Types A–C (architect, residence
- *     plans). Those sets give the construction as Mod-deck slabs and SIPs wall panels, while the website and the
- *     Capel submission describe modules, so the copy names Cloud Modular as manufacturer without saying which.
+ *     Cloud Modular manufactures the modules) and the Kellett building permit sets for Types A–C (architect,
+ *     residence plans). Those sets still show an earlier SIPs panel method; the residences will be modular, with
+ *     modular shop drawings to follow (user, 2026-10-15). Use the sets for layout, not construction.
  *   - Capel Village: the Capel Village investment submission (Rev C, 1 Sept 2026). The user cleared its
  *     non-financial facts for the site; no figures, structure, operator or contacts are used.
  *   - 25 On Rowland and Forrest: the Doepel Marsh DA set (rev A, 17 Aug 2025) and the modular proposal.
@@ -59,7 +59,7 @@ const seashells: Project = {
   location: "Jurien Bay, WA",
   status: "In progress",
   description:
-    "A beachfront resort community of 108 residences on Western Australia's Turquoise Coast, developed by MVP Group and manufactured by Cloud Modular.",
+    "A beachfront resort community of 108 modular residences on Western Australia's Turquoise Coast, developed by MVP Group and manufactured by Cloud Modular.",
   hero: {
     src: "/projects/seashells-jurien-bay/aerial.webp",
     alt: "Aerial view of the Seashells Jurien Bay masterplan at sunset, with rows of residences between the bush and the ocean",
@@ -68,14 +68,14 @@ const seashells: Project = {
   },
   overview: {
     intro:
-      "Seashells Jurien Bay is a beachfront resort community of 108 residences on Western Australia's Turquoise Coast, about two hours north of Perth. It is being developed by MVP Group, and the residences are manufactured by Cloud Modular.",
+      "Seashells Jurien Bay is a beachfront resort community of 108 residences on Western Australia's Turquoise Coast, about two hours north of Perth. It is being developed by MVP Group, and every residence is built as modules in our manufacturing facility in Foshan.",
     stats: [
       { value: "108", label: "Residences across the estate" },
       { value: "40,000 m²", label: "Beachfront site with direct ocean frontage" },
       { value: "8-star", label: "Energy rating for every residence" },
       { value: "4", label: "Residence types" },
     ],
-    body: "The residences are designed for an 8-star energy rating, with double glazing, solar generation, battery storage and EV charging.",
+    body: "Each residence leaves the factory with its kitchen, bathrooms, fixtures, flooring and internal finishes in place. The residences are designed for an 8-star energy rating, with double glazing, solar generation, battery storage and EV charging.",
   },
   gallery: [
     {
@@ -199,11 +199,11 @@ const seashells: Project = {
     ],
   },
   delivery: {
-    body: "The residences are manufactured while the site works, roads and services are built, so the estate and its homes move forward together as the resort opens in stages.",
+    body: "The residences are manufactured while the site works, roads and services are built, so the estate and its homes move forward together. Each residence arrives with its interiors finished and is placed in an agreed sequence as the resort opens in stages.",
   },
   team: [
     { role: "Developer", name: "MVP Group" },
-    { role: "Manufacture", name: "Cloud Modular" },
+    { role: "Modular manufacture", name: "Cloud Modular" },
     { role: "Architect", name: "Kellett Design Group" },
     { role: "Resort operator", name: "Accommodation West" },
   ],
