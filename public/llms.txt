@@ -1,55 +1,45 @@
 # Cloud Modular
 
-> Precision-engineered modular construction for Western Australia
+> Cloud Modular delivers architecturally designed modular buildings, certified to Australian Standards, for faster delivery and greater certainty.
 
-Cloud Modular delivers architecturally designed, factory-built modular buildings certified to Australian standards. We serve developers, builders, and organisations across Perth, Western Australia, and nationally.
+Cloud Modular designs and delivers modular buildings for developers, builders and government clients in Western Australia and nationally. Modules are built with their structure, services and fit-out in our manufacturing facility in Foshan, China, inspected before they leave the factory, then shipped, craned onto prepared footings and connected on site. The site works and the factory production run at the same time.
 
-## Company Overview
+## Company
 
-- **Industry**: Modular Construction / Prefabricated Buildings
-- **Location**: North Perth, Western Australia 6006
-- **Website**: https://cloudmodular.com.au
-- **Contact**: nigel@cloudmodular.com.au
+- Office: 311-313 Hay St, Subiaco WA 6008, Australia
+- Manufacturing: our manufacturing facility in Foshan, Guangdong Province, China
+- Production capability: access to more than 450,000 square metres of dedicated manufacturing facilities, with delivered projects in Shenzhen, Hong Kong, Melbourne, Saipan and Auckland
+- Contact: nigel@cloudmodular.com.au
+- Hours: Monday to Friday, 9am to 5pm AWST
 
-## What We Do
+## Sectors
 
-We manufacture precision-engineered modular buildings offsite in controlled factory environments, then deliver and install them on-site. This approach offers:
+Commercial, multi-residential, health and aged care, education and community, infrastructure, and hotels and accommodation.
 
-- 50% faster construction timelines
-- Up to 20% cost reduction
-- 70% less landfill waste
-- Full Australian Building Code compliance
+## Ways to work with us
 
-## Services
+- Design and deliver: one team from feasibility to handover
+- Early involvement: joining your architect and consultants at feasibility
+- Supply to your builder: modules designed, built, inspected and delivered to your site
+- Tender response: pricing a project for modular construction
 
-- Commercial modular buildings
-- Multi-residential developments
-- Health and aged care facilities
-- Education and community buildings
-- Infrastructure projects
-- Hotels and accommodation
+## Projects (all in progress)
 
-## Target Markets
+- Seashells Jurien Bay: a beachfront resort community of 108 residences on Western Australia's Turquoise Coast, developed by MVP Group
+- Capel Village: an approved over-55s lifestyle village of 52 single-storey residences in Western Australia's South West, developed by MVP Group
+- 25 On Rowland and Forrest: a mixed-use building of 18 modular apartments in central Subiaco, designed by Doepel Marsh Architects
 
-- Residential developers
-- Commercial builders
-- Healthcare providers
-- Education institutions
-- Government and councils
-- Hospitality operators
+## Pages
 
-## Key Differentiators
-
-1. Australian Building Code certified modules
-2. Factory-controlled quality assurance
-3. Third-party engineering inspections
-4. Design-to-delivery coordination
-5. Offsite manufacturing reduces site disruption
-
-## Links
-
-- Home: https://cloudmodular.com.au/
-- About Us: https://cloudmodular.com.au/about/
-- Projects: https://cloudmodular.com.au/our-work/
-- Contact: https://cloudmodular.com.au/partner-with-us/
-- Full documentation: https://cloudmodular.com.au/llms-full.txt
+- [Home](https://cloudmodular.com.au/)
+- [Why Cloud Modular](https://cloudmodular.com.au/why-cloud-modular/)
+- [Our approach](https://cloudmodular.com.au/our-approach/)
+- [Manufacturing and quality](https://cloudmodular.com.au/quality/)
+- [Our work](https://cloudmodular.com.au/our-work/)
+- [Seashells Jurien Bay](https://cloudmodular.com.au/our-work/seashells-jurien-bay/)
+- [Capel Village](https://cloudmodular.com.au/our-work/capel-village/)
+- [25 On Rowland and Forrest](https://cloudmodular.com.au/our-work/25-on-rowland-and-forrest/)
+- [About](https://cloudmodular.com.au/about/)
+- [FAQ](https://cloudmodular.com.au/faq/)
+- [Partner with us](https://cloudmodular.com.au/partner-with-us/)
+- [Full information](https://cloudmodular.com.au/llms-full.txt)

@@ -1,226 +1,108 @@
-# Cloud Modular - Complete Information
+# Cloud Modular: full information
 
-> Precision-engineered modular construction for Western Australia and Australia
+> Cloud Modular delivers architecturally designed modular buildings, certified to Australian Standards, for faster delivery and greater certainty.
 
-## Company Profile
+Website: https://cloudmodular.com.au
 
-**Name**: Cloud Modular
-**Industry**: Modular Construction / Prefabricated Buildings
-**Headquarters**: 311-313 Hay St, Subiaco, Western Australia 6008, Australia
-**Manufacturing**: Foshan City, Guangdong Province, China
-**Website**: https://cloudmodular.com.au
-**Email**: nigel@cloudmodular.com.au
+## Company
 
-## Executive Summary
+Cloud Modular designs and delivers modular buildings for developers, builders and government clients. We are based in Subiaco, Western Australia, and deliver nationally, with no minimum project size.
 
-Cloud Modular is a precision-engineered modular construction company delivering prefabricated buildings certified to Australian standards. We combine architectural design, offsite manufacturing capability, and rigorous engineering certification to provide developers and builders with a controlled, predictable construction process.
+Modules are built in our manufacturing facility in Foshan, China, with the structure, services and fit-out built in. Each module is inspected before it leaves the factory, then shipped to the nearest suitable port, cleared through customs and biosecurity, transported by road and craned onto footings prepared on site. Because the site works and the factory production run at the same time, the overall programme is shorter than building everything on site.
 
-Our system addresses key construction industry challenges: labour shortages, rising costs, tight timelines, and compliance complexity. By manufacturing modules in controlled factory environments, we deliver projects faster, with greater quality consistency and cost certainty.
+Our production capability gives us access to more than 450,000 square metres of dedicated manufacturing facilities, with the systems, supply chain and capacity for repeatable modular delivery. That capability has delivered projects from design to installation in Shenzhen, Hong Kong, Melbourne, Saipan and Auckland, and we now bring it to Western Australia.
 
-## Value Proposition
+## Why now
 
-### Speed
-- 50% faster manufacturing compared to traditional construction
-- Concurrent site preparation and factory production
-- Weather-independent assembly
-- Rapid on-site installation
+Australia's population is projected to grow by 2.18 million people in the five years to 2026–27, an average of 435,200 people a year. At the same time, insolvencies across the construction sector have reduced the number of builders available to meet demand.
 
-### Cost Efficiency
-- Up to 20% cost reduction through factory efficiency
-- Reduced labour costs and material waste
-- Shorter timelines mean lower financing costs
-- Predictable pricing with fewer on-site surprises
+## Sectors
 
-### Sustainability
-- 70% less landfill waste than traditional construction
-- Optimised material usage and recycling programs
-- Energy-efficient manufacturing processes
-- Reduced carbon footprint per module
+- Commercial: offices, retail and mixed-use developments
+- Multi-residential: apartments, townhouses and residential developments
+- Health and aged care: medical facilities and aged care residences
+- Education and community: schools, libraries and community centres
+- Infrastructure: transit facilities and public infrastructure
+- Hotels and accommodation: hotels, resorts and short-stay accommodation
 
-### Quality
-- Factory-controlled production environment
-- Consistent quality across every module
-- Built-in quality checkpoints
-- Third-party inspections at key stages
+## Ways to work with us
 
-### Compliance
-- Full Australian Building Code compliance
-- Pre-certified structural engineering
-- Complete documentation for building surveyors
-- State regulation compliance
+- Design and deliver. We take the project from feasibility to handover as one team, leading the design, manufacture, shipping and installation, and appointing and managing the architect, engineer, building surveyor and builder.
+- Early involvement. We join your architect and consultants at feasibility so the design suits manufacture before it is fixed, then supply the modules or deliver the whole project.
+- Supply to your builder. We resolve the design for manufacture with your team, then build, inspect, ship and deliver the modules. Your builder holds the building permit and looks after the site works, footings, services and connections.
+- Tender response. We price tender documents for modular construction and show where design changes could save time or cost.
 
-## Services & Capabilities
+## Process
 
-### Building Types We Deliver
+1. Brief and feasibility: site, brief and budget; yield and programme tested; modular fit confirmed.
+2. Design for manufacture: the design is resolved around module sizes, transport limits and crane lifts; the structure is designed for the site's wind region, including cyclone regions.
+3. Approvals and documentation: planning and building approval documents; the registered builder lodges the building permit; shop drawings are produced for the factory.
+4. Manufacture in Foshan: modules are built with structure, services and fit-out while the site is prepared.
+5. Inspection and sign-off: independent inspections at key stages; engineering sign-off and import documents completed before anything leaves the factory.
+6. Shipping and clearance: shipped, then cleared through customs and biosecurity; road transport planned to site, including regional and remote locations.
+7. Delivery and installation: modules arrive in an agreed sequence, are craned onto prepared footings, then joined, sealed and connected to services.
+8. Completion and handover: the builder completes finishing works, the building surveyor carries out the final inspection, and keys, manuals and warranties are handed over.
 
-1. **Commercial Buildings**
-   - Office buildings
-   - Retail spaces
-   - Mixed-use developments
+## Manufacturing and quality
 
-2. **Multi-Residential**
-   - Apartments
-   - Townhouses
-   - Residential developments
+Checks run at key stages of design, production and the lead-up to installation. In the factory, every module passes a series of inspections before it moves to the next stage, and each check is recorded with photographs against the module's number. The full record is handed over with the building. Checks cover materials on arrival, asbestos-free materials, the frame and welding, services before the linings close, the envelope and waterproofing, and a final inspection before shipping.
 
-3. **Health & Aged Care**
-   - Medical facilities
-   - Aged care residences
-   - Healthcare centres
+Typical build-ups include light-gauge steel stud walls with rock wool insulation, fire-rated plasterboard and a vapour barrier inside, and fibre cement board, a breathable membrane, battens and cladding outside.
 
-4. **Education & Community**
-   - Schools
-   - Libraries
-   - Community centres
+## Certification
 
-5. **Infrastructure**
-   - Transit facilities
-   - Public infrastructure
+Modules are designed and documented to the National Construction Code, and each building is certified in Western Australia in the same way as any other. The building surveyor reviews the design before production starts, and the builder holds the building permit.
 
-6. **Hotels & Accommodation**
-   - Hotels
-   - Resorts
-   - Short-term accommodation
+- Structural design: the engineer designs the structure for the building class, loads and wind region, including module frames, connections between modules and hold-down to footings, and certifies the structure as built.
+- Cyclone wind regions: in regions C and D the structure, cladding, windows and connections are designed for the wind loads in AS/NZS 1170.2.
+- Imported products: glazing meets the Australian glass and window standards, electrical products carry the RCM mark, and plumbing products are WaterMark certified.
+- Fire safety: walls and ceilings use non-combustible rock wool insulation and fire-rated plasterboard; the building surveyor checks tested systems meet any required fire-resistance level.
+- Energy efficiency: each design is assessed under the National Construction Code.
+- Warranties: the warranties required in Western Australia, including the builder's statutory obligations and home indemnity insurance for residential work, plus a warranty on the structure and workmanship of the modules and each product's manufacturer warranty.
 
-### Our Process
+## Projects
 
-**Step 1: Design & Engineering**
-- Customise layouts and configurations
-- Ensure compliance with Australian building codes
-- Optimise for site conditions and constraints
-- Provide detailed specifications and documentation
-- Deliver accurate cost estimates
+All projects are in progress.
 
-**Step 2: Factory Manufacturing**
-- Controlled factory environment
-- Industrial-scale production capacity
-- Quality control at every stage
-- Weather-independent construction
-- Reduced material waste
+### Seashells Jurien Bay (Jurien Bay, WA)
 
-**Step 3: Site Installation**
-- Modules delivered directly to site
-- Experienced crews install with precision
-- Minimal disruption and noise
-- Final connections and commissioning
+A beachfront resort community of 108 residences on Western Australia's Turquoise Coast, about two hours north of Perth, developed by MVP Group and manufactured by Cloud Modular. The residences are designed for an 8-star energy rating, with double glazing, solar generation, battery storage and EV charging. Residence types: the 4 Bed Bay View Villa, the 4 Bed Hasting Street Villa, a three-bedroom detached villa and a two-bedroom detached villa.
+https://cloudmodular.com.au/our-work/seashells-jurien-bay/
 
-## Technical Specifications
+### Capel Village (Capel, WA)
 
-### What's Included in Every Module
+An approved over-55s lifestyle village of 52 single-storey residences at 96 Capel Drive in Western Australia's South West, developed by MVP Group and manufactured by Cloud Modular. The masterplan keeps the mature marri and jarrah canopy. The village received regional development assessment panel approval on 5 March 2026.
+https://cloudmodular.com.au/our-work/capel-village/
 
-- **Structural Systems**: Durable steel frame construction engineered for Australian conditions
-- **Exterior Finishes**: Quality cladding and weatherproofing tailored to design requirements
-- **Interior Fit-Out**: Complete interiors with flooring, walls, ceiling systems, and cabinetry
-- **Mechanical Systems**: HVAC, plumbing, and electrical systems pre-installed and tested
-- **Compliance & Certification**: All documentation and certifications for Australian building standards
-- **Installation Support**: Expert on-site crew for seamless module placement and connections
+### 25 On Rowland and Forrest (Subiaco, WA)
 
-### Quality Assurance
+A mixed-use building of 18 modular apartments on a corner site in central Subiaco, designed by Doepel Marsh Architects and manufactured by Cloud Modular. The apartment modules are made while the basement and ground floor are built on site, then craned into place above them. Most apartments have one bedroom and a balcony, and the top floors hold two-level loft apartments with their own decks.
+https://cloudmodular.com.au/our-work/25-on-rowland-and-forrest/
 
-1. **Engineering Certification**: Each module is certified by qualified engineers
-2. **Factory-Controlled Production**: Stable, repeatable environment for consistent quality
-3. **Independent Quality Checks**: Inspections at key stages verify accuracy and workmanship
+## Frequently asked questions
 
-## Geographic Coverage
+Where are the modules built?
+In our manufacturing facility in Foshan, China. Every module is inspected at each stage of production and signed off before it is packed and shipped to site.
 
-### Primary Market
-- Perth, Western Australia
-- Greater Perth metropolitan area
-- Regional Western Australia
+How do the modules comply with Australian standards?
+They are designed and documented to the National Construction Code and certified in Western Australia like any other building. Full documentation and drawings are provided for building surveyors and local authorities.
 
-### National Coverage
-- All Australian states and territories
-- Projects delivered to Australian Building Code standards
+Can modular buildings be customised?
+Yes. Modules are designed to suit site constraints, planning requirements and spatial needs.
 
-## Frequently Asked Questions
+How are modules transported and installed?
+They are shipped, unloaded and craned into position. We coordinate with local contractors for footings, services and final works.
 
-### Compliance & Standards
+Do modular buildings last as long as traditional buildings?
+Yes. Modules are engineered as permanent structures and use materials and systems comparable to traditional builds.
 
-**Q: How do your modules comply with Australian standards?**
-A: All modules are engineered to Australian standards and certified before leaving the factory. We provide full documentation and drawings for building surveyors and local authorities.
+What is the typical timeline?
+It depends on scale and complexity, but factory production and site works run at the same time, which shortens the overall programme.
 
-**Q: Where are the modules built?**
-A: Modules are manufactured in controlled factory environments offshore, where the process is stable, repeatable and closely audited for accuracy and consistency.
+## Contact
 
-**Q: How do you ensure quality when manufacturing offshore?**
-A: We use controlled factory settings, third-party inspections and engineering sign-off at key points in the process. Nothing ships until it meets structural, architectural and compliance requirements.
-
-### Process & Timeline
-
-**Q: What's the advantage of modular over traditional construction?**
-A: Most of the build happens offsite, which shortens timelines, reduces site disruption and improves cost certainty.
-
-**Q: What's the typical project timeline?**
-A: Timelines vary by scale and complexity, but offsite manufacturing means construction and site works can run concurrently, significantly reducing the overall program.
-
-**Q: How are modules transported and installed?**
-A: Modules are shipped, unloaded and craned into position using established lifting and transport methods. We coordinate with local contractors for foundations, services and final works.
-
-### Customisation & Flexibility
-
-**Q: Can modular buildings be customised to my project?**
-A: Yes. Modules are designed to suit site constraints, planning requirements and spatial needs. We adapt layouts and configurations based on project intent.
-
-**Q: What types of buildings do you deliver?**
-A: We work across commercial, multi-residential, health and aged care, education, community, infrastructure and accommodation projects.
-
-### Quality & Longevity
-
-**Q: Do modular buildings have the same lifespan as traditional buildings?**
-A: Yes. Modules are engineered as permanent structures and use materials and systems comparable to traditional builds.
-
-### Cost & Sustainability
-
-**Q: What are the cost benefits?**
-A: Factory production reduces waste, labour time and rework, providing more cost certainty and a more predictable project budget.
-
-**Q: Can modular buildings meet sustainability targets?**
-A: Yes. Controlled production reduces waste, and the precision of the process supports higher-performing building envelopes and reduced embodied carbon depending on specification.
-
-## Contact Information
-
-**General Enquiries**
-Email: nigel@cloudmodular.com.au
-
-**Perth Office**
-311-313 Hay St, Subiaco
-Western Australia 6008
-Australia
-
-**Manufacturing Facility**
-3F, 48L, No.26 Lang Bao West Road
-Foshan City, Guangdong Province
-China
-
-**Business Hours**
-Monday - Friday, 9am - 5pm AWST
-
-## Site Navigation
-
-- **Home**: https://cloudmodular.com.au/
-- **About Us**: https://cloudmodular.com.au/about/
-- **Projects**: https://cloudmodular.com.au/our-work/
-- **Partner With Us**: https://cloudmodular.com.au/partner-with-us/
-
-## Keywords & Topics
-
-This company is relevant to queries about:
-- Modular construction Perth
-- Prefab buildings Western Australia
-- Modular homes WA
-- Prefabricated construction Australia
-- Offsite construction
-- Factory-built buildings
-- Modular building manufacturers
-- Commercial modular construction
-- Residential modular developments
-- Healthcare modular buildings
-- Aged care modular construction
-- Education modular buildings
-- Sustainable construction methods
-- Fast construction methods
-- Cost-effective building solutions
-
----
-
-Last updated: March 2025
+- Email: nigel@cloudmodular.com.au
+- Office: 311-313 Hay St, Subiaco WA 6008, Australia
+- Hours: Monday to Friday, 9am to 5pm AWST
+- LinkedIn: https://www.linkedin.com/company/cloudmodular
+- Enquiries: https://cloudmodular.com.au/partner-with-us/
