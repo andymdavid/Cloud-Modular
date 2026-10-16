@@ -4,16 +4,16 @@ import PageIntro from "@/components/refresh/PageIntro.astro";
 import SplitSection from "@/components/refresh/SplitSection.astro";
 import FaqSection from "@/components/refresh/FaqSection.astro";
 import GetStarted from "@/components/refresh/GetStarted.astro";
-import { advantages, whyNow } from "@/data/site";
+import { advantages, figureSources, whyNow } from "@/data/site";
 
 const title = "Why Cloud Modular | Cloud Modular";
 const description =
   "Most of the build happens offsite, which shortens programmes, reduces site disruption and improves cost certainty.";
 
 const stats = [
-  { value: "70%", label: "Less landfill than traditional construction" },
-  { value: "Up to 20%", label: "Lower labour and material waste" },
-  { value: "6", label: "Sectors delivered across Australia" },
+  { value: "70%", label: "Less waste on site than traditional construction" },
+  { value: "Up to 20%", label: "Lower construction costs" },
+  { value: "6", label: "Sectors we design and build for" },
   { value: "2", label: "Offices: Perth and Foshan" },
 ];
 ---
@@ -52,6 +52,11 @@ const stats = [
         </div>
       ))}
     </dl>
+    <p class="mt-8 max-w-measure text-caption text-fg-subtle">
+      Waste and cost figures are from {figureSources.map((source, index) => (
+        <>{index > 0 && " and "}<a href={source.href} class="underline underline-offset-2 hover:text-fg" target="_blank" rel="noopener">{source.text}</a></>
+      ))}.
+    </p>
   </SplitSection>
 
   <!-- Advantages on slate: label, title and button, then six numbered columns under hairline rules -->
@@ -72,6 +77,11 @@ const stats = [
           </li>
         ))}
       </ol>
+      <p class="mt-12 max-w-measure text-caption text-fg-muted" data-reveal>
+        Waste and cost figures are from {figureSources.map((source, index) => (
+          <>{index > 0 && " and "}<a href={source.href} class="underline underline-offset-2 hover:text-fg" target="_blank" rel="noopener">{source.text}</a></>
+        ))}.
+      </p>
     </div>
   </section>
 

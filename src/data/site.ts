@@ -161,6 +161,18 @@ export const whyNow = {
   ],
 } as const;
 
+/** Where the Why Cloud Modular figures come from, cited under the sections that use them. */
+export const figureSources = [
+  {
+    text: "WRAP, Waste Reduction Potential of Offsite Volumetric Construction",
+    href: "https://www.howickltd.com/asset/327.pdf",
+  },
+  {
+    text: "McKinsey & Company, Modular construction from projects to products, 2019",
+    href: "https://www.mckinsey.com/capabilities/operations/our-insights/modular-construction-from-projects-to-products",
+  },
+] as const;
+
 export const advantages = [
   {
     title: "Certified to Australian standards",
@@ -197,7 +209,7 @@ export const advantages = [
   {
     title: "Significant cost savings",
     points: [
-      "Factory efficiency reduces labour costs and material waste by up to 20%.",
+      "Factory production can reduce construction costs by up to 20%.",
       "Shorter timelines mean lower financing costs and faster revenue generation.",
       "Predictable pricing with fewer on-site surprises protects your margins.",
     ],
@@ -205,7 +217,7 @@ export const advantages = [
   {
     title: "Reduced environmental impact",
     points: [
-      "Offsite construction generates 70% less landfill than traditional builds.",
+      "Offsite construction generates 70% less waste on site than traditional builds.",
       "Optimised material usage and recycling programs minimise waste.",
       "Energy-efficient manufacturing processes reduce the carbon footprint of every module.",
     ],
