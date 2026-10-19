@@ -105,4 +105,5 @@ It depends on scale and complexity, but factory production and site works run at
 - Office: 10 Davenport Street, Karrinyup, Perth WA 6018, Australia
 - Hours: Monday to Friday, 9am to 5pm AWST
 - LinkedIn: https://www.linkedin.com/company/cloudmodular
-- Enquiries: https://cloudmodular.com.au/partner-with-us/
+- Project enquiries: https://cloudmodular.com.au/partner-with-us/
+- General enquiries: https://cloudmodular.com.au/contact/

@@ -44,3 +44,6 @@ Design-Docs/**/*.pdf
 SEO-STRATEGY.md
 Design-Docs/Partner Logos/
 Design-Docs/Source images/
+
+# Local Cloudflare Pages runs (wrangler pages dev)
+.wrangler/

@@ -1,0 +1,265 @@
+---
+/**
+ * Enquiry form, sent by the Cloudflare Pages function at /api/enquiry (functions/api/enquiry.ts), which emails it
+ * to the site address. "project" is the full project enquiry on /partner-with-us/; "general" is the short message
+ * form on /contact/. With JavaScript the form sends in place and swaps to a thank-you note; without it the function
+ * redirects back to `#<id>-sent` or `#<id>-failed`, which CSS reveals. A hidden "website" field catches bots, and
+ * Cloudflare Turnstile is added when PUBLIC_TURNSTILE_SITE_KEY is set at build time.
+ */
+import { engagementModels, enquiryOptions, sectors, site } from "@/data/site";
+
+interface Props {
+  variant?: "project" | "general";
+  /** Anchor for the form; the thank-you and error notes use `<id>-sent` and `<id>-failed`. */
+  id?: string;
+  class?: string;
+}
+
+const { variant = "project", id = variant === "project" ? "enquiry" : "message", class: className } = Astro.props;
+const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+const project = variant === "project";
+const routes = [...engagementModels.items.map((item) => item.title), "Not sure yet"];
+---
+
+<div class:list={["enquiry w-full", className]} data-enquiry>
+  <form id={id} class="enquiry-form scroll-mt-header" action="/api/enquiry" method="post" data-enquiry-form>
+    <input type="hidden" name="form" value={variant} />
+    <input type="hidden" name="page" value={Astro.url.pathname} />
+    <div class="enquiry-trap" aria-hidden="true">
+      <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+    </div>
+
+    <div class="grid gap-x-gap-sm gap-y-8 sm:grid-cols-2">
+      <label class="field">
+        <span class="field-label">Name</span>
+        <input type="text" name="name" autocomplete="name" required maxlength="200" />
+      </label>
+      <label class="field">
+        <span class="field-label">Email</span>
+        <input type="email" name="email" autocomplete="email" required maxlength="200" />
+      </label>
+      {project && (
+        <label class="field">
+          <span class="field-label">Phone <span class="field-optional">Optional</span></span>
+          <input type="tel" name="phone" autocomplete="tel" maxlength="50" />
+        </label>
+      )}
+      <label class:list={["field", { "sm:col-span-2": !project }]}>
+        <span class="field-label">Organisation <span class="field-optional">Optional</span></span>
+        <input type="text" name="organisation" autocomplete="organization" maxlength="200" />
+      </label>
+
+      {project && (
+        <Fragment>
+          <label class="field">
+            <span class="field-label">You are a</span>
+            <select name="role" required>
+              <option value="" selected disabled>Choose one</option>
+              {enquiryOptions.roles.map((role) => <option>{role}</option>)}
+            </select>
+          </label>
+          <label class="field">
+            <span class="field-label">Sector</span>
+            <select name="sector">
+              <option value="" selected>Choose one</option>
+              {sectors.map((sector) => <option>{sector.label}</option>)}
+              <option>Other</option>
+            </select>
+          </label>
+          <label class="field">
+            <span class="field-label">Project location</span>
+            <input type="text" name="location" required maxlength="200" placeholder="Suburb or town" />
+          </label>
+          <label class="field">
+            <span class="field-label">Scale <span class="field-optional">Optional</span></span>
+            <input type="text" name="scale" maxlength="200" placeholder="For example 40 apartments" />
+          </label>
+          <label class="field">
+            <span class="field-label">Stage</span>
+            <select name="stage">
+              <option value="" selected>Choose one</option>
+              {enquiryOptions.stages.map((stage) => <option>{stage}</option>)}
+            </select>
+          </label>
+          <label class="field">
+            <span class="field-label">Timing</span>
+            <select name="timing">
+              <option value="" selected>Choose one</option>
+              {enquiryOptions.timing.map((timing) => <option>{timing}</option>)}
+            </select>
+          </label>
+          <label class="field sm:col-span-2">
+            <span class="field-label">Way of working</span>
+            <select name="route">
+              <option value="" selected>Choose one</option>
+              {routes.map((route) => <option>{route}</option>)}
+            </select>
+          </label>
+        </Fragment>
+      )}
+
+      <label class="field sm:col-span-2">
+        <span class="field-label">{project ? "About the project" : "Message"}{project && <span class="field-optional">Optional</span>}</span>
+        <textarea name="message" rows="5" maxlength="5000" required={!project} placeholder={project ? "What you want to build, and anything else we should know" : undefined}></textarea>
+      </label>
+    </div>
+
+    {siteKey && <div class="cf-turnstile mt-8" data-sitekey={siteKey} data-size="flexible" data-theme="light"></div>}
+
+    <div class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
+      <button type="submit" class="btn" data-enquiry-submit>{project ? "Send enquiry" : "Send message"}</button>
+      <p class="text-caption text-fg-subtle">We use your details only to reply to you.</p>
+    </div>
+    <p class="enquiry-error mt-6 text-body" role="alert" data-enquiry-error hidden></p>
+  </form>
+
+  <div id={`${id}-sent`} class="enquiry-note scroll-mt-header" tabindex="-1" data-enquiry-sent>
+    <p class="label">{project ? "Enquiry sent" : "Message sent"}</p>
+    <p class="mt-4 text-about">Thank you. {project ? "We will come back to you to arrange a first conversation." : "We will get back to you."}</p>
+  </div>
+  <div id={`${id}-failed`} class="enquiry-note scroll-mt-header" tabindex="-1">
+    <p class="label">Not sent</p>
+    <p class="mt-4 text-body">Your {project ? "enquiry" : "message"} could not be sent. Please try again, or email us at <a href={site.enquiryHref} class="text-link">{site.email}</a>.</p>
+  </div>
+</div>
+
+{siteKey && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
+
+<style>
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  .field-label {
+    display: flex;
+    gap: 0.75rem;
+    align-items: baseline;
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: rgb(var(--fg-muted));
+  }
+
+  .field-optional {
+    color: rgb(var(--fg-subtle));
+    font-weight: var(--weight-regular);
+  }
+
+  .field :is(input, select, textarea) {
+    width: 100%;
+    padding-block: 0.625rem;
+    border: 0;
+    border-bottom: var(--rule) solid rgb(var(--line) / 0.35);
+    border-radius: 0;
+    background: transparent;
+    color: rgb(var(--fg));
+    font: inherit;
+    font-size: 1rem; /* 16px stops iOS zooming into the field */
+    transition: border-color var(--dur-base) var(--ease-standard);
+  }
+
+  .field textarea {
+    resize: vertical;
+    min-height: 7.5rem;
+  }
+
+  .field select {
+    appearance: none;
+    padding-right: 1.5rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none'%3E%3Cpath d='m2.5 4.5 3.5 3.5 3.5-3.5' stroke='%238a8a8a' stroke-width='1.2'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.125rem center;
+  }
+
+  .field select:invalid,
+  .field select:has(option[value=""]:checked) {
+    color: rgb(var(--fg-subtle));
+  }
+
+  .field :is(input, textarea)::placeholder {
+    color: rgb(var(--fg-subtle));
+  }
+
+  .field :is(input, select, textarea):focus {
+    outline: none;
+    border-bottom-color: rgb(var(--label-gold));
+  }
+
+  .field :is(input, select, textarea):focus-visible {
+    outline: none;
+    box-shadow: 0 1px 0 rgb(var(--label-gold));
+  }
+
+  /* Off-screen honeypot: people never see it, bots fill it in */
+  .enquiry-trap {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .enquiry-error a {
+    text-decoration: underline;
+  }
+
+  /* Thank-you and error notes: shown by the script, or without it by the #…-sent / #…-failed redirect */
+  .enquiry-note {
+    display: none;
+    outline: none;
+  }
+
+  .enquiry-note:target,
+  .enquiry-note[data-shown] {
+    display: block;
+  }
+
+  .enquiry:has([id$="-sent"]:target, .enquiry-note[data-shown]) .enquiry-form {
+    display: none;
+  }
+</style>
+
+<script>
+  // Send in place: post to the function, then swap the form for the thank-you note, or show the error with the
+  // email address. Without this script the form posts normally and the function redirects back to a note.
+  document.querySelectorAll<HTMLFormElement>("[data-enquiry-form]").forEach((form) => {
+    const root = form.closest<HTMLElement>("[data-enquiry]");
+    const sent = root?.querySelector<HTMLElement>("[data-enquiry-sent]");
+    const error = form.querySelector<HTMLElement>("[data-enquiry-error]");
+    const submit = form.querySelector<HTMLButtonElement>("[data-enquiry-submit]");
+    const failed = root?.querySelector<HTMLElement>('[id$="-failed"] p:last-child');
+    if (!sent || !error || !submit) return;
+    const label = submit.textContent;
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      error.hidden = true;
+      submit.disabled = true;
+      submit.textContent = "Sending";
+      try {
+        const response = await fetch(form.action, {
+          method: "POST",
+          body: new FormData(form),
+          headers: { Accept: "application/json" },
+        });
+        const result = (await response.json().catch(() => ({}))) as { ok?: boolean };
+        if (!response.ok || !result.ok) throw new Error(String(response.status));
+        form.hidden = true;
+        sent.setAttribute("data-shown", "");
+        sent.focus({ preventScroll: true });
+        sent.scrollIntoView({ block: "center", behavior: "smooth" });
+      } catch {
+        error.innerHTML = failed?.innerHTML ?? "Please try again.";
+        error.hidden = false;
+        (window as { turnstile?: { reset: (el?: Element) => void } }).turnstile?.reset(form.querySelector(".cf-turnstile") ?? undefined);
+      } finally {
+        submit.disabled = false;
+        submit.textContent = label;
+      }
+    });
+  });
+</script>

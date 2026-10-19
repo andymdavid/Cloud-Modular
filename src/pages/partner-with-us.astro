@@ -1,75 +1,123 @@
 ---
 import RefreshLayout from "@/layouts/RefreshLayout.astro";
 import PageIntro from "@/components/refresh/PageIntro.astro";
+import SectionHead from "@/components/refresh/SectionHead.astro";
 import SplitSection from "@/components/refresh/SplitSection.astro";
-import { site } from "@/data/site";
+import CardRow from "@/components/refresh/CardRow.astro";
+import MediaCard from "@/components/refresh/MediaCard.astro";
+import ImagePanel from "@/components/refresh/ImagePanel.astro";
+import Accordion from "@/components/refresh/Accordion.astro";
+import PartnerGrid from "@/components/refresh/PartnerGrid.astro";
+import FaqSection from "@/components/refresh/FaqSection.astro";
+import EnquiryForm from "@/components/refresh/EnquiryForm.astro";
+import { engagementModels, partnerAudiences, partnerSteps, projects, site } from "@/data/site";
 
-const title = "Get a Quote | Modular Construction Perth | Contact Us";
+const title = "Partner With Us | Modular Construction Projects | Cloud Modular";
 const description =
-  "Discuss your modular construction project in Perth and Western Australia with Cloud Modular.";
-const schemas = [
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: site.url },
-      { "@type": "ListItem", position: 2, name: "Partner With Us", item: `${site.url}/partner-with-us/` },
-    ],
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "ContactPage",
-    "@id": `${site.url}/partner-with-us/#contactpage`,
-    url: `${site.url}/partner-with-us/`,
-    name: "Contact Cloud Modular",
-    description,
-    mainEntity: { "@id": `${site.url}/#organization` },
-  },
-];
+  "Bring your project to Cloud Modular. We work with developers, builders, government and design teams to deliver modular buildings in Western Australia and nationally.";
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: site.url },
+    { "@type": "ListItem", position: 2, name: "Partner With Us", item: `${site.url}/partner-with-us/` },
+  ],
+};
 ---
 
-<RefreshLayout title={title} description={description} canonical="/partner-with-us/" structuredData={schemas}>
-  <PageIntro label="Get in touch" title="Partner with us" lead="Let’s discuss how Cloud Modular can deliver your project with precision and confidence.">
-    <a href={site.enquiryHref} class="btn mt-10">Enquire now</a>
-  </PageIntro>
+<RefreshLayout title={title} description={description} canonical="/partner-with-us/" structuredData={breadcrumbSchema}>
+  <!-- On phones the intro and the image under it fill the first screen -->
+  <div class="intro-screen mb-section">
+    <PageIntro label="Partner with us" title="Bring us your project" lead="We work with developers, builders, government and design teams to deliver modular buildings, from the first site review to handover.">
+      <div class="mt-10 flex flex-wrap justify-center gap-1">
+        <a href="#enquiry" class="btn">Start a project enquiry</a>
+        <a href={site.contactHref} class="btn">General enquiries</a>
+      </div>
+    </PageIntro>
 
-  <!-- Contact details: one row per channel, label and value -->
-  <SplitSection id="contact-details" label="Connect">
-    <dl class="w-full border-b border-line/[var(--rule-alpha)] text-body">
-      <div class="contact-row">
-        <dt class="label label-muted">Email</dt>
-        <dd><a href={site.enquiryHref} class="text-link">{site.email}</a></dd>
+    <!-- Full-width image under the intro -->
+    <div class="wide-row intro-grow" data-reveal>
+      <div class="intro-frame aspect-[4/3] overflow-hidden rounded bg-stone sm:aspect-[21/9]">
+        <img src="/1.webp" alt="A street of contemporary homes with dark and timber cladding at dusk" width="2688" height="1792" fetchpriority="high" class="h-full w-full object-cover" />
       </div>
-      <div class="contact-row">
-        <dt class="label label-muted">Hours</dt>
-        <dd>{site.hours}</dd>
-      </div>
-      <div class="contact-row">
-        <dt class="label label-muted">LinkedIn</dt>
-        <dd><a href={site.linkedIn} target="_blank" rel="noreferrer" class="text-link">Cloud Modular on LinkedIn</a></dd>
-      </div>
-    </dl>
-  </SplitSection>
-
-  <SplitSection id="offices" label="Offices">
-    <div class="grid w-full gap-x-gap-sm gap-y-10 sm:grid-cols-2">
-      {site.offices.map((office) => (
-        <div>
-          <h3 class="text-about">{office.city}</h3>
-          <div class="mt-3 text-body text-fg-muted">{office.lines.map((line) => <p>{line}</p>)}</div>
-        </div>
-      ))}
     </div>
-  </SplitSection>
-</RefreshLayout>
+  </div>
 
-<style>
-  .contact-row {
-    display: grid;
-    grid-template-columns: 7rem 1fr;
-    align-items: baseline;
-    gap: 1rem;
-    padding-block: 1rem;
-    border-top: var(--rule) solid rgb(var(--line) / var(--rule-alpha));
-  }
-</style>
+  <!-- Who we work with: one card per kind of partner, each naming the way of working that usually suits it -->
+  <section id="who-we-work-with" data-theme="light" class="scroll-mt-header pb-section">
+    <div class="shell">
+      <SectionHead label="Who we work with" title="One team for every partner" intro="Whether you own the site, build it, procure it or design it, we bring the manufacturing, logistics and installation, and fit around the team you already have." />
+    </div>
+    <CardRow label="Who we work with" columns={4} class="mt-10 sm:mt-12">
+      {partnerAudiences.map((audience, index) => (
+        <li data-reveal style={`--reveal-delay:${index * 80}ms`}>
+          <MediaCard image={audience.image} alt={audience.alt} width={928} height={1232} meta={audience.route} title={audience.label} description={audience.body} size="compact" />
+        </li>
+      ))}
+    </CardRow>
+  </section>
+
+  <!-- Ways to work with us: the four routes, as on Our approach -->
+  <ImagePanel id="ways-to-work" label="Ways to work with us" title="Start where it suits you" image="/Checks.webp" alt="An apartment building with timber-lined balconies and planting" width={1456} height={816} imagePosition="60% center">
+    <p class="text-body text-fg-muted">{engagementModels.intro}</p>
+    <Accordion items={engagementModels.items} name="ways" openFirst class="mt-10" />
+    <a href="/our-approach/#process" class="btn mt-10">See the full process</a>
+  </ImagePanel>
+
+  <!-- What happens next: the steps from an enquiry to a proposal -->
+  <section id="what-happens-next" data-theme="light" class="scroll-mt-header py-section">
+    <div class="shell">
+      <SectionHead label="What happens next" title="From first call to proposal" rule={false} />
+      <ol class="mt-10 grid gap-x-gap-sm sm:mt-12 sm:grid-cols-2 lg:grid-cols-4">
+        {partnerSteps.map((step, index) => (
+          <li class="border-t border-line/[var(--rule-alpha)] pb-10 pt-5 lg:pb-0" data-reveal style={`--reveal-delay:${index * 80}ms`}>
+            <p class="label label-muted">{String(index + 1).padStart(2, "0")}</p>
+            <h3 class="mt-6 text-about">{step.title}</h3>
+            <p class="mt-3 max-w-[34ch] text-body text-fg-muted">{step.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Project enquiry: the form, emailed to the team by the /api/enquiry function -->
+  <SplitSection id="project-enquiry" label="Project enquiry">
+    <p class="text-about">Tell us about your project. A few details are enough to start, and we will come back to you to arrange a first conversation.</p>
+    <EnquiryForm variant="project" class="mt-12" />
+  </SplitSection>
+
+  <!-- Projects: the same cards as the home page -->
+  <section id="projects" data-theme="light" class="scroll-mt-header pb-section">
+    <div class="shell">
+      <SectionHead label="Projects" title="Selected work">
+        <a slot="actions" href="/our-work/" class="btn">All projects</a>
+      </SectionHead>
+    </div>
+    <CardRow label="Projects" class="mt-12 sm:mt-16">
+      {projects.map((project, index) => (
+        <li data-reveal style={`--reveal-delay:${index * 80}ms`}>
+          <MediaCard
+            href={`/our-work/${project.slug}/`}
+            image={project.image}
+            alt={project.imageAlt}
+            imagePosition={project.imagePosition}
+            tag={project.sector}
+            meta={project.location}
+            title={project.name}
+            ratio="aspect-[4/5] lg:aspect-[13/15]"
+          />
+        </li>
+      ))}
+    </CardRow>
+  </section>
+
+  <!-- Delivery partners: one gold logo per cell, as on About -->
+  <section id="partners" data-theme="light" class="scroll-mt-header pb-section">
+    <div class="shell">
+      <SectionHead label="Partners" title="Who we deliver with" intro="We deliver each project with architects, consultants, builders, specialist trades and finance partners, working as one coordinated team." />
+      <PartnerGrid class="mt-10 sm:mt-12" />
+    </div>
+  </section>
+
+  <FaqSection id="faq" topic="partner" />
+</RefreshLayout>

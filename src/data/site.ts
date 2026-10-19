@@ -6,6 +6,8 @@ export const site = {
   email: "nigel@cloudmodular.com.au",
   enquiryHref:
     "mailto:nigel@cloudmodular.com.au?subject=Cloud%20Modular%20Website%20Inquiry",
+  /** "Enquire now" leads here: general enquiries. Project enquiries use the form on /partner-with-us/. */
+  contactHref: "/contact/",
   linkedIn: "https://www.linkedin.com/company/cloudmodular",
   hours: "Monday - Friday, 9am - 5pm AWST",
   offices: [
@@ -307,6 +309,7 @@ export const faqTopics = [
   { id: "quality", label: "Manufacturing and quality", href: "/quality/" },
   { id: "why", label: "Why Cloud Modular", href: "/why-cloud-modular/" },
   { id: "approach", label: "Process and engagement", href: "/our-approach/" },
+  { id: "partner", label: "Working with us", href: "/partner-with-us/" },
 ] as const;
 
 export type FaqTopic = (typeof faqTopics)[number]["id"];
@@ -381,6 +384,29 @@ export const faqItems = [
     question: "Can modular buildings meet sustainability targets?",
     answer:
       "Yes. Controlled production reduces waste, and the precision of the process supports higher-performing building envelopes and reduced embodied carbon depending on specification.",
+  },
+  {
+    topic: "partner",
+    question: "Is there a minimum project size?",
+    answer: "No. We deliver nationally, with no minimum project size.",
+  },
+  {
+    topic: "partner",
+    question: "Do you deliver outside Perth?",
+    answer:
+      "Yes. We deliver nationally, including on regional and remote sites and in cyclone regions, where the structure, cladding, windows and connections are designed for the wind loads.",
+  },
+  {
+    topic: "partner",
+    question: "Who holds the building permit?",
+    answer:
+      "The registered builder. On a design-and-deliver project we appoint and manage the builder for you. When we supply modules to your builder, your builder holds the permit and looks after the site works, footings, services and connections.",
+  },
+  {
+    topic: "partner",
+    question: "What should I include in a project enquiry?",
+    answer:
+      "Tell us where the site is, what you want to build and roughly how much, and when you would like to start. Drawings, a feasibility study or tender documents help if you have them. Leave out anything you are unsure of and we will talk it through.",
   },
 ] as const;
 
@@ -509,6 +535,56 @@ export const engagementModels = {
       body: "Send us the tender documents and we will price the project for modular construction. We will show where changes to the design could save time or cost, and set out the programme. This suits projects that are already in procurement.",
     },
   ],
+} as const;
+
+// /partner-with-us/: who the page is for, what happens after an enquiry, and the project enquiry form's options.
+// Each audience points to the way of working (engagementModels) that usually suits it; no new claims.
+export const partnerAudiences = [
+  {
+    id: "developers",
+    label: "Developers and landowners",
+    route: "Usually design and deliver",
+    image: "/Resi.webp",
+    alt: "A multi-residential building with planted balconies against the sky",
+    body: "Take a site from feasibility to finished buildings with one team. We test yield, cost and programme early, then design, manufacture and deliver the modules while your site is prepared.",
+  },
+  {
+    id: "builders",
+    label: "Builders and head contractors",
+    route: "Usually supply to your builder",
+    image: "/Infra.webp",
+    alt: "A two-storey building of stacked modules with full-height glazing",
+    body: "We resolve the design for manufacture with your team, then build, inspect, ship and deliver the modules to your site. You hold the building permit and look after the site works, footings, services and connections.",
+  },
+  {
+    id: "government",
+    label: "Government and institutions",
+    route: "Usually early involvement or tender",
+    image: "/school.webp",
+    alt: "A timber-lined learning space behind full-height glazing",
+    body: "For health, education, community and infrastructure projects. We join your consultants at feasibility so the design suits manufacture, or price your tender documents for modular construction.",
+  },
+  {
+    id: "consultants",
+    label: "Architects and consultants",
+    route: "Usually early involvement",
+    image: "/Card4.webp",
+    alt: "Light falling across a timber floor and a stone wall",
+    body: "Bring us in while the design is still open. We help shape it around module sizes, transport limits and crane lifts, and advise on yield, cost and programme as it develops.",
+  },
+] as const;
+
+export const partnerSteps = [
+  { title: "We get back to you", body: "We read every enquiry and come back to you to arrange a first conversation." },
+  { title: "First conversation", body: "We talk through your site, brief, budget and timing, and the way of working that suits the project." },
+  { title: "Site and brief review", body: "We review your site information and brief, confirm that modular suits the project, and test yield and programme." },
+  { title: "Proposal", body: "We set out the scope, the way of working, an indicative cost and the programme for your project." },
+] as const;
+
+export const enquiryOptions = {
+  roles: ["Developer or landowner", "Builder or head contractor", "Government or institution", "Architect or consultant", "Investor or funder", "Other"],
+  stages: ["Early idea", "Feasibility", "Design under way", "Approved", "In tender"],
+  timing: ["Within 6 months", "6 to 12 months", "More than 12 months", "Not sure yet"],
 } as const;
 
 // Who does what on a design-and-deliver project, stage by stage. Roles are jobs, not companies. Partner roles are

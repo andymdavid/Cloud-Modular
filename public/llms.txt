@@ -41,5 +41,6 @@ Commercial, multi-residential, health and aged care, education and community, in
 - [25 On Rowland and Forrest](https://cloudmodular.com.au/our-work/25-on-rowland-and-forrest/)
 - [About](https://cloudmodular.com.au/about/)
 - [FAQ](https://cloudmodular.com.au/faq/)
-- [Partner with us](https://cloudmodular.com.au/partner-with-us/)
+- [Partner with us](https://cloudmodular.com.au/partner-with-us/): who we work with, ways to work with us and the project enquiry form
+- [Contact](https://cloudmodular.com.au/contact/)
 - [Full information](https://cloudmodular.com.au/llms-full.txt)
