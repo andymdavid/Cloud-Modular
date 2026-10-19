@@ -1,0 +1,7 @@
+# Cloudflare Pages preview only: keep the preview out of search results.
+# Rules are scoped to the preview hosts so they never apply to cloudmodular.com.au.
+https://cloud-modular.pages.dev/*
+  X-Robots-Tag: noindex, nofollow
+
+https://:sub.cloud-modular.pages.dev/*
+  X-Robots-Tag: noindex, nofollow
