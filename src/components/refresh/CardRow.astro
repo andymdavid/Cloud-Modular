@@ -5,6 +5,8 @@
  * - "carousel": always a sideways row showing 3¼ cards at lg; pair with prev/next buttons marked
  *   data-carousel-prev / data-carousel-next inside an ancestor with data-carousel (Sectors).
  * A mostly vertical wheel or trackpad gesture over the row scrolls the page rather than nudging the row.
+ * The row never scrolls vertically: cards still offscreen to the side wait for their reveal, and their upward slide
+ * would otherwise make the row a small vertical scroller that catches the page scroll on touch screens.
  */
 interface Props {
   label: string;
@@ -19,7 +21,7 @@ const { label, variant = "grid", columns = 3, class: className } = Astro.props;
 
 <ul
   class:list={[
-    "card-row no-scrollbar flex snap-x snap-proximity gap-gap-sm overflow-x-auto scroll-px-gutter px-gutter",
+    "card-row no-scrollbar flex snap-x snap-proximity gap-gap-sm overflow-x-auto overflow-y-hidden scroll-px-gutter px-gutter",
     variant === "grid"
       ? ["card-row--grid lg:mx-auto lg:grid lg:max-w-page lg:overflow-visible", columns === 4 ? "lg:grid-cols-4" : "lg:grid-cols-3"]
       : "card-row--carousel",
@@ -39,6 +41,11 @@ const { label, variant = "grid", columns = 3, class: className } = Astro.props;
     scroll-snap-align: start;
   }
 
+  /* While the row swipes sideways its cards fade in without the upward slide, which the row would clip */
+  .card-row > :global([data-reveal]) {
+    transform: none;
+  }
+
   @media (min-width: 40rem) {
     .card-row > :global(li) {
       width: 44vw;
@@ -48,6 +55,10 @@ const { label, variant = "grid", columns = 3, class: className } = Astro.props;
   @media (min-width: 64rem) {
     .card-row--grid > :global(li) {
       width: auto;
+    }
+
+    .card-row--grid > :global([data-reveal]:not(.is-visible)) {
+      transform: translateY(1.5rem);
     }
 
     .card-row--carousel > :global(li) {

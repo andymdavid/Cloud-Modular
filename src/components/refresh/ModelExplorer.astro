@@ -166,7 +166,7 @@ const expandIcon = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" 
           {views.length > 0 && (
             <>
               <p class="label label-muted" id={`${uid}-view-label`}>Show</p>
-              <div class="-mx-4 mt-2 flex gap-1.5 overflow-x-auto px-4 sm:mx-0 sm:flex-wrap sm:px-0" role="group" aria-labelledby={`${uid}-view-label`}>
+              <div class="-mx-4 mt-2 flex gap-1.5 overflow-x-auto overflow-y-hidden px-4 sm:mx-0 sm:flex-wrap sm:px-0" role="group" aria-labelledby={`${uid}-view-label`}>
                 {views.map((view, index) => (
                   <button type="button" class="explorer-chip" aria-pressed={index === 0 ? "true" : "false"} data-view={view.id}>
                     {view.label}

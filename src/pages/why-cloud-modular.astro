@@ -19,12 +19,15 @@ const stats = [
 ---
 
 <RefreshLayout title={title} description={description} canonical="/why-cloud-modular/">
-  <PageIntro label="Why Cloud Modular" title="Faster, cleaner, more certain" lead="Most of the build happens offsite, which shortens programmes, reduces site disruption and improves cost certainty." />
+  <!-- On phones the intro and the image under it fill the first screen -->
+  <div class="intro-screen">
+    <PageIntro label="Why Cloud Modular" title="Faster, cleaner, more certain" lead="Most of the build happens offsite, which shortens programmes, reduces site disruption and improves cost certainty." />
 
-  <!-- Full-width image under the intro, as on the other pages -->
-  <div class="wide-row" data-reveal>
-    <div class="aspect-[4/3] overflow-hidden rounded bg-stone sm:aspect-[21/9]">
-      <img src="/why/hero.webp" alt="A light-filled kitchen with white cabinetry, a timber island and stools, and full-height glazing onto trees" width="1855" height="848" fetchpriority="high" class="h-full w-full object-cover" style="object-position:center 60%" />
+    <!-- Full-width image under the intro, as on the other pages -->
+    <div class="wide-row intro-grow" data-reveal>
+      <div class="intro-frame aspect-[4/3] overflow-hidden rounded bg-stone sm:aspect-[21/9]">
+        <img src="/why/hero.webp" alt="A light-filled kitchen with white cabinetry, a timber island and stools, and full-height glazing onto trees" width="1855" height="848" fetchpriority="high" class="h-full w-full object-cover" style="object-position:center 60%" />
+      </div>
     </div>
   </div>
 

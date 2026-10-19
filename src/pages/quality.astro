@@ -24,12 +24,15 @@ const breadcrumbSchema = {
 ---
 
 <RefreshLayout title={title} description={description} canonical="/quality/" structuredData={breadcrumbSchema}>
-  <PageIntro label="Manufacturing and quality" title="How every module is made and checked" lead="We build every module in our manufacturing facility in Foshan, check it against Australian requirements at each stage and manage its journey to your site." />
+  <!-- On phones the intro and the image under it fill the first screen -->
+  <div class="intro-screen">
+    <PageIntro label="Manufacturing and quality" title="How every module is made and checked" lead="We build every module in our manufacturing facility in Foshan, check it against Australian requirements at each stage and manage its journey to your site." />
 
-  <!-- Full-width factory image under the intro (a stand-in; real factory photos are not published) -->
-  <div class="wide-row" data-reveal>
-    <div class="aspect-[4/3] overflow-hidden rounded bg-stone sm:aspect-[21/9]">
-      <img src="/Factory-1.webp" alt="The production floor of a modular manufacturing facility" width="1672" height="941" fetchpriority="high" class="h-full w-full object-cover" />
+    <!-- Full-width factory image under the intro (a stand-in; real factory photos are not published) -->
+    <div class="wide-row intro-grow" data-reveal>
+      <div class="intro-frame aspect-[4/3] overflow-hidden rounded bg-stone sm:aspect-[21/9]">
+        <img src="/Factory-1.webp" alt="The production floor of a modular manufacturing facility" width="1672" height="941" fetchpriority="high" class="h-full w-full object-cover" />
+      </div>
     </div>
   </div>
 

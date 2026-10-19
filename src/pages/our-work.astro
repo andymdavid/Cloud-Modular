@@ -20,30 +20,33 @@ const breadcrumbSchema = {
 ---
 
 <RefreshLayout title={title} description={description} canonical="/our-work/" structuredData={breadcrumbSchema}>
-  <PageIntro label="Our work" title="Selected work" lead={description} />
+  <!-- On phones the intro and the featured video under it fill the first screen -->
+  <div class="intro-screen mb-section">
+    <PageIntro label="Our work" title="Selected work" lead={description} />
 
-  <!-- Featured project: the Seashells Jurien Bay aerial in a wide row, playing once when half in view -->
-  <section data-theme="light" class="pb-section" aria-label="Seashells Jurien Bay">
-    <div class="wide-row" data-reveal>
-      <div data-theme="dark" class="relative aspect-[4/5] overflow-hidden rounded bg-stone sm:aspect-[16/9]">
-        <video
-          src="/projects/jurien-bay-drone.mp4"
-          poster="/projects/jurien-bay-drone-start.webp"
-          data-end-poster="/projects/jurien-bay-drone-end.webp"
-          width="1284"
-          height="716"
-          muted
-          playsinline
-          preload="none"
-          aria-label="Aerial flyover of the Seashells Jurien Bay development beside the coast"
-          data-play-once
-          class="h-full w-full object-cover"
-        ></video>
-        <span class="absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgb(11_11_12/0.35),rgb(11_11_12/0))]" aria-hidden="true"></span>
-        <p class="label absolute left-4 top-4 text-fg sm:left-5 sm:top-5">Seashells Jurien Bay</p>
+    <!-- Featured project: the Seashells Jurien Bay aerial in a wide row, playing once when half in view -->
+    <section data-theme="light" class="intro-grow" aria-label="Seashells Jurien Bay">
+      <div class="wide-row intro-grow" data-reveal>
+        <div data-theme="dark" class="intro-frame relative aspect-[4/5] overflow-hidden rounded bg-stone sm:aspect-[16/9]">
+          <video
+            src="/projects/jurien-bay-drone.mp4"
+            poster="/projects/jurien-bay-drone-start.webp"
+            data-end-poster="/projects/jurien-bay-drone-end.webp"
+            width="1284"
+            height="716"
+            muted
+            playsinline
+            preload="none"
+            aria-label="Aerial flyover of the Seashells Jurien Bay development beside the coast"
+            data-play-once
+            class="h-full w-full object-cover"
+          ></video>
+          <span class="absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgb(11_11_12/0.35),rgb(11_11_12/0))]" aria-hidden="true"></span>
+          <p class="label absolute left-4 top-4 text-fg sm:left-5 sm:top-5">Seashells Jurien Bay</p>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 
   <!-- All projects: the same cards as the home page (each links to its project page) -->
   <section id="projects" data-theme="light" class="scroll-mt-header pb-section">

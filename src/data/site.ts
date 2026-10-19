@@ -11,7 +11,7 @@ export const site = {
   offices: [
     {
       city: "Perth, Australia",
-      lines: ["311-313 Hay St", "Subiaco WA 6008"],
+      lines: ["10 Davenport Street", "Karrinyup WA 6018"],
     },
     {
       city: "Foshan, China",

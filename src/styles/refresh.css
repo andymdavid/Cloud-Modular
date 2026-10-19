@@ -290,6 +290,35 @@
   text-wrap: balance;
 }
 
+/* Phones: a page intro and the image under it fill the first screen (intro-screen wraps both; intro-grow marks
+   each box between it and the image frame) */
+@media (max-width: 39.999rem) {
+  .intro-screen {
+    display: flex;
+    flex-direction: column;
+    min-height: 100svh;
+    padding-bottom: var(--gutter);
+  }
+
+  .intro-screen .intro-grow {
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: column;
+  }
+
+  .intro-screen .intro-frame {
+    position: relative;
+    flex: 1 0 auto;
+    min-height: 18rem;
+    aspect-ratio: auto;
+  }
+
+  .intro-screen .intro-frame > :is(img, video) {
+    position: absolute;
+    inset: 0;
+  }
+}
+
 /* Scroll reveals: only hidden when JS has marked the document as ready */
 .js [data-reveal] {
   opacity: 0;

@@ -23,12 +23,15 @@ const breadcrumbSchema = {
 ---
 
 <RefreshLayout title={title} description={description} canonical="/about/" structuredData={breadcrumbSchema}>
-  <PageIntro label="About Cloud Modular" title="Building a better way to deliver certainty" lead={description} />
+  <!-- On phones the intro and the image under it fill the first screen -->
+  <div class="intro-screen mb-section">
+    <PageIntro label="About Cloud Modular" title="Building a better way to deliver certainty" lead={description} />
 
-  <!-- Full-width image under the intro -->
-  <div class="wide-row pb-section" data-reveal>
-    <div class="aspect-[4/3] overflow-hidden rounded bg-stone sm:aspect-[21/9]">
-      <img src="/interior.webp" alt="Light-filled modular home interior with a timber kitchen island opening onto a deck" width="1748" height="900" fetchpriority="high" class="h-full w-full object-cover" />
+    <!-- Full-width image under the intro -->
+    <div class="wide-row intro-grow" data-reveal>
+      <div class="intro-frame aspect-[4/3] overflow-hidden rounded bg-stone sm:aspect-[21/9]">
+        <img src="/interior.webp" alt="Light-filled modular home interior with a timber kitchen island opening onto a deck" width="1748" height="900" fetchpriority="high" class="h-full w-full object-cover" />
+      </div>
     </div>
   </div>
 
