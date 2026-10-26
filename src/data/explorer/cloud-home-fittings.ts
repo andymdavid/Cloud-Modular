@@ -343,24 +343,35 @@ export function bathroom<G extends string>(
 
   // Floor tiles and a tiled skirting
   fit.box([x0, 0, z0], [x1, 0.008, z1], "floorTile");
-  // Shower: hobless corner with full-height wall tiles, a linear grate and a framed glass screen
-  west([z1 - 0.95, z1], [0, 0.008], [0, 2.1], "tile");
-  back([x0, x0 + 0.95], [0, 0.008], [0, 2.1], "tile");
-  fit.box([x0 + 0.06, 0.008, z1 - 0.9], [x0 + 0.86, 0.011, z1 - 0.86], "stainless");
-  fit.box([x0 + 0.9, 0.008, z1 - 0.9], [x0 + 0.908, 2.0, z1 - 0.05], "glass");
-  fit.box([x0 + 0.008, 0.008, z1 - 0.908], [x0 + 0.6, 2.0, z1 - 0.9], "glass");
-  fit.box([x0 + 0.895, 1.99, z1 - 0.9], [x0 + 0.913, 2.005, z1 - 0.05], "stainless");
-  fit.box([x0 + 0.008, 1.99, z1 - 0.913], [x0 + 0.6, 2.005, z1 - 0.895], "stainless");
-  fit.box([x0 + 0.895, 0.008, z1 - 0.06], [x0 + 0.913, 2.0, z1 - 0.008], "stainless");
-  // Rail shower, overhead rose on an arm, and the mixer
-  const [rx, rz] = backAt(x0 + 0.5, 0.05);
-  fit.cyl([rx, 1.4, rz], 0.012, 0.9, "stainless");
-  fit.rbox([rx - 0.03, 1.45, rz - 0.06], [rx + 0.03, 1.65, rz - 0.02], "stainless", 0.015);
-  fit.cyl([rx, 2.05, rz - 0.15], 0.01, 0.3, "stainless", "z");
-  fit.cyl([rx, 2.035, rz - 0.3], 0.12, 0.012, "stainless");
-  const [mx, mz] = backAt(x0 + 0.5, 0.01);
-  fit.cyl([mx, 1.05, mz], 0.06, 0.012, "stainless", "z");
-  fit.cyl([mx, 1.05, mz - 0.04], 0.01, 0.07, "stainless", "z");
+  // Shower (bath layout, 2 Bed set sheet 11): hobless 900 × 900 corner with full-height wall tiles, falling to a
+  // centre floor waste. A fixed glass return on the vanity side; the front is a fixed panel and a hinged door that
+  // swings out into the room. The rail shower and mixer are on the side wall.
+  const sx1 = x0 + 0.9;
+  const sz0 = z1 - 0.9;
+  west([sz0 - 0.05, z1], [0, 0.008], [0, 2.1], "tile");
+  back([x0, sx1 + 0.05], [0, 0.008], [0, 2.1], "tile");
+  fit.box([x0 + 0.4, 0.008, sz0 + 0.4], [x0 + 0.5, 0.011, sz0 + 0.5], "stainless"); // shower floor waste
+  fit.box([x0 + 0.42, 0.011, sz0 + 0.42], [x0 + 0.48, 0.012, sz0 + 0.48], "grille");
+  const glass = (min: Vec3, max: Vec3) => fit.box(min, max, "glass");
+  glass([sx1 - 0.004, 0.01, sz0], [sx1 + 0.004, 2.0, z1 - 0.01]); // fixed return on the vanity side
+  glass([x0 + 0.01, 0.01, sz0 - 0.004], [x0 + 0.44, 2.0, sz0 + 0.004]); // fixed front panel
+  glass([x0 + 0.455, 0.01, sz0 - 0.004], [sx1 - 0.01, 2.0, sz0 + 0.004]); // hinged door
+  fit.box([x0, 1.99, sz0 - 0.008], [sx1 + 0.008, 2.005, sz0 + 0.008], "stainless"); // top rail
+  fit.box([sx1 - 0.008, 1.99, sz0], [sx1 + 0.008, 2.005, z1], "stainless");
+  for (const y of [0.3, 1.7]) fit.box([sx1 - 0.03, y, sz0 - 0.012], [sx1 - 0.01, y + 0.08, sz0 + 0.012], "stainless"); // hinges
+  fit.cyl([x0 + 0.5, 1.05, sz0 - 0.03], 0.01, 0.3, "stainless"); // door handle
+  fit.cyl([x0 + 0.5, 1.05, sz0 + 0.03], 0.01, 0.3, "stainless");
+  // Rail shower, overhead rose on an arm and the mixer, on the side wall
+  const wx = x0 + 0.05;
+  fit.cyl([wx, 1.4, sz0 + 0.45], 0.012, 0.9, "stainless");
+  fit.rbox([wx + 0.02, 1.45, sz0 + 0.42], [wx + 0.06, 1.65, sz0 + 0.48], "stainless", 0.015);
+  fit.cyl([x0 + 0.2, 2.05, sz0 + 0.45], 0.01, 0.3, "stainless", "x");
+  fit.cyl([x0 + 0.35, 2.035, sz0 + 0.45], 0.12, 0.012, "stainless");
+  fit.cyl([x0 + 0.01, 1.0, sz0 + 0.25], 0.06, 0.012, "stainless", "x");
+  fit.cyl([x0 + 0.05, 1.0, sz0 + 0.25], 0.01, 0.07, "stainless", "x");
+  // Room floor waste (FW) in the middle of the bathroom
+  const [fx, fz] = [(x0 + x1) / 2, (z0 + sz0) / 2];
+  fit.box([fx - 0.05, 0.008, fz - 0.05], [fx + 0.05, 0.011, fz + 0.05], "stainless");
 
   // Wall-hung vanity with two drawers, an integrated basin, a mixer and a mirror cabinet
   const v0 = x0 + 0.95;
@@ -413,8 +424,7 @@ export function bathroom<G extends string>(
   // Grab rails (accessible extra): beside the toilet and in the shower
   const [gx1, gz1] = sideAt(tu + 0.3, 0.06);
   access.cyl([gx1, 0.8, gz1], 0.016, 0.6, "stainless", "z");
-  const [sx, sz] = [x0 + 0.06, z1 - 0.5];
-  access.cyl([sx, 1.1, sz], 0.016, 0.6, "stainless");
+  access.cyl([x0 + 0.06, 1.1, z1 - 0.7], 0.016, 0.6, "stainless", "z");
   return collect(fit, access as unknown as Fit<G>);
 }
 

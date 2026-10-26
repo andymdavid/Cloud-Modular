@@ -211,7 +211,7 @@ export const extras = {
     { id: "roller-blinds", name: "Roller blinds", detail: "Privacy without losing the light" },
     { id: "plantation-shutters", name: "Plantation shutters", detail: "Adjustable shutters to the bedrooms" },
     { id: "ceiling-fans", name: "Ceiling fans", detail: "In the living room and bedrooms" },
-    { id: "accessible-bathroom", name: "Accessible bathroom fittings", detail: "Grab rails and easier access", camera: { azimuth: 255, polar: 34, inside: true, focus: "bathroom" } as CameraView },
+    { id: "accessible-bathroom", name: "Accessible bathroom fittings", detail: "Grab rails and easier access", camera: { azimuth: 300, polar: 30, inside: true, focus: "bathroom" } as CameraView },
   ],
 } as const;
 
