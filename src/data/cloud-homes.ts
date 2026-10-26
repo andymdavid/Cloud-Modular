@@ -228,7 +228,7 @@ export const included = [
 export const homeSteps = [
   { title: "Design yours", body: "Choose your home and finishes, then send us your design and your site address." },
   { title: "Site review and proposal", body: "We review your site and send a proposal with the scope, the price and the programme." },
-  { title: "Approvals and manufacture", body: "Once approvals are in place, your home is built in our manufacturing facility in Foshan while your site is prepared." },
+  { title: "Approvals and manufacture", body: "Once approvals are in place, your home is built in our manufacturing facility while your site is prepared." },
   { title: "Delivery and handover", body: "Your home is shipped, craned onto its footings and connected, then the keys are handed over." },
 ] as const;
 
