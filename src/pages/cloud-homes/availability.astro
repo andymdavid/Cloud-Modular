@@ -1,0 +1,151 @@
+---
+import RefreshLayout from "@/layouts/RefreshLayout.astro";
+import CloudHomeShell from "@/components/refresh/CloudHomeShell.astro";
+import EnquiryForm from "@/components/refresh/EnquiryForm.astro";
+import { site } from "@/data/site";
+import { homeSteps } from "@/data/cloud-homes";
+
+/**
+ * Cloud Homes "Design yours", part two of two (cf. Samara's "Confirm availability"): the designed home stays on the
+ * left while the buyer gives their contact details and site address, which the enquiry function emails with the
+ * design and its link. Reached from the price breakdown on /cloud-homes/design/, with the design in the URL.
+ */
+
+const title = "Confirm Availability | Cloud Homes | Cloud Modular";
+const description = "Send us your Cloud Home design and your site address, and we will confirm availability and come back with a proposal.";
+const schemas = [
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: site.url },
+      { "@type": "ListItem", position: 2, name: "Design your Cloud Home", item: `${site.url}/cloud-homes/design/` },
+      { "@type": "ListItem", position: 3, name: "Confirm availability", item: `${site.url}/cloud-homes/availability/` },
+    ],
+  },
+];
+---
+
+<RefreshLayout title={title} description={description} canonical="/cloud-homes/availability/" structuredData={schemas} footer={false} pinHeader>
+  <CloudHomeShell>
+    <div class="availability">
+      <a href="/cloud-homes/design/" class="back" data-back>
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M10 3 5 8l5 5" stroke="currentColor" stroke-width="1.4" /></svg>
+        Back to your design
+      </a>
+      <h1 class="mt-8 text-h2">Confirm availability</h1>
+      <p class="mt-5 text-about text-fg-muted">Share your site address so we can confirm we can deliver there and refine the estimate for your home.</p>
+
+      <div class="mt-10 border-y border-line/[var(--rule-alpha)] py-5">
+        <p class="label label-muted">Your design</p>
+        <dl class="mt-3 text-small" data-summary></dl>
+      </div>
+
+      <EnquiryForm variant="design" class="mt-12" />
+
+      <h2 class="label mt-16">What happens next</h2>
+      <ol class="mt-6 grid gap-6">
+        {homeSteps.map((step, index) => (
+          <li class="grid grid-cols-[2rem_1fr] gap-x-2">
+            <span class="label label-muted pt-1">{String(index + 1).padStart(2, "0")}</span>
+            <span>
+              <span class="block text-lead">{step.title}</span>
+              <span class="mt-1 block text-body text-fg-muted">{step.body}</span>
+            </span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </CloudHomeShell>
+</RefreshLayout>
+
+<style>
+  .availability {
+    padding-top: 2rem;
+  }
+
+  @media (min-width: 64rem) {
+    .availability {
+      padding-top: calc(var(--header-h) + 2.5rem);
+    }
+  }
+
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: 2.5rem;
+    padding-inline: 1rem;
+    border-radius: 999px;
+    background: rgb(var(--surface-quiet));
+    font-size: var(--text-small);
+    transition: background-color var(--dur-base) var(--ease-standard);
+  }
+
+  .back:hover {
+    background: rgb(var(--stone));
+  }
+
+  .availability :global(.summary-row) {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0.25rem;
+  }
+</style>
+
+<script>
+  import { designQuery, formatPrice, homeCamera, modelState, readDesign, summaryRows } from "@/data/cloud-homes";
+
+  const design = readDesign(new URLSearchParams(location.search));
+  const query = designQuery(design);
+  const designLink = `${location.origin}/cloud-homes/design/${query ? `?${query}` : ""}`;
+
+  // Back to the same design, and the price pill
+  document.querySelector<HTMLAnchorElement>("[data-back]")!.href = designLink;
+  document.querySelector("[data-pill-name]")!.textContent = design.home.name;
+  document.querySelector("[data-pill-price]")!.textContent = formatPrice(design.home.fromPrice);
+
+  // Summary of the design and what the form sends with it
+  const rows = summaryRows(design);
+  document.querySelector("[data-summary]")!.replaceChildren(
+    ...rows.map(([label, value]) => {
+      const row = document.createElement("div");
+      row.className = "summary-row";
+      const dt = document.createElement("dt");
+      dt.className = "text-fg-muted";
+      dt.textContent = label;
+      const dd = document.createElement("dd");
+      dd.className = "text-right";
+      dd.textContent = value;
+      row.append(dt, dd);
+      return row;
+    }),
+  );
+  const field = (name: string, value: string) => {
+    const input = document.querySelector<HTMLInputElement>(`[data-design-field="${name}"]`);
+    if (input) input.value = value;
+  };
+  field("home", design.home.name);
+  field("selections", rows.slice(1).map(([label, value]) => `${label}: ${value}`).join("\n"));
+  field("link", designLink);
+
+  // The designed home
+  const host = document.querySelector<HTMLElement>("[data-canvas-host]")!;
+  const status = document.querySelector<HTMLElement>("[data-status]")!;
+  import("@/lib/explorer/cloud-home-design")
+    .then(({ createDesignViewer }) => {
+      createDesignViewer({
+        host,
+        home: design.home.id,
+        state: modelState(design),
+        view: homeCamera,
+        reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+        onError: () => (status.textContent = "The 3D view could not load on this device."),
+      });
+      status.hidden = true;
+    })
+    .catch(() => {
+      status.textContent = "The 3D view could not load on this device.";
+    });
+</script>

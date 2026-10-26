@@ -19,7 +19,7 @@
 import type { Block, HouseData, Opening, RoofPrism, Slab, Vec2, Vec3, Wall } from "./house";
 
 export type CloudHomeId = "one-bed" | "two-bed" | "four-bed";
-export type GroupId = "bedrooms" | "living" | "upper" | "vergola" | "roof" | "frame" | "solar";
+export type GroupId = "bedrooms" | "living" | "upper" | "vergola" | "roof" | "frame" | "solar" | "battery" | "services";
 
 type W = Wall<GroupId>;
 type B = Block<GroupId>;
@@ -126,6 +126,48 @@ function solarRows(x0: number, x1: number, z0: number, z1: number, yAt: (z: numb
   return out;
 }
 
+/**
+ * Klip-Lok ribs (43 mm deep, sheets 12 of the earlier 3 Bed set) running down the fall of a skillion roof, as
+ * members from the rear to the front edge. Rib spacing is indicative.
+ */
+function roofRibs(x0: number, x1: number, z0: number, z1: number, yAt: (z: number) => number) {
+  const out: { group: GroupId; level: string; material: "roof"; from: Vec3; to: Vec3; size: number }[] = [];
+  const pitch = 0.33;
+  for (let x = x0 + pitch / 2; x < x1 - 0.05; x += pitch) {
+    out.push({ group: "roof", level: "roof", material: "roof", from: [x, yAt(z0) + 0.015, z0], to: [x, yAt(z1) + 0.015, z1], size: 0.03 });
+  }
+  return out;
+}
+
+/**
+ * Services on the rear wall, where the plans place them: the battery and inverter beside the sub-board, the heat pump
+ * hot water unit on its slab, the air conditioning unit, and downpipes at the rear corners. Sizes are indicative.
+ */
+function rearServices({ width, top, ac }: { width: number; top: number; ac: boolean }): B[] {
+  const out: B[] = [
+    // Sub-board and the battery with its inverter (the battery is a design choice)
+    { group: "services", level: "gf", min: [0.95, 1.2, -0.12], max: [1.35, 1.8, 0], material: "downpipe" },
+    { group: "battery", level: "gf", min: [0.25, 0.25, -0.2], max: [0.85, 1.35, 0], material: "door" },
+    { group: "battery", level: "gf", min: [0.3, 1.45, -0.14], max: [0.8, 1.85, 0], material: "door" },
+    // Heat pump hot water unit on a concrete slab
+    { group: "services", level: "gf", min: [1.45, -0.2, -0.75], max: [2.15, 0, -0.05], material: "concrete" },
+    { group: "services", level: "gf", min: [1.55, 0, -0.65], max: [2.05, 1.7, -0.15], material: "downpipe" },
+    // Downpipes at the rear corners
+    { group: "services", level: "gf", min: [0.12, 0, -0.08], max: [0.2, top, 0], material: "downpipe" },
+    { group: "services", level: "gf", min: [width - 0.2, 0, -0.08], max: [width - 0.12, top, 0], material: "downpipe" },
+  ];
+  if (ac) {
+    out.push(
+      { group: "services", level: "gf", min: [width - 1.15, 0, -0.38], max: [width - 0.35, 0.62, -0.08], material: "downpipe" },
+      { group: "services", level: "gf", min: [width - 1.05, 0.12, -0.385], max: [width - 0.55, 0.52, -0.38], material: "frameDark" },
+    );
+  }
+  return out;
+}
+
+/** Electric vehicle charger on the east wall near the front (plans: "10m car charger"). */
+const evCharger = (width: number, front: number): B => ({ group: "services", level: "gf", min: [width, 1.0, front - 0.6], max: [width + 0.1, 1.35, front - 0.35], material: "frameDark" });
+
 /** Single-storey hidden roof: falls 2° to a rear gutter between side walls carried up to the parapet. */
 function singleStoreyRoof(width: number, front: number): RoofPrism<GroupId>[] {
   const roofFront = LV.roofRear + front * tan(2);
@@ -206,6 +248,8 @@ function oneBed(): HouseData<GroupId> {
     ...frameBlocks(shell, 2.6),
     ...v.blocks,
     ...solarRows(0.35, width - 0.35, 0.4, 8.0, (z) => LV.roofRear + z * tan(2), 2),
+    ...rearServices({ width, top: LV.roofRear, ac: true }),
+    evCharger(width, front),
     ...kitchen(width, front, front - 2.4),
     // Robe, bed and living furniture (indicative)
     { group: "bedrooms", level: "gf", min: [c, 0, c], max: [0.6, 2.4, 1.59], material: "joinery" },
@@ -224,6 +268,7 @@ function oneBed(): HouseData<GroupId> {
     downpipes: [],
     blocks,
     posts: { group: "vergola", at: v.posts, height: LV.vergolaSoffit },
+    struts: roofRibs(EXT, width - EXT, 0, front - EXT, (z) => LV.roofRear + z * tan(2)),
   };
 }
 
@@ -269,6 +314,8 @@ function twoBed(): HouseData<GroupId> {
     ...frameBlocks(shell, 2.6),
     ...v.blocks,
     ...solarRows(0.35, width - 0.35, 0.4, 9.0, (z) => LV.roofRear + z * tan(2), 2),
+    ...rearServices({ width, top: LV.roofRear, ac: true }),
+    evCharger(width, front),
     ...kitchen(width, front, front - 2.4),
     { group: "bedrooms", level: "gf", min: [c, 0, c], max: [0.6, 2.4, 1.59], material: "joinery" },
     { group: "bedrooms", level: "gf", min: [3.01, 0, 5.31], max: [xe - c, 2.4, 5.95], material: "joinery" },
@@ -288,6 +335,7 @@ function twoBed(): HouseData<GroupId> {
     downpipes: [],
     blocks,
     posts: { group: "vergola", at: v.posts, height: LV.vergolaSoffit },
+    struts: roofRibs(EXT, width - EXT, 0, front - EXT, (z) => LV.roofRear + z * tan(2)),
   };
 }
 
@@ -398,6 +446,8 @@ function fourBed(): HouseData<GroupId> {
     ...v.blocks,
     ...stairs,
     ...solarRows(0.35, width - 0.35, ufRear + 0.4, front - 0.6, (z) => LV.roofFront - (front - z) * tan(3), 2),
+    ...rearServices({ width, top: 2.7, ac: false }),
+    evCharger(width, front),
     ...kitchen(width, front, front - 2.4),
     { group: "bedrooms", level: "gf", min: [c, 0, c], max: [0.6, 2.4, 1.26], material: "joinery" },
     { group: "bedrooms", level: "gf", min: [1.6, 0, 0.2], max: [3.13, 0.55, 2.23], material: "bed" },
@@ -420,6 +470,10 @@ function fourBed(): HouseData<GroupId> {
     downpipes: [],
     blocks,
     posts: { group: "vergola", at: v.posts, height: LV.vergolaSoffit },
+    struts: [
+      ...roofRibs(0, width, ufRear, front, (z) => LV.roofFront - (front - z) * tan(3)),
+      ...roofRibs(0, width, -0.15, ufRear, (z) => 2.7 + z * tan(6)),
+    ],
   };
 }
 
@@ -438,6 +492,8 @@ export const explode: Record<GroupId, Vec3> = {
   roof: [0, 0, 0],
   frame: [0, 0, 0],
   solar: [0, 0, 0],
+  battery: [0, 0, 0],
+  services: [0, 0, 0],
 };
 
 /** Views: the outside, or with the roof (and upper floor) lifted off to see inside. */

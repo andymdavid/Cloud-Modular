@@ -13,9 +13,11 @@ type Props = SeoProps & {
   navLinks?: NavLink[];
   /** Full-screen tools (the Cloud Homes design page) leave the footer out. */
   footer?: boolean;
+  /** Keep the header in view while scrolling. */
+  pinHeader?: boolean;
 };
 
-const { overlayHeader = false, navLinks, footer = true, ...seo } = Astro.props;
+const { overlayHeader = false, navLinks, footer = true, pinHeader = false, ...seo } = Astro.props;
 ---
 
 <!doctype html>
@@ -31,7 +33,7 @@ const { overlayHeader = false, navLinks, footer = true, ...seo } = Astro.props;
   </head>
   <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
-    <SiteHeader overlay={overlayHeader} links={navLinks} />
+    <SiteHeader overlay={overlayHeader} links={navLinks} pinned={pinHeader} />
     <main id="main-content"><slot /></main>
     {footer && <SiteFooter />}
 

@@ -43,10 +43,14 @@ const FIELDS: Record<Kind, [name: string, label: string][]> = {
     ["message", "Message"],
   ],
   design: [
-    ["name", "Name"],
+    ["first_name", "First name"],
+    ["last_name", "Last name"],
     ["email", "Email"],
     ["phone", "Phone"],
-    ["location", "Site location"],
+    ["address", "Street address"],
+    ["suburb", "Suburb or town"],
+    ["state", "State"],
+    ["postcode", "Postcode"],
     ["timing", "Timing"],
     ["home", "Home"],
     ["selections", "Selections"],
@@ -58,7 +62,7 @@ const FIELDS: Record<Kind, [name: string, label: string][]> = {
 const REQUIRED: Record<Kind, string[]> = {
   project: ["name", "email", "role", "location"],
   general: ["name", "email", "message"],
-  design: ["name", "email", "location", "home"],
+  design: ["first_name", "email", "address", "suburb", "state", "home"],
 };
 
 const ANCHOR: Record<Kind, string> = { project: "enquiry", general: "message", design: "design" };
@@ -90,6 +94,7 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
   const values = Object.fromEntries(
     FIELDS[kind].map(([name]) => [name, String(data.get(name) ?? "").trim().slice(0, name === "message" || name === "selections" ? 5000 : name === "link" ? 2000 : 200)]),
   );
+  if (kind === "design") values.name = [values.first_name, values.last_name].filter(Boolean).join(" ");
   if (REQUIRED[kind].some((name) => !values[name]) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
     return reply(false, 422, "Missing or invalid fields");
   }

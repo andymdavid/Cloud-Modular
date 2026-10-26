@@ -78,6 +78,8 @@ export interface ExplorerOptions {
   onSelect(id: string | null): void;
   /** Hover and tap parts in the page (compact) view too, not only in the full view. */
   inspect?: boolean;
+  /** Set false to turn off hovering and picking parts altogether (the Cloud Homes design tool). Default true. */
+  picking?: boolean;
   onHover?(id: string | null): void;
   onExit(): void;
   onError(reason: string): void;
@@ -98,6 +100,8 @@ export interface Explorer {
   turnTo(azimuth: number, polar?: number): void;
   /** One of the model's shared materials, to recolour in place; call refresh() after changing it. */
   material(key: string): THREE.Material | undefined;
+  /** Shows or hides a whole group (a design choice such as solar panels). */
+  setGroupVisible(id: string, visible: boolean): void;
   refresh(): void;
   /** Rendering cost of the last frame, for diagnostics. */
   stats(): { meshes: number; drawCalls: number; triangles: number };
@@ -408,7 +412,7 @@ export function createExplorer(options: ExplorerOptions): Explorer {
   const onPointerDown = (event: PointerEvent) => {
     down = { x: event.clientX, y: event.clientY, time: performance.now() };
   };
-  const picking = () => mode === "full" || !!options.inspect;
+  const picking = () => options.picking !== false && (mode === "full" || !!options.inspect);
   const onPointerUp = (event: PointerEvent) => {
     if (!down || !picking()) return;
     const travel = Math.hypot(event.clientX - down.x, event.clientY - down.y);
@@ -609,6 +613,11 @@ export function createExplorer(options: ExplorerOptions): Explorer {
     },
     material(key) {
       return model.materials[key];
+    },
+    setGroupVisible(id, visible) {
+      const group = model.groups.get(id);
+      if (group) group.visible = visible;
+      requestRender();
     },
     refresh() {
       tinted.forEach((material) => material.dispose());

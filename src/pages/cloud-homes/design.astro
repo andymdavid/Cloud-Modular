@@ -1,19 +1,18 @@
 ---
 import RefreshLayout from "@/layouts/RefreshLayout.astro";
-import EnquiryForm from "@/components/refresh/EnquiryForm.astro";
+import CloudHomeShell from "@/components/refresh/CloudHomeShell.astro";
 import ToConfirm from "@/components/refresh/ToConfirm.astro";
 import { site } from "@/data/site";
-import { cloudHomes, extras, finishSections, formatPrice, homeCamera, homeSteps, included } from "@/data/cloud-homes";
+import { cloudHomes, defaultHome, extras, formatPrice, included, sections } from "@/data/cloud-homes";
 
 /**
- * Cloud Homes "Design yours" (cf. samara.com/adus/configure): the 3D home on the left stays in view while the
- * choices scroll on the right, and each section turns the home to show what it changes. The design is kept in the
- * URL, so it can be shared, and ends in a summary and a form that sends it to us. Draft: the range, finishes and
- * prices are placeholders to confirm (src/data/cloud-homes.ts).
+ * Cloud Homes "Design yours", part one of two (cf. samara.com/adus/configure): choose a home and its finishes while
+ * the 3D home turns to each section, then review the price and continue to /cloud-homes/availability/ with the design
+ * in the URL. Draft: the choices and prices are placeholders to confirm (src/data/cloud-homes.ts).
  */
 
 const title = "Design Your Cloud Home | Cloud Modular";
-const description = "Choose a 1, 2 or 4 bedroom Cloud Home, pick your finishes in 3D and send us your design for a proposal.";
+const description = "Choose a 1, 2 or 4 bedroom Cloud Home and its finishes in 3D, see its starting price, and check availability for your site.";
 const schemas = [
   {
     "@context": "https://schema.org",
@@ -24,49 +23,21 @@ const schemas = [
     ],
   },
 ];
-
-const steps = [
-  { id: "home", label: "Home", camera: homeCamera },
-  ...finishSections.map((section) => ({ id: section.id, label: section.label, camera: section.camera })),
-  { id: extras.id, label: extras.label, camera: extras.camera },
-  { id: "summary", label: "Summary", camera: homeCamera },
-];
-
-// Everything the script needs, in one place
-const config = {
-  homes: cloudHomes.map(({ id, name, fromPrice }) => ({ id, name, fromPrice })),
-  sections: finishSections.map(({ id, label, finishes }) => ({ id, label, finishes: finishes.map(({ id, name, paint }) => ({ id, name, paint })) })),
-  extras: extras.items.map(({ id, name }) => ({ id, name })),
-  cameras: Object.fromEntries(steps.map((step) => [step.id, step.camera])),
-};
-const firstHome = cloudHomes[1];
+const startHome = cloudHomes.find((h) => h.id === defaultHome)!;
 ---
 
-<RefreshLayout title={title} description={description} canonical="/cloud-homes/design/" structuredData={schemas} footer={false}>
-  <div class="design" data-design data-config={JSON.stringify(config)}>
-    <!-- The home: sticky beside the choices on large screens, pinned above them on phones -->
-    <div class="design-stage" data-theme="light">
-      <div class="design-canvas" data-canvas-host></div>
-      <p class="design-status text-body text-fg-muted" data-status>Loading your home</p>
-      <div class="design-bar">
-        <div class="min-w-0">
-          <p class="label label-muted max-lg:hidden">Your Cloud Home</p>
-          <p class="truncate text-lead lg:mt-1">
-            <span data-bar-name>{firstHome.name}</span>{" "}
-            <span class="text-fg-muted">from <span data-bar-price>{formatPrice(firstHome.fromPrice)}</span></span>
-          </p>
-        </div>
-        <a href="#summary" class="btn shrink-0">Review and send</a>
-      </div>
-    </div>
-
-    <!-- The choices -->
-    <form class="design-panel" data-design-form onsubmit="return false">
+<RefreshLayout title={title} description={description} canonical="/cloud-homes/design/" structuredData={schemas} footer={false} pinHeader>
+  <CloudHomeShell arrows>
+    <form class="design-form" data-design-form onsubmit="return false">
       <header class="design-intro">
         <p class="label">Design yours</p>
         <h1 class="mt-5 text-h2">Design your Cloud Home</h1>
-        <p class="mt-5 text-body text-fg-muted">Choose a home and its finishes, and watch it change as you go. When you are happy, send it to us and we will come back with a proposal for your site.</p>
-        <p class="mt-4"><ToConfirm note="Range, finishes and from prices are placeholders" /></p>
+        <p class="mt-5 text-about text-fg-muted">Make it yours. Choose your home, cladding, colours, solar and finishes, and watch it change as you go.</p>
+        <p class="mt-6 text-body text-fg-muted">
+          Don’t want to start with a design?
+          <a href="/cloud-homes/availability/" class="text-link block text-fg" data-availability-link>Check availability for your site</a>
+        </p>
+        <p class="mt-6"><ToConfirm note="Choices and from prices are placeholders" /></p>
       </header>
 
       <section id="home" class="design-step" data-step="home" aria-labelledby="home-title">
@@ -75,36 +46,54 @@ const firstHome = cloudHomes[1];
           <legend class="sr-only">Home</legend>
           {cloudHomes.map((home) => (
             <label class="option-card">
-              <input type="radio" name="home" value={home.id} checked={home.id === firstHome.id} class="sr-only" />
+              <input type="radio" name="home" value={home.id} checked={home.id === defaultHome} class="sr-only" />
               <span class="flex items-baseline justify-between gap-4">
                 <span class="text-lead">{home.name}</span>
                 <span class="text-body">From {formatPrice(home.fromPrice)}</span>
               </span>
               <span class="mt-2 block text-small text-fg-muted">{home.rooms}</span>
-              <span class="mt-1 block text-small text-fg-muted">
-                {home.houseArea.toLocaleString("en-AU")} m² inside, plus a {home.deckArea.toLocaleString("en-AU")} m² deck
-              </span>
+              <span class="mt-1 block text-small text-fg-muted">{home.houseArea.toLocaleString("en-AU")} m² inside, plus a {home.deckArea.toLocaleString("en-AU")} m² deck</span>
             </label>
           ))}
         </fieldset>
       </section>
 
-      {finishSections.map((section) => (
-        <section id={section.id} class="design-step" data-step={section.id} aria-labelledby={`${section.id}-title`}>
+      {sections.map((section) => (
+        <section
+          id={section.id}
+          class="design-step"
+          data-step={section.id}
+          hidden={section.when ? !section.when.is.includes(sections.find((s) => s.id === section.when!.section)!.choices[0].id) : undefined}
+          aria-labelledby={`${section.id}-title`}
+        >
           <h2 id={`${section.id}-title`} class="text-h3">{section.title}</h2>
-          <p class="mt-3 text-body text-fg-muted">{section.body}</p>
+          {section.body && <p class="mt-3 text-body text-fg-muted">{section.body}</p>}
           <fieldset class="mt-6">
             <legend class="sr-only">{section.label}</legend>
-            <div class="flex flex-wrap gap-3">
-              {section.finishes.map((finish, index) => (
-                <label class="swatch" title={finish.name}>
-                  <input type="radio" name={section.id} value={finish.id} checked={index === 0} class="sr-only" />
-                  <span class="swatch-chip" style={`background:${finish.swatch}`} aria-hidden="true"></span>
-                  <span class="sr-only">{finish.name}</span>
-                </label>
-              ))}
-            </div>
-            <p class="mt-4 text-body" data-chosen={section.id}>{section.finishes[0].name}</p>
+            {section.kind === "swatch" ? (
+              <Fragment>
+                <div class="flex flex-wrap gap-3">
+                  {section.choices.map((choice, index) => (
+                    <label class="swatch" title={choice.name}>
+                      <input type="radio" name={section.id} value={choice.id} checked={index === 0} class="sr-only" />
+                      <span class="swatch-chip" style={`background:${choice.swatch}`} aria-hidden="true"></span>
+                      <span class="sr-only">{choice.name}</span>
+                    </label>
+                  ))}
+                </div>
+                <p class="mt-4 text-body" data-chosen={section.id}>{section.choices[0].name}</p>
+              </Fragment>
+            ) : (
+              <div class="grid gap-2">
+                {section.choices.map((choice, index) => (
+                  <label class="option-card">
+                    <input type="radio" name={section.id} value={choice.id} checked={index === 0} class="sr-only" />
+                    <span class="block text-lead">{choice.name}</span>
+                    {choice.detail && <span class="mt-1 block text-small text-fg-muted">{choice.detail}</span>}
+                  </label>
+                ))}
+              </div>
+            )}
           </fieldset>
         </section>
       ))}
@@ -118,68 +107,49 @@ const firstHome = cloudHomes[1];
             <label class="option-card option-card--check">
               <input type="checkbox" name="extras" value={item.id} class="sr-only" />
               <span class="check" aria-hidden="true"></span>
-              <span class="text-body">{item.name}</span>
+              <span>
+                <span class="block text-body">{item.name}</span>
+                <span class="block text-small text-fg-muted">{item.detail}</span>
+              </span>
             </label>
           ))}
         </fieldset>
-        <h3 class="label label-muted mt-10">Included in every home <ToConfirm class="ml-2" /></h3>
+        <h3 class="label label-muted mt-10 flex items-center gap-2">Included in every home <ToConfirm /></h3>
         <ul class="mt-4 grid gap-2 text-body">
           {included.map((item) => <li class="border-b border-line/[var(--rule-alpha)] pb-2">{item}</li>)}
         </ul>
       </section>
     </form>
 
-    <section id="summary" class="design-step design-summary" data-step="summary" aria-labelledby="summary-title">
-      <h2 id="summary-title" class="text-h3">Your Cloud Home</h2>
-      <dl class="mt-6 border-t border-line/[var(--rule-alpha)] text-body" data-summary></dl>
-      <div class="mt-6 flex items-baseline justify-between gap-4">
-        <p class="text-lead">From <span data-summary-price>{formatPrice(firstHome.fromPrice)}</span></p>
-        <ToConfirm note="Placeholder from price" />
+    <!-- Price breakdown: the end of part one -->
+    <section id="price" class="design-step design-price" data-step="price" aria-labelledby="price-title">
+      <h2 id="price-title" class="text-h3">Price breakdown for your Cloud Home</h2>
+      <div class="mt-8 border-t border-line/[var(--rule-alpha)] pt-6">
+        <p class="text-body text-fg-muted">Home as designed</p>
+        <p class="mt-1 flex items-center gap-3 text-about"><span>From <span data-price>{formatPrice(startHome.fromPrice)}</span></span> <ToConfirm note="Placeholder from price" /></p>
+        <dl class="mt-6 text-small" data-summary></dl>
       </div>
-      <p class="mt-3 text-small text-fg-muted">This is a starting price. Your proposal sets the price for your home and site, including any extras.</p>
-
-      <h3 class="label mt-12">What happens next</h3>
-      <ol class="mt-5 grid gap-5">
-        {homeSteps.map((step, index) => (
-          <li class="grid grid-cols-[2rem_1fr] gap-x-2">
-            <span class="label label-muted pt-1">{String(index + 1).padStart(2, "0")}</span>
-            <span>
-              <span class="block text-lead">{step.title}</span>
-              <span class="mt-1 block text-body text-fg-muted">{step.body}</span>
-            </span>
-          </li>
-        ))}
-      </ol>
-
-      <h3 class="label mt-12">Send us your design</h3>
-      <EnquiryForm variant="design" class="mt-6" />
+      <div class="mt-8 grid gap-8 border-t border-line/[var(--rule-alpha)] pt-8 sm:grid-cols-2">
+        <div>
+          <p class="text-lead">Need a break?</p>
+          <p class="mt-1 text-body text-fg-muted">Save the link to your design and come back at any time.</p>
+          <button type="button" class="text-link mt-3 text-body" data-copy-link>Copy design link</button>
+        </div>
+        <div>
+          <p class="text-lead">Have questions?</p>
+          <p class="mt-1 text-body text-fg-muted">Talk to our team about your home, your site or the process.</p>
+          <a href={site.contactHref} class="text-link mt-3 inline-block text-body">Talk to us</a>
+        </div>
+      </div>
+      <a href="/cloud-homes/availability/" class="btn continue mt-10" data-continue>Continue</a>
+      <p class="mt-10 border-t border-line/[var(--rule-alpha)] pt-6 text-caption text-fg-subtle">
+        Homes, finishes, options and prices shown here are indicative and may change. The 3D home is a guide and may show options that are not included. Your proposal confirms what is included and the price for your site. Nothing on this page is an offer.
+      </p>
     </section>
-  </div>
+  </CloudHomeShell>
 </RefreshLayout>
 
 <style>
-  .design {
-    --panel: 100%;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    background: rgb(var(--surface));
-  }
-
-  /* Phones: the home stays pinned at the top while the choices scroll under it */
-  .design-stage {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-    height: 46svh;
-    background: rgb(var(--surface-quiet));
-    overflow: hidden;
-  }
-
-  .design-panel,
-  .design-summary {
-    padding-inline: var(--gutter);
-  }
-
   .design-intro {
     padding-top: 2.5rem;
   }
@@ -187,90 +157,37 @@ const firstHome = cloudHomes[1];
   .design-step {
     padding-block: 2.5rem;
     border-bottom: var(--rule) solid rgb(var(--line) / var(--rule-alpha));
-    scroll-margin-top: calc(46svh + 1rem);
+    scroll-margin-top: calc(44svh + 1rem);
   }
 
-  .design-summary {
+  .design-step[hidden] {
+    display: none;
+  }
+
+  .design-price {
     border-bottom: 0;
-    padding-bottom: 6rem;
   }
 
   @media (min-width: 64rem) {
-    .design {
-      grid-template-columns: minmax(0, 1fr) 30rem;
-      grid-template-rows: auto 1fr;
-    }
-
-    .design-stage {
-      grid-row: 1 / span 2;
-      height: 100svh;
-    }
-
-    .design-panel,
-    .design-summary {
-      grid-column: 2;
-      padding-inline: 2.5rem;
-    }
-
     .design-intro {
-      padding-top: calc(var(--header-h) + 2.5rem);
+      padding-top: calc(var(--header-h) + 3.5rem);
+      min-height: 60svh;
     }
 
     .design-step {
       padding-block: 3.5rem;
-      scroll-margin-top: 0;
+      scroll-margin-top: var(--header-h);
     }
 
-    /* Each choice gets most of a screen, so the home turns to it as it comes into view */
-    .design-panel .design-step {
-      min-height: 70svh;
-    }
-  }
-
-  .design-status {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    place-items: center;
-    pointer-events: none;
-  }
-
-  /* The model sits above the bar rather than under it */
-  .design-canvas {
-    position: absolute;
-    inset: 0 0 3.75rem;
-  }
-
-  @media (min-width: 64rem) {
-    .design-canvas {
-      inset: 0 0 6rem;
+    /* Each section gets most of a screen, so the home turns to it as it comes into view */
+    .design-form .design-step {
+      min-height: 72svh;
     }
   }
 
-  .design-status[hidden] {
-    display: none;
-  }
-
-  .design-bar {
-    position: absolute;
-    inset-inline: var(--gutter);
-    bottom: var(--gutter);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 0.875rem 1rem;
-    border-radius: var(--radius-media);
-    background: rgb(var(--surface) / 0.92);
-    backdrop-filter: blur(8px);
-  }
-
-  @media (max-width: 63.999rem) {
-    .design-bar {
-      inset-inline: 0.75rem;
-      bottom: 0.75rem;
-      padding: 0.625rem 0.75rem;
-    }
+  .continue {
+    width: 100%;
+    height: 3.25rem;
   }
 
   .option-card {
@@ -337,86 +254,74 @@ const firstHome = cloudHomes[1];
     box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.12);
   }
 
-  .design :global(.summary-row) {
+  .design-price :global(.summary-row) {
     display: flex;
     justify-content: space-between;
     gap: 1.5rem;
-    padding-block: 0.75rem;
-    border-bottom: var(--rule) solid rgb(var(--line) / var(--rule-alpha));
+    padding-block: 0.375rem;
   }
 </style>
 
 <script>
+  import { designQuery, extras, formatPrice, homeCamera, modelState, readDesign, sections, sectionVisible, summaryRows } from "@/data/cloud-homes";
   import type { DesignViewer, DesignView } from "@/lib/explorer/cloud-home-design";
-  import type { CloudHomeId } from "@/data/explorer/cloud-homes";
 
-  interface Config {
-    homes: { id: CloudHomeId; name: string; fromPrice: number }[];
-    sections: { id: string; label: string; finishes: { id: string; name: string; paint: Record<string, string> }[] }[];
-    extras: { id: string; name: string }[];
-    cameras: Record<string, DesignView>;
-  }
+  const form = document.querySelector<HTMLFormElement>("[data-design-form]");
+  if (form) init(form);
 
-  const root = document.querySelector<HTMLElement>("[data-design]");
-  if (root) init(root);
+  function init(form: HTMLFormElement) {
+    const host = document.querySelector<HTMLElement>("[data-canvas-host]")!;
+    const status = document.querySelector<HTMLElement>("[data-status]")!;
+    const cameras: Record<string, DesignView> = { home: homeCamera, extras: extras.camera, price: homeCamera };
+    sections.forEach((section) => (cameras[section.id] = section.camera));
 
-  function init(root: HTMLElement) {
-    const config = JSON.parse(root.dataset.config ?? "{}") as Config;
-    const form = root.querySelector<HTMLFormElement>("[data-design-form]")!;
-    const host = root.querySelector<HTMLElement>("[data-canvas-host]")!;
-    const status = root.querySelector<HTMLElement>("[data-status]")!;
-    const price = (n: number) => `$${n.toLocaleString("en-AU")}`;
-
-    // The design lives in the URL (?home=two-bed&exterior=charcoal&extras=ceiling-fans), so it can be shared
+    // Start from the design in the URL (?home=four-bed&colour=charcoal&extras=ceiling-fans)
     const params = new URLSearchParams(location.search);
-    const setRadio = (name: string, value: string | null) => {
-      const input = value && form.querySelector<HTMLInputElement>(`input[name="${name}"][value="${CSS.escape(value)}"]`);
+    const check = (name: string, value: string) => {
+      const input = form.querySelector<HTMLInputElement>(`input[name="${name}"][value="${CSS.escape(value)}"]`);
       if (input) input.checked = true;
     };
-    setRadio("home", params.get("home"));
-    config.sections.forEach((section) => setRadio(section.id, params.get(section.id)));
-    const chosenExtras = new Set((params.get("extras") ?? "").split(",").filter(Boolean));
-    form.querySelectorAll<HTMLInputElement>('input[name="extras"]').forEach((input) => (input.checked = chosenExtras.has(input.value)));
+    const start = readDesign(params);
+    check("home", start.home.id);
+    sections.forEach((section) => {
+      const value = params.get(section.id);
+      if (value) check(section.id, value);
+    });
+    start.extras.forEach((extra) => check("extras", extra.id));
 
-    const read = () => {
+    const current = () => {
       const data = new FormData(form);
-      const home = config.homes.find((h) => h.id === data.get("home")) ?? config.homes[0];
-      const finishes = config.sections.map((section) => ({
-        section,
-        finish: section.finishes.find((f) => f.id === data.get(section.id)) ?? section.finishes[0],
-      }));
-      const extras = config.extras.filter((extra) => data.getAll("extras").includes(extra.id));
-      return { home, finishes, extras };
+      const next = new URLSearchParams();
+      for (const [key, value] of data) if (key !== "extras") next.set(key, String(value));
+      next.set("extras", data.getAll("extras").join(","));
+      return readDesign(next);
     };
 
-    const colours = () => Object.assign({}, ...read().finishes.map(({ finish }) => finish.paint)) as Record<string, string>;
+    const render = () => {
+      // Sections that depend on another choice (cladding colour, battery)
+      const data = new FormData(form);
+      const chosen = Object.fromEntries(sections.map((s) => [s.id, String(data.get(s.id) ?? s.choices[0].id)]));
+      for (const section of sections) {
+        const element = document.getElementById(section.id);
+        if (element) element.hidden = !sectionVisible(section, chosen);
+      }
 
-    const update = () => {
-      const { home, finishes, extras } = read();
-
-      // URL: only what differs from the defaults
-      const next = new URLSearchParams();
-      if (home.id !== config.homes[1].id) next.set("home", home.id);
-      finishes.forEach(({ section, finish }) => finish.id !== section.finishes[0].id && next.set(section.id, finish.id));
-      if (extras.length) next.set("extras", extras.map((e) => e.id).join(","));
-      const query = next.toString();
+      const design = current();
+      const query = designQuery(design);
       history.replaceState(null, "", `${location.pathname}${query ? `?${query}` : ""}`);
+      const withQuery = (path: string) => `${path}${query ? `?${query}` : ""}`;
+      document.querySelector<HTMLAnchorElement>("[data-continue]")!.href = withQuery("/cloud-homes/availability/");
+      document.querySelector<HTMLAnchorElement>("[data-availability-link]")!.href = withQuery("/cloud-homes/availability/");
 
-      // Bar, chosen names and summary
-      root.querySelector("[data-bar-name]")!.textContent = home.name;
-      root.querySelector("[data-bar-price]")!.textContent = price(home.fromPrice);
-      root.querySelector("[data-summary-price]")!.textContent = price(home.fromPrice);
-      finishes.forEach(({ section, finish }) => {
-        const chosen = root.querySelector(`[data-chosen="${section.id}"]`);
-        if (chosen) chosen.textContent = finish.name;
+      document.querySelector("[data-pill-name]")!.textContent = design.home.name;
+      document.querySelector("[data-pill-price]")!.textContent = formatPrice(design.home.fromPrice);
+      document.querySelector("[data-price]")!.textContent = formatPrice(design.home.fromPrice);
+      design.picks.forEach(({ section, choice }) => {
+        const label = document.querySelector(`[data-chosen="${section.id}"]`);
+        if (label) label.textContent = choice.name;
       });
-      const rows: [string, string][] = [
-        ["Home", home.name],
-        ...finishes.map(({ section, finish }): [string, string] => [section.label, finish.name]),
-        ["Extras", extras.length ? extras.map((e) => e.name).join(", ") : "None"],
-      ];
-      root.querySelector("[data-summary]")!.replaceChildren(
-        ...rows.map(([label, value]) => {
+      document.querySelector("[data-summary]")!.replaceChildren(
+        ...summaryRows(design).map(([label, value]) => {
           const row = document.createElement("div");
           row.className = "summary-row";
           const dt = document.createElement("dt");
@@ -429,62 +334,86 @@ const firstHome = cloudHomes[1];
           return row;
         }),
       );
-
-      // What the form sends
-      const field = (name: string, value: string) => {
-        const input = root.querySelector<HTMLInputElement>(`[data-design-field="${name}"]`);
-        if (input) input.value = value;
-      };
-      field("home", home.name);
-      field("selections", rows.slice(1).map(([label, value]) => `${label}: ${value}`).join("\n"));
-      field("link", location.href);
-      return home;
+      return design;
     };
 
-    let currentHome = update().id;
+    let design = render();
+    let currentHome = design.home.id;
 
-    // 3D: loaded with the page's script chunk only when WebGL is there
+    // 3D: the viewer and three.js load as their own chunk
     let viewer: DesignViewer | null = null;
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let activeStep = "home";
+    let active = "home";
     import("@/lib/explorer/cloud-home-design")
       .then(({ createDesignViewer }) => {
         viewer = createDesignViewer({
           host,
           home: currentHome,
-          colours: colours(),
-          view: config.cameras[activeStep],
-          reducedMotion,
+          state: modelState(design),
+          view: cameras[active],
+          reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
           onError: () => (status.textContent = "The 3D view could not load on this device."),
         });
         status.hidden = true;
       })
       .catch(() => {
-        status.textContent = "The 3D view could not load on this device. You can still choose and send your design.";
+        status.textContent = "The 3D view could not load on this device. You can still choose your home and continue.";
       });
 
     form.addEventListener("change", () => {
-      const home = update();
+      design = render();
       if (!viewer) return;
-      if (home.id !== currentHome) {
-        currentHome = home.id;
-        viewer.setHome(home.id);
-      } else viewer.paint(colours());
+      if (design.home.id !== currentHome) {
+        currentHome = design.home.id;
+        viewer.setHome(currentHome);
+      }
+      viewer.update(modelState(design));
     });
 
     // Turn the home to whichever section is in the middle of the screen
+    const steps = () => [...document.querySelectorAll<HTMLElement>("[data-step]")].filter((step) => !step.hidden);
+    const prev = document.querySelector<HTMLButtonElement>("[data-step-prev]");
+    const next = document.querySelector<HTMLButtonElement>("[data-step-next]");
+    const updateArrows = () => {
+      const list = steps();
+      const index = list.findIndex((step) => step.dataset.step === active);
+      if (prev) prev.disabled = index <= 0;
+      if (next) next.disabled = index >= list.length - 1;
+    };
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           if (!entry.isIntersecting) continue;
           const id = (entry.target as HTMLElement).dataset.step!;
-          if (id === activeStep) continue;
-          activeStep = id;
-          viewer?.show(config.cameras[id]);
+          if (id === active) continue;
+          active = id;
+          viewer?.show(cameras[id]);
+          updateArrows();
         }
       },
       { rootMargin: "-45% 0px -45% 0px" },
     );
-    root.querySelectorAll<HTMLElement>("[data-step]").forEach((step) => observer.observe(step));
+    document.querySelectorAll<HTMLElement>("[data-step]").forEach((step) => observer.observe(step));
+
+    // Previous and next arrows beside the home
+    const go = (dir: 1 | -1) => {
+      const list = steps();
+      const index = list.findIndex((step) => step.dataset.step === active);
+      list[Math.min(list.length - 1, Math.max(0, index + dir))]?.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+    prev?.addEventListener("click", () => go(-1));
+    next?.addEventListener("click", () => go(1));
+    updateArrows();
+
+    // Copy the design link
+    document.querySelector<HTMLButtonElement>("[data-copy-link]")?.addEventListener("click", async (event) => {
+      const button = event.currentTarget as HTMLButtonElement;
+      try {
+        await navigator.clipboard.writeText(location.href);
+        button.textContent = "Link copied";
+      } catch {
+        button.textContent = "Copy the address from your browser";
+      }
+      setTimeout(() => (button.textContent = "Copy design link"), 2500);
+    });
   }
 </script>

@@ -10,10 +10,13 @@ export interface NavLink {
 interface Props {
   overlay?: boolean;
   links?: NavLink[];
+  /** Keep the header in view while scrolling (the Cloud Homes design pages). */
+  pinned?: boolean;
 }
 
 const {
   overlay = false,
+  pinned = false,
   links = [
     { label: "Projects", href: "/#projects" },
     { label: "Sectors", href: "/#sectors" },
@@ -32,6 +35,7 @@ const {
      wordmark collapses to the cloud. -->
 <header
   data-site-header
+  data-pinned={pinned ? "" : undefined}
   data-theme={overlay ? "dark" : "light"}
   class="site-header pointer-events-none fixed inset-x-0 top-0 z-50"
 >
@@ -301,7 +305,7 @@ const {
     header.classList.toggle("is-compact", y > COMPACT_AFTER);
     const menuOpen = document.documentElement.classList.contains("menu-open");
     const focused = header.contains(document.activeElement);
-    if (y <= HIDE_AFTER() || menuOpen || focused) header.classList.remove("is-hidden");
+    if (y <= HIDE_AFTER() || menuOpen || focused || header.hasAttribute("data-pinned")) header.classList.remove("is-hidden");
     else if (y - lastY > DELTA) header.classList.add("is-hidden");
     else if (lastY - y > DELTA) header.classList.remove("is-hidden");
     if (Math.abs(y - lastY) > DELTA) lastY = y;

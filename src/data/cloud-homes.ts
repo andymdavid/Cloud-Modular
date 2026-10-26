@@ -1,10 +1,11 @@
 /**
  * Cloud Homes: the homes and choices in the "Design yours" tool (/cloud-homes/design/). One place for every home,
- * option and price, so changing the range is an edit here. The 3D models are in ./explorer/cloud-homes.ts.
+ * section, choice and price, so changing the range is an edit here. The 3D models are in ./explorer/cloud-homes.ts.
  *
- * DRAFT (26 Oct 2026). Home sizes and rooms come from the Casuarina Crescent drawings. The from prices are
- * placeholders taken from published Perth granny flat and home cost guides, and the finishes and extras are a
- * starting list. All of them are to be replaced with Cloud Modular's own figures and range (`confirm: true`).
+ * DRAFT (26 Oct 2026). Home sizes and rooms come from the Casuarina Crescent drawings, which leave the cladding,
+ * roof colour and finishes "as selected" or "to client selection". The from prices are placeholders taken from
+ * published Perth granny flat and home cost guides, and the choices are a starting list modelled on Samara's
+ * sections. All of them are to be replaced with Cloud Modular's own figures and range.
  */
 
 import type { CloudHomeId } from "./explorer/cloud-homes";
@@ -19,24 +20,15 @@ export interface CloudHome {
   deckArea: number;
   storeys: 1 | 2;
   fromPrice: number;
-  confirmPrice: boolean;
 }
 
 export const cloudHomes: readonly CloudHome[] = [
-  { id: "one-bed", name: "1 Bed", rooms: "1 bedroom, 1 bathroom", houseArea: 49.45, deckArea: 6.52, storeys: 1, fromPrice: 150_000, confirmPrice: true },
-  { id: "two-bed", name: "2 Bed", rooms: "2 bedrooms, 1 bathroom and a powder room", houseArea: 64.07, deckArea: 5.38, storeys: 1, fromPrice: 190_000, confirmPrice: true },
-  { id: "four-bed", name: "4 Bed", rooms: "4 bedrooms, 2 bathrooms, two storeys", houseArea: 117.49, deckArea: 6.52, storeys: 2, fromPrice: 350_000, confirmPrice: true },
+  { id: "one-bed", name: "1 Bed", rooms: "1 bedroom, 1 bathroom", houseArea: 49.45, deckArea: 6.52, storeys: 1, fromPrice: 150_000 },
+  { id: "two-bed", name: "2 Bed", rooms: "2 bedrooms, 1 bathroom and a powder room", houseArea: 64.07, deckArea: 5.38, storeys: 1, fromPrice: 190_000 },
+  { id: "four-bed", name: "4 Bed", rooms: "4 bedrooms, 2 bathrooms, two storeys", houseArea: 117.49, deckArea: 6.52, storeys: 2, fromPrice: 350_000 },
 ];
 
-/** How the 3D model shows a finish: the material it recolours and the colours to use. */
-export interface Finish {
-  id: string;
-  name: string;
-  /** Swatch shown in the panel. */
-  swatch: string;
-  /** Material colours in the model, by material key. */
-  paint: Record<string, string>;
-}
+export const defaultHome: CloudHomeId = "two-bed";
 
 /** Where the camera turns for a section: degrees around the home and down from overhead. "inside" lifts the roof. */
 export interface CameraView {
@@ -45,29 +37,80 @@ export interface CameraView {
   inside?: boolean;
 }
 
-export interface FinishSection {
-  id: string;
-  title: string;
-  label: string;
-  body: string;
-  camera: CameraView;
-  finishes: readonly Finish[];
+/** What a choice changes in the 3D home. */
+export interface ModelChange {
+  /** Material colours, by material key. */
+  paint?: Record<string, string>;
+  /** Wall cladding pattern: fibre cement sheets with vertical joints, or vertical timber-look boards. */
+  cladding?: "panels" | "boards";
+  /** Model groups to show or hide (solar panels, the battery). */
+  show?: Record<string, boolean>;
 }
 
-export const homeCamera: CameraView = { azimuth: 35, polar: 62 };
+export interface Choice extends ModelChange {
+  id: string;
+  name: string;
+  /** Line under the name on card choices. */
+  detail?: string;
+  /** Colour chip for swatch choices. */
+  swatch?: string;
+}
 
-export const finishSections: readonly FinishSection[] = [
+export interface Section {
+  id: string;
+  /** Short name in the summary. */
+  label: string;
+  title: string;
+  body?: string;
+  kind: "swatch" | "card";
+  camera: CameraView;
+  choices: readonly Choice[];
+  /** Only shown while another section has one of these choices. */
+  when?: { section: string; is: readonly string[] };
+}
+
+export const homeCamera: CameraView = { azimuth: 40, polar: 74 };
+
+const wall = (id: string, name: string, colour: string): Choice => ({ id, name, swatch: colour, paint: { cladding: colour, render: colour } });
+
+export const sections: readonly Section[] = [
   {
-    id: "exterior",
-    label: "Exterior",
-    title: "Choose your exterior",
-    body: "The colour of the walls and the frame around the front.",
-    camera: { azimuth: 30, polar: 66 },
-    finishes: [
-      { id: "coastal-white", name: "Coastal white", swatch: "#efede8", paint: { cladding: "#efede8", render: "#efede8" } },
-      { id: "pale-grey", name: "Pale grey", swatch: "#cfcdc8", paint: { cladding: "#cfcdc8", render: "#cfcdc8" } },
-      { id: "sandstone", name: "Sandstone", swatch: "#d6c8ae", paint: { cladding: "#d6c8ae", render: "#d6c8ae" } },
-      { id: "charcoal", name: "Charcoal", swatch: "#4b4c4d", paint: { cladding: "#4b4c4d", render: "#4b4c4d" } },
+    id: "cladding",
+    label: "Cladding",
+    title: "Choose your cladding",
+    kind: "card",
+    camera: { azimuth: 30, polar: 77 },
+    choices: [
+      { id: "fibre-cement", name: "Fibre cement panels", detail: "Smooth painted panels with fine vertical joints", cladding: "panels" },
+      { id: "timber-look", name: "Timber-look cladding", detail: "Vertical boards in a warm timber tone", cladding: "boards" },
+    ],
+  },
+  {
+    id: "colour",
+    label: "Cladding colour",
+    title: "Choose your cladding colour",
+    kind: "swatch",
+    camera: { azimuth: 30, polar: 77 },
+    when: { section: "cladding", is: ["fibre-cement"] },
+    choices: [
+      wall("coastal-white", "Coastal white", "#eeece6"),
+      wall("pale-grey", "Pale grey", "#cfcdc8"),
+      wall("sandstone", "Sandstone", "#d6c8ae"),
+      wall("eucalypt", "Eucalypt", "#9aa391"),
+      wall("charcoal", "Charcoal", "#4b4c4d"),
+    ],
+  },
+  {
+    id: "roof",
+    label: "Roof",
+    title: "Choose your roof colour",
+    body: "A low metal roof, set behind the walls.",
+    kind: "swatch",
+    camera: { azimuth: 35, polar: 42 },
+    choices: [
+      { id: "light-grey", name: "Light grey", swatch: "#b9bbbc", paint: { roof: "#b9bbbc" } },
+      { id: "mid-grey", name: "Mid grey", swatch: "#7d8083", paint: { roof: "#7d8083" } },
+      { id: "charcoal", name: "Charcoal", swatch: "#3e4042", paint: { roof: "#3e4042" } },
     ],
   },
   {
@@ -75,11 +118,35 @@ export const finishSections: readonly FinishSection[] = [
     label: "Frames and vergola",
     title: "Choose your frames",
     body: "Window and door frames, the vergola and its posts.",
-    camera: { azimuth: 65, polar: 64 },
-    finishes: [
+    kind: "swatch",
+    camera: { azimuth: 65, polar: 76 },
+    choices: [
       { id: "black", name: "Black", swatch: "#232323", paint: { frameDark: "#232323", fascia: "#2b2b2b", steel: "#3a3a3a" } },
       { id: "dark-grey", name: "Dark grey", swatch: "#55595c", paint: { frameDark: "#4a4d50", fascia: "#55595c", steel: "#6a6e71" } },
       { id: "white", name: "White", swatch: "#f2f2ef", paint: { frameDark: "#e9e9e6", fascia: "#f2f2ef", steel: "#f6f6f3" } },
+    ],
+  },
+  {
+    id: "solar",
+    label: "Solar",
+    title: "Add solar panels",
+    kind: "card",
+    camera: { azimuth: 30, polar: 40 },
+    choices: [
+      { id: "solar", name: "Solar array", detail: "Panels across the roof", show: { solar: true } },
+      { id: "no-solar", name: "No solar", detail: "Power from the grid", show: { solar: false } },
+    ],
+  },
+  {
+    id: "battery",
+    label: "Battery",
+    title: "Add a home battery",
+    kind: "card",
+    camera: { azimuth: 205, polar: 74 },
+    when: { section: "solar", is: ["solar"] },
+    choices: [
+      { id: "battery", name: "Home battery", detail: "Store your solar power to use at night", show: { battery: true } },
+      { id: "no-battery", name: "No battery", detail: "Solar without storage", show: { battery: false } },
     ],
   },
   {
@@ -87,8 +154,9 @@ export const finishSections: readonly FinishSection[] = [
     label: "Deck",
     title: "Choose your deck",
     body: "The deck under the vergola, off the living room.",
-    camera: { azimuth: 80, polar: 55 },
-    finishes: [
+    kind: "swatch",
+    camera: { azimuth: 80, polar: 64 },
+    choices: [
       { id: "timber", name: "Timber", swatch: "#a5896e", paint: { deck: "#a5896e" } },
       { id: "grey-composite", name: "Grey composite", swatch: "#8d8a85", paint: { deck: "#8d8a85" } },
     ],
@@ -98,8 +166,9 @@ export const finishSections: readonly FinishSection[] = [
     label: "Floors",
     title: "Choose your floors",
     body: "One floor finish through the living areas and bedrooms.",
+    kind: "swatch",
     camera: { azimuth: 25, polar: 30, inside: true },
-    finishes: [
+    choices: [
       { id: "light-oak", name: "Light oak", swatch: "#d6c6ac", paint: { floor: "#d6c6ac" } },
       { id: "natural-oak", name: "Natural oak", swatch: "#b8946a", paint: { floor: "#b8946a" } },
       { id: "stone-grey", name: "Stone grey", swatch: "#b9b6b0", paint: { floor: "#b9b6b0" } },
@@ -110,8 +179,9 @@ export const finishSections: readonly FinishSection[] = [
     label: "Kitchen and robes",
     title: "Choose your kitchen",
     body: "The kitchen cabinets and the built-in robes.",
+    kind: "swatch",
     camera: { azimuth: 20, polar: 38, inside: true },
-    finishes: [
+    choices: [
       { id: "white", name: "White", swatch: "#eeebe5", paint: { joinery: "#eeebe5" } },
       { id: "natural-timber", name: "Natural timber", swatch: "#b98c5f", paint: { joinery: "#b98c5f" } },
       { id: "charcoal", name: "Charcoal", swatch: "#3f4042", paint: { joinery: "#3f4042" } },
@@ -125,31 +195,86 @@ export const extras = {
   label: "Extras",
   title: "Add extras",
   body: "Tell us what you would like, and we will price it in your proposal.",
-  camera: { azimuth: 35, polar: 62 } as CameraView,
+  camera: homeCamera,
   items: [
-    { id: "stone-benchtops", name: "Stone benchtops" },
-    { id: "ceiling-fans", name: "Ceiling fans" },
-    { id: "plantation-shutters", name: "Plantation shutters" },
-    { id: "accessible-bathroom", name: "Accessible bathroom fittings" },
+    { id: "stone-benchtops", name: "Stone benchtops", detail: "Durable stone surfaces in the kitchen and bathroom" },
+    { id: "roller-blinds", name: "Roller blinds", detail: "Privacy without losing the light" },
+    { id: "plantation-shutters", name: "Plantation shutters", detail: "Adjustable shutters to the bedrooms" },
+    { id: "ceiling-fans", name: "Ceiling fans", detail: "In the living room and bedrooms" },
+    { id: "accessible-bathroom", name: "Accessible bathroom fittings", detail: "Grab rails and easier access" },
   ],
 } as const;
 
-/** Shown on the drawings for every home. To confirm as the standard inclusions. */
+/** Shown on the drawings for all three homes. To confirm as the standard inclusions. (The 1 and 2 Bed drawings
+ *  also show solar panels, a battery and an air conditioning unit; the 4 Bed drawings do not.) */
 export const included = [
   "Double-glazed aluminium windows and doors",
-  "Steel vergola over the deck",
-  "Solar panels with a battery",
+  "Steel louvred vergola over the deck",
   "Heat pump hot water",
-  "Air conditioning",
   "Electric vehicle charger point",
 ];
 
 /** From order to keys, following the stages on /our-approach/. */
 export const homeSteps = [
-  { title: "Design yours", body: "Choose your home and finishes here, then send us your design." },
+  { title: "Design yours", body: "Choose your home and finishes, then send us your design and your site address." },
   { title: "Site review and proposal", body: "We review your site and send a proposal with the scope, the price and the programme." },
   { title: "Approvals and manufacture", body: "Once approvals are in place, your home is built in our manufacturing facility in Foshan while your site is prepared." },
   { title: "Delivery and handover", body: "Your home is shipped, craned onto its footings and connected, then the keys are handed over." },
 ] as const;
 
+export const australianStates = ["WA", "NSW", "VIC", "QLD", "SA", "TAS", "ACT", "NT"] as const;
+
 export const formatPrice = (n: number) => `$${n.toLocaleString("en-AU")}`;
+
+// ---------------------------------------------------------------------------------------------------
+// A design: the chosen home, a choice per visible section and any extras. Kept in the URL so it can be shared and
+// carried from the design page to the availability page.
+
+export interface Design {
+  home: CloudHome;
+  picks: { section: Section; choice: Choice }[];
+  extras: { id: string; name: string }[];
+}
+
+export const sectionVisible = (section: Section, chosen: Record<string, string>) =>
+  !section.when || section.when.is.includes(chosen[section.when.section] ?? sections.find((s) => s.id === section.when!.section)!.choices[0].id);
+
+export function readDesign(params: URLSearchParams): Design {
+  const home = cloudHomes.find((h) => h.id === params.get("home")) ?? cloudHomes.find((h) => h.id === defaultHome)!;
+  const chosen: Record<string, string> = {};
+  const picks: Design["picks"] = [];
+  for (const section of sections) {
+    const choice = section.choices.find((c) => c.id === params.get(section.id)) ?? section.choices[0];
+    chosen[section.id] = choice.id;
+    if (sectionVisible(section, chosen)) picks.push({ section, choice });
+  }
+  const wanted = (params.get("extras") ?? "").split(",");
+  return { home, picks, extras: extras.items.filter((item) => wanted.includes(item.id)) };
+}
+
+export function designQuery(design: Design): string {
+  const params = new URLSearchParams();
+  if (design.home.id !== defaultHome) params.set("home", design.home.id);
+  for (const { section, choice } of design.picks) if (choice.id !== section.choices[0].id) params.set(section.id, choice.id);
+  if (design.extras.length) params.set("extras", design.extras.map((e) => e.id).join(","));
+  return params.toString();
+}
+
+/** Everything the 3D home needs for a design: colours, cladding pattern and groups to show. */
+export function modelState(design: Design) {
+  const state = { paint: {} as Record<string, string>, cladding: "panels" as "panels" | "boards", show: { solar: false, battery: false } as Record<string, boolean> };
+  for (const { choice } of design.picks) {
+    Object.assign(state.paint, choice.paint);
+    Object.assign(state.show, choice.show);
+    if (choice.cladding) state.cladding = choice.cladding;
+  }
+  // Hidden sections leave their groups off (no battery without solar)
+  return state;
+}
+
+/** Summary rows: label and chosen name. */
+export const summaryRows = (design: Design): [string, string][] => [
+  ["Home", design.home.name],
+  ...design.picks.map(({ section, choice }): [string, string] => [section.label, choice.name]),
+  ["Extras", design.extras.length ? design.extras.map((e) => e.name).join(", ") : "None"],
+];

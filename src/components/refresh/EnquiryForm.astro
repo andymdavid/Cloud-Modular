@@ -8,6 +8,7 @@
  * Cloudflare Turnstile is added when PUBLIC_TURNSTILE_SITE_KEY is set at build time.
  */
 import { engagementModels, enquiryOptions, sectors, site } from "@/data/site";
+import { australianStates } from "@/data/cloud-homes";
 
 interface Props {
   variant?: "project" | "general" | "design";
@@ -40,10 +41,24 @@ const routes = [...engagementModels.items.map((item) => item.title), "Not sure y
     </div>
 
     <div class="grid gap-x-gap-sm gap-y-8 sm:grid-cols-2">
-      <label class="field">
-        <span class="field-label">Name</span>
-        <input type="text" name="name" autocomplete="name" required maxlength="200" />
-      </label>
+      {design && <h3 class="text-lead sm:col-span-2">Your contact details</h3>}
+      {design ? (
+        <Fragment>
+          <label class="field">
+            <span class="field-label">First name</span>
+            <input type="text" name="first_name" autocomplete="given-name" required maxlength="100" />
+          </label>
+          <label class="field">
+            <span class="field-label">Last name</span>
+            <input type="text" name="last_name" autocomplete="family-name" maxlength="100" />
+          </label>
+        </Fragment>
+      ) : (
+        <label class="field">
+          <span class="field-label">Name</span>
+          <input type="text" name="name" autocomplete="name" required maxlength="200" />
+        </label>
+      )}
       <label class="field">
         <span class="field-label">Email</span>
         <input type="email" name="email" autocomplete="email" required maxlength="200" />
@@ -63,12 +78,30 @@ const routes = [...engagementModels.items.map((item) => item.title), "Not sure y
 
       {design && (
         <Fragment>
-          <label class="field">
-            <span class="field-label">Site location</span>
-            <input type="text" name="location" required maxlength="200" placeholder="Suburb or town" />
-          </label>
+          <h3 class="mt-6 text-lead sm:col-span-2">Where do you want your Cloud Home?</h3>
           <label class="field sm:col-span-2">
-            <span class="field-label">Timing</span>
+            <span class="field-label">Street address</span>
+            <input type="text" name="address" autocomplete="street-address" required maxlength="200" />
+          </label>
+          <label class="field">
+            <span class="field-label">Suburb or town</span>
+            <input type="text" name="suburb" autocomplete="address-level2" required maxlength="100" />
+          </label>
+          <div class="grid grid-cols-2 gap-x-gap-sm">
+            <label class="field">
+              <span class="field-label">State</span>
+              <select name="state" autocomplete="address-level1" required>
+                <option value="" selected disabled>Choose</option>
+                {australianStates.map((state) => <option>{state}</option>)}
+              </select>
+            </label>
+            <label class="field">
+              <span class="field-label">Postcode</span>
+              <input type="text" name="postcode" autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" />
+            </label>
+          </div>
+          <label class="field sm:col-span-2">
+            <span class="field-label">When are you hoping to build?</span>
             <select name="timing">
               <option value="" selected>Choose one</option>
               {enquiryOptions.timing.map((timing) => <option>{timing}</option>)}
@@ -143,7 +176,7 @@ const routes = [...engagementModels.items.map((item) => item.title), "Not sure y
 
   <div id={`${id}-sent`} class="enquiry-note scroll-mt-header" tabindex="-1" data-enquiry-sent>
     <p class="label">{{ project: "Enquiry sent", general: "Message sent", design: "Design sent" }[variant]}</p>
-    <p class="mt-4 text-about">Thank you. {{ project: "We will come back to you to arrange a first conversation.", general: "We will get back to you.", design: "We will come back to you to talk through your design and your site." }[variant]}</p>
+    <p class="mt-4 text-about">Thank you. {{ project: "We will come back to you to arrange a first conversation.", general: "We will get back to you.", design: "We will check your site and come back to you to talk through your design." }[variant]}</p>
   </div>
   <div id={`${id}-failed`} class="enquiry-note scroll-mt-header" tabindex="-1">
     <p class="label">Not sent</p>
