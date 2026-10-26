@@ -236,8 +236,10 @@ function oneBed(): HouseData<GroupId> {
   ];
 
   const slabs: Slab<GroupId>[] = [
-    { group: "bedrooms", level: "gf", polygon: rect(0, 0, width, bathWall), bottom: -0.2, top: 0, material: "floor" },
-    { group: "living", level: "gf", polygon: rect(0, bathWall, width, front), bottom: -0.2, top: 0, material: "floor" },
+    { group: "bedrooms", level: "gf", polygon: rect(0, 0, width, bathWall), bottom: -0.2, top: -0.01, material: "concrete" },
+    { group: "bedrooms", level: "gf", polygon: rect(0, 0, width, bathWall), bottom: -0.01, top: 0, material: "floor" },
+    { group: "living", level: "gf", polygon: rect(0, bathWall, width, front), bottom: -0.2, top: -0.01, material: "concrete" },
+    { group: "living", level: "gf", polygon: rect(0, bathWall, width, front), bottom: -0.01, top: 0, material: "floor" },
     v.slab,
   ];
 
@@ -303,8 +305,10 @@ function twoBed(): HouseData<GroupId> {
   ];
 
   const slabs: Slab<GroupId>[] = [
-    { group: "bedrooms", level: "gf", polygon: rect(0, 0, width, bed2), bottom: -0.2, top: 0, material: "floor" },
-    { group: "living", level: "gf", polygon: rect(0, bed2, width, front), bottom: -0.2, top: 0, material: "floor" },
+    { group: "bedrooms", level: "gf", polygon: rect(0, 0, width, bed2), bottom: -0.2, top: -0.01, material: "concrete" },
+    { group: "bedrooms", level: "gf", polygon: rect(0, 0, width, bed2), bottom: -0.01, top: 0, material: "floor" },
+    { group: "living", level: "gf", polygon: rect(0, bed2, width, front), bottom: -0.2, top: -0.01, material: "concrete" },
+    { group: "living", level: "gf", polygon: rect(0, bed2, width, front), bottom: -0.01, top: 0, material: "floor" },
     v.slab,
   ];
 
@@ -392,8 +396,10 @@ function fourBed(): HouseData<GroupId> {
 
   const ufFloor = rect(0, ufRear, width, front);
   const slabs: Slab<GroupId>[] = [
-    { group: "bedrooms", level: "gf", polygon: rect(0, 0, width, bed1), bottom: -0.2, top: 0, material: "floor" },
-    { group: "living", level: "gf", polygon: rect(0, bed1, width, front), bottom: -0.2, top: 0, material: "floor" },
+    { group: "bedrooms", level: "gf", polygon: rect(0, 0, width, bed1), bottom: -0.2, top: -0.01, material: "concrete" },
+    { group: "bedrooms", level: "gf", polygon: rect(0, 0, width, bed1), bottom: -0.01, top: 0, material: "floor" },
+    { group: "living", level: "gf", polygon: rect(0, bed1, width, front), bottom: -0.2, top: -0.01, material: "concrete" },
+    { group: "living", level: "gf", polygon: rect(0, bed1, width, front), bottom: -0.01, top: 0, material: "floor" },
     v.slab,
     { group: "upper", level: "uf", polygon: ufFloor, bottom: LV.gfWall, top: LV.uf, material: "render" },
     { group: "upper", level: "uf", polygon: ufFloor, bottom: LV.uf, top: LV.uf + 0.003, material: "floor" },

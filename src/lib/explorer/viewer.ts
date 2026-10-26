@@ -1,6 +1,10 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { GTAOPass } from "three/addons/postprocessing/GTAOPass.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 /**
  * Interactive viewer shared by the 3D explorers (the Jurien Bay home, the module and the build-up samples). Each
@@ -63,6 +67,11 @@ export interface ExplorerScene {
     panLimit: readonly [Vec3, Vec3];
     /** Scales the fitted zoom: below 1 leaves more room around the model. Default 1. */
     fit?: number;
+    /**
+     * Product-shot look (the Cloud Homes design tool): an opaque background in this colour, softer and fuller
+     * light, soft shadows and ambient occlusion in corners and where the home meets the ground.
+     */
+    studio?: { background: string };
     /** Shadow offset along surface normals in metres; smaller for small models. Default 0.03. */
     shadowNormalBias?: number;
     /** Views ranked below this hide the ground (to look into a basement); levels ranked below it show only in
@@ -155,11 +164,16 @@ export function createExplorer(options: ExplorerOptions): Explorer {
   const scene = new THREE.Scene();
   const pmrem = new THREE.PMREMGenerator(renderer);
   const environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+  const studio = stage.studio;
   scene.environment = environment;
-  scene.environmentIntensity = 0.35;
+  scene.environmentIntensity = studio ? 0.45 : 0.35;
+  if (studio) {
+    renderer.setClearColor(studio.background, 1);
+    renderer.toneMappingExposure = 0.95;
+  }
 
-  scene.add(new THREE.HemisphereLight("#ffffff", "#e2ddd3", 0.6));
-  const sun = new THREE.DirectionalLight("#fff4e6", 2.6);
+  scene.add(new THREE.HemisphereLight("#ffffff", "#ddd8ce", studio ? 0.75 : 0.6));
+  const sun = new THREE.DirectionalLight(studio ? "#fff8ef" : "#fff4e6", studio ? 2.3 : 2.6);
   sun.position.set(...stage.sun);
   sun.castShadow = true;
   sun.shadow.mapSize.setScalar(small() ? 1024 : 2048);
@@ -167,12 +181,17 @@ export function createExplorer(options: ExplorerOptions): Explorer {
   Object.assign(sun.shadow.camera, { left: -extent, right: extent, top: extent, bottom: -extent, near: 1, far: stage.shadowFar });
   sun.shadow.bias = -0.0004;
   sun.shadow.normalBias = stage.shadowNormalBias ?? 0.03;
-  sun.shadow.radius = 4;
+  sun.shadow.radius = studio ? 7 : 4;
+  if (studio) {
+    // Plain PCF honours the blur radius, for a soft-edged product shadow
+    renderer.shadowMap.type = THREE.PCFShadowMap;
+    sun.shadow.blurSamples = 16;
+  }
   scene.add(sun, sun.target);
 
   const groundShadow = new THREE.Mesh(
     new THREE.PlaneGeometry(stage.groundRadius * 5.4, stage.groundRadius * 5.4),
-    new THREE.ShadowMaterial({ opacity: 0.16 }),
+    new THREE.ShadowMaterial({ opacity: studio ? 0.12 : 0.16 }),
   );
   groundShadow.rotation.x = -Math.PI / 2;
   groundShadow.position.y = stage.groundY + 0.005;
@@ -208,6 +227,20 @@ export function createExplorer(options: ExplorerOptions): Explorer {
 
   // Camera and controls --------------------------------------------------------------------------
   const camera = new THREE.OrthographicCamera(-FRUSTUM, FRUSTUM, FRUSTUM, -FRUSTUM, -200, 400);
+  // Studio look: render through ambient occlusion, then tone map and convert to sRGB
+  let composer: EffectComposer | null = null;
+  let aoPass: GTAOPass | null = null;
+  if (studio) {
+    // Multisampled, so edges stay smooth through the passes (the canvas's own antialiasing doesn't apply here)
+    composer = new EffectComposer(renderer, new THREE.WebGLRenderTarget(1, 1, { samples: 4, type: THREE.HalfFloatType }));
+    composer.addPass(new RenderPass(scene, camera));
+    aoPass = new GTAOPass(scene, camera, host.clientWidth || 1, host.clientHeight || 1);
+    aoPass.updateGtaoMaterial({ radius: 0.8, distanceExponent: 1.4, thickness: 1.2, scale: 1.4, samples: 16 });
+    aoPass.blendIntensity = 1;
+    aoPass.updatePdMaterial({ lumaPhi: 10, depthPhi: 2, normalPhi: 3, radius: 10, rings: 2, samples: 16 });
+    composer.addPass(aoPass);
+    composer.addPass(new OutputPass());
+  }
   const controls = new OrbitControls(camera, canvas);
   controls.enabled = false;
   controls.enableDamping = !reducedMotion;
@@ -338,7 +371,8 @@ export function createExplorer(options: ExplorerOptions): Explorer {
     frameRequest = 0;
     if (disposed) return;
     controls.update(); // advances damping; emits "change", which requests the next frame while moving
-    renderer.render(scene, camera);
+    if (composer) composer.render();
+    else renderer.render(scene, camera);
   };
   const requestRender = () => {
     if (!frameRequest && !disposed) frameRequest = requestAnimationFrame(render);
@@ -352,6 +386,10 @@ export function createExplorer(options: ExplorerOptions): Explorer {
   const resize = () => {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, small() ? 1.5 : 2));
     renderer.setSize(host.clientWidth, host.clientHeight, false);
+    if (composer) {
+      composer.setPixelRatio(renderer.getPixelRatio());
+      composer.setSize(host.clientWidth, host.clientHeight);
+    }
     updateFrustum();
     if (!cameraTouched) frame();
     requestRender();
@@ -649,12 +687,18 @@ export function createExplorer(options: ExplorerOptions): Explorer {
       discTexture.dispose();
       environment.dispose();
       pmrem.dispose();
+      aoPass?.dispose();
+      composer?.dispose();
       renderer.dispose();
       canvas.remove();
     },
   };
 
   renderer.setSize(host.clientWidth, host.clientHeight, false);
+  if (composer) {
+    composer.setPixelRatio(renderer.getPixelRatio());
+    composer.setSize(host.clientWidth, host.clientHeight);
+  }
   updateFrustum();
   api.setMode("compact");
   requestRender();
