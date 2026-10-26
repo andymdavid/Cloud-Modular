@@ -1,7 +1,6 @@
 ---
 import RefreshLayout from "@/layouts/RefreshLayout.astro";
 import CloudHomeShell from "@/components/refresh/CloudHomeShell.astro";
-import ToConfirm from "@/components/refresh/ToConfirm.astro";
 import { site } from "@/data/site";
 import { cloudHomes, defaultHome, extras, formatPrice, included, sections } from "@/data/cloud-homes";
 
@@ -37,7 +36,6 @@ const startHome = cloudHomes.find((h) => h.id === defaultHome)!;
           Don’t want to start with a design?
           <a href="/cloud-homes/availability/" class="text-link block text-fg" data-availability-link>Check availability for your site</a>
         </p>
-        <p class="mt-6"><ToConfirm note="Choices and from prices are placeholders" /></p>
       </header>
 
       <section id="home" class="design-step" data-step="home" aria-labelledby="home-title">
@@ -114,7 +112,7 @@ const startHome = cloudHomes.find((h) => h.id === defaultHome)!;
             </label>
           ))}
         </fieldset>
-        <h3 class="label label-muted mt-10 flex items-center gap-2">Included in every home <ToConfirm /></h3>
+        <h3 class="label label-muted mt-10">Included in every home</h3>
         <ul class="mt-4 grid gap-2 text-body">
           {included.map((item) => <li class="border-b border-line/[var(--rule-alpha)] pb-2">{item}</li>)}
         </ul>
@@ -126,7 +124,7 @@ const startHome = cloudHomes.find((h) => h.id === defaultHome)!;
       <h2 id="price-title" class="text-h3">Price breakdown for your Cloud Home</h2>
       <div class="mt-8 border-t border-line/[var(--rule-alpha)] pt-6">
         <p class="text-body text-fg-muted">Home as designed</p>
-        <p class="mt-1 flex items-center gap-3 text-about"><span>From <span data-price>{formatPrice(startHome.fromPrice)}</span></span> <ToConfirm note="Placeholder from price" /></p>
+        <p class="mt-1 text-about">From <span data-price>{formatPrice(startHome.fromPrice)}</span></p>
         <dl class="mt-6 text-small" data-summary></dl>
       </div>
       <div class="mt-8 grid gap-8 border-t border-line/[var(--rule-alpha)] pt-8 sm:grid-cols-2">

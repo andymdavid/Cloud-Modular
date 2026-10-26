@@ -215,7 +215,7 @@ export const extras = {
   ],
 } as const;
 
-/** Shown on the drawings for all three homes. To confirm as the standard inclusions. (The 1 and 2 Bed drawings
+/** Shown on the drawings for all three homes. The standard inclusions. (The 1 and 2 Bed drawings
  *  also show solar panels, a battery and an air conditioning unit; the 4 Bed drawings do not.) */
 export const included = [
   "Double-glazed aluminium windows and doors",

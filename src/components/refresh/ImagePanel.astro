@@ -1,5 +1,4 @@
 ---
-import ToConfirm from "@/components/refresh/ToConfirm.astro";
 
 /**
  * Image panel (olympic.no investor "Company structure"): a full-bleed 50/50 split. The image fills the left half
@@ -16,11 +15,9 @@ interface Props {
   width: number;
   height: number;
   imagePosition?: string;
-  /** Draft content: show a "To confirm" marker beside the label. */
-  confirm?: boolean;
 }
 
-const { id, label, title, image, alt, width, height, imagePosition = "center", confirm = false } = Astro.props;
+const { id, label, title, image, alt, width, height, imagePosition = "center" } = Astro.props;
 ---
 
 <section id={id} data-theme="dark" data-surface="slate" class="image-panel scroll-mt-header grid md:grid-cols-2">
@@ -30,10 +27,7 @@ const { id, label, title, image, alt, width, height, imagePosition = "center", c
 
   <div class="image-panel-body flex flex-col justify-between gap-16 py-section">
     <div data-reveal>
-      <div class="flex items-center gap-3">
-        <p class="label">{label}</p>
-        {confirm && <ToConfirm />}
-      </div>
+      <p class="label">{label}</p>
       <h2 class="mt-7 max-w-[14ch] text-h2">{title}</h2>
     </div>
     <div class="w-full max-w-[34rem]" data-reveal>

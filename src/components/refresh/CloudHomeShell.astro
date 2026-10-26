@@ -5,7 +5,6 @@
  * the price pill and, with `arrows`, previous and next buttons that step through the panel's [data-step] sections.
  * The page's own script mounts the viewer into [data-canvas-host].
  */
-import ToConfirm from "@/components/refresh/ToConfirm.astro";
 import { cloudHomes, defaultHome, formatPrice } from "@/data/cloud-homes";
 
 interface Props {
@@ -36,7 +35,7 @@ const home = cloudHomes.find((h) => h.id === defaultHome)!;
         <span class="text-fg-muted">from</span>
         <span data-pill-price>{formatPrice(home.fromPrice)}</span>
       </p>
-      <p class="mt-2 hidden text-caption text-fg-subtle lg:flex lg:items-center lg:gap-2">Drag to turn your home <ToConfirm note="Placeholder from prices" /></p>
+      <p class="mt-2 hidden text-caption text-fg-subtle lg:block">Drag to turn your home</p>
     </div>
   </div>
 
