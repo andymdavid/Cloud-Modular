@@ -106,7 +106,7 @@ export interface Explorer {
   rotate(dTheta: number, dPhi: number): void;
   zoom(factor: number): void;
   /** Turns the camera to an angle around the model (degrees, as in ExplorerScene.camera), easing unless reduced motion. */
-  turnTo(azimuth: number, polar?: number): void;
+  turnTo(azimuth: number, polar?: number, focus?: { target: readonly [number, number, number]; zoom: number }): void;
   /** One of the model's shared materials, to recolour in place; call refresh() after changing it. */
   material(key: string): THREE.Material | undefined;
   /** Shows or hides a whole group (a design choice such as solar panels). */
@@ -606,7 +606,7 @@ export function createExplorer(options: ExplorerOptions): Explorer {
       camera.updateProjectionMatrix();
       requestRender();
     },
-    turnTo(azimuthDeg, polarDeg) {
+    turnTo(azimuthDeg, polarDeg, focus) {
       const offset = camera.position.clone().sub(controls.target);
       const from = new THREE.Spherical().setFromVector3(offset);
       const toTheta = THREE.MathUtils.degToRad(azimuthDeg);
@@ -622,8 +622,9 @@ export function createExplorer(options: ExplorerOptions): Explorer {
       const fromTarget = controls.target.clone();
       const fromPosition = camera.position.clone();
       frame();
-      const toZoom = camera.zoom;
-      const toTarget = controls.target.clone();
+      // A focus closes in on one point (a room) from the fitted view
+      const toZoom = camera.zoom * (focus?.zoom ?? 1);
+      const toTarget = focus ? new THREE.Vector3(...focus.target) : controls.target.clone();
       controls.target.copy(fromTarget);
       camera.position.copy(fromPosition);
       camera.zoom = fromZoom;

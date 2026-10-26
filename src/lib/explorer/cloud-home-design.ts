@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { buildHouse } from "./build-model";
 import { tiled } from "./geometry";
 import { createExplorer, type Explorer, type ExplorerScene } from "./viewer";
-import { cloudHomeModels, explode, levelRank, type CloudHomeId } from "@/data/explorer/cloud-homes";
+import { cloudHomeModels, explode, focusPoints, levelRank, type CloudHomeId } from "@/data/explorer/cloud-homes";
 
 /**
  * The 3D home in the Cloud Homes "Design yours" tool: one of the three homes, finished with the chosen cladding and
@@ -14,12 +14,14 @@ export interface DesignView {
   azimuth: number;
   polar: number;
   inside?: boolean;
+  focus?: "kitchen";
 }
 
 export interface DesignState {
   paint: Record<string, string>;
   cladding: "panels" | "boards";
   show: Record<string, boolean>;
+  grain: string[];
 }
 
 const sceneFor = (id: CloudHomeId): ExplorerScene => ({
@@ -146,6 +148,22 @@ const timberBoards = () =>
     }
   });
 
+/** Timber veneer: fine grain running along u, in the given colour. */
+const veneer = (colour: string) =>
+  surface(512, (c, b, size) => {
+    c.fillStyle = colour;
+    c.fillRect(0, 0, size, size);
+    const next = random(17);
+    for (let i = 0; i < 90; i++) {
+      const y = next() * size;
+      c.fillStyle = `rgba(70,40,20,${0.03 + next() * 0.07})`;
+      c.fillRect(0, y, size, 1 + Math.round(next() * 2));
+    }
+    grain(c, size, 0.02, 19);
+    b.fillStyle = "#7a7a7a";
+    for (let i = 0; i < 40; i++) b.fillRect(0, next() * size, size, 1);
+  });
+
 /** Solar panel glass: dark cells in a fine silver grid, about one panel (1.05 m) per tile. */
 const solarCells = () =>
   surface(256, (c, b, size) => {
@@ -243,12 +261,23 @@ export function createDesignViewer(options: {
     if (paint.floor) finish("floor", boards(paint.floor, 6, 1, true, 5, true), 1.08, 1);
     if (!solarDone) {
       finish("solar", solarCells(), 1.05, 0.5);
+      standard("timber")?.color.set("#a88d6e"); // furniture timber, softer than the explorers' default
       const solar = standard("solar");
       if (solar) Object.assign(solar, { roughness: 0.25, metalness: 0.5 });
       solarDone = true;
     }
-    for (const key of ["frameDark", "fascia", "steel", "joinery"]) {
-      if (paint[key]) standard(key)?.color.set(paint[key]);
+    for (const key of ["frameDark", "fascia", "steel", "joinery", "benchtop"]) {
+      if (!paint[key]) continue;
+      if (state.grain.includes(key)) finish(key, veneer(paint[key]), 0.8, 0.3);
+      else {
+        const material = standard(key);
+        if (!material) continue;
+        material.map?.dispose();
+        material.bumpMap?.dispose();
+        material.map = material.bumpMap = null;
+        material.color.set(paint[key]);
+        material.needsUpdate = true;
+      }
     }
     for (const [group, visible] of Object.entries(state.show)) explorer.setGroupVisible(group, visible);
     explorer.refresh();
@@ -268,13 +297,20 @@ export function createDesignViewer(options: {
     explorer.setMode("full");
     apply();
     explorer.setView(view.inside ? "inside" : "exterior");
-    explorer.turnTo(view.azimuth, view.polar);
+    turn();
   };
+
+  let home = options.home;
+  function turn() {
+    const focus = view.focus ? { target: focusPoints(home)[view.focus], zoom: 1.9 } : undefined;
+    explorer.turnTo(view.azimuth, view.polar, focus);
+  }
 
   create(options.home);
 
   return {
     setHome(id) {
+      home = id;
       explorer.dispose();
       create(id);
     },
@@ -283,11 +319,11 @@ export function createDesignViewer(options: {
       apply();
     },
     show(next) {
-      const changed = next.azimuth !== view.azimuth || next.polar !== view.polar || !!next.inside !== !!view.inside;
+      const changed = next.azimuth !== view.azimuth || next.polar !== view.polar || !!next.inside !== !!view.inside || next.focus !== view.focus;
       view = next;
       if (!changed) return;
       explorer.setView(view.inside ? "inside" : "exterior");
-      explorer.turnTo(view.azimuth, view.polar);
+      turn();
     },
     dispose() {
       explorer.dispose();

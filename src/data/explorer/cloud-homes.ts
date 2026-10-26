@@ -17,6 +17,23 @@
  */
 
 import type { Block, HouseData, Opening, RoofPrism, Slab, Vec2, Vec3, Wall } from "./house";
+import {
+  acUnit,
+  bathroom,
+  batteryAndInverter,
+  bed,
+  collect,
+  dining,
+  downpipe,
+  evCharger,
+  Fit,
+  heatPumpHotWater,
+  kitchen,
+  lounge,
+  powderRoom,
+  subBoard,
+  tallUnit,
+} from "./cloud-home-fittings";
 
 export type CloudHomeId = "one-bed" | "two-bed" | "four-bed";
 export type GroupId = "bedrooms" | "living" | "upper" | "vergola" | "roof" | "frame" | "solar" | "battery" | "services";
@@ -140,33 +157,22 @@ function roofRibs(x0: number, x1: number, z0: number, z1: number, yAt: (z: numbe
 }
 
 /**
- * Services on the rear wall, where the plans place them: the battery and inverter beside the sub-board, the heat pump
- * hot water unit on its slab, the air conditioning unit, and downpipes at the rear corners. Sizes are indicative.
+ * Services where the plans place them: the battery and inverter beside the sub-board on the rear wall, the heat pump
+ * hot water unit on its slab, the air conditioning unit (1 and 2 Bed), downpipes at the rear corners and the
+ * electric vehicle charger on the east wall near the front. The battery is a design choice, in its own group.
  */
-function rearServices({ width, top, ac }: { width: number; top: number; ac: boolean }): B[] {
-  const out: B[] = [
-    // Sub-board and the battery with its inverter (the battery is a design choice)
-    { group: "services", level: "gf", min: [0.95, 1.2, -0.12], max: [1.35, 1.8, 0], material: "downpipe" },
-    { group: "battery", level: "gf", min: [0.25, 0.25, -0.2], max: [0.85, 1.35, 0], material: "door" },
-    { group: "battery", level: "gf", min: [0.3, 1.45, -0.14], max: [0.8, 1.85, 0], material: "door" },
-    // Heat pump hot water unit on a concrete slab
-    { group: "services", level: "gf", min: [1.45, -0.2, -0.75], max: [2.15, 0, -0.05], material: "concrete" },
-    { group: "services", level: "gf", min: [1.55, 0, -0.65], max: [2.05, 1.7, -0.15], material: "downpipe" },
-    // Downpipes at the rear corners
-    { group: "services", level: "gf", min: [0.12, 0, -0.08], max: [0.2, top, 0], material: "downpipe" },
-    { group: "services", level: "gf", min: [width - 0.2, 0, -0.08], max: [width - 0.12, top, 0], material: "downpipe" },
+function services(width: number, front: number, top: number, ac: boolean) {
+  const fits = [
+    subBoard<GroupId>("services", 0.95),
+    heatPumpHotWater<GroupId>("services", 1.85),
+    downpipe<GroupId>("services", 0.2, top),
+    downpipe<GroupId>("services", width - 0.2, top),
+    evCharger<GroupId>("services", width, front - 0.55),
+    batteryAndInverter<GroupId>("battery", 0.25),
   ];
-  if (ac) {
-    out.push(
-      { group: "services", level: "gf", min: [width - 1.15, 0, -0.38], max: [width - 0.35, 0.62, -0.08], material: "downpipe" },
-      { group: "services", level: "gf", min: [width - 1.05, 0.12, -0.385], max: [width - 0.55, 0.52, -0.38], material: "frameDark" },
-    );
-  }
-  return out;
+  if (ac) fits.push(acUnit<GroupId>("services", width - 0.85));
+  return collect(...fits);
 }
-
-/** Electric vehicle charger on the east wall near the front (plans: "10m car charger"). */
-const evCharger = (width: number, front: number): B => ({ group: "services", level: "gf", min: [width, 1.0, front - 0.6], max: [width + 0.1, 1.35, front - 0.35], material: "frameDark" });
 
 /** Single-storey hidden roof: falls 2° to a rear gutter between side walls carried up to the parapet. */
 function singleStoreyRoof(width: number, front: number): RoofPrism<GroupId>[] {
@@ -198,17 +204,6 @@ function singleStoreyRoof(width: number, front: number): RoofPrism<GroupId>[] {
   ];
 }
 
-/** Kitchen run along the front wall and the east wall, with a fridge and pantry tower on the west (indicative). */
-function kitchen(width: number, front: number, eastFrom: number): B[] {
-  const xe = width - EXT;
-  return [
-    { group: "living", level: "gf", min: [1.0, 0, front - EXT / 2 - 0.62], max: [xe - 0.65, 0.9, front - EXT / 2], material: "joinery" },
-    { group: "living", level: "gf", min: [xe - 0.62, 0, eastFrom], max: [xe, 0.9, front - EXT / 2], material: "joinery" },
-    { group: "living", level: "gf", min: [xe - 0.62, 0.9, front - 1.6], max: [xe, 2.2, front - EXT / 2], material: "joinery" },
-    { group: "living", level: "gf", min: [EXT / 2, 0, front - 2.0], max: [EXT / 2 + 0.62, 2.2, front - 1.0], material: "joinery" },
-  ];
-}
-
 // ---------------------------------------------------------------------------------------------------
 // 1 Bed (rev C07, sheet 5): bed 1, bath and laundry, then living, dining and kitchen. 4.3 × 11.5 m plus the frame.
 
@@ -225,13 +220,13 @@ function oneBed(): HouseData<GroupId> {
 
   const walls: W[] = [
     { group: "bedrooms", ...ext, a: [xw, c], b: [xe, c] },
-    { group: "bedrooms", ...ext, a: [xw, c], b: [xw, bathWall], openings: [sized(3.365, 2.0, 0.55)] },
-    { group: "bedrooms", ...ext, a: [xe, c], b: [xe, bathWall], openings: [sized(0.43, 2.3, 0.6), sized(3.975, 0.9, 0.9)] },
+    { group: "bedrooms", ...ext, a: [xw, 0], b: [xw, bathWall], openings: [sized(3.365, 2.0, 0.55)] },
+    { group: "bedrooms", ...ext, a: [xe, 0], b: [xe, bathWall], openings: [sized(0.43, 2.3, 0.6), sized(3.975, 0.9, 0.9)] },
     { group: "bedrooms", ...int, a: [xw, bedWall], b: [xe, bedWall], openings: [door(0.2, 1.02)] },
     { group: "bedrooms", ...int, a: [1.135, bedWall], b: [1.135, bathWall], openings: [door(3.2, 3.92)] },
     { group: "bedrooms", ...int, a: [xw, bathWall], b: [xe, bathWall], openings: [{ span: [0.15, 1.09], head: 2.4 }] },
-    { group: "living", ...ext, a: [xw, bathWall], b: [xw, front - c], openings: [sized(6.245, 2.0, 0.55)] },
-    { group: "living", ...ext, a: [xe, bathWall], b: [xe, front - c], openings: [win(5.74, 8.66, 0, 2.15, "slider")] },
+    { group: "living", ...ext, a: [xw, bathWall], b: [xw, front], openings: [sized(6.245, 2.0, 0.55)] },
+    { group: "living", ...ext, a: [xe, bathWall], b: [xe, front], openings: [win(5.74, 8.66, 0, 2.15, "slider")] },
     { group: "living", ...ext, a: [xw, front - c], b: [xe, front - c], openings: [sized(1.15, 2.0, 0.75)] },
   ];
 
@@ -250,15 +245,19 @@ function oneBed(): HouseData<GroupId> {
     ...frameBlocks(shell, 2.6),
     ...v.blocks,
     ...solarRows(0.35, width - 0.35, 0.4, 8.0, (z) => LV.roofRear + z * tan(2), 2),
-    ...rearServices({ width, top: LV.roofRear, ac: true }),
-    evCharger(width, front),
-    ...kitchen(width, front, front - 2.4),
-    // Robe, bed and living furniture (indicative)
-    { group: "bedrooms", level: "gf", min: [c, 0, c], max: [0.6, 2.4, 1.59], material: "joinery" },
-    { group: "bedrooms", level: "gf", min: [1.6, 0, 0.2], max: [3.13, 0.55, 2.23], material: "bed" },
-    { group: "living", level: "gf", min: [1.6, 0, 6.3], max: [2.6, 0.75, 7.6], material: "furniture" },
-    { group: "living", level: "gf", min: [0.2, 0, 7.9], max: [1.0, 0.78, 9.9], material: "soft" },
   ];
+  const robe = new Fit<GroupId>("bedrooms");
+  tallUnit(robe.wall("z", EXT, 1), [EXT, 1.59], 0.5);
+  const inside = collect(
+    services(width, front, LV.roofRear, true),
+    kitchen<GroupId>("living", width, front, 2.15),
+    bathroom<GroupId>("bedrooms", { x: [1.18, width - EXT], z: [bedWall + 0.045, bathWall - 0.045] }),
+    bed<GroupId>("bedrooms", { along: "x", face: EXT, dir: 1, centre: 2.4 }),
+    robe,
+    lounge<GroupId>("living", { along: "z", face: EXT, dir: 1, u: [5.6, 7.6] }),
+    dining<GroupId>("living", { centre: [2.6, 8.55], along: "z" }),
+  );
+  blocks.push(...inside.blocks);
 
   return {
     centre: { x: width / 2 + VERGOLA_WIDTH / 2, z: front / 2 },
@@ -271,6 +270,7 @@ function oneBed(): HouseData<GroupId> {
     blocks,
     posts: { group: "vergola", at: v.posts, height: LV.vergolaSoffit },
     struts: roofRibs(EXT, width - EXT, 0, front - EXT, (z) => LV.roofRear + z * tan(2)),
+    cylinders: inside.cylinders,
   };
 }
 
@@ -291,16 +291,16 @@ function twoBed(): HouseData<GroupId> {
 
   const walls: W[] = [
     { group: "bedrooms", ...ext, a: [xw, c], b: [xe, c] },
-    { group: "bedrooms", ...ext, a: [xw, c], b: [xw, bed2] },
-    { group: "bedrooms", ...ext, a: [xe, c], b: [xe, bed2], openings: [sized(0.43, 2.3, 0.6), sized(3.975, 0.9, 0.9), sized(6.86, 2.0, 0.55)] },
+    { group: "bedrooms", ...ext, a: [xw, 0], b: [xw, bed2] },
+    { group: "bedrooms", ...ext, a: [xe, 0], b: [xe, bed2], openings: [sized(0.43, 2.3, 0.6), sized(3.975, 0.9, 0.9), sized(6.86, 2.0, 0.55)] },
     { group: "bedrooms", ...int, a: [xw, bed1], b: [xe, bed1], openings: [door(0.2, 1.02)] },
     { group: "bedrooms", ...int, a: [hall, bed1], b: [hall, bed2 - 0.7], openings: [door(3.2, 3.92), door(5.4, 6.12), door(6.7, 7.52)] },
     { group: "bedrooms", ...int, a: [hall, bath], b: [xe, bath] },
     { group: "bedrooms", ...int, a: [2.965, bath], b: [2.965, pdr] },
     { group: "bedrooms", ...int, a: [hall, pdr], b: [xe, pdr] },
     { group: "bedrooms", ...int, a: [hall, bed2], b: [xe, bed2] },
-    { group: "living", ...ext, a: [xw, bed2], b: [xw, front - c] },
-    { group: "living", ...ext, a: [xe, bed2], b: [xe, front - c], openings: [win(9.49, 12.41, 0, 2.15, "slider")] },
+    { group: "living", ...ext, a: [xw, bed2], b: [xw, front] },
+    { group: "living", ...ext, a: [xe, bed2], b: [xe, front], openings: [win(9.49, 12.41, 0, 2.15, "slider")] },
     { group: "living", ...ext, a: [xw, front - c], b: [xe, front - c], openings: [sized(1.15, 2.0, 0.75)] },
   ];
 
@@ -318,16 +318,22 @@ function twoBed(): HouseData<GroupId> {
     ...frameBlocks(shell, 2.6),
     ...v.blocks,
     ...solarRows(0.35, width - 0.35, 0.4, 9.0, (z) => LV.roofRear + z * tan(2), 2),
-    ...rearServices({ width, top: LV.roofRear, ac: true }),
-    evCharger(width, front),
-    ...kitchen(width, front, front - 2.4),
-    { group: "bedrooms", level: "gf", min: [c, 0, c], max: [0.6, 2.4, 1.59], material: "joinery" },
-    { group: "bedrooms", level: "gf", min: [3.01, 0, 5.31], max: [xe - c, 2.4, 5.95], material: "joinery" },
-    { group: "bedrooms", level: "gf", min: [1.6, 0, 0.2], max: [3.13, 0.55, 2.23], material: "bed" },
-    { group: "bedrooms", level: "gf", min: [2.2, 0, 7.4], max: [4.2, 0.55, 8.93], material: "bed" },
-    { group: "living", level: "gf", min: [1.6, 0, 10.4], max: [2.6, 0.75, 11.7], material: "furniture" },
-    { group: "living", level: "gf", min: [0.2, 0, 10.0], max: [1.0, 0.78, 12.0], material: "soft" },
   ];
+  const robes = new Fit<GroupId>("bedrooms");
+  tallUnit(robes.wall("z", EXT, 1), [EXT, 1.59], 0.5);
+  tallUnit(robes.wall("z", width - EXT, -1), [pdr - 1.2, pdr - 0.045], 0.6);
+  const inside = collect(
+    services(width, front, LV.roofRear, true),
+    kitchen<GroupId>("living", width, front, 2.15),
+    bathroom<GroupId>("bedrooms", { x: [1.18, width - EXT], z: [bed1 + 0.045, bath - 0.045] }),
+    powderRoom<GroupId>("bedrooms", { x: [1.18, 2.92], z: [bath + 0.045, pdr - 0.045] }),
+    bed<GroupId>("bedrooms", { along: "x", face: EXT, dir: 1, centre: 2.4 }),
+    bed<GroupId>("bedrooms", { along: "z", face: width - EXT, dir: -1, centre: 7.95 }),
+    robes,
+    lounge<GroupId>("living", { along: "z", face: EXT, dir: 1, u: [9.7, 11.7] }),
+    dining<GroupId>("living", { centre: [2.6, 12.45], along: "z" }),
+  );
+  blocks.push(...inside.blocks);
 
   return {
     centre: { x: width / 2 + VERGOLA_WIDTH / 2, z: front / 2 },
@@ -340,6 +346,7 @@ function twoBed(): HouseData<GroupId> {
     blocks,
     posts: { group: "vergola", at: v.posts, height: LV.vergolaSoffit },
     struts: roofRibs(EXT, width - EXT, 0, front - EXT, (z) => LV.roofRear + z * tan(2)),
+    cylinders: inside.cylinders,
   };
 }
 
@@ -365,24 +372,24 @@ function fourBed(): HouseData<GroupId> {
   const walls: W[] = [
     // Ground floor (sheet 6)
     { group: "bedrooms", ...gfExt, a: [xw, c], b: [xe, c] },
-    { group: "bedrooms", ...gfExt, a: [xw, c], b: [xw, bed1] },
-    { group: "bedrooms", ...gfExt, a: [xe, c], b: [xe, bed1], openings: [win(0.515, 2.715, 0, 2.15, "slider"), sized(3.43, 0.75, 0.9), sized(6.525, 2.0, 0.55)] },
+    { group: "bedrooms", ...gfExt, a: [xw, 0], b: [xw, bed1] },
+    { group: "bedrooms", ...gfExt, a: [xe, 0], b: [xe, bed1], openings: [win(0.515, 2.715, 0, 2.15, "slider"), sized(3.43, 0.75, 0.9), sized(6.525, 2.0, 0.55)] },
     { group: "bedrooms", ...gfInt, a: [xw, bed2], b: [xe, bed2], openings: [door(0.2, 1.12)] },
     { group: "bedrooms", ...gfInt, a: [hall, bed2], b: [hall, bed1], openings: [door(3.05, 3.77), { span: [4.85, 5.85], head: 2.4 }, door(6.05, 6.87)] },
     { group: "bedrooms", ...gfInt, a: [hall, bath], b: [xe, bath] },
     { group: "bedrooms", ...gfInt, a: [hall, stair], b: [xe, stair] },
     { group: "bedrooms", ...gfInt, a: [hall, bed1], b: [xe, bed1] },
-    { group: "living", ...gfExt, a: [xw, bed1], b: [xw, front - c] },
-    { group: "living", ...gfExt, a: [xe, bed1], b: [xe, front - c], openings: [win(9.135, 12.055, 0, 2.15, "slider")] },
+    { group: "living", ...gfExt, a: [xw, bed1], b: [xw, front] },
+    { group: "living", ...gfExt, a: [xe, bed1], b: [xe, front], openings: [win(9.135, 12.055, 0, 2.15, "slider")] },
     { group: "living", ...gfExt, a: [xw, front - c], b: [xe, front - c], openings: [sized(1.175, 2.0, 0.75)] },
 
     // Upper floor (sheet 7; window heights indicative)
     { ...ufExt, a: [xw, ufRear + c], b: [xe, ufRear + c] },
-    { ...ufExt, a: [xw, ufRear + c], b: [xw, front - c] },
+    { ...ufExt, a: [xw, ufRear], b: [xw, front] },
     {
       ...ufExt,
-      a: [xe, ufRear + c],
-      b: [xe, front - c],
+      a: [xe, ufRear],
+      b: [xe, front],
       openings: [sized(3.245, 1.5, 0.55, LV.uf), sized(5.7, 1.0, 0.55, LV.uf), sized(9.6, 1.66, 0.95, LV.uf), sized(12.6, 1.66, 0.95, LV.uf)],
     },
     { ...ufExt, a: [xw, front - c], b: [xe, front - c], openings: [win(0.715, 3.635, LV.uf + 0.65, LV.uf + 2.15)] },
@@ -452,19 +459,25 @@ function fourBed(): HouseData<GroupId> {
     ...v.blocks,
     ...stairs,
     ...solarRows(0.35, width - 0.35, ufRear + 0.4, front - 0.6, (z) => LV.roofFront - (front - z) * tan(3), 2),
-    ...rearServices({ width, top: 2.7, ac: false }),
-    evCharger(width, front),
-    ...kitchen(width, front, front - 2.4),
-    { group: "bedrooms", level: "gf", min: [c, 0, c], max: [0.6, 2.4, 1.26], material: "joinery" },
-    { group: "bedrooms", level: "gf", min: [1.6, 0, 0.2], max: [3.13, 0.55, 2.23], material: "bed" },
-    { group: "bedrooms", level: "gf", min: [2.2, 0, 6.6], max: [4.2, 0.55, 8.13], material: "bed" },
-    { group: "living", level: "gf", min: [1.6, 0, 10.0], max: [2.6, 0.75, 11.3], material: "furniture" },
-    { group: "living", level: "gf", min: [0.2, 0, 9.6], max: [1.0, 0.78, 11.6], material: "soft" },
-    // Upper floor (indicative)
-    { group: "upper", level: "uf", min: [0.3, LV.uf, 5.3], max: [1.1, LV.uf + 0.78, 7.3], material: "soft" },
-    { group: "upper", level: "uf", min: [2.2, LV.uf, 9.3], max: [4.2, LV.uf + 0.55, 10.83], material: "bed" },
-    { group: "upper", level: "uf", min: [1.2, LV.uf, 12.2], max: [3.2, LV.uf + 0.55, 13.73], material: "bed" },
   ];
+  const robe = new Fit<GroupId>("bedrooms");
+  tallUnit(robe.wall("z", EXT, 1), [EXT, 1.375], 0.6);
+  const upper = { level: "uf", floor: LV.uf };
+  const inside = collect(
+    services(width, front, 2.7, false),
+    kitchen<GroupId>("living", width, front, 2.175),
+    bathroom<GroupId>("bedrooms", { x: [hall + i2, width - EXT], z: [bed2 + i2, bath - i2] }),
+    bathroom<GroupId>("upper", { x: [1.26, width - EXT], z: [ufRear + EXT, 4.8 - i2], laundry: false, ...upper }),
+    bed<GroupId>("bedrooms", { along: "x", face: EXT, dir: 1, centre: 2.45 }),
+    bed<GroupId>("bedrooms", { along: "z", face: width - EXT, dir: -1, centre: 7.31 }),
+    bed<GroupId>("upper", { along: "z", face: width - EXT, dir: -1, centre: 10.55, ...upper }),
+    bed<GroupId>("upper", { along: "z", face: EXT, dir: 1, centre: 13.4, ...upper }),
+    robe,
+    lounge<GroupId>("living", { along: "z", face: EXT, dir: 1, u: [9.0, 11.0] }),
+    lounge<GroupId>("upper", { along: "z", face: EXT, dir: 1, u: [5.4, 7.2], ...upper }),
+    dining<GroupId>("living", { centre: [2.6, 12.05], along: "z" }),
+  );
+  blocks.push(...inside.blocks);
 
   return {
     centre: { x: width / 2 + VERGOLA_WIDTH / 2, z: front / 2 },
@@ -480,6 +493,7 @@ function fourBed(): HouseData<GroupId> {
       ...roofRibs(0, width, ufRear, front, (z) => LV.roofFront - (front - z) * tan(3)),
       ...roofRibs(0, width, -0.15, ufRear, (z) => 2.7 + z * tan(6)),
     ],
+    cylinders: inside.cylinders,
   };
 }
 
@@ -504,3 +518,16 @@ export const explode: Record<GroupId, Vec3> = {
 
 /** Views: the outside, or with the roof (and upper floor) lifted off to see inside. */
 export const levelRank: Record<string, number> = { gf: 0, uf: 1, roof: 2 };
+
+/** Points the design tool's camera can close in on, in scene coordinates (the plan less the home's centre). */
+const SIZES: Record<CloudHomeId, { width: number; front: number }> = {
+  "one-bed": { width: 4.3, front: 11.5 },
+  "two-bed": { width: 4.3, front: 14.9 },
+  "four-bed": { width: 4.35, front: 14.95 },
+};
+
+export const focusPoints = (id: CloudHomeId) => {
+  const { front } = SIZES[id];
+  // Centre in plan is (width / 2 + vergola / 2, front / 2); aim just behind the kitchen so it sits mid-screen
+  return { kitchen: [-VERGOLA_WIDTH / 2, 1.0, front / 2 - 0.7] as Vec3 };
+};

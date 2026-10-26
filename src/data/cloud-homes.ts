@@ -35,6 +35,8 @@ export interface CameraView {
   azimuth: number;
   polar: number;
   inside?: boolean;
+  /** Close in on a room: "kitchen" frames the kitchen at the front of the home. */
+  focus?: "kitchen";
 }
 
 /** What a choice changes in the 3D home. */
@@ -45,6 +47,8 @@ export interface ModelChange {
   cladding?: "panels" | "boards";
   /** Model groups to show or hide (solar panels, the battery). */
   show?: Record<string, boolean>;
+  /** Materials drawn with timber grain (oak joinery or benchtops). */
+  grain?: string[];
 }
 
 export interface Choice extends ModelChange {
@@ -182,14 +186,14 @@ export const sections: readonly Section[] = [
     id: "kitchen",
     label: "Kitchen and robes",
     title: "Choose your kitchen",
-    body: "The kitchen cabinets and the built-in robes.",
+    body: "Cabinets and benchtops together. The robes and vanity match the cabinets.",
     kind: "swatch",
-    camera: { azimuth: 20, polar: 38, inside: true },
+    camera: { azimuth: 205, polar: 42, inside: true, focus: "kitchen" },
     choices: [
-      { id: "white", name: "Matte white", swatch: "#eceae4", paint: { joinery: "#eceae4" } },
-      { id: "oak", name: "Natural oak", swatch: "#b48e64", paint: { joinery: "#b48e64" } },
-      { id: "sage", name: "Sage", swatch: "#a3a996", paint: { joinery: "#a3a996" } },
-      { id: "charcoal", name: "Charcoal", swatch: "#3f4042", paint: { joinery: "#3f4042" } },
+      { id: "white-stone", name: "White with stone benchtops", swatch: "linear-gradient(135deg, #ecebe6 50%, #d8d4cb 50%)", paint: { joinery: "#ecebe6", benchtop: "#d8d4cb" } },
+      { id: "oak-white", name: "Oak with white benchtops", swatch: "linear-gradient(135deg, #b39a7a 50%, #efeee9 50%)", paint: { joinery: "#b39a7a", benchtop: "#efeee9" }, grain: ["joinery"] },
+      { id: "greige-stone", name: "Warm grey with stone benchtops", swatch: "linear-gradient(135deg, #b5afa4 50%, #e9e6df 50%)", paint: { joinery: "#b5afa4", benchtop: "#e9e6df" } },
+      { id: "charcoal-oak", name: "Charcoal with oak benchtops", swatch: "linear-gradient(135deg, #3d3e40 50%, #b39a7a 50%)", paint: { joinery: "#3d3e40", benchtop: "#b39a7a" }, grain: ["benchtop"] },
     ],
   },
 ];
@@ -267,10 +271,16 @@ export function designQuery(design: Design): string {
 
 /** Everything the 3D home needs for a design: colours, cladding pattern and groups to show. */
 export function modelState(design: Design) {
-  const state = { paint: {} as Record<string, string>, cladding: "panels" as "panels" | "boards", show: { solar: false, battery: false } as Record<string, boolean> };
+  const state = {
+    paint: {} as Record<string, string>,
+    cladding: "panels" as "panels" | "boards",
+    show: { solar: false, battery: false } as Record<string, boolean>,
+    grain: [] as string[],
+  };
   for (const { choice } of design.picks) {
     Object.assign(state.paint, choice.paint);
     Object.assign(state.show, choice.show);
+    state.grain.push(...(choice.grain ?? []));
     if (choice.cladding) state.cladding = choice.cladding;
   }
   // Hidden sections leave their groups off (no battery without solar)

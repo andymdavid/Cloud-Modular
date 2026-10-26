@@ -72,7 +72,16 @@ function createMaterials(anisotropy: number): Record<MaterialKey, THREE.Material
       map: tiled(boardTexture(512, ["#7b4a32", "#86553a", "#734530", "#8d5c3f", "#7f4e35", "#6f432d"], "#4a2d1f", 8, 3), 1.2, anisotropy),
     }),
     darkClad: std("#ffffff", 0.6, 0.2, { map: tiled(stripeTexture(256, "#2f3032", "#232426", 4, true, 3), 0.6, anisotropy) }),
-    joinery: std("#eeebe5", 0.7),
+    joinery: std("#eeebe5", 0.6),
+    benchtop: std("#e6e2da", 0.35, 0.02),
+    appliance: std("#151617", 0.15, 0.4),
+    stainless: std("#c7c9ca", 0.3, 0.85),
+    ceramic: std("#f4f3f0", 0.15, 0.02),
+    fabric: std("#b9b2a6", 0.95),
+    linen: std("#f1eee8", 0.9),
+    rug: std("#cfc6b6", 1),
+    gap: std("#2a2826", 0.9),
+    unit: std("#e7e6e1", 0.45, 0.05),
   };
 }
 
@@ -435,6 +444,13 @@ export function buildHouse(house: HouseData, { anisotropy = 4 }: { anisotropy?: 
   if (house.internalStair) addInternalStair(out, house.internalStair);
   if (house.pergola) addPergola(out, house.pergola);
   if (house.tree) addTree(out, house.tree);
+  for (const cylinder of house.cylinders ?? []) {
+    const geometry = new THREE.CylinderGeometry(cylinder.radius, cylinder.radius, cylinder.length, 24);
+    if (cylinder.axis === "x") geometry.rotateZ(Math.PI / 2);
+    if (cylinder.axis === "z") geometry.rotateX(Math.PI / 2);
+    geometry.translate(...cylinder.centre);
+    out.add(cylinder.group, cylinder.level, cylinder.material, geometry);
+  }
   for (const strut of house.struts ?? []) {
     const from = new THREE.Vector3(...strut.from);
     const to = new THREE.Vector3(...strut.to);

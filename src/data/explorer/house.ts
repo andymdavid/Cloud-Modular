@@ -39,7 +39,17 @@ export type MaterialKey =
   | "timberClad"
   | "darkClad"
   /** Kitchen and robe joinery (the Cloud Homes design tool recolours it) */
-  | "joinery";
+  | "joinery"
+  // Interiors and services detail (Cloud Homes)
+  | "benchtop"
+  | "appliance"
+  | "stainless"
+  | "ceramic"
+  | "fabric"
+  | "linen"
+  | "rug"
+  | "gap"
+  | "unit";
 
 export type OpeningKind = "slider" | "window" | "door" | "garage-door" | "opening";
 
@@ -151,6 +161,8 @@ export interface HouseData<G extends string = string> {
   internalStair?: { group: G; x: [number, number]; zStart: number; going: number; risers: number; to: number };
   pergola?: { group: G; posts: Vec2[]; beamZ: number[]; x: [number, number]; z: [number, number]; rafterSpacing: number; base: number; beam: number; top: number };
   tree?: { at: Vec2; height: number; canopy: number };
+  /** Round parts: taps, tanks, fans, cables. `axis` is the direction of the cylinder's length (default "y"). */
+  cylinders?: { group: G; level: Level; material: MaterialKey; centre: Vec3; radius: number; length: number; axis?: "x" | "y" | "z" }[];
   /** Straight square members between two points, e.g. raked steel posts. */
   struts?: { group: G; level: Level; material: MaterialKey; from: Vec3; to: Vec3; size: number }[];
 }
