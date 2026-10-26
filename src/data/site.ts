@@ -429,6 +429,9 @@ export const partners = [
   { slug: "peerless", name: "Peerless Finance", width: 511, height: 103, ink: 0.149 },
   { slug: "seashells", name: "Seashells", width: 344, height: 222, ink: 0.106 },
   { slug: "jurien-bay-resort", name: "Jurien Bay Resort", width: 555, height: 316, ink: 0.094 },
+  { slug: "ai-group", name: "Artificial Intelligence Group", width: 261, height: 260, ink: 0.547 },
+  { slug: "other-stuff", name: "Other Stuff", width: 800, height: 71, ink: 0.469 },
+  { slug: "off-piste-studio", name: "Off Piste Studio", width: 800, height: 97, ink: 0.452 },
 ] as const;
 
 export const team = [
