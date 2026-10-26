@@ -314,15 +314,15 @@ function span(place: Place, u: [number, number], d: [number, number], y: [number
 /** Heated towel ladder on a wall with a folded towel over it. */
 function towelRail(fit: Fit<string>, place: Place, at: (u: number, d: number) => [number, number], u: number, normal: "x" | "z") {
   const along = normal === "x" ? "z" : "x";
-  for (const uu of [u - 0.25, u + 0.25]) {
+  for (const uu of [u - 0.2, u + 0.2]) {
     const [px, pz] = at(uu, 0.06);
     fit.cyl([px, 1.05, pz], 0.012, 0.7, "stainless");
   }
   for (let i = 0; i < 5; i++) {
     const [rx, rz] = at(u, 0.06);
-    fit.cyl([rx, 0.75 + i * 0.15, rz], 0.009, 0.5, "stainless", along);
+    fit.cyl([rx, 0.75 + i * 0.15, rz], 0.009, 0.4, "stainless", along);
   }
-  place([u - 0.2, u + 0.2], [0.035, 0.085], [1.0, 1.36], "linen");
+  place([u - 0.16, u + 0.16], [0.035, 0.085], [1.0, 1.36], "linen");
 }
 
 export function bathroom<G extends string>(
@@ -420,7 +420,8 @@ export function bathroom<G extends string>(
   toilet(fit as Fit<string>, side, sideAt, tu);
   const [hx, hz] = sideAt(tu + 0.38, 0.05);
   fit.cyl([hx, 0.7, hz], 0.05, 0.1, "linen", "x");
-  towelRail(fit as Fit<string>, front, frontAt, (x0 + x1) / 2 - 0.2, "z");
+  // Towel rail on the bedroom wall, between the cavity slider and the toilet
+  towelRail(fit as Fit<string>, front, frontAt, x1 - 0.82, "z");
   // Grab rails (accessible extra): beside the toilet and in the shower
   const [gx1, gz1] = sideAt(tu + 0.3, 0.06);
   access.cyl([gx1, 0.8, gz1], 0.016, 0.6, "stainless", "z");
