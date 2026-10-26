@@ -123,10 +123,12 @@ const groups: FooterGroup[] = [
       <div class="col-span-2 grid grid-cols-2 items-center gap-x-gap-sm gap-y-6 md:col-span-4 md:grid-cols-3">
         <Logo class="col-span-2 h-[18px] w-auto justify-self-start text-fg md:col-span-1" />
         <p class="label label-muted">{new Date().getFullYear()} © Cloud Modular</p>
-        <a href="/privacy-policy/" class="label label-muted footer-legal">Privacy Policy</a>
+        <a href="/privacy-policy/" class="label label-muted footer-legal hidden md:block">Privacy Policy</a>
       </div>
       <div class="col-span-2 flex items-center justify-between gap-6 md:col-span-2 md:col-start-5">
         <a href="/terms/" class="label label-muted footer-legal">Terms</a>
+        <!-- Phones: Privacy Policy sits between Terms and the credit -->
+        <a href="/privacy-policy/" class="label label-muted footer-legal md:hidden">Privacy Policy</a>
         <!-- Site credit: the studio's icon, its name shown on hover -->
         <a href="https://offpistestudio.com" target="_blank" rel="noopener" class="site-by label label-muted" aria-label="Site by Off Piste Studio">
           <span aria-hidden="true">Site by</span>
