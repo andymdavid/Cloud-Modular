@@ -61,6 +61,8 @@ export interface ExplorerScene {
     target: Vec3;
     /** Panning keeps the orbit target inside this box. */
     panLimit: readonly [Vec3, Vec3];
+    /** Scales the fitted zoom: below 1 leaves more room around the model. Default 1. */
+    fit?: number;
     /** Shadow offset along surface normals in metres; smaller for small models. Default 0.03. */
     shadowNormalBias?: number;
     /** Views ranked below this hide the ground (to look into a basement); levels ranked below it show only in
@@ -92,6 +94,11 @@ export interface Explorer {
   resetView(): void;
   rotate(dTheta: number, dPhi: number): void;
   zoom(factor: number): void;
+  /** Turns the camera to an angle around the model (degrees, as in ExplorerScene.camera), easing unless reduced motion. */
+  turnTo(azimuth: number, polar?: number): void;
+  /** One of the model's shared materials, to recolour in place; call refresh() after changing it. */
+  material(key: string): THREE.Material | undefined;
+  refresh(): void;
   /** Rendering cost of the last frame, for diagnostics. */
   stats(): { meshes: number; drawCalls: number; triangles: number };
   dispose(): void;
@@ -121,8 +128,8 @@ export function createExplorer(options: ExplorerOptions): Explorer {
   const { host, reducedMotion, scene: definition } = options;
   const { stage } = definition;
   const defaultTarget = new THREE.Vector3(...stage.target);
-  const defaultPolar = definition.camera?.polar !== undefined ? THREE.MathUtils.degToRad(definition.camera.polar) : DEFAULT_POLAR;
-  const defaultAzimuth = definition.camera?.azimuth !== undefined ? THREE.MathUtils.degToRad(definition.camera.azimuth) : DEFAULT_AZIMUTH;
+  let defaultPolar = definition.camera?.polar !== undefined ? THREE.MathUtils.degToRad(definition.camera.polar) : DEFAULT_POLAR;
+  let defaultAzimuth = definition.camera?.azimuth !== undefined ? THREE.MathUtils.degToRad(definition.camera.azimuth) : DEFAULT_AZIMUTH;
   if (!webglAvailable()) throw new Error("webgl-unavailable");
 
   const small = () => host.clientWidth < 768;
@@ -302,6 +309,7 @@ export function createExplorer(options: ExplorerOptions): Explorer {
           (FRUSTUM * (1 - FULL_VIEW_DROP)) / Math.max(1e-3, -min.y),
         ) * (small() ? 0.94 : 0.92);
     }
+    fittedZoom *= stage.fit ?? 1;
     camera.zoom = fittedZoom;
     camera.updateProjectionMatrix();
     controls.minZoom = fittedZoom * 0.6;
@@ -465,6 +473,7 @@ export function createExplorer(options: ExplorerOptions): Explorer {
 
   // Public API -------------------------------------------------------------------------------------
   let explodeAmount = 0;
+  let turning = 0;
   const groupVisible = (id: string) => {
     const group = model.groups.get(id);
     return !!group && group.children.some((child) => child.visible);
@@ -555,6 +564,57 @@ export function createExplorer(options: ExplorerOptions): Explorer {
       camera.updateProjectionMatrix();
       requestRender();
     },
+    turnTo(azimuthDeg, polarDeg) {
+      const offset = camera.position.clone().sub(controls.target);
+      const from = new THREE.Spherical().setFromVector3(offset);
+      const toTheta = THREE.MathUtils.degToRad(azimuthDeg);
+      const toPhi = THREE.MathUtils.clamp(polarDeg === undefined ? from.phi : THREE.MathUtils.degToRad(polarDeg), MIN_POLAR, MAX_POLAR);
+      // Take the short way round
+      const dTheta = Math.atan2(Math.sin(toTheta - from.theta), Math.cos(toTheta - from.theta));
+      const dPhi = toPhi - from.phi;
+      // Becomes the angle the view returns to when it refits (resize, resetView)
+      defaultAzimuth = toTheta;
+      defaultPolar = toPhi;
+      // Fit the visible model at the new angle, then ease the zoom there along with the turn
+      const fromZoom = camera.zoom;
+      const fromTarget = controls.target.clone();
+      const fromPosition = camera.position.clone();
+      frame();
+      const toZoom = camera.zoom;
+      const toTarget = controls.target.clone();
+      controls.target.copy(fromTarget);
+      camera.position.copy(fromPosition);
+      camera.zoom = fromZoom;
+      cameraTouched = false;
+      const place = (t: number) => {
+        const spherical = new THREE.Spherical(from.radius, from.phi + dPhi * t, from.theta + dTheta * t);
+        controls.target.lerpVectors(fromTarget, toTarget, t);
+        camera.zoom = THREE.MathUtils.lerp(fromZoom, toZoom, t);
+        camera.updateProjectionMatrix();
+        camera.position.copy(controls.target).add(new THREE.Vector3().setFromSpherical(spherical));
+        camera.lookAt(controls.target);
+        controls.update();
+        requestRender();
+      };
+      cancelAnimationFrame(turning);
+      if (reducedMotion) return place(1);
+      const start = performance.now();
+      const duration = 900;
+      const step = (now: number) => {
+        const t = Math.min(1, (now - start) / duration);
+        place(1 - Math.pow(1 - t, 3));
+        if (t < 1 && !disposed) turning = requestAnimationFrame(step);
+      };
+      turning = requestAnimationFrame(step);
+    },
+    material(key) {
+      return model.materials[key];
+    },
+    refresh() {
+      tinted.forEach((material) => material.dispose());
+      tinted.clear();
+      paint();
+    },
     stats() {
       const { calls, triangles } = renderer.info.render;
       return { meshes: model.meshes.length, drawCalls: calls, triangles };
@@ -562,6 +622,7 @@ export function createExplorer(options: ExplorerOptions): Explorer {
     dispose() {
       disposed = true;
       cancelAnimationFrame(frameRequest);
+      cancelAnimationFrame(turning);
       resizeObserver.disconnect();
       canvas.removeEventListener("pointerdown", onPointerDown);
       canvas.removeEventListener("pointerup", onPointerUp);

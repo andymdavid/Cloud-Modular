@@ -41,10 +41,13 @@ const {
         <Logo class="h-[20px] w-auto sm:h-[24px]" />
       </a>
 
-      <button type="button" data-menu-open class="menu-icon pointer-events-auto" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu">
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-      </button>
+      <div class="flex items-center gap-4 sm:gap-6">
+        <a href={site.startHref} class="btn pointer-events-auto">Get started</a>
+        <button type="button" data-menu-open class="menu-icon pointer-events-auto" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
     </div>
   </div>
 </header>

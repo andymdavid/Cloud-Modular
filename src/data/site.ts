@@ -8,6 +8,8 @@ export const site = {
     "mailto:nigel@cloudmodular.com.au?subject=Cloud%20Modular%20Website%20Inquiry",
   /** "Enquire now" leads here: general enquiries. Project enquiries use the form on /partner-with-us/. */
   contactHref: "/contact/",
+  /** Get started: the page that routes visitors to Design yours, Partner with us or Contact. */
+  startHref: "/start/",
   linkedIn: "https://www.linkedin.com/company/cloudmodular",
   hours: "Monday - Friday, 9am - 5pm AWST",
   offices: [

@@ -2,22 +2,25 @@
 /**
  * Enquiry form, sent by the Cloudflare Pages function at /api/enquiry (functions/api/enquiry.ts), which emails it
  * to the site address. "project" is the full project enquiry on /partner-with-us/; "general" is the short message
- * form on /contact/. With JavaScript the form sends in place and swaps to a thank-you note; without it the function
+ * form on /contact/; "design" sends a Cloud Homes design from /cloud-homes/design/, whose hidden home, selections
+ * and link fields the page fills in. With JavaScript the form sends in place and swaps to a thank-you note; without it the function
  * redirects back to `#<id>-sent` or `#<id>-failed`, which CSS reveals. A hidden "website" field catches bots, and
  * Cloudflare Turnstile is added when PUBLIC_TURNSTILE_SITE_KEY is set at build time.
  */
 import { engagementModels, enquiryOptions, sectors, site } from "@/data/site";
 
 interface Props {
-  variant?: "project" | "general";
+  variant?: "project" | "general" | "design";
   /** Anchor for the form; the thank-you and error notes use `<id>-sent` and `<id>-failed`. */
   id?: string;
   class?: string;
 }
 
-const { variant = "project", id = variant === "project" ? "enquiry" : "message", class: className } = Astro.props;
+const { variant = "project", id = { project: "enquiry", general: "message", design: "design" }[variant], class: className } = Astro.props;
 const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 const project = variant === "project";
+const design = variant === "design";
+const noun = { project: "enquiry", general: "message", design: "design" }[variant];
 const routes = [...engagementModels.items.map((item) => item.title), "Not sure yet"];
 ---
 
@@ -25,6 +28,13 @@ const routes = [...engagementModels.items.map((item) => item.title), "Not sure y
   <form id={id} class="enquiry-form scroll-mt-header" action="/api/enquiry" method="post" data-enquiry-form>
     <input type="hidden" name="form" value={variant} />
     <input type="hidden" name="page" value={Astro.url.pathname} />
+    {design && (
+      <Fragment>
+        <input type="hidden" name="home" data-design-field="home" />
+        <input type="hidden" name="selections" data-design-field="selections" />
+        <input type="hidden" name="link" data-design-field="link" />
+      </Fragment>
+    )}
     <div class="enquiry-trap" aria-hidden="true">
       <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
     </div>
@@ -38,16 +48,34 @@ const routes = [...engagementModels.items.map((item) => item.title), "Not sure y
         <span class="field-label">Email</span>
         <input type="email" name="email" autocomplete="email" required maxlength="200" />
       </label>
-      {project && (
+      {(project || design) && (
         <label class="field">
           <span class="field-label">Phone <span class="field-optional">Optional</span></span>
           <input type="tel" name="phone" autocomplete="tel" maxlength="50" />
         </label>
       )}
-      <label class:list={["field", { "sm:col-span-2": !project }]}>
-        <span class="field-label">Organisation <span class="field-optional">Optional</span></span>
-        <input type="text" name="organisation" autocomplete="organization" maxlength="200" />
-      </label>
+      {!design && (
+        <label class:list={["field", { "sm:col-span-2": !project }]}>
+          <span class="field-label">Organisation <span class="field-optional">Optional</span></span>
+          <input type="text" name="organisation" autocomplete="organization" maxlength="200" />
+        </label>
+      )}
+
+      {design && (
+        <Fragment>
+          <label class="field">
+            <span class="field-label">Site location</span>
+            <input type="text" name="location" required maxlength="200" placeholder="Suburb or town" />
+          </label>
+          <label class="field sm:col-span-2">
+            <span class="field-label">Timing</span>
+            <select name="timing">
+              <option value="" selected>Choose one</option>
+              {enquiryOptions.timing.map((timing) => <option>{timing}</option>)}
+            </select>
+          </label>
+        </Fragment>
+      )}
 
       {project && (
         <Fragment>
@@ -99,27 +127,27 @@ const routes = [...engagementModels.items.map((item) => item.title), "Not sure y
       )}
 
       <label class="field sm:col-span-2">
-        <span class="field-label">{project ? "About the project" : "Message"}{project && <span class="field-optional">Optional</span>}</span>
-        <textarea name="message" rows="5" maxlength="5000" required={!project} placeholder={project ? "What you want to build, and anything else we should know" : undefined}></textarea>
+        <span class="field-label">{project ? "About the project" : design ? "Anything else" : "Message"}{!(variant === "general") && <span class="field-optional">Optional</span>}</span>
+        <textarea name="message" rows={design ? 3 : 5} maxlength="5000" required={variant === "general"} placeholder={project ? "What you want to build, and anything else we should know" : design ? "For example how you plan to use the home" : undefined}></textarea>
       </label>
     </div>
 
     {siteKey && <div class="cf-turnstile mt-8" data-sitekey={siteKey} data-size="flexible" data-theme="light"></div>}
 
     <div class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
-      <button type="submit" class="btn" data-enquiry-submit>{project ? "Send enquiry" : "Send message"}</button>
+      <button type="submit" class="btn" data-enquiry-submit>{{ project: "Send enquiry", general: "Send message", design: "Send your design" }[variant]}</button>
       <p class="text-caption text-fg-subtle">We use your details only to reply to you.</p>
     </div>
     <p class="enquiry-error mt-6 text-body" role="alert" data-enquiry-error hidden></p>
   </form>
 
   <div id={`${id}-sent`} class="enquiry-note scroll-mt-header" tabindex="-1" data-enquiry-sent>
-    <p class="label">{project ? "Enquiry sent" : "Message sent"}</p>
-    <p class="mt-4 text-about">Thank you. {project ? "We will come back to you to arrange a first conversation." : "We will get back to you."}</p>
+    <p class="label">{{ project: "Enquiry sent", general: "Message sent", design: "Design sent" }[variant]}</p>
+    <p class="mt-4 text-about">Thank you. {{ project: "We will come back to you to arrange a first conversation.", general: "We will get back to you.", design: "We will come back to you to talk through your design and your site." }[variant]}</p>
   </div>
   <div id={`${id}-failed`} class="enquiry-note scroll-mt-header" tabindex="-1">
     <p class="label">Not sent</p>
-    <p class="mt-4 text-body">Your {project ? "enquiry" : "message"} could not be sent. Please try again, or email us at <a href={site.enquiryHref} class="text-link">{site.email}</a>.</p>
+    <p class="mt-4 text-body">Your {noun} could not be sent. Please try again, or email us at <a href={site.enquiryHref} class="text-link">{site.email}</a>.</p>
   </div>
 </div>
 

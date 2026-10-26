@@ -19,7 +19,7 @@ interface Env {
   TURNSTILE_SECRET_KEY?: string;
 }
 
-type Kind = "project" | "general";
+type Kind = "project" | "general" | "design";
 
 const FIELDS: Record<Kind, [name: string, label: string][]> = {
   project: [
@@ -42,14 +42,26 @@ const FIELDS: Record<Kind, [name: string, label: string][]> = {
     ["organisation", "Organisation"],
     ["message", "Message"],
   ],
+  design: [
+    ["name", "Name"],
+    ["email", "Email"],
+    ["phone", "Phone"],
+    ["location", "Site location"],
+    ["timing", "Timing"],
+    ["home", "Home"],
+    ["selections", "Selections"],
+    ["link", "Design link"],
+    ["message", "Anything else"],
+  ],
 };
 
 const REQUIRED: Record<Kind, string[]> = {
   project: ["name", "email", "role", "location"],
   general: ["name", "email", "message"],
+  design: ["name", "email", "location", "home"],
 };
 
-const ANCHOR: Record<Kind, string> = { project: "enquiry", general: "message" };
+const ANCHOR: Record<Kind, string> = { project: "enquiry", general: "message", design: "design" };
 
 const escapeHtml = (text: string) =>
   text.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
@@ -63,7 +75,8 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
     return wantsJson ? Response.json({ ok: false, error: "Unreadable form" }, { status: 400 }) : new Response("Bad request", { status: 400 });
   }
 
-  const kind: Kind = data.get("form") === "general" ? "general" : "project";
+  const form = data.get("form");
+  const kind: Kind = form === "general" || form === "design" ? form : "project";
   const rawPage = String(data.get("page") ?? "/");
   const page = rawPage.startsWith("/") && !rawPage.startsWith("//") ? rawPage : "/";
   const reply = (ok: boolean, status: number, error?: string) =>
@@ -75,7 +88,7 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
   if (String(data.get("website") ?? "").trim()) return reply(true, 200);
 
   const values = Object.fromEntries(
-    FIELDS[kind].map(([name]) => [name, String(data.get(name) ?? "").trim().slice(0, name === "message" ? 5000 : 200)]),
+    FIELDS[kind].map(([name]) => [name, String(data.get(name) ?? "").trim().slice(0, name === "message" || name === "selections" ? 5000 : name === "link" ? 2000 : 200)]),
   );
   if (REQUIRED[kind].some((name) => !values[name]) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
     return reply(false, 422, "Missing or invalid fields");
@@ -97,7 +110,7 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
   if (!env.RESEND_API_KEY || !env.ENQUIRY_FROM) return reply(false, 503, "Email sending is not set up");
 
   const rows = FIELDS[kind].filter(([name]) => values[name]);
-  const subject = `${kind === "project" ? "Project enquiry" : "Website message"} from ${values.name}${values.organisation ? `, ${values.organisation}` : ""}`;
+  const subject = `${{ project: "Project enquiry", general: "Website message", design: `Cloud Home design (${values.home})` }[kind]} from ${values.name}${values.organisation ? `, ${values.organisation}` : ""}`;
   const text = `${rows.map(([name, label]) => `${label}: ${values[name]}`).join("\n")}\n\nSent from ${new URL(page, request.url).toString()}`;
   const html = `<table cellpadding="6" style="font-family:Arial,sans-serif;font-size:14px;border-collapse:collapse">${rows
     .map(

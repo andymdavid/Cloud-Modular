@@ -11,9 +11,11 @@ type Props = SeoProps & {
   /** Header starts transparent over a full-bleed hero, then turns solid. */
   overlayHeader?: boolean;
   navLinks?: NavLink[];
+  /** Full-screen tools (the Cloud Homes design page) leave the footer out. */
+  footer?: boolean;
 };
 
-const { overlayHeader = false, navLinks, ...seo } = Astro.props;
+const { overlayHeader = false, navLinks, footer = true, ...seo } = Astro.props;
 ---
 
 <!doctype html>
@@ -31,7 +33,7 @@ const { overlayHeader = false, navLinks, ...seo } = Astro.props;
     <a href="#main-content" class="skip-link">Skip to main content</a>
     <SiteHeader overlay={overlayHeader} links={navLinks} />
     <main id="main-content"><slot /></main>
-    <SiteFooter />
+    {footer && <SiteFooter />}
 
     <script>
       // Scroll to in-page sections without writing the #hash to the URL, so a reload opens at the

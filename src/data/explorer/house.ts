@@ -37,7 +37,9 @@ export type MaterialKey =
   | "foliage"
   | "trunk"
   | "timberClad"
-  | "darkClad";
+  | "darkClad"
+  /** Kitchen and robe joinery (the Cloud Homes design tool recolours it) */
+  | "joinery";
 
 export type OpeningKind = "slider" | "window" | "door" | "garage-door" | "opening";
 

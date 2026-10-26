@@ -72,6 +72,7 @@ function createMaterials(anisotropy: number): Record<MaterialKey, THREE.Material
       map: tiled(boardTexture(512, ["#7b4a32", "#86553a", "#734530", "#8d5c3f", "#7f4e35", "#6f432d"], "#4a2d1f", 8, 3), 1.2, anisotropy),
     }),
     darkClad: std("#ffffff", 0.6, 0.2, { map: tiled(stripeTexture(256, "#2f3032", "#232426", 4, true, 3), 0.6, anisotropy) }),
+    joinery: std("#eeebe5", 0.7),
   };
 }
 
