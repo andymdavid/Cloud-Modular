@@ -254,8 +254,9 @@ function oneBed(): HouseData<GroupId> {
     bathroom<GroupId>("bedrooms", { x: [1.18, width - EXT], z: [bedWall + 0.045, bathWall - 0.045] }),
     bed<GroupId>("bedrooms", { along: "x", face: EXT, dir: 1, centre: 2.4 }),
     robe,
-    lounge<GroupId>("living", { along: "z", face: EXT, dir: 1, u: [5.6, 7.6] }),
-    dining<GroupId>("living", { centre: [2.6, 8.55], along: "z" }),
+    // Sofa backs onto the bathroom wall, clear of the opening from the hall; dining between it and the kitchen
+    lounge<GroupId>("living", { along: "x", face: bathWall + i2, dir: 1, u: [1.6, 3.6] }),
+    dining<GroupId>("living", { centre: [2.3, 8.3], along: "x" }),
   );
   blocks.push(...inside.blocks);
 
@@ -334,8 +335,9 @@ function twoBed(): HouseData<GroupId> {
     bed<GroupId>("bedrooms", { along: "x", face: EXT, dir: 1, centre: 2.4 }),
     bed<GroupId>("bedrooms", { along: "z", face: width - EXT, dir: -1, centre: 7.95 }),
     robes,
-    lounge<GroupId>("living", { along: "z", face: EXT, dir: 1, u: [9.7, 11.7] }),
-    dining<GroupId>("living", { centre: [2.6, 12.45], along: "z" }),
+    // Sofa backs onto bed 2's wall, clear of the passage down the west wall; dining between it and the kitchen
+    lounge<GroupId>("living", { along: "x", face: bed2 + i2, dir: 1, u: [1.6, 3.6] }),
+    dining<GroupId>("living", { centre: [2.3, 12.4], along: "x" }),
   );
   blocks.push(...inside.blocks);
 
@@ -479,9 +481,10 @@ function fourBed(): HouseData<GroupId> {
     bed<GroupId>("upper", { along: "z", face: width - EXT, dir: -1, centre: 10.55, ...upper }),
     bed<GroupId>("upper", { along: "z", face: EXT, dir: 1, centre: 13.4, ...upper }),
     robe,
-    lounge<GroupId>("living", { along: "z", face: EXT, dir: 1, u: [9.0, 11.0] }),
+    // Sofa backs onto bed 1's wall, clear of the hall down the west wall; dining between it and the kitchen
+    lounge<GroupId>("living", { along: "x", face: bed1 + i2, dir: 1, u: [1.7, 3.7] }),
     lounge<GroupId>("upper", { along: "z", face: EXT, dir: 1, u: [5.4, 7.2], ...upper }),
-    dining<GroupId>("living", { centre: [2.6, 12.05], along: "z" }),
+    dining<GroupId>("living", { centre: [2.4, 11.95], along: "x" }),
   );
   blocks.push(...inside.blocks);
 
