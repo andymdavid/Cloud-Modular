@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
+import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 import { Collector as SharedCollector, boardTexture, box, stripeTexture, tiled } from "./geometry";
 import type { Downpipe, HouseData, Level, MaterialKey, Opening, RoofPrism, Slab, Wall } from "@/data/explorer/house";
 
@@ -82,6 +83,7 @@ function createMaterials(anisotropy: number): Record<MaterialKey, THREE.Material
     rug: std("#cfc6b6", 1),
     gap: std("#2a2826", 0.9),
     unit: std("#e7e6e1", 0.45, 0.05),
+    grille: std("#575858", 0.6, 0.2),
   };
 }
 
@@ -450,6 +452,20 @@ export function buildHouse(house: HouseData, { anisotropy = 4 }: { anisotropy?: 
     if (cylinder.axis === "z") geometry.rotateX(Math.PI / 2);
     geometry.translate(...cylinder.centre);
     out.add(cylinder.group, cylinder.level, cylinder.material, geometry);
+  }
+  for (const rounded of house.roundedBoxes ?? []) {
+    const [x0, y0, z0] = rounded.min;
+    const [x1, y1, z1] = rounded.max;
+    const geometry = new RoundedBoxGeometry(x1 - x0, y1 - y0, z1 - z0, 3, rounded.radius);
+    geometry.translate((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2);
+    out.add(rounded.group, rounded.level, rounded.material, geometry);
+  }
+  for (const ring of house.tori ?? []) {
+    const geometry = new THREE.TorusGeometry(ring.radius, ring.tube, 8, 48);
+    if (ring.axis === "x") geometry.rotateY(Math.PI / 2);
+    if (ring.axis === "y") geometry.rotateX(Math.PI / 2);
+    geometry.translate(...ring.centre);
+    out.add(ring.group, ring.level, ring.material, geometry);
   }
   for (const strut of house.struts ?? []) {
     const from = new THREE.Vector3(...strut.from);

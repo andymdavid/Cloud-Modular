@@ -21,9 +21,30 @@ export interface Cylinder<G extends string> {
   axis?: "x" | "y" | "z";
 }
 
+export interface Rounded<G extends string> {
+  group: G;
+  level: string;
+  material: MaterialKey;
+  min: Vec3;
+  max: Vec3;
+  radius: number;
+}
+
+export interface Ring<G extends string> {
+  group: G;
+  level: string;
+  material: MaterialKey;
+  centre: Vec3;
+  radius: number;
+  tube: number;
+  axis?: "x" | "y" | "z";
+}
+
 export class Fit<G extends string> {
   blocks: Block<G>[] = [];
   cylinders: Cylinder<G>[] = [];
+  roundedBoxes: Rounded<G>[] = [];
+  tori: Ring<G>[] = [];
   constructor(
     public group: G,
     public level = "gf",
@@ -32,6 +53,15 @@ export class Fit<G extends string> {
 
   box(min: Vec3, max: Vec3, material: MaterialKey) {
     this.blocks.push({ group: this.group, level: this.level, min: [min[0], min[1] + this.floor, min[2]], max: [max[0], max[1] + this.floor, max[2]], material });
+  }
+
+  /** Box with rounded edges, for appliance casings. */
+  rbox(min: Vec3, max: Vec3, material: MaterialKey, radius = 0.02) {
+    this.roundedBoxes.push({ group: this.group, level: this.level, material, min: [min[0], min[1] + this.floor, min[2]], max: [max[0], max[1] + this.floor, max[2]], radius });
+  }
+
+  ring(centre: Vec3, radius: number, tube: number, material: MaterialKey, axis: "x" | "y" | "z" = "z") {
+    this.tori.push({ group: this.group, level: this.level, material, centre: [centre[0], centre[1] + this.floor, centre[2]], radius, tube, axis });
   }
 
   cyl(centre: Vec3, radius: number, length: number, material: MaterialKey, axis: "x" | "y" | "z" = "y") {
@@ -256,69 +286,114 @@ export function dining<G extends string>(group: G, { centre, along = "x" }: { ce
 }
 
 // ---------------------------------------------------------------------------------------------------
-// Services on the outside walls
+// Services on the outside walls (rear wall outer face at z = 0, outside towards -z)
 
-/** Air conditioning condenser on a concrete pad against a wall facing -z (the rear), with its pipe cover. */
+/** Fan guard: a mid-grey fan behind concentric rings and a cross of spokes, facing -z at depth z. */
+function fanGuard<G extends string>(fit: Fit<G>, x: number, y: number, z: number, radius: number) {
+  fit.cyl([x, y, z - 0.002], radius, 0.004, "grille", "z");
+  fit.cyl([x, y, z - 0.006], radius * 0.18, 0.006, "unit", "z");
+  for (let i = 1; i <= 4; i++) fit.ring([x, y, z - 0.008], (radius * i) / 4, 0.0035, "unit");
+  fit.box([x - radius, y - 0.003, z - 0.011], [x + radius, y + 0.003, z - 0.005], "unit");
+  fit.box([x - 0.003, y - radius, z - 0.011], [x + 0.003, y + radius, z - 0.005], "unit");
+}
+
+/**
+ * Air conditioning condenser on two feet just off the ground, with the fan guard on its face, the valve cover on its
+ * side, insulated refrigerant pipes looping down and into the wall, and an isolator switch on the wall beside it.
+ */
 export function acUnit<G extends string>(group: G, x: number) {
   const fit = new Fit(group);
-  fit.box([x - 0.5, -0.2, -0.5], [x + 0.5, 0.06, -0.02], "concrete");
-  fit.box([x - 0.42, 0.06, -0.4], [x + 0.42, 0.7, -0.08], "unit");
-  fit.cyl([x - 0.1, 0.38, -0.401], 0.21, 0.004, "gap", "z");
-  for (let i = -3; i <= 3; i++) fit.box([x - 0.33, 0.38 + i * 0.05 - 0.004, -0.408], [x + 0.13, 0.38 + i * 0.05 + 0.004, -0.402], "unit");
-  fit.box([x + 0.22, 0.14, -0.405], [x + 0.36, 0.62, -0.4], "gap");
-  fit.box([x + 0.3, 0.7, -0.09], [x + 0.4, 2.1, -0.01], "unit"); // pipe cover up the wall
+  const [y0, y1, z0, z1] = [0.08, 0.63, -0.41, -0.12];
+  for (const fx of [x - 0.3, x + 0.3]) fit.box([fx - 0.03, 0, z0 + 0.02], [fx + 0.03, y0, z1 - 0.02], "gap");
+  fit.rbox([x - 0.4, y0, z0], [x + 0.4, y1, z1], "unit", 0.025);
+  fanGuard(fit, x - 0.08, (y0 + y1) / 2, z0, 0.2);
+  fit.rbox([x + 0.39, 0.16, -0.33], [x + 0.44, 0.36, -0.17], "unit", 0.012);
+  // Insulated pipes: out of the valve cover, down, then back into the wall low down
+  const px = x + 0.5;
+  fit.cyl([x + 0.47, 0.28, -0.25], 0.022, 0.07, "linen", "x");
+  fit.cyl([px, 0.2, -0.25], 0.022, 0.18, "linen");
+  fit.cyl([px, 0.11, -0.125], 0.022, 0.27, "linen", "z");
+  fit.rbox([px - 0.05, 0.06, -0.025], [px + 0.05, 0.16, 0], "unit", 0.01);
+  // Isolator switch on the wall
+  fit.rbox([x + 0.22, 0.85, -0.06], [x + 0.34, 1.0, 0], "unit", 0.01);
+  fit.box([x + 0.265, 0.9, -0.064], [x + 0.295, 0.95, -0.06], "grille");
   return fit;
 }
 
-/** Heat pump hot water: a round tank with the heat pump on top, on a concrete slab against the rear wall. */
+/**
+ * Heat pump hot water (all-in-one): a round tank with the heat pump on top, its fan guard facing out, on a low slab,
+ * with its water pipes running into the wall.
+ */
 export function heatPumpHotWater<G extends string>(group: G, x: number) {
   const fit = new Fit(group);
-  fit.box([x - 0.4, -0.2, -0.85], [x + 0.4, 0.05, -0.05], "concrete");
-  fit.cyl([x, 0.75, -0.45], 0.29, 1.4, "unit");
-  fit.cyl([x, 1.55, -0.45], 0.3, 0.22, "unit");
-  fit.cyl([x, 1.67, -0.45], 0.2, 0.02, "gap");
-  fit.cyl([x + 0.18, 0.4, -0.12], 0.015, 0.7, "stainless");
+  const zc = -0.42;
+  fit.box([x - 0.36, -0.2, zc - 0.36], [x + 0.36, 0.03, zc + 0.36], "concrete");
+  fit.cyl([x, 0.05, zc], 0.24, 0.04, "gap");
+  fit.cyl([x, 0.695, zc], 0.27, 1.25, "unit");
+  fit.cyl([x, 1.33, zc], 0.275, 0.02, "grille");
+  fit.cyl([x, 1.5, zc], 0.28, 0.32, "unit");
+  fit.cyl([x, 1.675, zc], 0.25, 0.03, "unit");
+  fanGuard(fit, x, 1.5, zc - 0.285, 0.11);
+  for (const [px, py] of [
+    [x + 0.08, 0.3],
+    [x + 0.16, 1.05],
+  ]) {
+    fit.cyl([px, py, (zc + 0.24) / 2], 0.014, -(zc + 0.24) + 0.02, "stainless", "z");
+  }
   return fit;
 }
 
-/** Battery (slim, with a status light), inverter and the sub-board on the rear wall. */
+/** Slim battery with a status light, and the inverter above it with its display, joined by conduit. */
 export function batteryAndInverter<G extends string>(group: G, x: number) {
   const fit = new Fit(group);
-  fit.box([x, 0.25, -0.16], [x + 0.6, 1.4, -0.01], "unit");
-  fit.box([x + 0.27, 1.1, -0.165], [x + 0.33, 1.28, -0.16], "gap");
-  fit.box([x + 0.05, 1.5, -0.17], [x + 0.55, 2.0, -0.01], "unit");
-  fit.box([x + 0.2, 1.8, -0.175], [x + 0.4, 1.9, -0.17], "appliance");
-  fit.box([x + 0.28, 1.4, -0.07], [x + 0.32, 1.5, -0.03], "gap"); // conduit
+  fit.rbox([x, 0.35, -0.15], [x + 0.6, 1.45, -0.01], "unit", 0.04);
+  fit.box([x + 0.29, 1.05, -0.153], [x + 0.31, 1.3, -0.149], "stainless");
+  fit.rbox([x + 0.06, 1.56, -0.17], [x + 0.54, 2.0, -0.01], "unit", 0.025);
+  fit.box([x + 0.23, 1.84, -0.173], [x + 0.37, 1.91, -0.169], "appliance");
+  fit.cyl([x + 0.3, 1.505, -0.07], 0.012, 0.11, "unit");
+  fit.cyl([x + 0.48, 2.3, -0.04], 0.012, 0.6, "unit");
   return fit;
 }
 
+/** Meter box and sub-board: a shallow cabinet with a door seam and a small handle. */
 export function subBoard<G extends string>(group: G, x: number) {
   const fit = new Fit(group);
-  fit.box([x, 1.1, -0.14], [x + 0.45, 1.75, -0.01], "unit");
-  fit.box([x + 0.02, 1.12, -0.142], [x + 0.43, 1.73, -0.14], "gap");
-  fit.box([x + 0.025, 1.125, -0.146], [x + 0.425, 1.725, -0.142], "unit");
+  fit.rbox([x, 1.1, -0.13], [x + 0.42, 1.75, -0.01], "unit", 0.015);
+  fit.box([x + 0.02, 1.12, -0.133], [x + 0.4, 1.122, -0.129], "gap");
+  fit.box([x + 0.02, 1.728, -0.133], [x + 0.4, 1.73, -0.129], "gap");
+  fit.box([x + 0.02, 1.12, -0.133], [x + 0.022, 1.73, -0.129], "gap");
+  fit.box([x + 0.398, 1.12, -0.133], [x + 0.4, 1.73, -0.129], "gap");
+  fit.box([x + 0.35, 1.38, -0.14], [x + 0.37, 1.48, -0.13], "grille");
   return fit;
 }
 
-/** Square downpipe down a corner from the roof to the ground, with a short offset at the top. */
+/** Square downpipe down a corner from the roof to the ground, with a short offset at the top and a shoe at the base. */
 export function downpipe<G extends string>(group: G, x: number, top: number) {
   const fit = new Fit(group);
   fit.box([x - 0.05, 0.05, -0.085], [x + 0.05, top - 0.25, -0.01], "downpipe");
   fit.box([x - 0.05, top - 0.25, -0.14], [x + 0.05, top - 0.05, -0.01], "downpipe");
+  fit.box([x - 0.055, 0, -0.14], [x + 0.055, 0.06, -0.01], "downpipe");
   return fit;
 }
 
 /** Wall-mounted electric vehicle charger on an east wall (outer face at x = face), with its cable coiled on a holster. */
 export function evCharger<G extends string>(group: G, face: number, z: number) {
   const fit = new Fit(group);
-  fit.box([face, 1.05, z - 0.13], [face + 0.12, 1.45, z + 0.13], "unit");
-  fit.box([face + 0.12, 1.3, z - 0.06], [face + 0.125, 1.38, z + 0.06], "appliance");
-  fit.cyl([face + 0.09, 0.95, z], 0.12, 0.05, "appliance", "x");
-  fit.cyl([face + 0.09, 0.95, z], 0.08, 0.06, "unit", "x");
+  fit.rbox([face, 1.05, z - 0.13], [face + 0.11, 1.45, z + 0.13], "unit", 0.03);
+  fit.box([face + 0.11, 1.32, z - 0.05], [face + 0.113, 1.36, z + 0.05], "appliance");
+  fit.rbox([face, 0.86, z - 0.04], [face + 0.07, 0.98, z + 0.04], "unit", 0.015);
+  for (const r of [0.13, 0.145, 0.16]) fit.ring([face + 0.05, 0.84, z], r, 0.012, "appliance", "x");
   return fit;
 }
 
 /** Merge several fittings into block and cylinder lists. */
-export function collect<G extends string>(...fits: { blocks: Block<G>[]; cylinders: Cylinder<G>[] }[]) {
-  return { blocks: fits.flatMap((f) => f.blocks), cylinders: fits.flatMap((f) => f.cylinders) };
+type Parts<G extends string> = { blocks: Block<G>[]; cylinders: Cylinder<G>[]; roundedBoxes: Rounded<G>[]; tori: Ring<G>[] };
+
+export function collect<G extends string>(...fits: Parts<G>[]): Parts<G> {
+  return {
+    blocks: fits.flatMap((f) => f.blocks),
+    cylinders: fits.flatMap((f) => f.cylinders),
+    roundedBoxes: fits.flatMap((f) => f.roundedBoxes),
+    tori: fits.flatMap((f) => f.tori),
+  };
 }

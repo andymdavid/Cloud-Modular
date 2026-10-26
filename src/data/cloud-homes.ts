@@ -35,8 +35,8 @@ export interface CameraView {
   azimuth: number;
   polar: number;
   inside?: boolean;
-  /** Close in on a room: "kitchen" frames the kitchen at the front of the home. */
-  focus?: "kitchen";
+  /** Close in on part of the home: the kitchen at the front, or the services on the rear wall. */
+  focus?: "kitchen" | "services";
 }
 
 /** What a choice changes in the 3D home. */
@@ -149,7 +149,7 @@ export const sections: readonly Section[] = [
     label: "Battery",
     title: "Add a home battery",
     kind: "card",
-    camera: { azimuth: 205, polar: 74 },
+    camera: { azimuth: 200, polar: 76, focus: "services" },
     when: { section: "solar", is: ["solar"] },
     choices: [
       { id: "battery", name: "Home battery", detail: "Store your solar power to use at night", show: { battery: true } },

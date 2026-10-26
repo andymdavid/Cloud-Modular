@@ -14,7 +14,7 @@ export interface DesignView {
   azimuth: number;
   polar: number;
   inside?: boolean;
-  focus?: "kitchen";
+  focus?: "kitchen" | "services";
 }
 
 export interface DesignState {
@@ -302,7 +302,7 @@ export function createDesignViewer(options: {
 
   let home = options.home;
   function turn() {
-    const focus = view.focus ? { target: focusPoints(home)[view.focus], zoom: 1.9 } : undefined;
+    const focus = view.focus ? { target: focusPoints(home)[view.focus], zoom: view.focus === "services" ? 2.6 : 1.9 } : undefined;
     explorer.turnTo(view.azimuth, view.polar, focus);
   }
 

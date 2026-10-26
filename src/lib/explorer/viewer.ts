@@ -175,6 +175,8 @@ export function createExplorer(options: ExplorerOptions): Explorer {
   scene.add(new THREE.HemisphereLight("#ffffff", "#ddd8ce", studio ? 0.75 : 0.6));
   const sun = new THREE.DirectionalLight(studio ? "#fff8ef" : "#fff4e6", studio ? 2.3 : 2.6);
   sun.position.set(...stage.sun);
+  const sunDistance = sun.position.length();
+  const sunPolar = Math.acos(sun.position.y / sunDistance);
   sun.castShadow = true;
   sun.shadow.mapSize.setScalar(small() ? 1024 : 2048);
   const extent = stage.shadowExtent;
@@ -371,6 +373,14 @@ export function createExplorer(options: ExplorerOptions): Explorer {
     frameRequest = 0;
     if (disposed) return;
     controls.update(); // advances damping; emits "change", which requests the next frame while moving
+    if (studio) {
+      // Product-shot key light: keep the sun over the viewer's shoulder, so the side in view is always lit
+      const view = new THREE.Spherical().setFromVector3(camera.position.clone().sub(controls.target));
+      const lit = new THREE.Spherical(sunDistance, sunPolar, view.theta + THREE.MathUtils.degToRad(35));
+      sun.position.copy(controls.target).add(new THREE.Vector3().setFromSpherical(lit));
+      sun.target.position.copy(controls.target);
+      sun.target.updateMatrixWorld();
+    }
     if (composer) composer.render();
     else renderer.render(scene, camera);
   };

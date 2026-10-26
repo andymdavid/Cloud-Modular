@@ -271,6 +271,8 @@ function oneBed(): HouseData<GroupId> {
     posts: { group: "vergola", at: v.posts, height: LV.vergolaSoffit },
     struts: roofRibs(EXT, width - EXT, 0, front - EXT, (z) => LV.roofRear + z * tan(2)),
     cylinders: inside.cylinders,
+    roundedBoxes: inside.roundedBoxes,
+    tori: inside.tori,
   };
 }
 
@@ -347,6 +349,8 @@ function twoBed(): HouseData<GroupId> {
     posts: { group: "vergola", at: v.posts, height: LV.vergolaSoffit },
     struts: roofRibs(EXT, width - EXT, 0, front - EXT, (z) => LV.roofRear + z * tan(2)),
     cylinders: inside.cylinders,
+    roundedBoxes: inside.roundedBoxes,
+    tori: inside.tori,
   };
 }
 
@@ -494,6 +498,8 @@ function fourBed(): HouseData<GroupId> {
       ...roofRibs(0, width, -0.15, ufRear, (z) => 2.7 + z * tan(6)),
     ],
     cylinders: inside.cylinders,
+    roundedBoxes: inside.roundedBoxes,
+    tori: inside.tori,
   };
 }
 
@@ -529,5 +535,9 @@ const SIZES: Record<CloudHomeId, { width: number; front: number }> = {
 export const focusPoints = (id: CloudHomeId) => {
   const { front } = SIZES[id];
   // Centre in plan is (width / 2 + vergola / 2, front / 2); aim just behind the kitchen so it sits mid-screen
-  return { kitchen: [-VERGOLA_WIDTH / 2, 1.0, front / 2 - 0.7] as Vec3 };
+  return {
+    kitchen: [-VERGOLA_WIDTH / 2, 1.0, front / 2 - 0.7] as Vec3,
+    // The services on the rear wall, between the battery and the air conditioning unit
+    services: [-VERGOLA_WIDTH / 2, 0.9, -front / 2 - 0.3] as Vec3,
+  };
 };
