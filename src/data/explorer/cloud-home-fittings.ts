@@ -398,7 +398,7 @@ export function bathroom<G extends string>(
     back([t0, x1 - 0.03], [0.45, 0.48], [0.86, 0.9], "stainless");
     back([t0, t0 + 0.03], [0, 0.48], [0.86, 0.9], "stainless");
     back([x1 - 0.06, x1 - 0.03], [0, 0.48], [0.86, 0.9], "stainless");
-    back([t0 + 0.03, x1 - 0.06], [0.03, 0.45], [0.86, 0.861], "gap");
+    back([t0 + 0.03, x1 - 0.06], [0.03, 0.45], [0.86, 0.861], "grille");
     const [gx, gz] = backAt((t0 + x1) / 2, 0.06);
     fit.cyl([gx, 1.05, gz], 0.012, 0.3, "stainless");
     fit.ring([gx, 1.2, gz - 0.08], 0.08, 0.01, "stainless", "x", Math.PI);
@@ -429,7 +429,7 @@ export function powderRoom<G extends string>(group: G, { x, z }: { x: [number, n
   const backAt = (u: number, d: number): [number, number] => [u, z[1] - d];
   const [b0, b1] = [x[0] + 0.1, x[0] + 0.55];
   fit.rbox(...span(back, [b0, b1], [0, 0.3], [0.72, 0.86]), "ceramic", 0.03);
-  back([b0 + 0.06, b1 - 0.06], [0.06, 0.26], [0.86, 0.861], "gap");
+  back([b0 + 0.06, b1 - 0.06], [0.06, 0.26], [0.86, 0.861], "floorTile");
   const [tx, tz] = backAt((b0 + b1) / 2, 0.04);
   fit.cyl([tx, 0.94, tz], 0.01, 0.16, "stainless");
   fit.ring([tx, 1.02, tz - 0.04], 0.04, 0.008, "stainless", "x", Math.PI);

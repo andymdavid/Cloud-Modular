@@ -296,10 +296,11 @@ function twoBed(): HouseData<GroupId> {
     { group: "bedrooms", ...ext, a: [xw, 0], b: [xw, bed2] },
     { group: "bedrooms", ...ext, a: [xe, 0], b: [xe, bed2], openings: [sized(0.43, 2.3, 0.6), sized(3.975, 0.9, 0.9), sized(6.86, 2.0, 0.55)] },
     { group: "bedrooms", ...int, a: [xw, bed1], b: [xe, bed1], openings: [door(0.2, 1.02)] },
-    { group: "bedrooms", ...int, a: [hall, bed1], b: [hall, bed2 - 0.7], openings: [door(3.2, 3.92), door(5.4, 6.12), door(6.7, 7.52)] },
+    { group: "bedrooms", ...int, a: [hall, bed1], b: [hall, bed2 + 0.7], openings: [door(3.2, 3.92), door(5.4, 6.12), door(6.7, 7.52)] },
     { group: "bedrooms", ...int, a: [hall, bath], b: [xe, bath] },
     { group: "bedrooms", ...int, a: [2.965, bath], b: [2.965, pdr] },
-    { group: "bedrooms", ...int, a: [hall, pdr], b: [xe, pdr] },
+    // Powder room wall; east of it the robe opens to bed 2 through 2400 × 1200 sliding doors
+    { group: "bedrooms", ...int, a: [hall, pdr], b: [2.965 + i2, pdr] },
     { group: "bedrooms", ...int, a: [hall, bed2], b: [xe, bed2] },
     { group: "living", ...ext, a: [xw, bed2], b: [xw, front] },
     { group: "living", ...ext, a: [xe, bed2], b: [xe, front], openings: [win(9.49, 12.41, 0, 2.15, "slider")] },
@@ -323,7 +324,8 @@ function twoBed(): HouseData<GroupId> {
   ];
   const robes = new Fit<GroupId>("bedrooms");
   tallUnit(robes.wall("z", EXT, 1), [EXT, 1.59], 0.5);
-  tallUnit(robes.wall("z", width - EXT, -1), [pdr - 1.2, pdr - 0.045], 0.6);
+  // Built-in robe behind the powder room, its sliding doors facing bed 2
+  tallUnit(robes.wall("x", bath + i2, 1), [2.965 + i2, width - EXT], pdr - bath, 2.4);
   const inside = collect(
     services(width, front, LV.roofRear, true),
     kitchen<GroupId>("living", width, front, 2.15),
