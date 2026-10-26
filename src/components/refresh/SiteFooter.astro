@@ -125,7 +125,19 @@ const groups: FooterGroup[] = [
         <p class="label label-muted">{new Date().getFullYear()} © Cloud Modular</p>
         <a href="/privacy-policy/" class="label label-muted footer-legal">Privacy Policy</a>
       </div>
-      <a href="/terms/" class="label label-muted footer-legal col-span-2 justify-self-start md:col-span-2 md:col-start-5">Terms</a>
+      <div class="col-span-2 flex items-center justify-between gap-6 md:col-span-2 md:col-start-5">
+        <a href="/terms/" class="label label-muted footer-legal">Terms</a>
+        <!-- Site credit: the studio's icon, its name shown on hover -->
+        <a href="https://offpistestudio.com" target="_blank" rel="noopener" class="site-by label label-muted" aria-label="Site by Off Piste Studio">
+          <span aria-hidden="true">Site by</span>
+          <svg class="site-by-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+            <rect x="16" y="11" width="10" height="10" /><rect x="38" y="11" width="10" height="10" />
+            <rect x="6" y="33" width="10" height="10" /><rect x="48" y="33" width="10" height="10" />
+            <rect x="16" y="43" width="32" height="10" />
+          </svg>
+          <span class="site-by-name" aria-hidden="true">Off Piste Studio</span>
+        </a>
+      </div>
     </div>
   </div>
 </footer>
@@ -153,6 +165,49 @@ const groups: FooterGroup[] = [
 
   .footer-legal:hover {
     color: rgb(var(--paper));
+  }
+
+  .site-by {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    transition: color var(--dur-base) var(--ease-standard);
+  }
+
+  .site-by-mark {
+    width: 1.125rem;
+    height: 1.125rem;
+    fill: currentColor;
+  }
+
+  /* The studio's name appears above the mark on hover or focus */
+  .site-by-name {
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + 0.625rem);
+    padding: 0.375rem 0.625rem;
+    border-radius: var(--radius-xs);
+    background: rgb(var(--paper));
+    color: rgb(var(--ink));
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(0.25rem);
+    pointer-events: none;
+    transition:
+      opacity var(--dur-base) var(--ease-standard),
+      transform var(--dur-base) var(--ease-standard);
+  }
+
+  .site-by:hover,
+  .site-by:focus-visible {
+    color: rgb(var(--paper));
+  }
+
+  .site-by:hover .site-by-name,
+  .site-by:focus-visible .site-by-name {
+    opacity: 1;
+    transform: none;
   }
 
   .footer-link:hover {
