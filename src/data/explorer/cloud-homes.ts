@@ -36,7 +36,7 @@ import {
 } from "./cloud-home-fittings";
 
 export type CloudHomeId = "one-bed" | "two-bed" | "four-bed";
-export type GroupId = "bedrooms" | "living" | "upper" | "vergola" | "roof" | "frame" | "solar" | "battery" | "services" | "stone";
+export type GroupId = "bedrooms" | "living" | "upper" | "vergola" | "roof" | "frame" | "solar" | "battery" | "services" | "stone" | "access";
 
 type W = Wall<GroupId>;
 type B = Block<GroupId>;
@@ -521,24 +521,27 @@ export const explode: Record<GroupId, Vec3> = {
   battery: [0, 0, 0],
   services: [0, 0, 0],
   stone: [0, 0, 0],
+  access: [0, 0, 0],
 };
 
 /** Views: the outside, or with the roof (and upper floor) lifted off to see inside. */
 export const levelRank: Record<string, number> = { gf: 0, uf: 1, roof: 2 };
 
 /** Points the design tool's camera can close in on, in scene coordinates (the plan less the home's centre). */
-const SIZES: Record<CloudHomeId, { width: number; front: number }> = {
-  "one-bed": { width: 4.3, front: 11.5 },
-  "two-bed": { width: 4.3, front: 14.9 },
-  "four-bed": { width: 4.35, front: 14.95 },
+const SIZES: Record<CloudHomeId, { width: number; front: number; bath: [number, number] }> = {
+  "one-bed": { width: 4.3, front: 11.5, bath: [2.68, 4.09] },
+  "two-bed": { width: 4.3, front: 14.9, bath: [2.68, 4.09] },
+  "four-bed": { width: 4.35, front: 14.95, bath: [2.77, 3.87] },
 };
 
 export const focusPoints = (id: CloudHomeId) => {
-  const { front } = SIZES[id];
+  const { width, front, bath } = SIZES[id];
   // Centre in plan is (width / 2 + vergola / 2, front / 2); aim just behind the kitchen so it sits mid-screen
   return {
     kitchen: [-VERGOLA_WIDTH / 2, 1.0, front / 2 - 0.7] as Vec3,
     // The services on the rear wall, between the battery and the air conditioning unit
     services: [-VERGOLA_WIDTH / 2, 0.9, -front / 2 - 0.3] as Vec3,
+    // The bathroom (ground floor), from its centre in plan
+    bathroom: [bath[0] - (width / 2 + VERGOLA_WIDTH / 2), 0.9, bath[1] - front / 2] as Vec3,
   };
 };

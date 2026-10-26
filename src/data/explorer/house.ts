@@ -52,7 +52,9 @@ export type MaterialKey =
   | "unit"
   | "grille"
   | "tile"
-  | "led";
+  | "led"
+  | "floorTile"
+  | "mirror";
 
 export type OpeningKind = "slider" | "window" | "door" | "garage-door" | "opening";
 

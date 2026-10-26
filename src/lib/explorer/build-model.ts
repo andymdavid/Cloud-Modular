@@ -85,6 +85,8 @@ function createMaterials(anisotropy: number): Record<MaterialKey, THREE.Material
     unit: std("#e7e6e1", 0.45, 0.05),
     grille: std("#575858", 0.6, 0.2),
     tile: std("#f2f1ed", 0.2, 0.02),
+    floorTile: std("#d9d6cf", 0.55, 0.02),
+    mirror: std("#dfe4e6", 0.03, 1),
     led: new THREE.MeshStandardMaterial({ color: "#fff6e3", emissive: "#ffe9c2", emissiveIntensity: 1.4, roughness: 0.5 }),
   };
 }

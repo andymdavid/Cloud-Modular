@@ -36,7 +36,7 @@ export interface CameraView {
   polar: number;
   inside?: boolean;
   /** Close in on part of the home: the kitchen at the front, or the services on the rear wall. */
-  focus?: "kitchen" | "services";
+  focus?: "kitchen" | "services" | "bathroom";
 }
 
 /** What a choice changes in the 3D home. */
@@ -207,11 +207,11 @@ export const extras = {
   // Most extras are inside, and stone benchtops show best up close
   camera: { azimuth: 205, polar: 42, inside: true, focus: "kitchen" } as CameraView,
   items: [
-    { id: "stone-benchtops", name: "Stone benchtops", detail: "Polished engineered stone with a thicker edge" },
+    { id: "stone-benchtops", name: "Stone benchtops", detail: "Polished engineered stone with a thicker edge", camera: { azimuth: 205, polar: 42, inside: true, focus: "kitchen" } as CameraView },
     { id: "roller-blinds", name: "Roller blinds", detail: "Privacy without losing the light" },
     { id: "plantation-shutters", name: "Plantation shutters", detail: "Adjustable shutters to the bedrooms" },
     { id: "ceiling-fans", name: "Ceiling fans", detail: "In the living room and bedrooms" },
-    { id: "accessible-bathroom", name: "Accessible bathroom fittings", detail: "Grab rails and easier access" },
+    { id: "accessible-bathroom", name: "Accessible bathroom fittings", detail: "Grab rails and easier access", camera: { azimuth: 255, polar: 34, inside: true, focus: "bathroom" } as CameraView },
   ],
 } as const;
 
@@ -286,6 +286,7 @@ export function modelState(design: Design) {
     if (choice.cladding) state.cladding = choice.cladding;
   }
   state.show.stone = state.stone;
+  state.show.access = design.extras.some((e) => e.id === "accessible-bathroom");
   // Hidden sections leave their groups off (no battery without solar)
   return state;
 }

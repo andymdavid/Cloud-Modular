@@ -75,13 +75,17 @@ export class Fit<G extends string> {
    * x (a rear or front wall at z = face) or along z (a side wall at x = face); `dir` is the direction into the room.
    */
   wall(along: "x" | "z", face: number, dir: 1 | -1) {
-    return (u: [number, number], d: [number, number], y: [number, number], material: MaterialKey) => {
+    const bounds = (u: [number, number], d: [number, number], y: [number, number]): [Vec3, Vec3] => {
       const d0 = face + dir * d[0];
       const d1 = face + dir * d[1];
       const [a, b] = [Math.min(d0, d1), Math.max(d0, d1)];
-      if (along === "x") this.box([u[0], y[0], a], [u[1], y[1], b], material);
-      else this.box([a, y[0], u[0]], [b, y[1], u[1]], material);
+      return along === "x" ? [[u[0], y[0], a], [u[1], y[1], b]] : [[a, y[0], u[0]], [b, y[1], u[1]]];
     };
+    const place = (u: [number, number], d: [number, number], y: [number, number], material: MaterialKey) => {
+      const [min, max] = bounds(u, d, y);
+      this.box(min, max, material);
+    };
+    return Object.assign(place, { bounds });
   }
 }
 
@@ -209,15 +213,20 @@ export function kitchen<G extends string>(group: G, width: number, front: number
     const [wx, wz] = frontAt((b0 + b1) / 2, 0.31);
     fit.cyl([wx, 0.672, wz], 0.03, 0.004, "appliance");
   }
+  // Divider between the bowls, closed to just under the benchtop
+  frontRun([sinkAt - 0.01, sinkAt + 0.01], [0.1, 0.52], [0.66, 0.862], "stainless");
   const [mx, mz] = frontAt(sinkAt, 0.05);
   fit.cyl([mx, 0.905, mz], 0.03, 0.01, "stainless");
   fit.cyl([mx, 1.06, mz], 0.014, 0.3, "stainless");
   fit.ring([mx, 1.21, mz - 0.09], 0.09, 0.012, "stainless", "x", Math.PI);
   fit.cyl([mx, 1.17, mz - 0.18], 0.012, 0.08, "stainless");
   fit.cyl([mx + 0.04, 1.02, mz], 0.008, 0.08, "stainless", "x");
-  // Splashback tiles either side of the window
-  frontRun([inX0, sinkAt - 1], [0, 0.01], [0.9, 1.4], "tile");
-  frontRun([sinkAt + 1, inX1], [0, 0.01], [0.9, 1.65], "tile");
+  // Splashback (2 Bed set sheet 11): one band from the benchtop to the window sill along the whole run, then up to
+  // the underside of the overheads wherever there are overheads
+  const [w0, w1] = [sinkAt - 1, sinkAt + 1];
+  frontRun([inX0, inX1], [0, 0.01], [0.9, 1.4], "tile");
+  frontRun([inX0, w0 - 0.05], [0, 0.01], [1.4, 1.65], "tile");
+  frontRun([w1 + 0.05, inX1], [0, 0.01], [1.4, 1.65], "tile");
   overheads(frontRun, [inX0, sinkAt - 1.05]);
   overheads(frontRun, [sinkAt + 1.05, inX1]);
 
@@ -284,58 +293,147 @@ function fridgeAt(fit: Fit<string>, place: Place, u: [number, number], at: (uu: 
 }
 
 // ---------------------------------------------------------------------------------------------------
-// Bathroom: shower in one corner behind a glass screen, vanity, washing machine and trough, toilet
+// Bathrooms (2 Bed set sheet 11 bath and powder room layouts): tiled floor, a hobless shower behind a glass screen,
+// wall-hung vanity with mirror cabinet, washing machine and trough, toilet, towel rail. Grab rails, in their own
+// group, appear with the accessible bathroom extra.
+
+/** Wall-faced toilet against a wall: cistern, pan and closed seat with soft edges, and a dual flush button. */
+function toilet(fit: Fit<string>, side: Place, at: (u: number, d: number) => [number, number], u: number) {
+  fit.rbox(...span(side, [u - 0.19, u + 0.19], [0.01, 0.17], [0.38, 0.84]), "ceramic", 0.04);
+  fit.rbox(...span(side, [u - 0.18, u + 0.18], [0.12, 0.62], [0, 0.39]), "ceramic", 0.07);
+  fit.rbox(...span(side, [u - 0.185, u + 0.185], [0.13, 0.64], [0.385, 0.43]), "ceramic", 0.03);
+  const [bx, bz] = at(u, 0.09);
+  fit.cyl([bx, 0.845, bz], 0.035, 0.012, "stainless");
+}
+
+/** World min and max for a wall-relative box (for rounded boxes). */
+function span(place: Place, u: [number, number], d: [number, number], y: [number, number]): [Vec3, Vec3] {
+  return (place as Place & { bounds(u: [number, number], d: [number, number], y: [number, number]): [Vec3, Vec3] }).bounds(u, d, y);
+}
+
+/** Heated towel ladder on a wall with a folded towel over it. */
+function towelRail(fit: Fit<string>, place: Place, at: (u: number, d: number) => [number, number], u: number, normal: "x" | "z") {
+  const along = normal === "x" ? "z" : "x";
+  for (const uu of [u - 0.25, u + 0.25]) {
+    const [px, pz] = at(uu, 0.06);
+    fit.cyl([px, 1.05, pz], 0.012, 0.7, "stainless");
+  }
+  for (let i = 0; i < 5; i++) {
+    const [rx, rz] = at(u, 0.06);
+    fit.cyl([rx, 0.75 + i * 0.15, rz], 0.009, 0.5, "stainless", along);
+  }
+  place([u - 0.2, u + 0.2], [0.035, 0.085], [1.0, 1.36], "linen");
+}
 
 export function bathroom<G extends string>(
   group: G,
   { x, z, laundry = true, level = "gf", floor = 0 }: { x: [number, number]; z: [number, number]; laundry?: boolean; level?: string; floor?: number },
 ) {
   const fit = new Fit(group, level, floor);
+  const access = new Fit("access" as G, level, floor);
   const [x0, x1] = x;
   const [z0, z1] = z;
   const back = fit.wall("x", z1, -1); // fittings along the far wall
-  // Shower: tiled floor, glass screen and rail shower
-  fit.box([x0, 0, z1 - 0.9], [x0 + 0.9, 0.012, z1], "ceramic");
-  fit.box([x0 + 0.9, 0, z1 - 0.9], [x0 + 0.91, 2.0, z1 - 0.1], "glass");
-  fit.box([x0 + 0.02, 0, z1 - 0.9], [x0 + 0.9, 2.0, z1 - 0.89], "glass");
-  fit.cyl([x0 + 0.06, 1.5, z1 - 0.45], 0.012, 0.9, "stainless");
-  fit.cyl([x0 + 0.16, 1.95, z1 - 0.45], 0.1, 0.012, "stainless");
-  // Wall-hung vanity with a basin, mixer and mirror
+  const backAt = (u: number, d: number): [number, number] => [u, z1 - d];
+  const side = fit.wall("z", x1, -1); // the toilet wall
+  const sideAt = (u: number, d: number): [number, number] => [x1 - d, u];
+  const west = fit.wall("z", x0, 1);
+  const front = fit.wall("x", z0, 1);
+  const frontAt = (u: number, d: number): [number, number] => [u, z0 + d];
+
+  // Floor tiles and a tiled skirting
+  fit.box([x0, 0, z0], [x1, 0.008, z1], "floorTile");
+  // Shower: hobless corner with full-height wall tiles, a linear grate and a framed glass screen
+  west([z1 - 0.95, z1], [0, 0.008], [0, 2.1], "tile");
+  back([x0, x0 + 0.95], [0, 0.008], [0, 2.1], "tile");
+  fit.box([x0 + 0.06, 0.008, z1 - 0.9], [x0 + 0.86, 0.011, z1 - 0.86], "stainless");
+  fit.box([x0 + 0.9, 0.008, z1 - 0.9], [x0 + 0.908, 2.0, z1 - 0.05], "glass");
+  fit.box([x0 + 0.008, 0.008, z1 - 0.908], [x0 + 0.6, 2.0, z1 - 0.9], "glass");
+  fit.box([x0 + 0.895, 1.99, z1 - 0.9], [x0 + 0.913, 2.005, z1 - 0.05], "stainless");
+  fit.box([x0 + 0.008, 1.99, z1 - 0.913], [x0 + 0.6, 2.005, z1 - 0.895], "stainless");
+  fit.box([x0 + 0.895, 0.008, z1 - 0.06], [x0 + 0.913, 2.0, z1 - 0.008], "stainless");
+  // Rail shower, overhead rose on an arm, and the mixer
+  const [rx, rz] = backAt(x0 + 0.5, 0.05);
+  fit.cyl([rx, 1.4, rz], 0.012, 0.9, "stainless");
+  fit.rbox([rx - 0.03, 1.45, rz - 0.06], [rx + 0.03, 1.65, rz - 0.02], "stainless", 0.015);
+  fit.cyl([rx, 2.05, rz - 0.15], 0.01, 0.3, "stainless", "z");
+  fit.cyl([rx, 2.035, rz - 0.3], 0.12, 0.012, "stainless");
+  const [mx, mz] = backAt(x0 + 0.5, 0.01);
+  fit.cyl([mx, 1.05, mz], 0.06, 0.012, "stainless", "z");
+  fit.cyl([mx, 1.05, mz - 0.04], 0.01, 0.07, "stainless", "z");
+
+  // Wall-hung vanity with two drawers, an integrated basin, a mixer and a mirror cabinet
   const v0 = x0 + 0.95;
-  back([v0, v0 + 0.85], [0, 0.46], [0.35, 0.82], "joinery");
-  back([v0 + 0.425 - 0.002, v0 + 0.425 + 0.002], [0.46, 0.462], [0.37, 0.8], "gap");
-  back([v0, v0 + 0.85], [0, 0.47], [0.82, 0.85], "ceramic");
-  back([v0 + 0.2, v0 + 0.65], [0.1, 0.42], [0.83, 0.851], "gap");
-  fit.cyl([v0 + 0.425, 0.95, z1 - 0.06], 0.014, 0.2, "stainless");
-  back([v0 + 0.05, v0 + 0.8], [0, 0.02], [1.1, 1.95], "stainless");
-  if (laundry && x1 - (v0 + 0.85) > 1.1) {
-    // Washing machine and trough
-    const w0 = v0 + 0.95;
-    back([w0, w0 + 0.6], [0.02, 0.62], [0, 0.85], "unit");
-    fit.cyl([w0 + 0.3, 0.45, z1 - 0.625], 0.18, 0.01, "appliance", "z");
-    back([x1 - 0.5, x1 - 0.05], [0, 0.5], [0, 0.88], "stainless");
+  const v1 = v0 + 0.85;
+  back([v0, v1], [0, 0.44], [0.42, 0.8], "joinery");
+  fronts(back, [v0, v1], 0.46, [0.42, 0.8], { every: 0.85, rows: [0.5] });
+  const [b0, b1] = [v0 + 0.22, v1 - 0.22];
+  back([v0, b0], [0, 0.47], [0.8, 0.84], "ceramic");
+  back([b1, v1], [0, 0.47], [0.8, 0.84], "ceramic");
+  back([b0, b1], [0, 0.12], [0.8, 0.84], "ceramic");
+  back([b0, b1], [0.42, 0.47], [0.8, 0.84], "ceramic");
+  back([b0, b1], [0.12, 0.42], [0.72, 0.73], "ceramic");
+  back([b0, b0 + 0.01], [0.12, 0.42], [0.73, 0.84], "ceramic");
+  back([b1 - 0.01, b1], [0.12, 0.42], [0.73, 0.84], "ceramic");
+  back([b0, b1], [0.12, 0.13], [0.73, 0.84], "ceramic");
+  back([b0, b1], [0.41, 0.42], [0.73, 0.84], "ceramic");
+  const [tx, tz] = backAt((v0 + v1) / 2, 0.06);
+  fit.cyl([tx, 0.92, tz], 0.012, 0.16, "stainless");
+  fit.ring([tx, 1.0, tz - 0.05], 0.05, 0.009, "stainless", "x", Math.PI);
+  back([v0 + 0.02, v1 - 0.02], [0, 0.12], [1.1, 1.85], "joinery");
+  back([v0 + 0.02, (v0 + v1) / 2 - 0.0015], [0.12, 0.125], [1.11, 1.84], "mirror");
+  back([(v0 + v1) / 2 + 0.0015, v1 - 0.02], [0.12, 0.125], [1.11, 1.84], "mirror");
+
+  if (laundry && x1 - v1 > 1.1) {
+    // Front-loading washing machine and a stainless trough with a gooseneck tap
+    const w0 = v1 + 0.08;
+    fit.rbox(...span(back, [w0, w0 + 0.6], [0.02, 0.62], [0.01, 0.85]), "unit", 0.03);
+    const [dx, dz] = backAt(w0 + 0.3, 0.625);
+    fit.ring([dx, 0.4, dz], 0.19, 0.025, "stainless");
+    fit.cyl([dx, 0.4, dz + 0.004], 0.17, 0.01, "appliance", "z");
+    back([w0 + 0.04, w0 + 0.56], [0.62, 0.623], [0.72, 0.8], "grille");
+    const t0 = x1 - 0.52;
+    back([t0, x1 - 0.03], [0, 0.48], [0.08, 0.86], "stainless");
+    back([t0, x1 - 0.03], [0, 0.03], [0.86, 0.9], "stainless");
+    back([t0, x1 - 0.03], [0.45, 0.48], [0.86, 0.9], "stainless");
+    back([t0, t0 + 0.03], [0, 0.48], [0.86, 0.9], "stainless");
+    back([x1 - 0.06, x1 - 0.03], [0, 0.48], [0.86, 0.9], "stainless");
+    back([t0 + 0.03, x1 - 0.06], [0.03, 0.45], [0.86, 0.861], "gap");
+    const [gx, gz] = backAt((t0 + x1) / 2, 0.06);
+    fit.cyl([gx, 1.05, gz], 0.012, 0.3, "stainless");
+    fit.ring([gx, 1.2, gz - 0.08], 0.08, 0.01, "stainless", "x", Math.PI);
   }
-  // Toilet against the opposite end wall, facing into the room
-  const side = fit.wall("z", x1, -1);
-  const tz = z0 + 0.55;
-  side([tz - 0.19, tz + 0.19], [0, 0.17], [0.4, 0.85], "ceramic"); // cistern
-  side([tz - 0.18, tz + 0.18], [0.17, 0.66], [0, 0.4], "ceramic"); // pan
-  side([tz - 0.19, tz + 0.19], [0.17, 0.68], [0.4, 0.43], "ceramic"); // seat
-  return fit;
+
+  // Toilet on the side wall, roll holder beside it, towel rail on the wall opposite the vanity
+  const tu = z0 + 0.5;
+  toilet(fit as Fit<string>, side, sideAt, tu);
+  const [hx, hz] = sideAt(tu + 0.38, 0.05);
+  fit.cyl([hx, 0.7, hz], 0.05, 0.1, "linen", "x");
+  towelRail(fit as Fit<string>, front, frontAt, (x0 + x1) / 2 - 0.2, "z");
+  // Grab rails (accessible extra): beside the toilet and in the shower
+  const [gx1, gz1] = sideAt(tu + 0.3, 0.06);
+  access.cyl([gx1, 0.8, gz1], 0.016, 0.6, "stainless", "z");
+  const [sx, sz] = [x0 + 0.06, z1 - 0.5];
+  access.cyl([sx, 1.1, sz], 0.016, 0.6, "stainless");
+  return collect(fit, access as unknown as Fit<G>);
 }
 
-/** Powder room: toilet on one wall and a small basin on the far wall. */
+/** Powder room: tiled floor, a small wall-hung basin with a mirror, and a toilet. */
 export function powderRoom<G extends string>(group: G, { x, z }: { x: [number, number]; z: [number, number] }) {
   const fit = new Fit(group);
+  fit.box([x[0], 0, z[0]], [x[1], 0.008, z[1]], "floorTile");
   const side = fit.wall("z", x[1], -1);
-  const tz = z[0] + 0.45;
-  side([tz - 0.19, tz + 0.19], [0, 0.17], [0.4, 0.85], "ceramic");
-  side([tz - 0.18, tz + 0.18], [0.17, 0.66], [0, 0.4], "ceramic");
-  side([tz - 0.19, tz + 0.19], [0.17, 0.68], [0.4, 0.43], "ceramic");
+  const sideAt = (u: number, d: number): [number, number] => [x[1] - d, u];
+  toilet(fit as Fit<string>, side, sideAt, z[0] + 0.45);
   const back = fit.wall("x", z[1], -1);
-  back([x[0] + 0.1, x[0] + 0.55], [0, 0.32], [0.8, 0.88], "ceramic");
-  fit.cyl([x[0] + 0.325, 0.96, z[1] - 0.05], 0.012, 0.16, "stainless");
-  back([x[0] + 0.12, x[0] + 0.53], [0, 0.02], [1.05, 1.75], "stainless");
+  const backAt = (u: number, d: number): [number, number] => [u, z[1] - d];
+  const [b0, b1] = [x[0] + 0.1, x[0] + 0.55];
+  fit.rbox(...span(back, [b0, b1], [0, 0.3], [0.72, 0.86]), "ceramic", 0.03);
+  back([b0 + 0.06, b1 - 0.06], [0.06, 0.26], [0.86, 0.861], "gap");
+  const [tx, tz] = backAt((b0 + b1) / 2, 0.04);
+  fit.cyl([tx, 0.94, tz], 0.01, 0.16, "stainless");
+  fit.ring([tx, 1.02, tz - 0.04], 0.04, 0.008, "stainless", "x", Math.PI);
+  back([b0, b1], [0, 0.02], [1.1, 1.75], "mirror");
   return fit;
 }
 

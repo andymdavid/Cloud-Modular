@@ -359,8 +359,12 @@ const startHome = cloudHomes.find((h) => h.id === defaultHome)!;
         status.textContent = "The 3D view could not load on this device. You can still choose your home and continue.";
       });
 
-    form.addEventListener("change", () => {
+    form.addEventListener("change", (event) => {
       design = render();
+      // Ticking an extra that shows in the home turns the camera to it (stone benchtops, bathroom fittings)
+      const input = event.target as HTMLInputElement;
+      const extra = input.name === "extras" && input.checked ? extras.items.find((item) => item.id === input.value) : undefined;
+      if (extra && "camera" in extra && extra.camera && viewer) viewer.show(extra.camera);
       if (!viewer) return;
       if (design.home.id !== currentHome) {
         currentHome = design.home.id;

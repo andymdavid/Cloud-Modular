@@ -14,7 +14,7 @@ export interface DesignView {
   azimuth: number;
   polar: number;
   inside?: boolean;
-  focus?: "kitchen" | "services";
+  focus?: "kitchen" | "services" | "bathroom";
 }
 
 export interface DesignState {
@@ -225,6 +225,22 @@ const tiles = (colour: string) =>
     }
   });
 
+/** Bathroom floor: matte 600 × 600 tiles with fine grout. */
+const floorTiles = (colour: string) =>
+  surface(512, (c, b, size) => {
+    c.fillStyle = colour;
+    c.fillRect(0, 0, size, size);
+    grain(c, size, 0.03, 41);
+    c.fillStyle = shade(colour, 0.85);
+    b.fillStyle = "#303030";
+    for (const at of [0, size / 2]) {
+      c.fillRect(at, 0, 2, size);
+      c.fillRect(0, at, size, 2);
+      b.fillRect(at, 0, 3, size);
+      b.fillRect(0, at, size, 3);
+    }
+  });
+
 /** Solar panel glass: dark cells in a fine silver grid, about one panel (1.05 m) per tile. */
 const solarCells = () =>
   surface(256, (c, b, size) => {
@@ -338,6 +354,7 @@ export function createDesignViewer(options: {
       if (benchtop) Object.assign(benchtop, { roughness: state.stone ? 0.12 : 0.5, metalness: 0 });
     }
     if (!tilesDone) {
+      finish("floorTile", floorTiles("#d8d5ce"), 1.2, 0.6);
       finish("tile", tiles("#f1f0ec"), 0.6, 0.6);
       tilesDone = true;
     }
@@ -378,7 +395,7 @@ export function createDesignViewer(options: {
 
   let home = options.home;
   function turn() {
-    const focus = view.focus ? { target: focusPoints(home)[view.focus], zoom: view.focus === "services" ? 2.6 : 2.5 } : undefined;
+    const focus = view.focus ? { target: focusPoints(home)[view.focus], zoom: view.focus === "kitchen" ? 2.5 : 2.7 } : undefined;
     explorer.turnTo(view.azimuth, view.polar, focus);
   }
 
