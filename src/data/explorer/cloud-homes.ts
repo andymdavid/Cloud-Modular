@@ -223,7 +223,7 @@ function oneBed(): HouseData<GroupId> {
     { group: "bedrooms", ...ext, a: [xw, 0], b: [xw, bathWall], openings: [sized(3.365, 2.0, 0.55)] },
     { group: "bedrooms", ...ext, a: [xe, 0], b: [xe, bathWall], openings: [sized(0.43, 2.3, 0.6), sized(3.975, 0.9, 0.9)] },
     // Bed 1 door from the hall, and the 720 cavity slider (CS) from bed 1 into the bathroom
-    { group: "bedrooms", ...int, a: [xw, bedWall], b: [xe, bedWall], openings: [door(0.2, 1.02), door(2.34, 3.06)] },
+    { group: "bedrooms", ...int, a: [xw, bedWall], b: [xe, bedWall], openings: [door(0.2, 1.02), { span: [2.34, 3.06], head: 2.04, kind: "cavity" }] },
     { group: "bedrooms", ...int, a: [1.135, bedWall], b: [1.135, bathWall], openings: [door(3.2, 3.92)] },
     { group: "bedrooms", ...int, a: [xw, bathWall], b: [xe, bathWall], openings: [{ span: [0.15, 1.09], head: 2.4 }] },
     { group: "living", ...ext, a: [xw, bathWall], b: [xw, front], openings: [sized(6.245, 2.0, 0.55)] },
@@ -298,7 +298,7 @@ function twoBed(): HouseData<GroupId> {
     { group: "bedrooms", ...ext, a: [xw, 0], b: [xw, bed2] },
     { group: "bedrooms", ...ext, a: [xe, 0], b: [xe, bed2], openings: [sized(0.43, 2.3, 0.6), sized(3.975, 0.9, 0.9), sized(6.86, 2.0, 0.55)] },
     // Bed 1 door from the hall, and the 720 cavity slider (CS) from bed 1 into the bathroom
-    { group: "bedrooms", ...int, a: [xw, bed1], b: [xe, bed1], openings: [door(0.2, 1.02), door(2.34, 3.06)] },
+    { group: "bedrooms", ...int, a: [xw, bed1], b: [xe, bed1], openings: [door(0.2, 1.02), { span: [2.34, 3.06], head: 2.04, kind: "cavity" }] },
     { group: "bedrooms", ...int, a: [hall, bed1], b: [hall, bed2 + 0.7], openings: [door(3.2, 3.92), door(5.4, 6.12), door(6.7, 7.52)] },
     { group: "bedrooms", ...int, a: [hall, bath], b: [xe, bath] },
     { group: "bedrooms", ...int, a: [2.965, bath], b: [2.965, pdr] },
@@ -385,7 +385,7 @@ function fourBed(): HouseData<GroupId> {
     { group: "bedrooms", ...gfExt, a: [xw, 0], b: [xw, bed1] },
     { group: "bedrooms", ...gfExt, a: [xe, 0], b: [xe, bed1], openings: [win(0.515, 2.715, 0, 2.15, "slider"), sized(3.43, 0.75, 0.9), sized(6.525, 2.0, 0.55)] },
     // Bed 2 door from the hall, and the 920 cavity slider (CS) from bed 2 into the bathroom
-    { group: "bedrooms", ...gfInt, a: [xw, bed2], b: [xe, bed2], openings: [door(0.2, 1.12), door(2.22, 3.14)] },
+    { group: "bedrooms", ...gfInt, a: [xw, bed2], b: [xe, bed2], openings: [door(0.2, 1.12), { span: [2.22, 3.14], head: 2.04, kind: "cavity" }] },
     { group: "bedrooms", ...gfInt, a: [hall, bed2], b: [hall, bed1], openings: [door(3.05, 3.77), { span: [4.85, 5.85], head: 2.4 }, door(6.05, 6.87)] },
     { group: "bedrooms", ...gfInt, a: [hall, bath], b: [xe, bath] },
     { group: "bedrooms", ...gfInt, a: [hall, stair], b: [xe, stair] },

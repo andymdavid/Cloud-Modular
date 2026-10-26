@@ -173,6 +173,7 @@ function addWall(out: Collector, wall: Wall) {
       sill: o.sill ?? base,
       head: o.head ?? base + 2.1,
       kind: o.kind ?? "opening",
+      pocketStart: o.pocketStart ?? false,
     }))
     .sort((p, q) => p.span[0] - q.span[0]);
 
@@ -204,6 +205,18 @@ function addWall(out: Collector, wall: Wall) {
           piece(at - f / 2, at + f / 2, sill, head, 0.08, "frameDark");
         }
       }
+    } else if (o.kind === "cavity") {
+      // Cavity slider, half open: the panel slides along the wall's centre into the pocket, so the leading edge and a
+      // recessed pull show in the doorway; thin liners frame the opening
+      const width = u1 - u0;
+      const [p0, p1] = o.pocketStart ? [u0, u0 + width * 0.5] : [u0 + width * 0.5, u1];
+      const edge = o.pocketStart ? p1 : p0;
+      piece(p0, p1, sill, head - 0.01, 0.035, "door");
+      const pull = o.pocketStart ? [edge - 0.06, edge - 0.03] : [edge + 0.03, edge + 0.06];
+      piece(pull[0], pull[1], sill + 0.95, sill + 1.15, 0.04, "frameDark");
+      piece(u0, u0 + 0.012, sill, head, t + 0.004, "interior");
+      piece(u1 - 0.012, u1, sill, head, t + 0.004, "interior");
+      piece(u0, u1, head - 0.012, head, t + 0.004, "interior");
     } else if (o.kind === "garage-door") {
       piece(u0, u1, sill, head, 0.06, "garageDoor");
     }

@@ -56,7 +56,8 @@ export type MaterialKey =
   | "floorTile"
   | "mirror";
 
-export type OpeningKind = "slider" | "window" | "door" | "garage-door" | "opening";
+/** "cavity": a cavity sliding door, shown half slid into its pocket (towards the opening's end, or its start with `pocketStart`). */
+export type OpeningKind = "slider" | "window" | "door" | "garage-door" | "opening" | "cavity";
 
 export interface Opening {
   /** Start and end along the wall, in the plan coordinate that varies along it (x or z). */
@@ -65,6 +66,8 @@ export interface Opening {
   sill?: number;
   head?: number;
   kind?: OpeningKind;
+  /** Cavity sliders: the pocket is at the start of the span rather than the end. */
+  pocketStart?: boolean;
 }
 
 export interface Wall<G extends string = string> {
