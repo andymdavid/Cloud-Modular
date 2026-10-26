@@ -26,11 +26,11 @@ const startHome = cloudHomes.find((h) => h.id === defaultHome)!;
 ---
 
 <RefreshLayout title={title} description={description} canonical="/cloud-homes/design/" structuredData={schemas} footer={false} pinHeader>
-  <CloudHomeShell arrows>
+  <CloudHomeShell arrows snap>
     <form class="design-form" data-design-form onsubmit="return false">
-      <header class="design-intro">
+      <header id="intro" class="design-step" data-step="intro">
         <p class="label">Design yours</p>
-        <h1 class="mt-5 text-h2">Design your Cloud Home</h1>
+        <h1 class="mt-4 text-h2">Design your Cloud Home</h1>
         <p class="mt-5 text-about text-fg-muted">Make it yours. Choose your home, cladding, colours, solar and finishes, and watch it change as you go.</p>
         <p class="mt-6 text-body text-fg-muted">
           Don’t want to start with a design?
@@ -50,7 +50,7 @@ const startHome = cloudHomes.find((h) => h.id === defaultHome)!;
                 <span class="text-body">From {formatPrice(home.fromPrice)}</span>
               </span>
               <span class="mt-2 block text-small text-fg-muted">{home.rooms}</span>
-              <span class="mt-1 block text-small text-fg-muted">{home.houseArea.toLocaleString("en-AU")} m² inside, plus a {home.deckArea.toLocaleString("en-AU")} m² deck</span>
+              <span class="mt-1 hidden text-small text-fg-muted sm:block">{home.houseArea.toLocaleString("en-AU")} m² inside, plus a {home.deckArea.toLocaleString("en-AU")} m² deck</span>
             </label>
           ))}
         </fieldset>
@@ -148,46 +148,24 @@ const startHome = cloudHomes.find((h) => h.id === defaultHome)!;
 </RefreshLayout>
 
 <style>
-  .design-intro {
-    padding-top: 2.5rem;
-  }
-
+  /* Each section is a page of the panel: it fills it, centred, and the panel snaps to one at a time */
   .design-step {
-    padding-block: 2.5rem;
-    border-bottom: var(--rule) solid rgb(var(--line) / var(--rule-alpha));
-    scroll-margin-top: 50svh;
-  }
-
-  /* Phones: the home fills the top half and each section the bottom half, so one choice shows at a time */
-  @media (max-width: 63.999rem) {
-    .design-form .design-step {
-      min-height: 50svh;
-      padding-block: 2rem 3rem;
-    }
+    display: flex;
+    min-height: var(--panel-h);
+    flex-direction: column;
+    justify-content: center;
+    padding-block: 2rem;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
   }
 
   .design-step[hidden] {
     display: none;
   }
 
-  .design-price {
-    border-bottom: 0;
-  }
-
   @media (min-width: 64rem) {
-    .design-intro {
-      padding-top: calc(var(--header-h) + 3.5rem);
-      min-height: 60svh;
-    }
-
     .design-step {
-      padding-block: 3.5rem;
-      scroll-margin-top: var(--header-h);
-    }
-
-    /* Each section gets most of a screen, so the home turns to it as it comes into view */
-    .design-form .design-step {
-      min-height: 72svh;
+      padding-block: calc(var(--header-h) + 1rem) 3rem;
     }
   }
 
@@ -278,7 +256,7 @@ const startHome = cloudHomes.find((h) => h.id === defaultHome)!;
   function init(form: HTMLFormElement) {
     const host = document.querySelector<HTMLElement>("[data-canvas-host]")!;
     const status = document.querySelector<HTMLElement>("[data-status]")!;
-    const cameras: Record<string, DesignView> = { home: homeCamera, extras: extras.camera, price: homeCamera };
+    const cameras: Record<string, DesignView> = { intro: homeCamera, home: homeCamera, extras: extras.camera, price: homeCamera };
     sections.forEach((section) => (cameras[section.id] = section.camera));
 
     // Start from the design in the URL (?home=four-bed&colour=charcoal&extras=ceiling-fans)
@@ -348,7 +326,7 @@ const startHome = cloudHomes.find((h) => h.id === defaultHome)!;
 
     // 3D: the viewer and three.js load as their own chunk
     let viewer: DesignViewer | null = null;
-    let active = "home";
+    let active = "intro";
     import("@/lib/explorer/cloud-home-design")
       .then(({ createDesignViewer }) => {
         viewer = createDesignViewer({
@@ -379,15 +357,33 @@ const startHome = cloudHomes.find((h) => h.id === defaultHome)!;
       viewer.update(modelState(design));
     });
 
-    // Turn the home to whichever section is in the middle of the screen
+    // The panel snaps a section at a time; the one across its middle turns the home, lights its dot and sets the arrows
+    const panel = document.querySelector<HTMLElement>("[data-panel]")!;
+    const dots = document.querySelector<HTMLElement>("[data-dots]");
     const steps = () => [...document.querySelectorAll<HTMLElement>("[data-step]")].filter((step) => !step.hidden);
     const prev = document.querySelector<HTMLButtonElement>("[data-step-prev]");
     const next = document.querySelector<HTMLButtonElement>("[data-step-next]");
+    const titleOf = (step: HTMLElement) => step.querySelector("h1, h2")?.textContent ?? step.dataset.step!;
+    const goTo = (step: HTMLElement | undefined) => step && panel.scrollTo({ top: step.offsetTop, behavior: "smooth" });
+    const drawDots = () => {
+      if (!dots) return;
+      dots.replaceChildren(
+        ...steps().map((step) => {
+          const dot = document.createElement("button");
+          dot.type = "button";
+          dot.setAttribute("aria-label", titleOf(step));
+          if (step.dataset.step === active) dot.setAttribute("aria-current", "step");
+          dot.addEventListener("click", () => goTo(step));
+          return dot;
+        }),
+      );
+    };
     const updateArrows = () => {
       const list = steps();
       const index = list.findIndex((step) => step.dataset.step === active);
       if (prev) prev.disabled = index <= 0;
       if (next) next.disabled = index >= list.length - 1;
+      drawDots();
     };
     const observer = new IntersectionObserver(
       (entries) => {
@@ -400,8 +396,7 @@ const startHome = cloudHomes.find((h) => h.id === defaultHome)!;
           updateArrows();
         }
       },
-      // The section in the middle of the panel: the screen's middle beside the home, or the lower half's middle under it
-      { rootMargin: window.matchMedia("(min-width: 64rem)").matches ? "-45% 0px -45% 0px" : "-70% 0px -25% 0px" },
+      { root: panel, rootMargin: "-50% 0px -50% 0px" },
     );
     document.querySelectorAll<HTMLElement>("[data-step]").forEach((step) => observer.observe(step));
 
@@ -409,10 +404,12 @@ const startHome = cloudHomes.find((h) => h.id === defaultHome)!;
     const go = (dir: 1 | -1) => {
       const list = steps();
       const index = list.findIndex((step) => step.dataset.step === active);
-      list[Math.min(list.length - 1, Math.max(0, index + dir))]?.scrollIntoView({ behavior: "smooth", block: "start" });
+      goTo(list[Math.min(list.length - 1, Math.max(0, index + dir))]);
     };
     prev?.addEventListener("click", () => go(-1));
     next?.addEventListener("click", () => go(1));
+    // Sections that appear or disappear (cladding colour, battery) change the dots
+    form.addEventListener("change", updateArrows);
     updateArrows();
 
     // Copy the design link

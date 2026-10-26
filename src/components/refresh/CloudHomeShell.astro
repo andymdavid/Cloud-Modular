@@ -4,18 +4,23 @@
  * the panel on large screens and pinned above it on phones, and the panel (the slot) on the right. The stage carries
  * the price pill and, with `arrows`, previous and next buttons that step through the panel's [data-step] sections.
  * The page's own script mounts the viewer into [data-canvas-host].
+ *
+ * With `snap` (the design page, as the original cloud-configurator) the screen is exactly one viewport tall and the
+ * panel is its own scroller: each [data-step] section fills it, centred, and scrolling snaps one section at a time,
+ * with a rail of dots ([data-dots], filled by the page's script) on its right edge.
  */
 import { cloudHomes, defaultHome, formatPrice } from "@/data/cloud-homes";
 
 interface Props {
   arrows?: boolean;
+  snap?: boolean;
 }
 
-const { arrows = false } = Astro.props;
+const { arrows = false, snap = false } = Astro.props;
 const home = cloudHomes.find((h) => h.id === defaultHome)!;
 ---
 
-<div class="cloud-shell" data-cloud-shell>
+<div class:list={["cloud-shell", { "cloud-shell--snap": snap }]} data-cloud-shell>
   <div class="cloud-stage" data-theme="light">
     <div class="cloud-canvas" data-canvas-host></div>
     <p class="cloud-status text-body text-fg-muted" data-status>Loading your home</p>
@@ -39,12 +44,89 @@ const home = cloudHomes.find((h) => h.id === defaultHome)!;
     </div>
   </div>
 
-  <div class="cloud-panel">
-    <slot />
+  <div class="cloud-panel-wrap">
+    <div class="cloud-panel no-scrollbar" data-panel>
+      <slot />
+    </div>
+    {snap && <nav class="cloud-dots" data-dots aria-label="Sections"></nav>}
   </div>
 </div>
 
 <style>
+  /* Snap mode: one viewport, no page scroll; the panel scrolls and snaps a section at a time */
+  .cloud-shell--snap {
+    /* The panel's height, which each section fills: half the screen under the home on phones, all of it beside */
+    --panel-h: 50dvh;
+    height: 100dvh;
+    overflow: hidden;
+    grid-template-rows: 50% 50%;
+  }
+
+  .cloud-shell--snap .cloud-stage {
+    position: relative;
+    height: 100%;
+  }
+
+  .cloud-panel-wrap {
+    position: relative;
+    min-height: 0;
+  }
+
+  .cloud-shell--snap .cloud-panel {
+    position: relative; /* sections measure their offsets from the panel */
+    height: 100%;
+    padding-bottom: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+  }
+
+  /* Phones: room on the right for the dots */
+  @media (max-width: 63.999rem) {
+    .cloud-shell--snap .cloud-panel {
+      padding-right: calc(var(--gutter) + 1rem);
+    }
+  }
+
+  .cloud-dots {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transform: translateY(-50%);
+  }
+
+  .cloud-dots :global(button) {
+    width: 0.4375rem;
+    height: 0.4375rem;
+    border-radius: 999px;
+    background: rgb(var(--fg) / 0.2);
+    transition: background-color var(--dur-base) var(--ease-standard), transform var(--dur-base) var(--ease-standard);
+  }
+
+  .cloud-dots :global(button:hover) {
+    background: rgb(var(--fg) / 0.45);
+  }
+
+  .cloud-dots :global(button[aria-current="step"]) {
+    background: rgb(var(--fg));
+  }
+
+  @media (min-width: 64rem) {
+    .cloud-shell--snap {
+      --panel-h: 100dvh;
+      grid-template-rows: 100%;
+    }
+
+    .cloud-dots {
+      right: 1rem;
+    }
+  }
+
   .cloud-shell {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
