@@ -50,7 +50,9 @@ export type MaterialKey =
   | "rug"
   | "gap"
   | "unit"
-  | "grille";
+  | "grille"
+  | "tile"
+  | "led";
 
 export type OpeningKind = "slider" | "window" | "door" | "garage-door" | "opening";
 
@@ -167,7 +169,7 @@ export interface HouseData<G extends string = string> {
   /** Boxes with rounded edges (appliance casings). */
   roundedBoxes?: { group: G; level: Level; material: MaterialKey; min: Vec3; max: Vec3; radius: number }[];
   /** Rings, e.g. a fan guard. `axis` is the direction the ring faces (default "z"). */
-  tori?: { group: G; level: Level; material: MaterialKey; centre: Vec3; radius: number; tube: number; axis?: "x" | "y" | "z" }[];
+  tori?: { group: G; level: Level; material: MaterialKey; centre: Vec3; radius: number; tube: number; axis?: "x" | "y" | "z"; arc?: number }[];
   /** Straight square members between two points, e.g. raked steel posts. */
   struts?: { group: G; level: Level; material: MaterialKey; from: Vec3; to: Vec3; size: number }[];
 }

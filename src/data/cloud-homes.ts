@@ -186,13 +186,13 @@ export const sections: readonly Section[] = [
     id: "kitchen",
     label: "Kitchen and robes",
     title: "Choose your kitchen",
-    body: "Cabinets and benchtops together. The robes and vanity match the cabinets.",
+    body: "Cabinets and benchtops together. The robes and vanity match the cabinets. Stone benchtops are an extra.",
     kind: "swatch",
-    camera: { azimuth: 205, polar: 42, inside: true, focus: "kitchen" },
+    camera: { azimuth: 240, polar: 48, inside: true, focus: "kitchen" },
     choices: [
-      { id: "white-stone", name: "White with stone benchtops", swatch: "linear-gradient(135deg, #ecebe6 50%, #d8d4cb 50%)", paint: { joinery: "#ecebe6", benchtop: "#d8d4cb" } },
+      { id: "white-grey", name: "White with pale grey benchtops", swatch: "linear-gradient(135deg, #ecebe6 50%, #d8d4cb 50%)", paint: { joinery: "#ecebe6", benchtop: "#d8d4cb" } },
       { id: "oak-white", name: "Oak with white benchtops", swatch: "linear-gradient(135deg, #b39a7a 50%, #efeee9 50%)", paint: { joinery: "#b39a7a", benchtop: "#efeee9" }, grain: ["joinery"] },
-      { id: "greige-stone", name: "Warm grey with stone benchtops", swatch: "linear-gradient(135deg, #b5afa4 50%, #e9e6df 50%)", paint: { joinery: "#b5afa4", benchtop: "#e9e6df" } },
+      { id: "greige-white", name: "Warm grey with white benchtops", swatch: "linear-gradient(135deg, #b5afa4 50%, #efede8 50%)", paint: { joinery: "#b5afa4", benchtop: "#efede8" } },
       { id: "charcoal-oak", name: "Charcoal with oak benchtops", swatch: "linear-gradient(135deg, #3d3e40 50%, #b39a7a 50%)", paint: { joinery: "#3d3e40", benchtop: "#b39a7a" }, grain: ["benchtop"] },
     ],
   },
@@ -204,9 +204,10 @@ export const extras = {
   label: "Extras",
   title: "Add extras",
   body: "Tell us what you would like, and we will price it in your proposal.",
-  camera: homeCamera,
+  // Most extras are inside, and stone benchtops show best up close
+  camera: { azimuth: 205, polar: 42, inside: true, focus: "kitchen" } as CameraView,
   items: [
-    { id: "stone-benchtops", name: "Stone benchtops", detail: "Durable stone surfaces in the kitchen and bathroom" },
+    { id: "stone-benchtops", name: "Stone benchtops", detail: "Polished engineered stone with a thicker edge" },
     { id: "roller-blinds", name: "Roller blinds", detail: "Privacy without losing the light" },
     { id: "plantation-shutters", name: "Plantation shutters", detail: "Adjustable shutters to the bedrooms" },
     { id: "ceiling-fans", name: "Ceiling fans", detail: "In the living room and bedrooms" },
@@ -276,6 +277,7 @@ export function modelState(design: Design) {
     cladding: "panels" as "panels" | "boards",
     show: { solar: false, battery: false } as Record<string, boolean>,
     grain: [] as string[],
+    stone: design.extras.some((e) => e.id === "stone-benchtops"),
   };
   for (const { choice } of design.picks) {
     Object.assign(state.paint, choice.paint);
@@ -283,6 +285,7 @@ export function modelState(design: Design) {
     state.grain.push(...(choice.grain ?? []));
     if (choice.cladding) state.cladding = choice.cladding;
   }
+  state.show.stone = state.stone;
   // Hidden sections leave their groups off (no battery without solar)
   return state;
 }

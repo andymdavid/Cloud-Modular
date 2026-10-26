@@ -22,6 +22,7 @@ export interface DesignState {
   cladding: "panels" | "boards";
   show: Record<string, boolean>;
   grain: string[];
+  stone: boolean;
 }
 
 const sceneFor = (id: CloudHomeId): ExplorerScene => ({
@@ -136,7 +137,7 @@ const timberBoards = () =>
       c.fillStyle = tones[(i * 7 + 3) % tones.length];
       c.fillRect(Math.round(i * step), 0, Math.ceil(step), size);
       for (let g = 0; g < 14; g++) {
-        c.fillStyle = `rgba(60,35,20,${0.05 + next() * 0.08})`;
+        c.fillStyle = `rgba(60,35,20,${0.1 + next() * 0.14})`;
         c.fillRect(Math.round(i * step + next() * step), 0, 1, size);
       }
     }
@@ -162,6 +163,66 @@ const veneer = (colour: string) =>
     grain(c, size, 0.02, 19);
     b.fillStyle = "#7a7a7a";
     for (let i = 0; i < 40; i++) b.fillRect(0, next() * size, size, 1);
+  });
+
+/** Laminate benchtop: an even colour with a very fine speckle. */
+const laminate = (colour: string) =>
+  surface(256, (c, _b, size) => {
+    c.fillStyle = colour;
+    c.fillRect(0, 0, size, size);
+    grain(c, size, 0.035, 23);
+  });
+
+/** Engineered stone: a fine speckle with soft, drifting veins. */
+const stoneSlab = (colour: string) =>
+  surface(1024, (c, b, size) => {
+    c.fillStyle = colour;
+    c.fillRect(0, 0, size, size);
+    grain(c, size, 0.04, 29);
+    const next = random(31);
+    const dark = new THREE.Color(colour).multiplyScalar(0.62);
+    const rgb = `${Math.round(dark.r * 255)},${Math.round(dark.g * 255)},${Math.round(dark.b * 255)}`;
+    // A few long, gently curving veins across the slab, each softened by wider faint strokes underneath
+    for (let v = 0; v < 4; v++) {
+      const x0 = next() * size;
+      const x1 = x0 + (next() - 0.3) * size * 0.8;
+      const c1: [number, number] = [x0 + (next() - 0.5) * size * 0.5, size * 0.35];
+      const c2: [number, number] = [x1 + (next() - 0.5) * size * 0.5, size * 0.7];
+      for (const [width, alpha] of [
+        [10, 0.06],
+        [4, 0.11],
+        [1.5, 0.26],
+      ]) {
+        c.strokeStyle = `rgba(${rgb},${alpha})`;
+        c.lineWidth = width;
+        c.beginPath();
+        c.moveTo(x0, 0);
+        c.bezierCurveTo(c1[0], c1[1], c2[0], c2[1], x1, size);
+        c.stroke();
+      }
+    }
+    b.fillStyle = "#808080";
+    b.fillRect(0, 0, size, size);
+  });
+
+/** Splashback: gloss tiles 300 × 75, laid in a stack bond, with pale grout. */
+const tiles = (colour: string) =>
+  surface(512, (c, b, size) => {
+    c.fillStyle = colour;
+    c.fillRect(0, 0, size, size);
+    grain(c, size, 0.02, 37);
+    const rows = 8;
+    const cols = 2;
+    c.fillStyle = shade(colour, 0.82);
+    b.fillStyle = "#303030";
+    for (let r = 0; r <= rows; r++) {
+      c.fillRect(0, Math.round((r * size) / rows), size, 3);
+      b.fillRect(0, Math.round((r * size) / rows), size, 4);
+    }
+    for (let k = 0; k <= cols; k++) {
+      c.fillRect(Math.round((k * size) / cols), 0, 3, size);
+      b.fillRect(Math.round((k * size) / cols), 0, 4, size);
+    }
   });
 
 /** Solar panel glass: dark cells in a fine silver grid, about one panel (1.05 m) per tile. */
@@ -242,6 +303,7 @@ export function createDesignViewer(options: {
   };
 
   let solarDone = false;
+  let tilesDone = false;
   const apply = () => {
     const { paint } = state;
     if (state.cladding === "boards") {
@@ -266,7 +328,20 @@ export function createDesignViewer(options: {
       if (solar) Object.assign(solar, { roughness: 0.25, metalness: 0.5 });
       solarDone = true;
     }
-    for (const key of ["frameDark", "fascia", "steel", "joinery", "benchtop"]) {
+    if (paint.benchtop) {
+      // Laminate as standard; the stone upgrade polishes it and adds veins (oak stays laminate-coloured in stone)
+      const colour = state.stone && state.grain.includes("benchtop") ? "#e8e5de" : paint.benchtop;
+      if (state.stone) finish("benchtop", stoneSlab(colour), 1.6, 0.2);
+      else if (state.grain.includes("benchtop")) finish("benchtop", veneer(colour), 0.8, 0.3);
+      else finish("benchtop", laminate(colour), 0.8, 0.1);
+      const benchtop = standard("benchtop");
+      if (benchtop) Object.assign(benchtop, { roughness: state.stone ? 0.12 : 0.5, metalness: 0 });
+    }
+    if (!tilesDone) {
+      finish("tile", tiles("#f1f0ec"), 0.6, 0.6);
+      tilesDone = true;
+    }
+    for (const key of ["frameDark", "fascia", "steel", "joinery"]) {
       if (!paint[key]) continue;
       if (state.grain.includes(key)) finish(key, veneer(paint[key]), 0.8, 0.3);
       else {
@@ -285,6 +360,7 @@ export function createDesignViewer(options: {
 
   const create = (home: CloudHomeId) => {
     solarDone = false;
+    tilesDone = false;
     explorer = createExplorer({
       host,
       scene: sceneFor(home),
@@ -302,7 +378,7 @@ export function createDesignViewer(options: {
 
   let home = options.home;
   function turn() {
-    const focus = view.focus ? { target: focusPoints(home)[view.focus], zoom: view.focus === "services" ? 2.6 : 1.9 } : undefined;
+    const focus = view.focus ? { target: focusPoints(home)[view.focus], zoom: view.focus === "services" ? 2.6 : 2.5 } : undefined;
     explorer.turnTo(view.azimuth, view.polar, focus);
   }
 

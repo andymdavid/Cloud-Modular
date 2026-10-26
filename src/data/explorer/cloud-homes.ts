@@ -36,7 +36,7 @@ import {
 } from "./cloud-home-fittings";
 
 export type CloudHomeId = "one-bed" | "two-bed" | "four-bed";
-export type GroupId = "bedrooms" | "living" | "upper" | "vergola" | "roof" | "frame" | "solar" | "battery" | "services";
+export type GroupId = "bedrooms" | "living" | "upper" | "vergola" | "roof" | "frame" | "solar" | "battery" | "services" | "stone";
 
 type W = Wall<GroupId>;
 type B = Block<GroupId>;
@@ -520,6 +520,7 @@ export const explode: Record<GroupId, Vec3> = {
   solar: [0, 0, 0],
   battery: [0, 0, 0],
   services: [0, 0, 0],
+  stone: [0, 0, 0],
 };
 
 /** Views: the outside, or with the roof (and upper floor) lifted off to see inside. */

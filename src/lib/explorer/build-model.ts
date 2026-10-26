@@ -84,6 +84,8 @@ function createMaterials(anisotropy: number): Record<MaterialKey, THREE.Material
     gap: std("#2a2826", 0.9),
     unit: std("#e7e6e1", 0.45, 0.05),
     grille: std("#575858", 0.6, 0.2),
+    tile: std("#f2f1ed", 0.2, 0.02),
+    led: new THREE.MeshStandardMaterial({ color: "#fff6e3", emissive: "#ffe9c2", emissiveIntensity: 1.4, roughness: 0.5 }),
   };
 }
 
@@ -461,7 +463,7 @@ export function buildHouse(house: HouseData, { anisotropy = 4 }: { anisotropy?: 
     out.add(rounded.group, rounded.level, rounded.material, geometry);
   }
   for (const ring of house.tori ?? []) {
-    const geometry = new THREE.TorusGeometry(ring.radius, ring.tube, 8, 48);
+    const geometry = new THREE.TorusGeometry(ring.radius, ring.tube, 8, 48, ring.arc ?? Math.PI * 2);
     if (ring.axis === "x") geometry.rotateY(Math.PI / 2);
     if (ring.axis === "y") geometry.rotateX(Math.PI / 2);
     geometry.translate(...ring.centre);

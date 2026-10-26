@@ -38,6 +38,8 @@ export interface Ring<G extends string> {
   radius: number;
   tube: number;
   axis?: "x" | "y" | "z";
+  /** Part of a ring, in radians from the ring's local +x (default the full circle). */
+  arc?: number;
 }
 
 export class Fit<G extends string> {
@@ -60,8 +62,8 @@ export class Fit<G extends string> {
     this.roundedBoxes.push({ group: this.group, level: this.level, material, min: [min[0], min[1] + this.floor, min[2]], max: [max[0], max[1] + this.floor, max[2]], radius });
   }
 
-  ring(centre: Vec3, radius: number, tube: number, material: MaterialKey, axis: "x" | "y" | "z" = "z") {
-    this.tori.push({ group: this.group, level: this.level, material, centre: [centre[0], centre[1] + this.floor, centre[2]], radius, tube, axis });
+  ring(centre: Vec3, radius: number, tube: number, material: MaterialKey, axis: "x" | "y" | "z" = "z", arc?: number) {
+    this.tori.push({ group: this.group, level: this.level, material, centre: [centre[0], centre[1] + this.floor, centre[2]], radius, tube, axis, arc });
   }
 
   cyl(centre: Vec3, radius: number, length: number, material: MaterialKey, axis: "x" | "y" | "z" = "y") {
@@ -85,44 +87,86 @@ export class Fit<G extends string> {
 
 type Place = ReturnType<Fit<string>["wall"]>;
 
-/** Cabinet doors: fine shadow gaps on the front face, about every 600 mm. */
-function doorGaps(place: Place, u: [number, number], depth: number, y: [number, number], every = 0.6) {
+/**
+ * Door and drawer fronts: separate panels standing 18 mm proud of the carcass with 3 mm gaps between them, so the
+ * joins read as real shadow lines. `rows` splits the height into drawers (fractions from the bottom).
+ */
+function fronts(place: Place, u: [number, number], depth: number, y: [number, number], { every = 0.6, rows }: { every?: number; rows?: number[] } = {}) {
+  const gap = 0.003;
   const count = Math.max(1, Math.round((u[1] - u[0]) / every));
   const step = (u[1] - u[0]) / count;
-  for (let i = 1; i < count; i++) {
-    const at = u[0] + step * i;
-    place([at - 0.002, at + 0.002], [depth, depth + 0.002], y, "gap");
+  const cuts = rows ? [0, ...rows, 1] : [0, 1];
+  for (let i = 0; i < count; i++) {
+    const u0 = u[0] + step * i + gap / 2;
+    const u1 = u[0] + step * (i + 1) - gap / 2;
+    for (let r = 0; r < cuts.length - 1; r++) {
+      const y0 = y[0] + (y[1] - y[0]) * cuts[r] + gap / 2;
+      const y1 = y[0] + (y[1] - y[0]) * cuts[r + 1] - gap / 2;
+      place([u0, u1], [depth - 0.018, depth], [y0, y1], "joinery");
+    }
   }
 }
 
-/** Base cabinets: recessed kick, carcass with door gaps, a 20 mm benchtop with a small overhang, and a splashback. */
-export function baseRun(place: Place, u: [number, number], { splashback = true, bench = true } = {}) {
-  place(u, [0, 0.55], [0, 0.1], "gap");
-  place(u, [0, 0.58], [0.1, 0.88], "joinery");
-  doorGaps(place, u, 0.58, [0.12, 0.86]);
-  place(u, [0.58, 0.582], [0.5, 0.504], "gap"); // drawer line
-  if (bench) place(u, [0, 0.6], [0.88, 0.9], "benchtop");
-  if (splashback) place(u, [0, 0.012], [0.9, 1.5], "benchtop");
+/**
+ * Base cabinets: recessed kick, carcass, door or drawer fronts, a finger-pull rail under the benchtop, and the
+ * benchtop with a small overhang. Benchtops are 33 mm (laminate); the stone upgrade adds a thicker edge (`stoneEdge`).
+ */
+export function baseRun(place: Place, u: [number, number], { bench = true, rows, every }: { bench?: boolean; rows?: number[]; every?: number } = {}) {
+  place(u, [0, 0.52], [0, 0.1], "gap");
+  place(u, [0, 0.56], [0.1, 0.84], "joinery");
+  fronts(place, u, 0.58, [0.1, 0.84], { rows, every });
+  place(u, [0.54, 0.575], [0.84, 0.867], "gap"); // finger-pull rail
+  if (bench) place(u, [0, 0.62], [0.867, 0.9], "benchtop");
 }
 
-/** Overhead cupboards 350 deep from 1650 to 2400, with door gaps. */
-export function overheads(place: Place, u: [number, number]) {
-  place(u, [0, 0.35], [1.65, 2.4], "joinery");
-  doorGaps(place, u, 0.35, [1.66, 2.39], 0.45);
+/** The thicker front edge that stone benchtops show (40 mm), in its own group so it appears with the upgrade. */
+function stoneEdge(place: Place, u: [number, number]) {
+  place(u, [0.6, 0.62], [0.86, 0.867], "benchtop");
 }
 
-/** Full-height joinery (pantry, robe) with door gaps. */
+/** Overhead cupboards 350 deep from 1650 to 2400 with fronts, and the LED strip light under them. */
+export function overheads(place: Place, u: [number, number], { led = true } = {}) {
+  place(u, [0, 0.33], [1.65, 2.4], "joinery");
+  fronts(place, u, 0.35, [1.65, 2.4], { every: 0.45 });
+  if (led) place([u[0] + 0.03, u[1] - 0.03], [0.26, 0.29], [1.643, 1.65], "led");
+}
+
+/** Full-height joinery (pantry, robe) with door fronts. */
 export function tallUnit(place: Place, u: [number, number], depth = 0.6, top = 2.4) {
-  place(u, [0, 0.55], [0, 0.1], "gap");
-  place(u, [0, depth], [0.1, top], "joinery");
-  doorGaps(place, u, depth, [0.12, top - 0.02], 0.5);
+  place(u, [0, depth - 0.08], [0, 0.1], "gap");
+  place(u, [0, depth - 0.02], [0.1, top], "joinery");
+  fronts(place, u, depth, [0.1, top], { every: 0.5, rows: [0.86] });
+}
+
+/** Wall oven: stainless frame, black glass door with a bar handle, and a control strip with two knobs. */
+function oven(fit: Fit<string>, place: Place, u: [number, number], d: number, y: number, normal: "x" | "z", at: (uu: number, dd: number) => [number, number]) {
+  const [u0, u1] = u;
+  place([u0, u1], [d - 0.02, d], [y, y + 0.6], "stainless");
+  place([u0 + 0.02, u1 - 0.02], [d, d + 0.004], [y + 0.02, y + 0.46], "appliance");
+  place([u0 + 0.02, u1 - 0.02], [d, d + 0.003], [y + 0.5, y + 0.58], "appliance");
+  const [hx, hz] = at((u0 + u1) / 2, d + 0.035);
+  fit.cyl([hx, y + 0.43, hz], 0.01, u1 - u0 - 0.12, "stainless", normal === "x" ? "z" : "x");
+  for (const k of [0.25, 0.75]) {
+    const [kx, kz] = at(u0 + (u1 - u0) * k, d + 0.012);
+    fit.cyl([kx, y + 0.54, kz], 0.016, 0.02, "stainless", normal);
+  }
+}
+
+/** Microwave: black glass door with a stainless control panel beside it. */
+function microwave(place: Place, u: [number, number], d: number, y: number) {
+  const [u0, u1] = u;
+  place([u0, u1], [d - 0.02, d], [y, y + 0.38], "stainless");
+  place([u0 + 0.02, u0 + (u1 - u0) * 0.74], [d, d + 0.004], [y + 0.02, y + 0.36], "appliance");
+  place([u0 + (u1 - u0) * 0.78, u1 - 0.02], [d, d + 0.003], [y + 0.24, y + 0.33], "appliance");
 }
 
 // ---------------------------------------------------------------------------------------------------
-// Kitchen: front run with the sink under the window, east run with cooktop and microwave tower, west fridge and pantry
+// Kitchen: front run with the sink under the window and the dishwasher beside it, east run with the cooktop and the
+// oven and microwave tower, west fridge recess and pantry. Splashback tiled to the window sill and the overheads.
 
 export function kitchen<G extends string>(group: G, width: number, front: number, sinkAt: number) {
   const fit = new Fit(group);
+  const stone = new Fit("stone" as G);
   const ext = 0.115;
   const inX0 = ext;
   const inX1 = width - ext;
@@ -130,34 +174,113 @@ export function kitchen<G extends string>(group: G, width: number, front: number
   const frontRun = fit.wall("x", inFront, -1);
   const eastRun = fit.wall("z", inX1, -1);
   const westRun = fit.wall("z", inX0, 1);
+  const frontAt = (u: number, d: number): [number, number] => [u, inFront - d];
+  const eastAt = (u: number, d: number): [number, number] => [inX1 - d, u];
 
-  // Front run, full width, sink centred under the window
-  baseRun(frontRun, [inX0, inX1 - 0.6], { splashback: false });
-  frontRun([inX0, sinkAt - 1], [0, 0.012], [0.9, 1.4], "benchtop");
-  frontRun([sinkAt + 1, inX1], [0, 0.012], [0.9, 1.4], "benchtop");
+  // Front run: cupboards, the sink cabinet, the dishwasher, then drawers to the corner
+  const [s0, s1] = [sinkAt - 0.45, sinkAt + 0.45];
+  baseRun(frontRun, [inX0, s0], { bench: false });
+  frontRun([s0, s1], [0, 0.52], [0, 0.1], "gap");
+  frontRun([s0, s1], [0, 0.56], [0.1, 0.66], "joinery");
+  fronts(frontRun, [s0, s1], 0.58, [0.1, 0.84], { every: 0.45 });
+  frontRun([s0, s1], [0.54, 0.575], [0.84, 0.867], "gap");
+  // Dishwasher: integrated panel with a stainless strip handle
+  frontRun([s1, s1 + 0.6], [0, 0.52], [0, 0.1], "gap");
+  frontRun([s1 + 0.0015, s1 + 0.5985], [0, 0.58], [0.1, 0.84], "joinery");
+  frontRun([s1 + 0.1, s1 + 0.5], [0.58, 0.6], [0.8, 0.815], "stainless");
+  baseRun(frontRun, [s1 + 0.6, inX1 - 0.6], { bench: false, rows: [0.33, 0.66], every: 0.5 });
+  // Benchtop around the sink cut-out (the bowls sit under it)
+  const [c0, c1] = [sinkAt - 0.41, sinkAt + 0.41];
+  frontRun([inX0, c0], [0, 0.62], [0.867, 0.9], "benchtop");
+  frontRun([c1, inX1 - 0.6], [0, 0.62], [0.867, 0.9], "benchtop");
+  frontRun([c0, c1], [0, 0.1], [0.867, 0.9], "benchtop");
+  frontRun([c0, c1], [0.52, 0.62], [0.867, 0.9], "benchtop");
+  stoneEdge(stone.wall("x", inFront, -1), [inX0, inX1 - 0.6]);
+  // Double bowl: floors 200 deep, walls, divider, and a gooseneck mixer behind
+  for (const [b0, b1] of [
+    [c0, sinkAt - 0.01],
+    [sinkAt + 0.01, c1],
+  ] as [number, number][]) {
+    frontRun([b0, b1], [0.1, 0.52], [0.66, 0.67], "stainless");
+    frontRun([b0, b1], [0.1, 0.11], [0.67, 0.867], "stainless");
+    frontRun([b0, b1], [0.51, 0.52], [0.67, 0.867], "stainless");
+    frontRun([b0, b0 + 0.01], [0.1, 0.52], [0.67, 0.867], "stainless");
+    frontRun([b1 - 0.01, b1], [0.1, 0.52], [0.67, 0.867], "stainless");
+    const [wx, wz] = frontAt((b0 + b1) / 2, 0.31);
+    fit.cyl([wx, 0.672, wz], 0.03, 0.004, "appliance");
+  }
+  const [mx, mz] = frontAt(sinkAt, 0.05);
+  fit.cyl([mx, 0.905, mz], 0.03, 0.01, "stainless");
+  fit.cyl([mx, 1.06, mz], 0.014, 0.3, "stainless");
+  fit.ring([mx, 1.21, mz - 0.09], 0.09, 0.012, "stainless", "x", Math.PI);
+  fit.cyl([mx, 1.17, mz - 0.18], 0.012, 0.08, "stainless");
+  fit.cyl([mx + 0.04, 1.02, mz], 0.008, 0.08, "stainless", "x");
+  // Splashback tiles either side of the window
+  frontRun([inX0, sinkAt - 1], [0, 0.01], [0.9, 1.4], "tile");
+  frontRun([sinkAt + 1, inX1], [0, 0.01], [0.9, 1.65], "tile");
   overheads(frontRun, [inX0, sinkAt - 1.05]);
   overheads(frontRun, [sinkAt + 1.05, inX1]);
-  // Double bowl sink set into the benchtop, with a mixer
-  fit.box([sinkAt - 0.4, 0.895, inFront - 0.52], [sinkAt + 0.4, 0.902, inFront - 0.1], "stainless");
-  fit.box([sinkAt - 0.37, 0.75, inFront - 0.49], [sinkAt - 0.02, 0.9, inFront - 0.13], "gap");
-  fit.box([sinkAt + 0.02, 0.75, inFront - 0.49], [sinkAt + 0.37, 0.9, inFront - 0.13], "gap");
-  fit.cyl([sinkAt, 1.06, inFront - 0.06], 0.018, 0.32, "stainless");
-  fit.cyl([sinkAt, 1.2, inFront - 0.16], 0.012, 0.22, "stainless", "z");
 
-  // East run: corner, cooktop, then the microwave tower
-  baseRun(eastRun, [inFront - 2.2 + 0.6, inFront]);
-  fit.box([inX1 - 0.56, 0.9, inFront - 1.6], [inX1 - 0.04, 0.906, inFront - 1.0], "appliance"); // induction cooktop
-  overheads(eastRun, [inFront - 1.65, inFront - 0.6]);
-  tallUnit(eastRun, [inFront - 2.2, inFront - 1.6]);
-  eastRun([inFront - 2.15, inFront - 1.65], [0.6, 0.605], [1.05, 1.42], "appliance"); // microwave
-  eastRun([inFront - 2.15, inFront - 1.65], [0.6, 0.605], [0.35, 0.95], "appliance"); // oven
+  // East run: blind corner, drawers under the cooktop, then the oven and microwave tower
+  const cook: [number, number] = [inFront - 1.6, inFront - 0.6];
+  baseRun(eastRun, [inFront - 0.6, inFront], { bench: false });
+  baseRun(eastRun, cook, { bench: false, rows: [0.33, 0.66], every: 0.5 });
+  eastRun([inFront - 1.6, inFront], [0, 0.62], [0.867, 0.9], "benchtop");
+  stoneEdge(stone.wall("z", inX1, -1), [inFront - 1.6, inFront - 0.6]);
+  eastRun([inFront - 1.6, inFront - 0.62], [0, 0.01], [0.9, 1.65], "tile");
+  // Induction cooktop: black glass with a fine frame and four marked zones
+  const cu = (cook[0] + cook[1]) / 2;
+  eastRun([cu - 0.3, cu + 0.3], [0.06, 0.58], [0.9, 0.906], "appliance");
+  for (const [du, dd, r] of [
+    [-0.14, 0.2, 0.09],
+    [0.14, 0.2, 0.07],
+    [-0.14, 0.44, 0.07],
+    [0.14, 0.44, 0.09],
+  ]) {
+    const [zx, zz] = eastAt(cu + du, dd);
+    fit.ring([zx, 0.907, zz], r, 0.0025, "grille", "y");
+  }
+  // Slide-out rangehood under the overheads
+  eastRun([cu - 0.3, cu + 0.3], [0.0, 0.33], [1.6, 1.65], "stainless");
+  overheads(eastRun, [inFront - 1.65, inFront - 0.6], { led: false });
+  eastRun([inFront - 1.62, inFront - 0.63], [0.26, 0.29], [1.593, 1.6], "led");
+  // Tower: oven, microwave and cupboards
+  const tower: [number, number] = [inFront - 2.2, inFront - 1.6];
+  eastRun(tower, [0, 0.52], [0, 0.1], "gap");
+  eastRun(tower, [0, 0.58], [0.1, 2.4], "joinery");
+  fronts(eastRun, tower, 0.6, [0.1, 0.32]);
+  fronts(eastRun, tower, 0.6, [1.5, 2.4]);
+  oven(fit as Fit<string>, eastRun, [tower[0] + 0.01, tower[1] - 0.01], 0.6, 0.34, "x", eastAt);
+  microwave(eastRun, [tower[0] + 0.01, tower[1] - 0.01], 0.6, 1.05);
+  eastRun([tower[0] + 0.01, tower[1] - 0.01], [0.58, 0.6], [0.94, 1.05], "joinery");
+  eastRun([tower[0] + 0.01, tower[1] - 0.01], [0.58, 0.6], [1.43, 1.5], "joinery");
 
-  // West: fridge in its recess, then the pantry
-  westRun([inFront - 2.0, inFront - 1.28], [0, 0.66], [2.0, 2.4], "joinery");
-  westRun([inFront - 1.98, inFront - 1.3], [0.02, 0.68], [0, 1.85], "stainless");
-  westRun([inFront - 1.645, inFront - 1.635], [0.68, 0.685], [0.1, 1.8], "gap");
+  // West: fridge in its recess under a cupboard, then the pantry
+  const recess: [number, number] = [inFront - 2.0, inFront - 1.28];
+  westRun(recess, [0, 0.62], [2.0, 2.4], "joinery");
+  fronts(westRun, recess, 0.64, [2.0, 2.4], { every: 0.36 });
+  const westAt = (u: number, d: number): [number, number] => [inX0 + d, u];
+  fridgeAt(fit as Fit<string>, westRun, [recess[0] + 0.02, recess[1] - 0.02], westAt);
   tallUnit(westRun, [inFront - 1.28, inFront - 0.66], 0.6);
-  return fit;
+  return collect(fit, stone as unknown as Fit<G>);
+}
+
+/** Fridge in a west wall recess: body, freezer drawer, two doors, gaps and handles. */
+function fridgeAt(fit: Fit<string>, place: Place, u: [number, number], at: (uu: number, dd: number) => [number, number]) {
+  const [u0, u1] = u;
+  const mid = (u0 + u1) / 2;
+  place([u0, u1], [0.02, 0.6], [0.02, 1.82], "stainless");
+  place([u0, u1], [0.6, 0.66], [0.02, 0.7], "stainless");
+  place([u0, mid - 0.002], [0.6, 0.66], [0.705, 1.82], "stainless");
+  place([mid + 0.002, u1], [0.6, 0.66], [0.705, 1.82], "stainless");
+  place([u0, u1], [0.6, 0.661], [0.7, 0.705], "gap");
+  place([mid - 0.002, mid + 0.002], [0.6, 0.661], [0.705, 1.82], "gap");
+  for (const hu of [mid - 0.05, mid + 0.05]) {
+    const [hx, hz] = at(hu, 0.695);
+    fit.cyl([hx, 1.25, hz], 0.011, 0.55, "stainless");
+  }
+  const [bx, bz] = at(mid, 0.695);
+  fit.cyl([bx, 0.6, bz], 0.011, u1 - u0 - 0.16, "stainless", "z");
 }
 
 // ---------------------------------------------------------------------------------------------------
@@ -259,8 +382,8 @@ export function lounge<G extends string>(group: G, { along, face, dir, u, level 
   place([u[1] - 0.16, u[1]], [0.28, 0.95], [0.42, 0.6], "fabric");
   place([u[0] + 0.18, mid - 0.01], [0.3, 0.92], [0.42, 0.5], "linen");
   place([mid + 0.01, u[1] - 0.18], [0.3, 0.92], [0.42, 0.5], "linen");
-  place([mid - 0.5, mid + 0.5], [1.3, 1.9], [0.38, 0.42], "timber");
-  place([mid - 0.45, mid + 0.45], [1.35, 1.85], [0, 0.38], "gap");
+  place([mid - 0.5, mid + 0.5], [1.3, 1.9], [0.36, 0.4], "timber");
+  for (const lu of [mid - 0.46, mid + 0.43]) for (const ld of [1.33, 1.84]) place([lu, lu + 0.03], [ld, ld + 0.03], [0, 0.36], "timber");
   return fit;
 }
 
@@ -275,8 +398,8 @@ export function dining<G extends string>(group: G, { centre, along = "x" }: { ce
   for (const side of [-1, 1]) {
     for (const offset of [-0.32, 0.32]) {
       const [x, z] = along === "x" ? [cx + offset, cz + side * (hw + 0.18)] : [cx + side * (hl + 0.18), cz + offset];
-      fit.box([x - 0.21, 0.44, z - 0.21], [x + 0.21, 0.48, z + 0.21], "fabric");
-      fit.box([x - 0.19, 0, z - 0.19], [x + 0.19, 0.44, z + 0.19], "gap");
+      fit.box([x - 0.21, 0.42, z - 0.21], [x + 0.21, 0.48, z + 0.21], "fabric");
+      for (const lx of [-0.18, 0.18]) for (const lz of [-0.18, 0.18]) fit.box([x + lx - 0.015, 0, z + lz - 0.015], [x + lx + 0.015, 0.42, z + lz + 0.015], "timber");
       const [bx0, bx1, bz0, bz1] =
         along === "x" ? [x - 0.21, x + 0.21, z + side * 0.19 - 0.02, z + side * 0.19 + 0.02] : [x + side * 0.19 - 0.02, x + side * 0.19 + 0.02, z - 0.21, z + 0.21];
       fit.box([Math.min(bx0, bx1), 0.48, Math.min(bz0, bz1)], [Math.max(bx0, bx1), 0.85, Math.max(bz0, bz1)], "timber");
