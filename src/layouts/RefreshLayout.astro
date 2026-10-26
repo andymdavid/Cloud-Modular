@@ -5,12 +5,12 @@ import SiteFooter from "@/components/refresh/SiteFooter.astro";
 import "@/styles/refresh.css";
 
 import type { Props as SeoProps } from "@/components/SeoHead.astro";
-import type { NavLink } from "@/components/refresh/SiteHeader.astro";
+import type { NavGroup } from "@/components/refresh/SiteHeader.astro";
 
 type Props = SeoProps & {
   /** Header starts transparent over a full-bleed hero, then turns solid. */
   overlayHeader?: boolean;
-  navLinks?: NavLink[];
+  navLinks?: NavGroup[];
   /** Full-screen tools (the Cloud Homes design page) leave the footer out. */
   footer?: boolean;
   /** Keep the header in view while scrolling. */

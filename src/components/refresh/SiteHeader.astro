@@ -7,9 +7,15 @@ export interface NavLink {
   href: string;
 }
 
+export interface NavGroup {
+  label: string;
+  links: NavLink[];
+}
+
 interface Props {
   overlay?: boolean;
-  links?: NavLink[];
+  /** Menu groups: a small label over each set of links. */
+  links?: NavGroup[];
   /** Keep the header in view while scrolling (the Cloud Homes design pages). */
   pinned?: boolean;
 }
@@ -17,18 +23,36 @@ interface Props {
 const {
   overlay = false,
   pinned = false,
-  links = [
-    { label: "Design Your Cloud Home", href: "/cloud-homes/design/" },
-    { label: "Projects", href: "/our-work/" },
-    { label: "Sectors", href: "/#sectors" },
-    { label: "Manufacturing & Quality", href: "/quality/" },
-    { label: "Why Cloud Modular", href: "/why-cloud-modular/" },
-    { label: "Our Approach", href: "/our-approach/" },
-    { label: "About", href: "/about/" },
-    { label: "FAQ", href: "/faq/" },
-    { label: "Contact", href: "#contact" },
+  links: groups = [
+    {
+      label: "Work",
+      links: [
+        { label: "Design Your Cloud Home", href: "/cloud-homes/design/" },
+        { label: "Our Work", href: "/our-work/" },
+        { label: "Sectors", href: "/#sectors" },
+      ],
+    },
+    {
+      label: "Company",
+      links: [
+        { label: "Our Approach", href: "/our-approach/" },
+        { label: "Manufacturing & Quality", href: "/quality/" },
+        { label: "Why Cloud Modular", href: "/why-cloud-modular/" },
+        { label: "About", href: "/about/" },
+      ],
+    },
+    {
+      label: "Help",
+      links: [
+        { label: "FAQ", href: "/faq/" },
+        { label: "Contact", href: site.contactHref },
+      ],
+    },
   ],
 } = Astro.props;
+// Stagger each link's entrance in reading order across the groups
+let order = 0;
+const menu = groups.map((group) => ({ ...group, links: group.links.map((link) => ({ ...link, i: order++ })) }));
 ---
 
 <!-- Header (olympic.no): transparent, logo and menu icon at the page margin. Its colour follows the section
@@ -68,9 +92,16 @@ const {
       </button>
     </div>
 
-    <nav class="menu-links mt-4 flex flex-col items-start gap-1" aria-label="Main navigation">
-      {links.map((link, index) => (
-        <a data-menu-link href={link.href} class="menu-link" style={`--i:${index}`}>{link.label}</a>
+    <nav class="menu-links mt-4 flex flex-col gap-9" aria-label="Main navigation">
+      {menu.map((group) => (
+        <div>
+          <p class="label label-muted">{group.label}</p>
+          <ul class="mt-3 flex flex-col items-start gap-1.5">
+            {group.links.map((link) => (
+              <li><a data-menu-link href={link.href} class="menu-link" style={`--i:${link.i}`}>{link.label}</a></li>
+            ))}
+          </ul>
+        </div>
       ))}
     </nav>
 
@@ -236,9 +267,10 @@ const {
   }
 
   .menu-link {
+    display: inline-block;
     font-family: var(--font-display);
-    font-size: 2rem;
-    line-height: 1.2;
+    font-size: 1.375rem;
+    line-height: 1.25;
     font-weight: 400;
     letter-spacing: var(--tracking-title);
     opacity: 0;
