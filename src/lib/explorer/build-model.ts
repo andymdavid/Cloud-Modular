@@ -151,7 +151,7 @@ class Collector {
 // ---------------------------------------------------------------------------------------------------
 // Builders
 
-function addWall(out: Collector, wall: Wall) {
+function addWall(out: Collector, wall: Wall, detail?: { centre: { x: number; z: number } }) {
   const { a, b, base, top, group, level, finish, part } = wall;
   const t = wall.thickness ?? 0.2;
   const alongX = a[1] === b[1];
@@ -160,12 +160,24 @@ function addWall(out: Collector, wall: Wall) {
   const fixed = alongX ? a[1] : a[0];
 
   // Wall-local rectangles (along, y) mapped back to plan space
-  const piece = (u0: number, u1: number, y0: number, y1: number, depth = t, material: MaterialKey = finish) => {
+  const piece = (u0: number, u1: number, y0: number, y1: number, depth = t, material: MaterialKey = finish, shift = 0) => {
     if (u1 - u0 < 0.005 || y1 - y0 < 0.005) return;
-    const min: [number, number, number] = alongX ? [u0, y0, fixed - depth / 2] : [fixed - depth / 2, y0, u0];
-    const max: [number, number, number] = alongX ? [u1, y1, fixed + depth / 2] : [fixed + depth / 2, y1, u1];
+    const c = fixed + shift;
+    const min: [number, number, number] = alongX ? [u0, y0, c - depth / 2] : [c - depth / 2, y0, u0];
+    const max: [number, number, number] = alongX ? [u1, y1, c + depth / 2] : [c + depth / 2, y1, u1];
     out.add(group, level, material, box(min, max), part);
   };
+  /** Round part through the wall's normal (handle roses) or along it (lever), at wall-local (u, y), shifted off the centre line. */
+  const round = (u: number, y: number, shift: number, radius: number, length: number, material: MaterialKey, axis: "normal" | "along") => {
+    const geometry = new THREE.CylinderGeometry(radius, radius, length, 16);
+    if ((axis === "normal") === alongX) geometry.rotateX(Math.PI / 2);
+    else geometry.rotateZ(Math.PI / 2);
+    geometry.translate(alongX ? u : fixed + shift, y, alongX ? fixed + shift : u);
+    out.add(group, level, material, geometry, part);
+  };
+  // Which side of the wall is outside (away from the home's centre), for sills
+  const outward = detail ? Math.sign(fixed - (alongX ? detail.centre.z : detail.centre.x)) || 1 : 1;
+  const external = finish === "cladding" || finish === "render";
 
   const openings = [...(wall.openings ?? [])]
     .map((o): Required<Opening> => ({
@@ -190,7 +202,52 @@ function addWall(out: Collector, wall: Wall) {
 
     // Joinery within the opening
     const f = 0.05;
-    if (o.kind === "slider" || o.kind === "window" || o.kind === "door") {
+    if (detail && o.kind === "door") {
+      // Door leaf with small gaps, jamb liners, an architrave on each face, lever handles both sides and three hinges
+      const face = t / 2 + 0.006;
+      piece(u0 + 0.015, u1 - 0.015, sill + 0.01, head - 0.015, 0.035, "door");
+      piece(u0, u0 + 0.015, sill, head, t, "door");
+      piece(u1 - 0.015, u1, sill, head, t, "door");
+      piece(u0, u1, head - 0.015, head, t, "door");
+      for (const side of [-1, 1]) {
+        piece(u0 - 0.065, u0, sill, head + 0.065, 0.012, "door", side * face);
+        piece(u1, u1 + 0.065, sill, head + 0.065, 0.012, "door", side * face);
+        piece(u0 - 0.065, u1 + 0.065, head, head + 0.065, 0.012, "door", side * face);
+        const hu = u1 - 0.075;
+        round(hu, sill + 1.0, side * 0.026, 0.026, 0.01, "stainless", "normal");
+        round(hu, sill + 1.0, side * 0.05, 0.008, 0.05, "stainless", "normal");
+        round(hu - 0.06, sill + 1.0, side * 0.075, 0.009, 0.13, "stainless", "along");
+      }
+      for (const y of [0.22, 1.0, 1.78]) piece(u0 + 0.012, u0 + 0.022, sill + y, sill + y + 0.1, 0.04, "stainless");
+    } else if (detail && (o.kind === "window" || o.kind === "slider")) {
+      // Aluminium frame and glass, with an opening sash (awning) or meeting stiles and pulls (slider), an external sill
+      // flashing and an internal sill board
+      piece(u0 + f, u1 - f, sill + f, head - f, 0.012, "glass");
+      piece(u0, u0 + f, sill, head, 0.08, "frameDark");
+      piece(u1 - f, u1, sill, head, 0.08, "frameDark");
+      piece(u0, u1, head - f, head, 0.08, "frameDark");
+      piece(u0, u1, sill, sill + f, 0.08, "frameDark");
+      const s = 0.035;
+      if (o.kind === "window") {
+        piece(u0 + f, u0 + f + s, sill + f, head - f, 0.06, "frameDark");
+        piece(u1 - f - s, u1 - f, sill + f, head - f, 0.06, "frameDark");
+        piece(u0 + f, u1 - f, head - f - s, head - f, 0.06, "frameDark");
+        piece(u0 + f, u1 - f, sill + f, sill + f + s, 0.06, "frameDark");
+        const mid = (u0 + u1) / 2;
+        piece(mid - 0.04, mid + 0.04, sill + f + 0.005, sill + f + 0.03, 0.02, "stainless", -outward * 0.04); // winder
+      } else {
+        const panels = u1 - u0 > 3.2 ? 4 : 2;
+        for (let i = 1; i < panels; i++) {
+          const at = u0 + ((u1 - u0) * i) / panels;
+          piece(at - 0.035, at + 0.035, sill, head, 0.1, "frameDark");
+          for (const side of [-1, 1]) piece(at + side * 0.06 - 0.01, at + side * 0.06 + 0.01, sill + 0.85, sill + 1.15, 0.03, "frameDark", side * 0.05);
+        }
+      }
+      if (external && sill > base + 0.05) {
+        piece(u0 - 0.02, u1 + 0.02, sill - 0.02, sill, 0.045, "frameDark", outward * (t / 2 + 0.015));
+        piece(u0 - 0.03, u1 + 0.03, sill - 0.025, sill, 0.05, "interior", -outward * (t / 2 + 0.015));
+      }
+    } else if (o.kind === "slider" || o.kind === "window" || o.kind === "door") {
       const glassDepth = 0.02;
       if (o.kind === "door") piece(u0 + f, u1 - f, sill, head - f, 0.04, "door");
       else piece(u0 + f, u1 - f, sill + f, head - f, glassDepth, "glass");
@@ -446,7 +503,7 @@ export function buildHouse(house: HouseData, { anisotropy = 4 }: { anisotropy?: 
   const materials = createMaterials(anisotropy);
   const out = new Collector();
 
-  house.walls.forEach((wall) => addWall(out, wall));
+  house.walls.forEach((wall) => addWall(out, wall, house.detail ? { centre: house.centre } : undefined));
   house.slabs.forEach((slab) => addSlab(out, slab));
   house.roofs.forEach((roof) => addRoof(out, roof, house.eaveOverhang));
   house.downpipes.forEach((pipe) => addDownpipe(out, house, pipe));

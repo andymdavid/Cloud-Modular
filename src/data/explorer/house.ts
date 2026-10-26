@@ -151,6 +151,8 @@ export interface Downpipe<G extends string = string> {
 export interface HouseData<G extends string = string> {
   /** Plan point placed at the scene origin. */
   centre: { x: number; z: number };
+  /** Detailed joinery (Cloud Homes): door leaves with trims, handles and hinges; window sashes, sills and handles. */
+  detail?: boolean;
   /** Underside of the upper floor slab (top of ground-floor walls). */
   ufSlab: number;
   /** Default roof overhang past the roof's x/z extents. */

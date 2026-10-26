@@ -263,6 +263,7 @@ function oneBed(): HouseData<GroupId> {
 
   return {
     centre: { x: width / 2 + VERGOLA_WIDTH / 2, z: front / 2 },
+    detail: true,
     ufSlab: LV.gfWall,
     eaveOverhang: 0.15,
     walls,
@@ -345,6 +346,7 @@ function twoBed(): HouseData<GroupId> {
 
   return {
     centre: { x: width / 2 + VERGOLA_WIDTH / 2, z: front / 2 },
+    detail: true,
     ufSlab: LV.gfWall,
     eaveOverhang: 0.15,
     walls,
@@ -493,6 +495,7 @@ function fourBed(): HouseData<GroupId> {
 
   return {
     centre: { x: width / 2 + VERGOLA_WIDTH / 2, z: front / 2 },
+    detail: true,
     ufSlab: LV.gfWall,
     eaveOverhang: 0.15,
     walls,

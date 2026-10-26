@@ -451,31 +451,57 @@ export function powderRoom<G extends string>(group: G, { x, z }: { x: [number, n
 // ---------------------------------------------------------------------------------------------------
 // Furniture
 
-/** Queen bed with its head against a wall: base, mattress, duvet with a throw, pillows, headboard and bedsides. */
+/** Centre of a wall-relative box, in plan, with its top height. */
+function centreOf(place: Place, u: [number, number], d: [number, number], y: number): Vec3 {
+  const [min, max] = span(place, u, d, [y, y]);
+  return [(min[0] + max[0]) / 2, y, (min[2] + max[2]) / 2];
+}
+
+/**
+ * Bedside table: a rounded top over a drawer box with its front and pull, on four slim legs, with a lamp (round base,
+ * stem and linen shade) and a small book.
+ */
+function bedside<G extends string>(fit: Fit<G>, place: Place, u: [number, number]) {
+  const [u0, u1] = u;
+  for (const lu of [u0 + 0.02, u1 - 0.045]) for (const ld of [0.03, 0.355]) place([lu, lu + 0.025], [ld, ld + 0.025], [0, 0.3], "timber");
+  fit.rbox(...span(place, u, [0.02, 0.4], [0.3, 0.5]), "timber", 0.012);
+  place([u0 + 0.02, u1 - 0.02], [0.4, 0.404], [0.32, 0.46], "timber");
+  place([u0 + 0.02, u1 - 0.02], [0.404, 0.406], [0.388, 0.392], "gap");
+  place([(u0 + u1) / 2 - 0.05, (u0 + u1) / 2 + 0.05], [0.406, 0.42], [0.415, 0.425], "stainless");
+  const lamp = centreOf(place, [u0 + 0.12, u0 + 0.26], [0.12, 0.26], 0.5);
+  fit.cyl([lamp[0], 0.515, lamp[2]], 0.065, 0.03, "ceramic");
+  fit.cyl([lamp[0], 0.63, lamp[2]], 0.008, 0.2, "stainless");
+  fit.cyl([lamp[0], 0.79, lamp[2]], 0.11, 0.17, "linen");
+  fit.box(...span(place, [u1 - 0.17, u1 - 0.05], [0.18, 0.34], [0.5, 0.525]), "fabric");
+}
+
+/**
+ * Queen bed with its head against a wall: an upholstered, rounded headboard, a raised base on a recessed plinth, a
+ * soft mattress, the duvet folded back at the top with a throw across the foot, and four pillows. Bedside tables
+ * either side.
+ */
 export function bed<G extends string>(group: G, { along, face, dir, centre, level = "gf", floor = 0 }: { along: "x" | "z"; face: number; dir: 1 | -1; centre: number; level?: string; floor?: number }) {
   const fit = new Fit(group, level, floor);
   const place = fit.wall(along, face, dir);
   const half = 0.77;
   const u: [number, number] = [centre - half, centre + half];
-  place([u[0] - 0.02, u[1] + 0.02], [0, 0.05], [0, 1.1], "fabric"); // headboard
-  place(u, [0.05, 2.08], [0.05, 0.32], "fabric");
-  place([u[0] + 0.02, u[1] - 0.02], [0.07, 2.06], [0.32, 0.55], "linen");
-  place([u[0] - 0.01, u[1] + 0.01], [0.6, 2.09], [0.5, 0.58], "linen"); // duvet
-  place([u[0] - 0.02, u[1] + 0.02], [1.55, 1.95], [0.56, 0.6], "fabric"); // throw
-  place([u[0] + 0.08, centre - 0.04], [0.1, 0.5], [0.55, 0.7], "linen");
-  place([centre + 0.04, u[1] - 0.08], [0.1, 0.5], [0.55, 0.7], "linen");
-  for (const s of [-1, 1]) {
-    const edge = s < 0 ? u[0] - 0.08 : u[1] + 0.08;
-    const v: [number, number] = s < 0 ? [edge - 0.45, edge] : [edge, edge + 0.45];
-    place(v, [0, 0.4], [0, 0.5], "timber");
+  const r = (uu: [number, number], d: [number, number], y: [number, number], material: MaterialKey, radius: number) => fit.rbox(...span(place, uu, d, y), material, radius);
+  r([u[0] - 0.04, u[1] + 0.04], [0, 0.09], [0.05, 1.15], "fabric", 0.04); // headboard
+  place([u[0] + 0.08, u[1] - 0.08], [0.15, 2.0], [0, 0.08], "gap"); // plinth
+  r([u[0], u[1]], [0.09, 2.12], [0.08, 0.32], "fabric", 0.03); // base
+  r([u[0] + 0.02, u[1] - 0.02], [0.1, 2.1], [0.31, 0.53], "linen", 0.06); // mattress
+  r([u[0] - 0.01, u[1] + 0.01], [0.62, 2.13], [0.44, 0.58], "linen", 0.05); // duvet
+  r([u[0] - 0.005, u[1] + 0.005], [0.55, 0.72], [0.5, 0.6], "linen", 0.04); // turned-back fold
+  r([u[0] - 0.03, u[1] + 0.03], [1.55, 1.98], [0.5, 0.605], "fabric", 0.03); // throw
+  for (const [p0, p1] of [
+    [u[0] + 0.06, centre - 0.03],
+    [centre + 0.03, u[1] - 0.06],
+  ] as [number, number][]) {
+    r([p0, p1], [0.11, 0.33], [0.52, 0.7], "linen", 0.07); // back pillow, against the headboard
+    r([p0 + 0.03, p1 - 0.03], [0.3, 0.52], [0.53, 0.64], "linen", 0.05);
   }
-  return fit;
-}
-
-/** Bed without bedsides, for tight rooms. */
-export function bedOnly<G extends string>(group: G, opts: Parameters<typeof bed>[1]) {
-  const fit = bed(group, opts);
-  fit.blocks = fit.blocks.filter((b) => b.material !== "timber");
+  bedside(fit, place, [u[0] - 0.53, u[0] - 0.08]);
+  bedside(fit, place, [u[1] + 0.08, u[1] + 0.53]);
   return fit;
 }
 
@@ -491,8 +517,20 @@ export function lounge<G extends string>(group: G, { along, face, dir, u, level 
   place([u[1] - 0.16, u[1]], [0.28, 0.95], [0.42, 0.6], "fabric");
   place([u[0] + 0.18, mid - 0.01], [0.3, 0.92], [0.42, 0.5], "linen");
   place([mid + 0.01, u[1] - 0.18], [0.3, 0.92], [0.42, 0.5], "linen");
-  place([mid - 0.5, mid + 0.5], [1.3, 1.9], [0.36, 0.4], "timber");
-  for (const lu of [mid - 0.46, mid + 0.43]) for (const ld of [1.33, 1.84]) place([lu, lu + 0.03], [ld, ld + 0.03], [0, 0.36], "timber");
+  // Coffee table: a thin rounded top on four slim legs, a lower shelf, and a few things on it
+  fit.rbox(...span(place, [mid - 0.55, mid + 0.55], [1.3, 1.9], [0.36, 0.39]), "timber", 0.025);
+  for (const lu of [mid - 0.5, mid + 0.475]) for (const ld of [1.34, 1.835]) place([lu, lu + 0.025], [ld, ld + 0.025], [0, 0.36], "timber");
+  place([mid - 0.5, mid + 0.5], [1.36, 1.84], [0.1, 0.115], "timber");
+  fit.box(...span(place, [mid - 0.38, mid - 0.1], [1.42, 1.62], [0.39, 0.42]), "fabric");
+  fit.box(...span(place, [mid - 0.35, mid - 0.13], [1.44, 1.6], [0.42, 0.44]), "linen");
+  const bowl = centreOf(place, [mid + 0.15, mid + 0.35], [1.5, 1.7], 0.39);
+  fit.cyl([bowl[0], 0.42, bowl[2]], 0.11, 0.06, "ceramic");
+  fit.cyl([bowl[0], 0.451, bowl[2]], 0.095, 0.004, "gap");
+  // Floor lamp in the corner beside the sofa
+  const lamp = centreOf(place, [u[1] + 0.12, u[1] + 0.32], [0.12, 0.32], 0);
+  fit.cyl([lamp[0], 0.01, lamp[2]], 0.13, 0.02, "appliance");
+  fit.cyl([lamp[0], 0.75, lamp[2]], 0.01, 1.45, "appliance");
+  fit.cyl([lamp[0], 1.5, lamp[2]], 0.17, 0.26, "linen");
   return fit;
 }
 

@@ -241,6 +241,32 @@ const floorTiles = (colour: string) =>
     }
   });
 
+/**
+ * Mirror: a bright, cool reflection with soft diagonal light streaks, so mirrors read as mirrors under the studio
+ * light without real-time reflections.
+ */
+const mirrorSheen = () =>
+  surface(512, (c, _b, size) => {
+    const base = c.createLinearGradient(0, 0, size, size);
+    base.addColorStop(0, "#f7f9f9");
+    base.addColorStop(0.5, "#dfe5e7");
+    base.addColorStop(1, "#c9d1d4");
+    c.fillStyle = base;
+    c.fillRect(0, 0, size, size);
+    c.save();
+    c.translate(size / 2, size / 2);
+    c.rotate(-Math.PI / 4);
+    for (const [at, width, alpha] of [
+      [-0.18, 0.08, 0.55],
+      [-0.05, 0.03, 0.4],
+      [0.22, 0.12, 0.3],
+    ]) {
+      c.fillStyle = `rgba(255,255,255,${alpha})`;
+      c.fillRect(at * size, -size, width * size, size * 2);
+    }
+    c.restore();
+  });
+
 /** Solar panel glass: dark cells in a fine silver grid, about one panel (1.05 m) per tile. */
 const solarCells = () =>
   surface(256, (c, b, size) => {
@@ -354,6 +380,9 @@ export function createDesignViewer(options: {
       if (benchtop) Object.assign(benchtop, { roughness: state.stone ? 0.12 : 0.5, metalness: 0 });
     }
     if (!tilesDone) {
+      finish("mirror", mirrorSheen(), 0.9, 0);
+      const mirror = standard("mirror");
+      if (mirror) Object.assign(mirror, { roughness: 0.08, metalness: 0.15, emissive: new THREE.Color("#ffffff"), emissiveIntensity: 0.12 });
       finish("floorTile", floorTiles("#d8d5ce"), 1.2, 0.6);
       finish("tile", tiles("#f1f0ec"), 0.6, 0.6);
       tilesDone = true;
