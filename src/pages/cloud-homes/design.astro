@@ -157,7 +157,15 @@ const startHome = cloudHomes.find((h) => h.id === defaultHome)!;
   .design-step {
     padding-block: 2.5rem;
     border-bottom: var(--rule) solid rgb(var(--line) / var(--rule-alpha));
-    scroll-margin-top: calc(44svh + 1rem);
+    scroll-margin-top: 50svh;
+  }
+
+  /* Phones: the home fills the top half and each section the bottom half, so one choice shows at a time */
+  @media (max-width: 63.999rem) {
+    .design-form .design-step {
+      min-height: 50svh;
+      padding-block: 2rem 3rem;
+    }
   }
 
   .design-step[hidden] {
@@ -394,7 +402,8 @@ const startHome = cloudHomes.find((h) => h.id === defaultHome)!;
           updateArrows();
         }
       },
-      { rootMargin: "-45% 0px -45% 0px" },
+      // The section in the middle of the panel: the screen's middle beside the home, or the lower half's middle under it
+      { rootMargin: window.matchMedia("(min-width: 64rem)").matches ? "-45% 0px -45% 0px" : "-70% 0px -25% 0px" },
     );
     document.querySelectorAll<HTMLElement>("[data-step]").forEach((step) => observer.observe(step));
 

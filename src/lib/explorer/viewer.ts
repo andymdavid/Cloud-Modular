@@ -147,7 +147,7 @@ export function createExplorer(options: ExplorerOptions): Explorer {
 
   const small = () => host.clientWidth < 768;
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, small() ? 1.5 : 2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, small() && !stage.studio ? 1.5 : 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.NeutralToneMapping;
   renderer.toneMappingExposure = 1.0;
@@ -178,7 +178,7 @@ export function createExplorer(options: ExplorerOptions): Explorer {
   const sunDistance = sun.position.length();
   const sunPolar = Math.acos(sun.position.y / sunDistance);
   sun.castShadow = true;
-  sun.shadow.mapSize.setScalar(small() ? 1024 : 2048);
+  sun.shadow.mapSize.setScalar(small() && !stage.studio ? 1024 : 2048);
   const extent = stage.shadowExtent;
   Object.assign(sun.shadow.camera, { left: -extent, right: extent, top: extent, bottom: -extent, near: 1, far: stage.shadowFar });
   sun.shadow.bias = -0.0004;
@@ -394,7 +394,7 @@ export function createExplorer(options: ExplorerOptions): Explorer {
   controls.addEventListener("start", () => (cameraTouched = true));
 
   const resize = () => {
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, small() ? 1.5 : 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, small() && !stage.studio ? 1.5 : 2));
     renderer.setSize(host.clientWidth, host.clientHeight, false);
     if (composer) {
       composer.setPixelRatio(renderer.getPixelRatio());

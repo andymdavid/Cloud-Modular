@@ -42,7 +42,8 @@ const sceneFor = (id: CloudHomeId): ExplorerScene => ({
     groundRadius: 15,
     groundStretch: 1.4,
     groundY: -0.21,
-    fit: 0.72,
+    // Phones show the home in a short, wide stage, so it can fill more of it
+    fit: typeof window !== "undefined" && window.innerWidth < 1024 ? 0.82 : 0.72,
     studio: { background: STAGE_BACKGROUND },
     target: [0, 1.6, 0],
     panLimit: [[-8, -0.5, -12], [8, 8, 12]],
