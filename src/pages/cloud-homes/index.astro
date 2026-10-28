@@ -6,6 +6,10 @@ import SectionHead from "@/components/refresh/SectionHead.astro";
 import CardRow from "@/components/refresh/CardRow.astro";
 import MediaCard from "@/components/refresh/MediaCard.astro";
 import FaqSection from "@/components/refresh/FaqSection.astro";
+import ProjectGallery from "@/components/refresh/ProjectGallery.astro";
+import ImagePanel from "@/components/refresh/ImagePanel.astro";
+import Accordion from "@/components/refresh/Accordion.astro";
+import type { GalleryRow } from "@/data/projects";
 import { cloudHomes, extras, formatPrice, homeSteps, included } from "@/data/cloud-homes";
 import { faqItems, projects, site } from "@/data/site";
 
@@ -41,11 +45,11 @@ const schemas = [
   },
 ];
 
-// One render per home, each in a different finish from the tool
+// One render per home, in the tool's default finish
 const homeImages = {
-  "one-bed": { alt: "Render of the 1 Bed Cloud Home in timber-look cladding, with a black roof, solar panels and a covered deck at the entry" },
-  "two-bed": { alt: "Render of the 2 Bed Cloud Home in graphite fibre cement, with a black roof, solar panels and a covered deck at the entry" },
-  "four-bed": { alt: "Render of the two-storey 4 Bed Cloud Home in warm grey fibre cement, with solar panels and a covered deck at the entry" },
+  "one-bed": { alt: "Render of the 1 Bed Cloud Home in white fibre cement panels, with solar panels and a covered deck at the entry" },
+  "two-bed": { alt: "Render of the 2 Bed Cloud Home in white fibre cement panels, with solar panels and a covered deck at the entry" },
+  "four-bed": { alt: "Render of the two-storey 4 Bed Cloud Home in white fibre cement panels, with solar panels and a covered deck at the entry" },
 } as const;
 
 const uses = [
@@ -53,6 +57,20 @@ const uses = [
   { title: "Rental income", body: "A second home on your block can be rented out, where your council allows it." },
   { title: "Room to work", body: "A quiet studio or office away from the main house." },
   { title: "A full home", body: "The 4 Bed is a two-storey family home for a new block, a knockdown or a regional site." },
+];
+
+// Placeholders for the images still to be made; each says what it will show
+const placeholder = (slug: string, caption: string, width: number, height: number) => ({
+  src: `/cloud-homes/placeholders/${slug}.webp`,
+  alt: `Placeholder for an image of ${caption.toLowerCase()}`,
+  width,
+  height,
+  caption,
+});
+const gallery: GalleryRow[] = [
+  { kind: "full", image: placeholder("backyard", "A 2 Bed in a backyard", 2400, 1350) },
+  { kind: "pair", images: [placeholder("living", "Living and kitchen", 1600, 1000), placeholder("bedroom", "Main bedroom", 1000, 1250)] },
+  { kind: "full", image: placeholder("deck", "The deck at dusk", 2400, 1350) },
 ];
 
 const fromPrice = Math.min(...cloudHomes.map((home) => home.fromPrice));
@@ -71,7 +89,7 @@ const shownProjects = projects.slice(0, 3);
 
     <div class="wide-row intro-grow" data-reveal>
       <div class="intro-frame stage-frame aspect-[4/3] overflow-hidden rounded sm:aspect-[16/9]">
-        <img src="/cloud-homes/two-bed-timber.webp" alt="Render of the 2 Bed Cloud Home in timber-look cladding, with a black roof, solar panels and a covered deck at the entry" width="2400" height="1350" fetchpriority="high" class="h-full w-full object-cover" />
+        <img src="/cloud-homes/two-bed-wide.webp" alt="Render of the 2 Bed Cloud Home in white fibre cement panels, with solar panels and a covered deck at the entry" width="2400" height="1350" fetchpriority="high" class="h-full w-full object-cover" />
       </div>
     </div>
   </div>
@@ -108,19 +126,14 @@ const shownProjects = projects.slice(0, 3);
     </CardRow>
   </section>
 
-  <SplitSection id="uses" label="Ways to use it">
-    <p class="text-about">Live in it, share it with family or rent it out.</p>
-    <dl class="mt-10 grid gap-x-gap-sm gap-y-8 sm:grid-cols-2">
-      {uses.map((use) => (
-        <div class="border-t border-line/[var(--rule-alpha)] pt-5">
-          <dt class="text-lead">{use.title}</dt>
-          <dd class="mt-2 text-body text-fg-muted">{use.body}</dd>
-        </div>
-      ))}
-    </dl>
-  </SplitSection>
+  <ProjectGallery rows={gallery} />
 
-  <SplitSection id="included" label="What's included">
+  <!-- The homes in use: a placeholder image to be made, and the four uses on the slate panel -->
+  <ImagePanel id="uses" label="Ways to use it" title="Live in it, share it or rent it out" image="/cloud-homes/placeholders/uses.webp" alt="Placeholder for an image of living in a Cloud Home" width={1600} height={1800}>
+    <Accordion items={uses} name="uses" openFirst />
+  </ImagePanel>
+
+  <SplitSection id="included" label="What's included" rule={false}>
     <p class="text-about">Every Cloud Home comes with these as standard, and you choose its cladding, colours, roof, window frames, deck, floors and kitchen.</p>
     <div class="mt-10 grid gap-x-gap-sm gap-y-10 sm:grid-cols-2">
       <div>
@@ -150,7 +163,7 @@ const shownProjects = projects.slice(0, 3);
 
     <div class="wide-row mt-12 sm:mt-16" data-reveal>
       <div class="stage-frame relative aspect-[4/3] overflow-hidden rounded sm:aspect-[16/9]" data-peek>
-        <img src="/cloud-homes/two-bed-timber.webp" alt="" width="2400" height="1350" loading="lazy" class="absolute inset-0 h-full w-full object-cover" data-peek-still />
+        <img src="/cloud-homes/two-bed-wide.webp" alt="" width="2400" height="1350" loading="lazy" class="absolute inset-0 h-full w-full object-cover" data-peek-still />
         <div class="absolute inset-0" data-peek-host></div>
         <div class="peek-views" role="group" aria-label="View" hidden data-peek-views>
           <button type="button" class="peek-view" aria-pressed="true" data-view="outside">Outside</button>
@@ -270,8 +283,8 @@ const shownProjects = projects.slice(0, 3);
   const still = frame.querySelector<HTMLElement>("[data-peek-still]")!;
   const views = frame.querySelector<HTMLElement>("[data-peek-views]")!;
 
-  // The same finish as the render above it
-  const design = readDesign(new URLSearchParams("home=two-bed&cladding=timber-look&roof=monument"));
+  // The tool's default finish, as the render it replaces
+  const design = readDesign(new URLSearchParams("home=two-bed"));
   const cameras = {
     outside: homeCamera,
     inside: { azimuth: 30, polar: 38, inside: true },
