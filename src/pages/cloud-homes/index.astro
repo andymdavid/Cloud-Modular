@@ -15,7 +15,7 @@ import { faqItems, projects, site } from "@/data/site";
 
 /**
  * Cloud Homes (cf. samara.com/adus): the product page in front of the "Design yours" tool. The three homes, what
- * they are for, what comes with them, the live 2 Bed in 3D, how buying one works, the from price and the questions
+ * they are for, what comes with them, how buying one works, the from price and the questions
  * people ask. The images are renders from the same 3D models as the tool, as no Cloud Home has been photographed yet.
  * Prices are the placeholders in src/data/cloud-homes.ts.
  */
@@ -59,18 +59,24 @@ const uses = [
   { title: "A full home", body: "The 4 Bed is a two-storey family home for a new block, a knockdown or a regional site." },
 ];
 
-// Placeholders for the images still to be made; each says what it will show
-const placeholder = (slug: string, caption: string, width: number, height: number) => ({
-  src: `/cloud-homes/placeholders/${slug}.webp`,
-  alt: `Placeholder for an image of ${caption.toLowerCase()}`,
-  width,
-  height,
-  caption,
-});
+// Stand-ins from other projects until the Cloud Homes images are made. To come: a 2 Bed in a backyard, the living
+// and kitchen, the main bedroom, the deck at dusk, and people living in a Cloud Home (Ways to use it).
 const gallery: GalleryRow[] = [
-  { kind: "full", image: placeholder("backyard", "A 2 Bed in a backyard", 2400, 1350) },
-  { kind: "pair", images: [placeholder("living", "Living and kitchen", 1600, 1000), placeholder("bedroom", "Main bedroom", 1000, 1250)] },
-  { kind: "full", image: placeholder("deck", "The deck at dusk", 2400, 1350) },
+  {
+    kind: "full",
+    image: { src: "/projects/capel-village/residence-4.webp", alt: "A single-storey home with a timber deck, set among native gardens and gum trees", width: 1100, height: 614 },
+  },
+  {
+    kind: "pair",
+    images: [
+      { src: "/interior.webp", alt: "An open kitchen with a timber island, white benchtops and full-height glazing onto the garden", width: 1748, height: 900 },
+      { src: "/projects/seashells-jurien-bay/sunset.webp", alt: "Two-storey homes at sunset above a planted street", width: 1055, height: 1491 },
+    ],
+  },
+  {
+    kind: "full",
+    image: { src: "/projects/capel-village/residence-3.webp", alt: "Neighbours sitting out on a shaded deck in front of a single-storey home", width: 1100, height: 614 },
+  },
 ];
 
 const fromPrice = Math.min(...cloudHomes.map((home) => home.fromPrice));
@@ -87,9 +93,16 @@ const shownProjects = projects.slice(0, 3);
       </div>
     </PageIntro>
 
+    <!-- The 2 Bed live in 3D: drag to turn it, or lift the roof. The render shows until the model is ready. -->
     <div class="wide-row intro-grow" data-reveal>
-      <div class="intro-frame stage-frame aspect-[4/3] overflow-hidden rounded sm:aspect-[16/9]">
-        <img src="/cloud-homes/two-bed-wide.webp" alt="Render of the 2 Bed Cloud Home in white fibre cement panels, with solar panels and a covered deck at the entry" width="2400" height="1350" fetchpriority="high" class="h-full w-full object-cover" />
+      <div class="intro-frame stage-frame relative aspect-[4/3] overflow-hidden rounded sm:aspect-[16/9]" data-peek>
+        <img src="/cloud-homes/two-bed-wide.webp" alt="Render of the 2 Bed Cloud Home in white fibre cement panels, with solar panels and a covered deck at the entry" width="2400" height="1350" fetchpriority="high" class="absolute inset-0 h-full w-full object-cover" data-peek-still />
+        <div class="absolute inset-0" data-peek-host></div>
+        <p class="peek-hint label label-muted" hidden data-peek-hint>Drag to turn the 2 Bed</p>
+        <div class="peek-views" role="group" aria-label="View" hidden data-peek-views>
+          <button type="button" class="peek-view" aria-pressed="true" data-view="outside">Outside</button>
+          <button type="button" class="peek-view" aria-pressed="false" data-view="inside">Inside</button>
+        </div>
       </div>
     </div>
   </div>
@@ -128,8 +141,8 @@ const shownProjects = projects.slice(0, 3);
 
   <ProjectGallery rows={gallery} />
 
-  <!-- The homes in use: a placeholder image to be made, and the four uses on the slate panel -->
-  <ImagePanel id="uses" label="Ways to use it" title="Live in it, share it or rent it out" image="/cloud-homes/placeholders/uses.webp" alt="Placeholder for an image of living in a Cloud Home" width={1600} height={1800}>
+  <!-- The homes in use (a stand-in image for now) and the four uses on the slate panel -->
+  <ImagePanel id="uses" label="Ways to use it" title="Live in it, share it or rent it out" image="/projects/capel-village/residence-2.webp" alt="Neighbours walking past single-storey homes with decks and native gardens" width={1100} height={614}>
     <Accordion items={uses} name="uses" openFirst />
   </ImagePanel>
 
@@ -152,26 +165,6 @@ const shownProjects = projects.slice(0, 3);
       </div>
     </div>
   </SplitSection>
-
-  <!-- Peek inside: the 2 Bed live in 3D, from outside or with the roof lifted. Loads as it nears the viewport. -->
-  <section id="inside" data-theme="light" class="scroll-mt-header pb-section">
-    <div class="shell">
-      <SectionHead label="Peek inside" title="Look around the 2 Bed" intro="Drag to turn the home, or lift the roof to see the kitchen, bedrooms and bathroom.">
-        <a slot="actions" href="/cloud-homes/design/" class="btn">Design yours</a>
-      </SectionHead>
-    </div>
-
-    <div class="wide-row mt-12 sm:mt-16" data-reveal>
-      <div class="stage-frame relative aspect-[4/3] overflow-hidden rounded sm:aspect-[16/9]" data-peek>
-        <img src="/cloud-homes/two-bed-wide.webp" alt="" width="2400" height="1350" loading="lazy" class="absolute inset-0 h-full w-full object-cover" data-peek-still />
-        <div class="absolute inset-0" data-peek-host></div>
-        <div class="peek-views" role="group" aria-label="View" hidden data-peek-views>
-          <button type="button" class="peek-view" aria-pressed="true" data-view="outside">Outside</button>
-          <button type="button" class="peek-view" aria-pressed="false" data-view="inside">Inside</button>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <SplitSection id="how-it-works" label="How it works">
     <ol class="grid gap-8">
@@ -257,6 +250,14 @@ const shownProjects = projects.slice(0, 3);
     transform: translateX(-50%);
   }
 
+  .peek-hint {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    pointer-events: none;
+  }
+
+  .peek-hint[hidden],
   .peek-views[hidden] {
     display: none;
   }
@@ -282,6 +283,7 @@ const shownProjects = projects.slice(0, 3);
   const host = frame.querySelector<HTMLElement>("[data-peek-host]")!;
   const still = frame.querySelector<HTMLElement>("[data-peek-still]")!;
   const views = frame.querySelector<HTMLElement>("[data-peek-views]")!;
+  const hint = frame.querySelector<HTMLElement>("[data-peek-hint]")!;
 
   // The tool's default finish, as the render it replaces
   const design = readDesign(new URLSearchParams("home=two-bed"));
@@ -301,11 +303,13 @@ const shownProjects = projects.slice(0, 3);
         onError: () => {
           host.hidden = true;
           views.hidden = true;
+          hint.hidden = true;
           still.hidden = false;
         },
       });
       still.hidden = true;
       views.hidden = false;
+      hint.hidden = false;
       views.addEventListener("click", (event) => {
         const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-view]");
         if (!button) return;
@@ -314,7 +318,7 @@ const shownProjects = projects.slice(0, 3);
       });
     });
 
-  // three.js loads only as the section nears the viewport
+  // three.js loads once the hero is on screen
   const observer = new IntersectionObserver(
     (entries) => {
       if (!entries.some((entry) => entry.isIntersecting)) return;
