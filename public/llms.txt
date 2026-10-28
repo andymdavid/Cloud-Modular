@@ -44,5 +44,6 @@ Commercial, multi-residential, health and aged care, education and community, in
 - [Partner with us](https://cloudmodular.com.au/partner-with-us/): who we work with, ways to work with us and the project enquiry form
 - [Contact](https://cloudmodular.com.au/contact/)
 - [Get started](https://cloudmodular.com.au/start/)
+- [Cloud Homes](https://cloudmodular.com.au/cloud-homes/): Cloud Modular's 1, 2 and 4 bedroom homes, built in its manufacturing facility and delivered across Australia
 - [Design your Cloud Home](https://cloudmodular.com.au/cloud-homes/design/): choose a 1, 2 or 4 bedroom Cloud Home and its finishes in 3D, and send the design for a proposal
 - [Full information](https://cloudmodular.com.au/llms-full.txt)
