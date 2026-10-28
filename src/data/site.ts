@@ -312,11 +312,30 @@ export const faqTopics = [
   { id: "why", label: "Why Cloud Modular", href: "/why-cloud-modular/" },
   { id: "approach", label: "Process and engagement", href: "/our-approach/" },
   { id: "partner", label: "Working with us", href: "/partner-with-us/" },
+  { id: "cloud-homes", label: "Cloud Homes", href: "/cloud-homes/" },
 ] as const;
 
 export type FaqTopic = (typeof faqTopics)[number]["id"];
 
 export const faqItems = [
+  {
+    topic: "cloud-homes",
+    question: "Where can you deliver a Cloud Home?",
+    answer:
+      "Anywhere in Australia, including regional sites. Send us your design and your site address and we will confirm we can deliver there.",
+  },
+  {
+    topic: "cloud-homes",
+    question: "What does the from price include?",
+    answer:
+      "The from price is for the home with its standard inclusions. Delivery, site works and any extras depend on your site and your choices, so your proposal sets out the full price.",
+  },
+  {
+    topic: "cloud-homes",
+    question: "Does a Cloud Home need approval?",
+    answer:
+      "Yes. Like any new home it needs a building permit, and some sites also need planning approval. We provide the drawings and documents your approvals need, and your proposal sets out the approvals for your site.",
+  },
   {
     topic: "quality",
     question: "How do your modules comply with Australian standards?",
@@ -326,7 +345,7 @@ export const faqItems = [
   {
     topic: "quality",
     question: "Where are the modules built?",
-    alsoOn: ["general"],
+    alsoOn: ["general", "cloud-homes"],
     answer:
       "Modules are built in our manufacturing facility in Foshan, China. Every module is inspected at each stage of production and signed off before it is packed and shipped to site.",
   },
@@ -365,13 +384,14 @@ export const faqItems = [
   {
     topic: "general",
     question: "How are modules transported and installed?",
-    alsoOn: ["approach"],
+    alsoOn: ["approach", "cloud-homes"],
     answer:
       "Modules are shipped, unloaded and craned into position using established lifting and transport methods. We coordinate with local contractors for foundations, services and final works.",
   },
   {
     topic: "quality",
     question: "Do modular buildings have the same lifespan as traditional buildings?",
+    alsoOn: ["cloud-homes"],
     answer:
       "Yes. Modules are engineered as permanent structures and use materials and systems comparable to traditional builds.",
   },
