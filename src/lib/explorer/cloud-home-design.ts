@@ -315,6 +315,8 @@ export interface DesignViewer {
   setHome(id: CloudHomeId): void;
   update(state: DesignState): void;
   show(view: DesignView): void;
+  /** A still through a perspective lens, as a PNG data URL (see Explorer.capture). */
+  capture: Explorer["capture"];
   dispose(): void;
 }
 
@@ -447,6 +449,9 @@ export function createDesignViewer(options: {
       if (!changed) return;
       explorer.setView(view.inside ? "inside" : "exterior");
       turn();
+    },
+    capture(lens) {
+      return explorer.capture(lens);
     },
     dispose() {
       explorer.dispose();

@@ -114,6 +114,19 @@ export interface Explorer {
   refresh(): void;
   /** Rendering cost of the last frame, for diagnostics. */
   stats(): { meshes: number; drawCalls: number; triangles: number };
+  /** A still through a perspective lens (a photograph's framing), as a PNG data URL at the host's size. Used to
+   *  make composition guides for photographs of the homes; the view on screen is unchanged. */
+  capture(lens: {
+    position: readonly [number, number, number];
+    target: readonly [number, number, number];
+    fov: number;
+    /** Objects shown only in the still, e.g. a stand-in figure marking where a person stands. */
+    extras?: THREE.Object3D[];
+    /** Glass opacity for the still, so the rooms behind read clearly. */
+    glass?: number;
+    /** Cast shadows (default true). Off for guides, whose light is set later and whose shadows read as joints. */
+    shadows?: boolean;
+  }): string;
   dispose(): void;
 }
 
@@ -676,6 +689,46 @@ export function createExplorer(options: ExplorerOptions): Explorer {
     stats() {
       const { calls, triangles } = renderer.info.render;
       return { meshes: model.meshes.length, drawCalls: calls, triangles };
+    },
+    capture(lens) {
+      const width = host.clientWidth;
+      const height = host.clientHeight;
+      const still = new THREE.PerspectiveCamera(lens.fov, width / height, 0.05, 400);
+      const target = new THREE.Vector3(...lens.target);
+      still.position.set(...lens.position);
+      still.lookAt(target);
+      if (studio) {
+        const view = new THREE.Spherical().setFromVector3(still.position.clone().sub(target));
+        sun.position.copy(target).add(new THREE.Vector3().setFromSpherical(new THREE.Spherical(sunDistance, sunPolar, view.theta + THREE.MathUtils.degToRad(35))));
+        sun.target.position.copy(target);
+        sun.target.updateMatrixWorld();
+      }
+      const extras = lens.extras ?? [];
+      if (extras.length) scene.add(...extras);
+      const glass = model.materials.glass as THREE.MeshStandardMaterial | undefined;
+      const glassOpacity = glass?.opacity;
+      if (glass && lens.glass !== undefined) glass.opacity = lens.glass;
+      const castShadow = sun.castShadow;
+      sun.castShadow = lens.shadows ?? true;
+      // Its own passes, so the ambient occlusion is set up for a perspective camera
+      const passes = new EffectComposer(renderer, new THREE.WebGLRenderTarget(1, 1, { samples: 4, type: THREE.HalfFloatType }));
+      passes.setPixelRatio(renderer.getPixelRatio());
+      passes.setSize(width, height);
+      passes.addPass(new RenderPass(scene, still));
+      const occlusion = new GTAOPass(scene, still, width, height);
+      occlusion.updateGtaoMaterial({ radius: 0.5, distanceExponent: 1.4, thickness: 1.2, scale: 1.2, samples: 16 });
+      occlusion.updatePdMaterial({ lumaPhi: 10, depthPhi: 2, normalPhi: 3, radius: 10, rings: 2, samples: 16 });
+      passes.addPass(occlusion);
+      passes.addPass(new OutputPass());
+      passes.render();
+      const url = canvas.toDataURL("image/png");
+      if (extras.length) scene.remove(...extras);
+      if (glass && glassOpacity !== undefined) glass.opacity = glassOpacity;
+      sun.castShadow = castShadow;
+      occlusion.dispose();
+      passes.dispose();
+      requestRender();
+      return url;
     },
     dispose() {
       disposed = true;
