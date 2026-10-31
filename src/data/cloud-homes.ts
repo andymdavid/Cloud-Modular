@@ -232,7 +232,74 @@ export const homeSteps = [
   { title: "Delivery and handover", body: "Your home is shipped, craned onto its footings and connected, then the keys are handed over." },
 ] as const;
 
-export const australianStates = ["WA", "NSW", "VIC", "QLD", "SA", "TAS", "ACT", "NT"] as const;
+// /cloud-homes/how-it-works/: the whole journey, in the buyer's terms. Every step restates the published process
+// (homeSteps above and approachStages in site.ts); no durations until real ones are confirmed.
+// kind "step" has a title, text and an optional image; "milestone" is a pill on the line; "moment" is the crane day,
+// set as one giant word. A step with demo shows the 2 Bed live in 3D with the cladding colours to try, its image
+// standing in until the 3D loads.
+type JourneyImage = { src: string; alt: string; width: number; height: number };
+export type JourneyItem =
+  | { kind: "step"; title: string; body: string; eyebrow?: string; image?: JourneyImage; demo?: boolean }
+  | { kind: "milestone"; title: string }
+  | { kind: "moment"; title: string; body: string };
+
+export const homeJourney: JourneyItem[] = [
+  {
+    kind: "step",
+    title: "Design yours",
+    body: "Choose your home, then its cladding, colours, solar and finishes in 3D. When you are happy with it, send us your design and your site address.",
+    image: { src: "/cloud-homes/two-bed-wide.webp", alt: "Render of the 2 Bed Cloud Home in white fibre cement panels, with solar panels and a covered deck at the entry", width: 2400, height: 1350 },
+    demo: true,
+  },
+  {
+    kind: "step",
+    title: "Site review",
+    body: "We review your site to check that your home suits it, including access for delivery and the crane.",
+    image: { src: "/cloud-homes/generated/backyard.webp", alt: "A Cloud Home 2 Bed in a suburban backyard, with a paved path to its deck and native planting", width: 2560, height: 1429 },
+  },
+  {
+    kind: "step",
+    title: "Your proposal",
+    body: "We send you a proposal with the scope, the price and the programme. Once you accept it, we get started.",
+    image: { src: "/cloud-homes/plan-two-bed.webp", alt: "The 2 Bed from above with its roof lifted off, showing the living room, two bedrooms, bathroom and deck", width: 1000, height: 1250 },
+  },
+  { kind: "milestone", title: "Proposal accepted" },
+  {
+    kind: "step",
+    title: "Approvals",
+    body: "We prepare the documents for planning and building approval, and the registered builder lodges the building permit. Production starts once the approvals are in place.",
+  },
+  { kind: "milestone", title: "Approved to build" },
+  {
+    kind: "step",
+    title: "Manufacture",
+    body: "Your home is built in our manufacturing facility, with the structure, services and fit-out built in. Independent inspections at key stages check accuracy, workmanship and compliance.",
+    image: { src: "/Factory.webp", alt: "Modules on a bright factory floor", width: 928, height: 1232 },
+  },
+  {
+    kind: "step",
+    eyebrow: "At the same time",
+    title: "Site preparation",
+    body: "While your home is built, your site is prepared, with the footings and services made ready for its arrival.",
+  },
+  {
+    kind: "step",
+    title: "Shipping",
+    body: "Your home is shipped to the nearest suitable port and cleared through customs and biosecurity. It then travels by road to your site, including to regional and remote locations.",
+    image: { src: "/approach/hero.webp", alt: "A wrapped module carrying the Cloud Modular mark against a clear sky", width: 1672, height: 941 },
+  },
+  { kind: "milestone", title: "Ready for delivery" },
+  { kind: "moment", title: "Craned in", body: "Your home arrives at your site and is craned onto its footings. It is then sealed and connected to services." },
+  {
+    kind: "step",
+    title: "Final touches",
+    body: "The builder completes the finishing works, and the building surveyor carries out the final inspection.",
+    image: { src: "/Card4.webp", alt: "Light falling across a timber floor and a stone wall", width: 928, height: 1232 },
+  },
+  { kind: "milestone", title: "Keys in hand" },
+];
+
+export const australianStates =["WA", "NSW", "VIC", "QLD", "SA", "TAS", "ACT", "NT"] as const;
 
 export const formatPrice = (n: number) => `$${n.toLocaleString("en-AU")}`;
 

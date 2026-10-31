@@ -1,0 +1,462 @@
+---
+import RefreshLayout from "@/layouts/RefreshLayout.astro";
+import PageIntro from "@/components/refresh/PageIntro.astro";
+import SectionHead from "@/components/refresh/SectionHead.astro";
+import FaqSection from "@/components/refresh/FaqSection.astro";
+import GetStarted from "@/components/refresh/GetStarted.astro";
+import { homeJourney, sections } from "@/data/cloud-homes";
+import { site } from "@/data/site";
+
+/**
+ * Cloud Homes, how it works (cf. samara.com/adus/how-it-works): the journey from a design to the keys as one line
+ * that draws down the page as it scrolls. Steps alternate either side of it with their images, milestones sit on it
+ * as pills, and the crane day is one giant word across it. Then a full-bleed welcome, the questions and Get started.
+ * Every step restates the published process (homeJourney in src/data/cloud-homes.ts).
+ */
+
+const title = "How It Works | Cloud Homes | Cloud Modular";
+const description = "How buying a Cloud Home works, from designing it in 3D to the site review, approvals, manufacture, delivery by crane and the day you get the keys.";
+const schemas = [
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: site.url },
+      { "@type": "ListItem", position: 2, name: "Cloud Homes", item: `${site.url}/cloud-homes/` },
+      { "@type": "ListItem", position: 3, name: "How it works", item: `${site.url}/cloud-homes/how-it-works/` },
+    ],
+  },
+];
+
+// Steps alternate sides of the line, counted over the steps alone so milestones don't break the rhythm
+let stepCount = 0;
+// The demo's swatches: the tool's cladding colours
+const colours = sections.find((section) => section.id === "colour")!;
+const items = homeJourney.map((item) => (item.kind === "step" ? { ...item, side: stepCount++ % 2 === 0 ? "left" : "right" } : item));
+---
+
+<RefreshLayout title={title} description={description} canonical="/cloud-homes/how-it-works/" structuredData={schemas}>
+  <!-- On phones the intro and the image under it fill the first screen -->
+  <div class="intro-screen mb-section">
+    <PageIntro label="Cloud Homes" title="How it works" lead="Getting a Cloud Casita is simple. We look after the build, and you decide how to use it.">
+      <a href="/cloud-homes/design/" class="btn mt-10">Design yours</a>
+    </PageIntro>
+
+    <div class="wide-row intro-grow" data-reveal>
+      <div class="intro-frame aspect-[4/3] overflow-hidden rounded bg-stone sm:aspect-[21/9]">
+        <img src="/cloud-homes/generated/deck.webp" alt="A father on the deck of a Cloud Home 2 Bed at dusk as his daughter shows him a gum leaf, with the living room glowing behind the sliding door" width="2560" height="1429" fetchpriority="high" class="h-full w-full object-cover" style="object-position:62% 60%" />
+      </div>
+    </div>
+  </div>
+
+  <!-- The journey: one line down the page, drawn as it scrolls -->
+  <section id="journey" data-theme="light" class="scroll-mt-header pb-section">
+    <div class="shell">
+      <SectionHead label="The journey" title="From your design to your keys" align="center" />
+
+      <div class="journey mt-section" data-journey>
+        <span class="journey-line" aria-hidden="true"><span class="journey-fill"></span></span>
+        <ol class="journey-list">
+        {items.map((item) => (
+          item.kind === "milestone" ? (
+            <li class="j-milestone" data-mark>
+              <span class="j-pill label">{item.title}</span>
+            </li>
+          ) : item.kind === "moment" ? (
+            <li class="j-moment" data-mark>
+              <h2 class="j-word" data-reveal>{item.title}</h2>
+              <p class="j-moment-body text-lead" data-reveal>{item.body}</p>
+            </li>
+          ) : (
+            <li class:list={["j-step", `j-step--${item.side}`, { "j-step--text": !item.image }]} data-mark>
+              <span class="j-dot" aria-hidden="true"></span>
+              <div class="j-text" data-reveal>
+                {item.eyebrow && <p class="label label-muted mb-3">{item.eyebrow}</p>}
+                <h2 class="text-h3">{item.title}</h2>
+                <p class="mt-3 text-body text-fg-muted">{item.body}</p>
+              </div>
+              {item.demo && item.image ? (
+                <div class="j-media j-demo" data-demo data-reveal>
+                  <img src={item.image.src} alt={item.image.alt} width={item.image.width} height={item.image.height} loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover" data-demo-still />
+                  <div class="absolute inset-0" data-demo-host></div>
+                  <fieldset class="j-demo-picker" hidden data-demo-picker>
+                    <legend class="sr-only">Try a cladding colour</legend>
+                    <div class="flex gap-1.5">
+                      {colours.choices.map((choice, index) => (
+                        <label class="j-swatch" title={choice.name}>
+                          <input type="radio" name="demo-colour" value={choice.id} checked={index === 0} class="sr-only" />
+                          <span class="j-swatch-chip" style={`background:${choice.swatch}`} aria-hidden="true"></span>
+                          <span class="sr-only">{choice.name}</span>
+                        </label>
+                      ))}
+                    </div>
+                    <span class="j-demo-name text-small" data-demo-name aria-live="polite">{colours.choices[0].name}</span>
+                  </fieldset>
+                </div>
+              ) : item.image && (
+                <div class:list={["j-media", { "j-media--portrait": item.image.height > item.image.width }]} style={`aspect-ratio:${item.image.height > item.image.width ? "4 / 5" : `${item.image.width} / ${item.image.height}`}`} data-reveal>
+                  <img src={item.image.src} alt={item.image.alt} width={item.image.width} height={item.image.height} loading="lazy" decoding="async" class="h-full w-full object-cover" />
+                </div>
+              )}
+            </li>
+          )
+        ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- Welcome: the end of the line, full bleed -->
+  <section data-theme="dark" class="relative h-[90svh] min-h-[520px] overflow-hidden">
+    <img src="/cloud-homes/generated/living.webp" alt="The living room and kitchen of a Cloud Home 2 Bed in warm evening light" width="2560" height="1717" loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover" />
+    <div class="absolute inset-0 bg-[linear-gradient(180deg,rgb(11_11_12/0)_45%,rgb(11_11_12/0.6)_100%)]" aria-hidden="true"></div>
+    <div class="shell relative flex h-full flex-col justify-end pb-10 sm:pb-14">
+      <div class="grid-12 items-end gap-y-6">
+        <h2 class="col-span-12 text-hero lg:col-span-8" data-reveal>Welcome home</h2>
+        <div class="col-span-12 flex flex-col items-start gap-5 sm:col-span-8 lg:col-span-4 lg:items-end lg:text-right" data-reveal>
+          <p class="max-w-[34ch] text-body text-fg/85">We hand over the keys, manuals and warranties, and your home is ready to live in.</p>
+          <a href="/cloud-homes/design/" class="btn">Design yours</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <FaqSection id="faq" topic="cloud-homes" rule={false} />
+
+  <GetStarted />
+</RefreshLayout>
+
+<style>
+  /* The line: a faint track with an ink fill drawn to --p (0 to 1) of its height */
+  .journey {
+    --line-x: 0.6875rem;
+    position: relative;
+    padding-bottom: 1rem;
+  }
+
+  .journey-list {
+    display: grid;
+    gap: 4.5rem;
+  }
+
+  .journey-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--line-x);
+    width: 1px;
+    background: rgb(var(--line) / var(--rule-alpha));
+  }
+
+  .journey-fill {
+    position: absolute;
+    inset: 0 0 auto;
+    height: calc(var(--p, 1) * 100%);
+    background: rgb(var(--ink));
+  }
+
+  /* Phones and tablets: the line runs down the left and everything sits to its right */
+  .j-step,
+  .j-milestone,
+  .j-moment {
+    position: relative;
+    padding-left: calc(var(--line-x) * 2 + 1.5rem);
+  }
+
+  .j-dot {
+    position: absolute;
+    top: 0.45rem;
+    left: calc(var(--line-x) - 0.3125rem);
+    width: 0.625rem;
+    height: 0.625rem;
+    border: 1px solid rgb(var(--line) / 0.35);
+    border-radius: 999px;
+    background: rgb(var(--surface));
+    transition: background-color var(--dur-base) var(--ease-standard), border-color var(--dur-base) var(--ease-standard);
+  }
+
+  .j-step.is-reached .j-dot {
+    border-color: rgb(var(--ink));
+    background: rgb(var(--ink));
+  }
+
+  .j-text {
+    max-width: 30rem;
+  }
+
+  /* Each image keeps its own shape, portraits at 4:5 */
+  .j-media {
+    margin-top: 1.5rem;
+    overflow: hidden;
+    border-radius: var(--radius-media);
+    background: rgb(var(--stone));
+  }
+
+  /* The live 2 Bed: the tool's stage colour, the swatches in a pill along the bottom */
+  .j-demo {
+    position: relative;
+    aspect-ratio: 1;
+    background: #f2f1ec; /* STAGE_BACKGROUND in src/lib/explorer/cloud-home-design.ts */
+  }
+
+  @media (min-width: 48rem) {
+    .j-demo {
+      aspect-ratio: 4 / 3;
+    }
+  }
+
+  .j-demo-picker {
+    position: absolute;
+    bottom: 0.75rem;
+    left: 50%;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.3125rem 0.875rem 0.3125rem 0.3125rem;
+    border-radius: 999px;
+    background: rgb(var(--surface) / 0.92);
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+
+  .j-demo-picker[hidden] {
+    display: none;
+  }
+
+  .j-swatch {
+    display: block;
+    padding: 2px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+
+  .j-swatch:has(input:checked) {
+    border-color: rgb(var(--fg));
+  }
+
+  .j-swatch:has(input:focus-visible) {
+    outline: 1px solid rgb(var(--fg));
+    outline-offset: 2px;
+  }
+
+  .j-swatch-chip {
+    display: block;
+    width: 1.625rem;
+    height: 1.625rem;
+    border-radius: 999px;
+    box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.12);
+  }
+
+  .j-demo-name {
+    min-width: 6.5rem;
+  }
+
+  .j-pill {
+    display: inline-flex;
+    align-items: center;
+    height: 2rem;
+    padding-inline: 0.875rem;
+    border: 1px solid rgb(var(--line) / 0.2);
+    border-radius: 999px;
+    background: rgb(var(--surface));
+    color: rgb(var(--fg-muted));
+    transition: background-color var(--dur-base) var(--ease-standard), color var(--dur-base) var(--ease-standard), border-color var(--dur-base) var(--ease-standard);
+  }
+
+  .j-milestone.is-reached .j-pill {
+    border-color: rgb(var(--ink));
+    background: rgb(var(--ink));
+    color: rgb(var(--paper));
+  }
+
+  /* Phones: the pill straddles the line */
+  .j-milestone {
+    padding-left: 0;
+  }
+
+  /* The crane day: one giant word over the line */
+  .j-word {
+    font-family: var(--font-hero);
+    font-size: clamp(4rem, 17vw, 15rem);
+    font-weight: var(--weight-regular);
+    line-height: 0.9;
+    letter-spacing: var(--tracking-hero);
+    white-space: nowrap;
+  }
+
+  .j-moment-body {
+    margin-top: 1.5rem;
+    max-width: 34ch;
+  }
+
+  /* From md: the line runs down the middle, steps alternate either side of it */
+  @media (min-width: 48rem) {
+    .journey {
+      --line-x: 50%;
+    }
+
+    .journey-list {
+      gap: 6rem;
+    }
+
+    .j-step {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      column-gap: clamp(3rem, 8vw, 8rem);
+      align-items: start;
+      padding-left: 0;
+    }
+
+    .j-dot {
+      left: calc(50% - 0.3125rem);
+    }
+
+    /* Text beside the line, image across it: left steps read right-aligned towards the line */
+    .j-step--left .j-text {
+      grid-column: 1;
+      grid-row: 1;
+      justify-self: end;
+      text-align: right;
+    }
+
+    .j-step--left .j-media {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .j-step--right .j-text {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .j-step--right .j-media {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .j-text {
+      max-width: 22rem;
+    }
+
+    .j-media {
+      margin-top: 0;
+    }
+
+    /* Portraits stay narrower, against the line */
+    .j-media--portrait {
+      width: min(100%, 24rem);
+    }
+
+    .j-step--left .j-media--portrait {
+      justify-self: start;
+    }
+
+    .j-step--right .j-media--portrait {
+      justify-self: end;
+    }
+
+    .j-milestone {
+      display: flex;
+      justify-content: center;
+    }
+
+    .j-moment {
+      padding-left: 0;
+      text-align: center;
+    }
+
+    .j-word {
+      position: relative;
+      display: inline-block;
+      padding-inline: 0.5rem;
+      background: rgb(var(--surface));
+    }
+
+    .j-moment-body {
+      position: relative;
+      margin-inline: auto;
+      padding-block: 0.5rem;
+      background: rgb(var(--surface));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .j-dot,
+    .j-pill {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { modelState, readDesign } from "@/data/cloud-homes";
+
+  // The Design yours step: the 2 Bed live in 3D once it nears the screen, repainted as a cladding colour is picked.
+  // Nothing is kept; the render stays if the 3D can't load.
+  document.querySelectorAll<HTMLElement>("[data-demo]").forEach((frame) => {
+    const host = frame.querySelector<HTMLElement>("[data-demo-host]")!;
+    const still = frame.querySelector<HTMLElement>("[data-demo-still]")!;
+    const picker = frame.querySelector<HTMLFieldSetElement>("[data-demo-picker]")!;
+    const name = frame.querySelector<HTMLElement>("[data-demo-name]")!;
+    const design = (colour: string) => readDesign(new URLSearchParams({ home: "two-bed", colour }));
+
+    const load = () =>
+      import("@/lib/explorer/cloud-home-design").then(({ createDesignViewer }) => {
+        const start = design(picker.querySelector<HTMLInputElement>("input:checked")!.value);
+        const viewer = createDesignViewer({
+          host,
+          home: start.home.id,
+          state: modelState(start),
+          view: { azimuth: 30, polar: 77 },
+          reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+          onError: () => {
+            host.hidden = true;
+            picker.hidden = true;
+            still.hidden = false;
+          },
+        });
+        still.hidden = true;
+        picker.hidden = false;
+        picker.addEventListener("change", (event) => {
+          const input = event.target as HTMLInputElement;
+          name.textContent = input.closest("label")!.title;
+          viewer.update(modelState(design(input.value)));
+        });
+      });
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        observer.disconnect();
+        load().catch(() => {});
+      },
+      { rootMargin: "400px 0px" },
+    );
+    observer.observe(frame);
+  });
+
+  // The line draws as the journey passes the reading line (70% down the screen); each step's dot and each milestone
+  // fill once they reach it. Reduced motion shows it all drawn.
+  document.querySelectorAll<HTMLElement>("[data-journey]").forEach((root) => {
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const marks = [...root.querySelectorAll<HTMLElement>("[data-mark]")];
+    let frame = 0;
+
+    const update = () => {
+      frame = 0;
+      const line = window.innerHeight * 0.7;
+      const rect = root.getBoundingClientRect();
+      const p = still.matches ? 1 : Math.min(1, Math.max(0, (line - rect.top) / rect.height));
+      root.style.setProperty("--p", p.toFixed(4));
+      for (const mark of marks) mark.classList.toggle("is-reached", still.matches || mark.getBoundingClientRect().top < line);
+    };
+    const request = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+
+    window.addEventListener("scroll", request, { passive: true });
+    window.addEventListener("resize", request);
+    update();
+  });
+</script>
