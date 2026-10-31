@@ -139,10 +139,11 @@ const items = homeJourney.map((item) => (item.kind === "step" ? { ...item, side:
     gap: 4.5rem;
   }
 
+  /* The line runs on through the section's bottom padding into the Welcome image, the end of the journey */
   .journey-line {
     position: absolute;
     top: 0;
-    bottom: 0;
+    bottom: calc(-1 * var(--section));
     left: var(--line-x);
     width: 1px;
     background: rgb(var(--line) / var(--rule-alpha));
@@ -441,12 +442,13 @@ const items = homeJourney.map((item) => (item.kind === "step" ? { ...item, side:
   document.querySelectorAll<HTMLElement>("[data-journey]").forEach((root) => {
     const still = window.matchMedia("(prefers-reduced-motion: reduce)");
     const marks = [...root.querySelectorAll<HTMLElement>("[data-mark]")];
+    const track = root.querySelector<HTMLElement>(".journey-line")!;
     let frame = 0;
 
     const update = () => {
       frame = 0;
       const line = window.innerHeight * 0.7;
-      const rect = root.getBoundingClientRect();
+      const rect = track.getBoundingClientRect();
       const p = still.matches ? 1 : Math.min(1, Math.max(0, (line - rect.top) / rect.height));
       root.style.setProperty("--p", p.toFixed(4));
       for (const mark of marks) mark.classList.toggle("is-reached", still.matches || mark.getBoundingClientRect().top < line);
