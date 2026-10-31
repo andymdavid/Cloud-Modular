@@ -284,6 +284,23 @@ const shownProjects = projects.slice(0, 3);
     background: #f2f1ec;
   }
 
+  /* The 3D takes the scroll wheel while the pointer is over it, so the frame never fills the window: at most
+     the window's height less its side margin above and below, leaving page to scroll from. It keeps the full
+     width and gets wider in shape instead. The side margin is .wide-row's: a gutter on phones, half a gutter
+     from md, plus whatever the page's max width leaves on very wide windows, up to 5rem so ultra-wide windows
+     don't squash the frame. */
+  [data-peek] {
+    --side: var(--gutter);
+    width: 100%;
+    max-height: calc(100svh - 2 * var(--side));
+  }
+
+  @media (min-width: 48rem) {
+    [data-peek] {
+      --side: min(5rem, max(var(--gutter) / 2, (100vw - var(--page-max)) / 2 + var(--gutter) / 2));
+    }
+  }
+
   .peek-views {
     position: absolute;
     bottom: 1rem;
