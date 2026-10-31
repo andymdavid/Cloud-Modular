@@ -1,0 +1,166 @@
+---
+import { homeSteps } from "@/data/cloud-homes";
+
+/**
+ * How it works on the Cloud Homes page (cf. samara.com/adus "Get Backyard in four simple steps"): a two-tone heading,
+ * the four steps with a numbered marker, a hairline, the step and a 4:5 image, and a link to the full page.
+ * - From lg: a staggered three-column grid. Heading, steps 1 and 2 on the first row; steps 3 and 4, then the link.
+ * - Below lg: the heading, a sideways-swiping row of the steps (as CardRow), then the link.
+ * The first and last markers are filled, as the start and the finish.
+ */
+interface Props {
+  id?: string;
+}
+
+const { id = "how-it-works" } = Astro.props;
+---
+
+<section id={id} data-theme="light" class="scroll-mt-header pb-section">
+  <div class="shell">
+    <div class="steps-grid rule pt-section">
+      <div class="steps-head" data-reveal>
+        <h2 class="label mb-5 sm:mb-6">How it works</h2>
+        <p class="max-w-[16ch] text-h1">Your Cloud Casita in four steps. <span class="text-fg-subtle">We look after the rest.</span></p>
+      </div>
+
+      <ol class="steps no-scrollbar" aria-label="The four steps">
+        {homeSteps.map((step, index) => (
+          <li class="step" data-reveal style={`--reveal-delay:${index * 80}ms`}>
+            <div class="flex items-center gap-3" aria-hidden="true">
+              <span class:list={["step-marker", { "is-filled": index === 0 || index === homeSteps.length - 1 }]}>{String(index + 1).padStart(2, "0")}</span>
+              <span class="step-rule"></span>
+            </div>
+            <h3 class="mt-5 text-lead">{step.title}</h3>
+            <p class="mt-2 max-w-[34ch] text-body text-fg-muted">{step.body}</p>
+            <img
+              src={step.image.src}
+              alt={step.image.alt}
+              width={step.image.width}
+              height={step.image.height}
+              loading="lazy"
+              decoding="async"
+              class="step-image mt-6 aspect-[4/5] w-full object-cover"
+              style={`object-position:${step.image.position}`}
+            />
+          </li>
+        ))}
+      </ol>
+
+      <div class="steps-more" data-reveal>
+        <p class="text-lead">Want the details?</p>
+        <p class="mt-2 max-w-[28ch] text-lead text-fg-subtle">See every step, from your design to the day you get the keys.</p>
+        <div class="mt-8 flex flex-wrap gap-2">
+          <a href="/cloud-homes/how-it-works/" class="btn">How it works</a>
+          <a href="/cloud-homes/design/" class="btn">Design yours</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .steps-grid {
+    display: grid;
+    gap: 3rem;
+  }
+
+  /* Phones and tablets: the steps swipe sideways, bleeding to the screen edges as CardRow */
+  .steps {
+    display: flex;
+    gap: var(--gap-sm);
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: var(--gutter);
+  }
+
+  .step {
+    flex-shrink: 0;
+    width: 78vw;
+    scroll-snap-align: start;
+  }
+
+  .steps > :global([data-reveal]) {
+    transform: none;
+  }
+
+  @media (min-width: 40rem) {
+    .step {
+      width: 44vw;
+    }
+  }
+
+  /* From lg: one staggered grid of heading, steps and link */
+  @media (min-width: 64rem) {
+    .steps-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      column-gap: var(--gap);
+      row-gap: 5rem;
+    }
+
+    .steps {
+      display: contents;
+    }
+
+    .step {
+      width: auto;
+    }
+
+    .steps-head {
+      grid-area: 1 / 1;
+    }
+
+    .step:nth-child(1) {
+      grid-area: 1 / 2;
+    }
+
+    .step:nth-child(2) {
+      grid-area: 1 / 3;
+    }
+
+    .step:nth-child(3) {
+      grid-area: 2 / 1;
+    }
+
+    .step:nth-child(4) {
+      grid-area: 2 / 2;
+    }
+
+    .steps-more {
+      grid-area: 2 / 3;
+    }
+  }
+
+  .step-marker {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid rgb(var(--line) / 0.25);
+    border-radius: var(--radius-media);
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    color: rgb(var(--fg-muted));
+  }
+
+  .step-marker.is-filled {
+    border-color: rgb(var(--ink));
+    background: rgb(var(--ink));
+    color: rgb(var(--paper));
+  }
+
+  .step-rule {
+    flex: 1;
+    height: 1px;
+    background: rgb(var(--line) / var(--rule-alpha));
+  }
+
+  .step-image {
+    border-radius: var(--radius-media);
+  }
+</style>

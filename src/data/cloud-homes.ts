@@ -226,10 +226,26 @@ export const included = [
 
 /** From order to keys, following the stages on /our-approach/. */
 export const homeSteps = [
-  { title: "Design yours", body: "Choose your home and finishes, then send us your design and your site address." },
-  { title: "Site review and proposal", body: "We review your site and send a proposal with the scope, the price and the programme." },
-  { title: "Approvals and manufacture", body: "Once approvals are in place, your home is built in our manufacturing facility while your site is prepared." },
-  { title: "Delivery and handover", body: "Your home is shipped, craned onto its footings and connected, then the keys are handed over." },
+  {
+    title: "Design yours",
+    body: "Choose your home and finishes, then send us your design and your site address.",
+    image: { src: "/cloud-homes/two-bed.webp", alt: "A Cloud Home 2 Bed in the default finish, rendered from its 3D model", width: 1000, height: 1250, position: "center" },
+  },
+  {
+    title: "Site review and proposal",
+    body: "We review your site and send a proposal with the scope, the price and the programme.",
+    image: { src: "/cloud-homes/generated/backyard.webp", alt: "A Cloud Home 2 Bed in a suburban backyard, with a paved path to its deck and native planting", width: 2560, height: 1429, position: "47% center" },
+  },
+  {
+    title: "Approvals and manufacture",
+    body: "Once approvals are in place, your home is built in our factory while your site is prepared.",
+    image: { src: "/Factory-1.webp", alt: "Modules being built along a bright factory floor", width: 1672, height: 941, position: "30% center" },
+  },
+  {
+    title: "Delivery and handover",
+    body: "Your home is shipped, craned onto its footings and connected, then the keys are handed over.",
+    image: { src: "/cloud-homes/generated/deck.webp", alt: "A father on the deck of a Cloud Home 2 Bed at dusk as his daughter shows him a gum leaf", width: 2560, height: 1429, position: "64% center" },
+  },
 ] as const;
 
 // /cloud-homes/how-it-works/: the whole journey, in the buyer's terms. Every step restates the published process

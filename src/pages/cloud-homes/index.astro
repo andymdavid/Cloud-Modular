@@ -8,8 +8,9 @@ import FaqSection from "@/components/refresh/FaqSection.astro";
 import ProjectGallery from "@/components/refresh/ProjectGallery.astro";
 import ImagePanel from "@/components/refresh/ImagePanel.astro";
 import Accordion from "@/components/refresh/Accordion.astro";
+import HomeSteps from "@/components/refresh/HomeSteps.astro";
 import type { GalleryRow } from "@/data/projects";
-import { cloudHomes, extras, formatPrice, homeSteps, included } from "@/data/cloud-homes";
+import { cloudHomes, extras, formatPrice, included } from "@/data/cloud-homes";
 import { faqItems, projects, site } from "@/data/site";
 
 /**
@@ -195,20 +196,7 @@ const shownProjects = projects.slice(0, 3);
     </div>
   </SplitSection>
 
-  <SplitSection id="how-it-works" label="How it works">
-    <ol class="grid gap-8">
-      {homeSteps.map((step, index) => (
-        <li class="grid grid-cols-[3rem_1fr] gap-x-2 border-t border-line/[var(--rule-alpha)] pt-5">
-          <span class="label label-muted pt-1">{String(index + 1).padStart(2, "0")}</span>
-          <span>
-            <span class="block text-lead">{step.title}</span>
-            <span class="mt-2 block text-body text-fg-muted">{step.body}</span>
-          </span>
-        </li>
-      ))}
-    </ol>
-    <a href="/our-approach/" class="btn mt-10">Our approach</a>
-  </SplitSection>
+  <HomeSteps />
 
   <SplitSection id="pricing" label="Pricing">
     <p class="text-h1 tabular-nums">From {formatPrice(fromPrice)}</p>
