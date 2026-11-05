@@ -1,6 +1,6 @@
 /**
  * Cloudflare Pages function: /api/review. Stores the team's feedback on the fact review (/review/) in KV, one key
- * per item ("item:<id>"), each holding the item's entries in order.
+ * per card ("item:<card id>", the cards in src/data/review.ts), each holding the card's entries in order.
  *
  *   GET   every item's entries: { items: { [id]: Entry[] } }
  *   POST  JSON { item, name, status?, comment? } adds an answer; { item, name, action: "done" | "reopen", comment? }
@@ -96,7 +96,7 @@ export async function onRequestPost(context: Context) {
   const action = body.action ? String(body.action) : undefined;
   const comment = String(body.comment ?? "").trim().slice(0, 4000) || undefined;
 
-  if (!/^[A-Z]{1,2}\d{1,2}$/.test(item)) return json({ error: "Unknown item." }, 400);
+  if (!/^[a-z0-9-]{1,48}$/.test(item)) return json({ error: "Unknown card." }, 400);
   if (!name) return json({ error: "Add your name first." }, 400);
   if (status && !STATUSES.includes(status)) return json({ error: "Unknown answer." }, 400);
   if (action && !ACTIONS.includes(action)) return json({ error: "Unknown action." }, 400);

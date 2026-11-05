@@ -1,7 +1,8 @@
 /**
  * The fact review (/review/): every customer-facing fact the team needs to confirm, grouped by section. Each item
  * points at the text on the site (`at`: a page and a phrase that appears on it), so the review page can show it in
- * place and highlight it. Feedback is stored in Cloudflare KV by functions/api/review.ts, keyed by item id.
+ * place and highlight it. The review page shows them a website page at a time, bundled into cards (reviewPages, at the
+ * end); feedback is stored in Cloudflare KV by functions/api/review.ts, keyed by card id.
  * When an item is settled and fixed on the site, delete it here. Started from Design-Docs/12 - Fact Review for Team.md.
  *
  * `says` and `question` take **bold** for emphasis.
@@ -256,3 +257,157 @@ export const reviewSections: ReviewSection[] = [
     ],
   },
 ];
+
+// ---------------------------------------------------------------------------------------------------
+// How the review is presented: one page of the website at a time, its facts bundled into cards that are answered as
+// a whole. Every item above belongs to exactly one card (checked below), and answers are stored by card id.
+
+export interface ReviewCard {
+  id: string;
+  title: string;
+  note?: string;
+  items: string[];
+}
+
+export interface ReviewPage {
+  id: string;
+  path: string;
+  title: string;
+  cards: ReviewCard[];
+}
+
+export const reviewPages: ReviewPage[] = [
+  {
+    id: "cloud-homes",
+    path: CH,
+    title: "Cloud Homes",
+    cards: [
+      { id: "ch-prices", title: "Prices", note: `All three prices are **placeholders** taken from published Perth granny flat cost guides, and need replacing before launch.`, items: ["P1", "P2", "P3", "P4", "P5", "P6"] },
+      { id: "ch-inclusions", title: "What's included", items: ["H5", "H6", "P7", "P8"] },
+      { id: "ch-uses", title: "Who the homes are for", items: ["H14", "H15", "H16"] },
+      { id: "ch-ready", title: "Ready to move in", items: ["H17", "X5"] },
+    ],
+  },
+  {
+    id: "design",
+    path: DESIGN,
+    title: "Design tool",
+    cards: [
+      { id: "design-sizes", title: "Home sizes", note: `The sizes come from the Casuarina Crescent drawings.`, items: ["H2", "H3", "H4"] },
+      { id: "design-outside", title: "Outside finishes", note: `The design choices are a starting list and still need the team to confirm them.`, items: ["H7", "H8", "H9", "H10"] },
+      { id: "design-inside", title: "Inside finishes", items: ["H11", "H12", "H13"] },
+      { id: "design-price", title: "Prices in the tool", items: ["P9", "P10"] },
+    ],
+  },
+  {
+    id: "how-it-works",
+    path: HOW,
+    title: "How Cloud Homes work",
+    cards: [
+      { id: "how-steps", title: "The steps to a Cloud Home", items: ["D5", "D6", "A2"] },
+      { id: "how-builder", title: "Approvals and the builder", items: ["D3", "D4", "A8"] },
+      { id: "how-delivery", title: "Getting the home to site", items: ["D7", "D8", "D2"] },
+      { id: "how-time", title: "How long it takes", items: ["D9"] },
+    ],
+  },
+  {
+    id: "availability",
+    path: "/cloud-homes/availability/",
+    title: "Confirm availability",
+    cards: [{ id: "availability-next", title: "After someone sends their design", items: ["P11", "D10"] }],
+  },
+  {
+    id: "approach",
+    path: APPROACH,
+    title: "Our approach",
+    cards: [
+      { id: "approach-stages", title: "The stages of a project", note: `The process copy was written as a **first draft shaped by industry practice**, not from a confirmed process. The whole page needs a team pass.`, items: ["A1", "A5"] },
+      { id: "approach-model", title: "How we contract and carry the risk", items: ["A6", "A7", "C11"] },
+      { id: "approach-matrix", title: "Who does what", items: ["A9"] },
+    ],
+  },
+  {
+    id: "quality",
+    path: Q,
+    title: "Manufacturing and quality",
+    cards: [
+      { id: "quality-capability", title: "Our manufacturing capability", items: ["C1", "C2", "C3"] },
+      { id: "quality-checks", title: "Checks in the factory", items: ["Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7"] },
+      { id: "quality-certification", title: "Certification and warranties", items: ["A3", "Q9", "Q10"] },
+      { id: "quality-build", title: "How the modules are built", items: ["Q11", "Q12", "Q13", "Q14", "Q15", "Q16"] },
+      { id: "quality-shipping", title: "Packing, shipping and customs", items: ["L1", "L2", "L3", "L4"] },
+      { id: "quality-site", title: "On the road and on site", items: ["L5", "L6", "L7", "L8"] },
+    ],
+  },
+  {
+    id: "why",
+    path: "/why-cloud-modular/",
+    title: "Why Cloud Modular",
+    cards: [{ id: "why-claims", title: "Offices and sectors", items: ["C4", "C10"] }],
+  },
+  {
+    id: "partner",
+    path: "/partner-with-us/",
+    title: "Partner with us",
+    cards: [{ id: "partner-enquiries", title: "Working with us", items: ["C9", "A10", "A11"] }],
+  },
+  {
+    id: "about",
+    path: "/about/",
+    title: "About",
+    cards: [
+      { id: "about-team", title: "The team", items: ["T1", "T2", "T3", "T4", "T5"] },
+      { id: "about-partners", title: "Partner logos", items: ["T6"] },
+    ],
+  },
+  {
+    id: "contact",
+    path: "/contact/",
+    title: "Contact",
+    cards: [{ id: "contact-details", title: "Contact details", items: ["C5", "C6", "C7", "C8"] }],
+  },
+  {
+    id: "seashells",
+    path: SEASHELLS,
+    title: "Seashells Jurien Bay",
+    cards: [
+      { id: "seashells-project", title: "The project", items: ["S1", "S2", "S5", "S8"] },
+      { id: "seashells-homes", title: "Homes and features", items: ["S3", "S4", "S6", "S7"] },
+    ],
+  },
+  {
+    id: "capel",
+    path: CAPEL,
+    title: "Capel Village",
+    cards: [
+      { id: "capel-project", title: "The project", items: ["V1", "V2", "V4", "V11"] },
+      { id: "capel-homes", title: "Homes and specification", items: ["V3", "V5", "V6", "V7", "V8"] },
+      { id: "capel-delivery", title: "Manufacture and delivery", items: ["V9", "V10"] },
+    ],
+  },
+  {
+    id: "rowland",
+    path: ROWLAND,
+    title: "25 On Rowland and Forrest",
+    cards: [{ id: "rowland-project", title: "The project", items: ["R1", "R2", "R3", "R4"] }],
+  },
+  {
+    id: "legal",
+    path: "/privacy-policy/",
+    title: "Privacy Policy and Terms",
+    cards: [
+      { id: "legal-privacy", title: "Privacy Policy", items: ["LG1", "LG3", "LG5"] },
+      { id: "legal-terms", title: "Terms of Use", items: ["LG2", "LG4"] },
+    ],
+  },
+];
+
+export const reviewItems = new Map(reviewSections.flatMap((section) => section.items).map((item) => [item.id, item]));
+
+{
+  const used = reviewPages.flatMap((page) => page.cards.flatMap((card) => card.items));
+  const missing = [...reviewItems.keys()].filter((id) => !used.includes(id));
+  const unknown = used.filter((id) => !reviewItems.has(id));
+  const twice = used.filter((id, index) => used.indexOf(id) !== index);
+  if (missing.length || unknown.length || twice.length) throw new Error(`Review cards: missing ${missing}, unknown ${unknown}, twice ${twice}`);
+}
