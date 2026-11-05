@@ -230,7 +230,7 @@ export const homeSteps = [
   {
     title: "Design yours",
     body: "Choose your home and finishes, then send us your design and your site address.",
-    image: { src: "/cloud-homes/two-bed.webp", alt: "A Cloud Home 2 Bed in the default finish, rendered from its 3D model", width: 1000, height: 1250, position: "center" },
+    image: { src: "/cloud-homes/plan-two-bed.webp", alt: "The 2 Bed from above with its roof lifted off, showing the living room, two bedrooms, bathroom and deck", width: 1000, height: 1250, position: "center" },
   },
   {
     title: "Site review and proposal",
