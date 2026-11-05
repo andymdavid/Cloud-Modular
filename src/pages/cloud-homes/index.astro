@@ -81,9 +81,10 @@ const gallery: GalleryRow[] = [
 
 const fromPrice = Math.min(...cloudHomes.map((home) => home.fromPrice));
 
-// The hero film, as the home page's. Until it is cut, the video shows its poster, the film's opening frame.
-const heroVideo: string | undefined = undefined;
-const heroPoster = "/cloud-homes/generated/hero.webp";
+// The hero film, as the home page's: a 10-second loop of the 2 Bed at dusk, made from the dusk still. The poster is its
+// opening frame, so the film starts without a jump.
+const heroVideo = "/media/cloud-homes-hero.mp4";
+const heroPoster = "/cloud-homes/hero-poster.webp";
 const shownProjects = projects.slice(0, 3);
 ---
 
@@ -94,8 +95,8 @@ const shownProjects = projects.slice(0, 3);
     <video
       src={heroVideo}
       poster={heroPoster}
-      width="2560"
-      height="1429"
+      width="1920"
+      height="1080"
       autoplay
       muted
       loop
