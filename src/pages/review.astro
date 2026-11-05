@@ -1,0 +1,528 @@
+---
+/**
+ * The fact review (/review/): the team works through every customer-facing fact on the site, sees each one in place
+ * on the live page (loaded below the item, scrolled to and highlighted), and answers it. Answers are saved to
+ * Cloudflare KV by /api/review, so everyone sees the same thread and Claude can pull them to make the changes.
+ *
+ * Only built on Cloudflare Pages (CF_PAGES), or locally with REVIEW_PAGE=1, so it never reaches the public GitHub
+ * Pages site; on Cloudflare, functions/review/_middleware.ts keeps it behind REVIEW_KEY. The items are in
+ * src/data/review.ts.
+ */
+import RefreshLayout from "@/layouts/RefreshLayout.astro";
+import { pageNames, reviewSections, reviewUpdated, type Priority } from "@/data/review";
+
+const enabled = Boolean(process.env.CF_PAGES || process.env.REVIEW_PAGE);
+if (!enabled) return Astro.redirect("/");
+
+const escape = (text: string) => text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const rich = (text: string) => escape(text).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+const priorities: Record<Priority, string> = { high: "High", med: "Medium", low: "Low" };
+const total = reviewSections.reduce((sum, section) => sum + section.items.length, 0);
+const answers = [
+  { value: "confirmed", label: "Confirmed" },
+  { value: "change", label: "Change it" },
+  { value: "remove", label: "Remove it" },
+  { value: "question", label: "Question" },
+];
+---
+
+<RefreshLayout title="Fact Review | Cloud Modular" description="The team's review of the facts on the Cloud Modular website." canonical="/review/" noindex footer={false} pinHeader>
+  <section data-theme="light" class="pt-[calc(var(--header-h)+var(--section-sm))]">
+    <div class="shell">
+      <div class="grid-12 gap-y-6">
+        <div class="col-span-12 md:col-span-6">
+          <p class="label">Fact review · {reviewUpdated}</p>
+          <h1 class="mt-6 text-feature">Check the facts</h1>
+        </div>
+        <div class="col-span-12 max-w-measure space-y-4 text-body text-fg-muted md:col-span-6 md:col-start-7 md:self-end">
+          <p>These are the {total} facts on the website that a customer might rely on. Each one needs the team to confirm it, correct it or remove it before launch.</p>
+          <p>For each item, press <strong class="text-fg">Show on the site</strong> to see the text in place, then choose an answer, add the right wording or a comment, and save. Everyone sees the same answers, and fixed items move to Fixed.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Toolbar: who is answering, filters and progress. Sticks under the header. -->
+  <div class="review-bar" data-theme="light">
+    <div class="shell flex flex-wrap items-end gap-x-8 gap-y-4 py-4">
+      <label class="field min-w-[14rem]">
+        <span class="field-label">Your name</span>
+        <input type="text" name="reviewer" maxlength="80" autocomplete="name" placeholder="So the team knows who answered" data-name />
+      </label>
+      <div class="flex flex-wrap gap-1" role="group" aria-label="Show" data-filters>
+        <button type="button" class="chip" aria-pressed="true" data-filter="all">All</button>
+        <button type="button" class="chip" aria-pressed="false" data-filter="open">To answer</button>
+        <button type="button" class="chip" aria-pressed="false" data-filter="high">High priority</button>
+        <button type="button" class="chip" aria-pressed="false" data-filter="answered">Answered</button>
+        <button type="button" class="chip" aria-pressed="false" data-filter="done">Fixed</button>
+      </div>
+      <p class="label label-muted ml-auto" data-progress>{total} items</p>
+    </div>
+    <p class="review-banner shell" hidden data-banner></p>
+  </div>
+
+  <div class="shell pb-section">
+    <nav class="mt-10 flex flex-wrap gap-1" aria-label="Sections">
+      {reviewSections.map((section) => (
+        <a href={`#${section.id}`} class="chip">{section.title} <span class="text-fg-subtle" data-section-count={section.id}>{section.items.length}</span></a>
+      ))}
+    </nav>
+
+    {reviewSections.map((section) => (
+      <section id={section.id} class="review-section scroll-mt-[calc(var(--header-h)+7rem)]" data-section={section.id}>
+        <div class="grid-12 gap-y-4 border-t border-line/[var(--rule-alpha)] pt-8">
+          <h2 class="col-span-12 text-h3 md:col-span-6">{section.title}</h2>
+          {section.note && <p class="col-span-12 max-w-measure text-small text-fg-muted md:col-span-6 md:col-start-7" set:html={rich(section.note)} />}
+        </div>
+
+        <div class="mt-8 grid gap-3">
+          {section.items.map((item) => (
+            <article id={`item-${item.id}`} class="review-item" data-item={item.id} data-priority={item.priority} data-state="open">
+              <header class="flex flex-wrap items-center gap-3">
+                <span class="text-lead">{item.id}</span>
+                <span class:list={["pill", `pill--${item.priority}`]}>{priorities[item.priority]}</span>
+                <span class="pill pill--state" data-state-label>To answer</span>
+              </header>
+
+              <div class="mt-5 grid gap-6 md:grid-cols-2">
+                <div>
+                  <p class="label label-muted">On the site</p>
+                  <p class="mt-2 text-body" set:html={rich(item.says)} />
+                </div>
+                <div>
+                  <p class="label label-muted">Question for the team</p>
+                  <p class="mt-2 text-body text-fg-muted" set:html={rich(item.question)} />
+                </div>
+              </div>
+
+              {item.at.length > 0 && (
+                <div class="mt-5 flex flex-wrap gap-1">
+                  {item.at.map((target) => (
+                    <button type="button" class="chip chip--show" aria-pressed="false" data-show data-path={target.path} data-find={target.find ?? ""}>
+                      Show on the site · {pageNames[target.path] ?? target.path}
+                    </button>
+                  ))}
+                </div>
+              )}
+              <div class="review-stage" hidden data-stage>
+                <div class="flex items-center justify-between gap-4 py-2">
+                  <p class="text-caption text-fg-muted" data-stage-status></p>
+                  <a class="text-link text-caption" target="_blank" rel="noopener" data-stage-open>Open in a new tab</a>
+                </div>
+              </div>
+
+              <ol class="review-thread" data-thread></ol>
+
+              <form class="review-answer" data-answer>
+                <fieldset class="flex flex-wrap gap-1">
+                  <legend class="sr-only">Your answer to {item.id}</legend>
+                  {answers.map((answer) => (
+                    <label class="chip chip--answer">
+                      <input type="radio" name="status" value={answer.value} class="sr-only" />
+                      {answer.label}
+                    </label>
+                  ))}
+                </fieldset>
+                <label class="field mt-4">
+                  <span class="field-label">Comment or the right wording <span class="field-optional">Optional</span></span>
+                  <textarea name="comment" rows="2" maxlength="4000"></textarea>
+                </label>
+                <div class="mt-4 flex flex-wrap items-center gap-4">
+                  <button type="submit" class="btn-solid h-9 px-4">Save answer</button>
+                  <button type="button" class="text-link text-small" data-done>Mark as fixed on the site</button>
+                  <button type="button" class="text-link text-small" hidden data-reopen>Reopen</button>
+                  <p class="text-small text-fg-muted" role="status" data-message></p>
+                </div>
+              </form>
+            </article>
+          ))}
+        </div>
+      </section>
+    ))}
+
+    <p class="mt-section text-center text-body text-fg-muted" hidden data-empty>Nothing to show with this filter.</p>
+  </div>
+</RefreshLayout>
+
+<style>
+  .review-bar {
+    position: sticky;
+    top: var(--header-h);
+    z-index: 20;
+    margin-top: var(--section-sm);
+    border-block: var(--rule) solid rgb(var(--line) / var(--rule-alpha));
+    background: rgb(var(--paper) / 0.94);
+    backdrop-filter: blur(12px);
+  }
+
+  .review-banner {
+    padding-bottom: 0.75rem;
+    font-size: var(--text-small);
+    color: rgb(var(--gold-deep));
+  }
+
+  .review-section {
+    margin-top: var(--section-sm);
+  }
+
+  .review-item {
+    padding: 1.25rem;
+    border-radius: var(--radius-media);
+    background: rgb(var(--mist));
+  }
+
+  .review-item[data-state="done"] {
+    opacity: 0.6;
+  }
+
+  .review-item[data-state="done"] .review-answer {
+    display: none;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2rem;
+    padding: 0.25rem 0.75rem;
+    border: var(--rule) solid rgb(var(--line) / 0.25);
+    border-radius: var(--radius-pill);
+    font-size: var(--text-small);
+    cursor: pointer;
+    transition: background var(--dur-base) var(--ease-standard), color var(--dur-base) var(--ease-standard);
+  }
+
+  .chip:hover,
+  .chip[aria-pressed="true"],
+  .chip--answer:has(input:checked) {
+    border-color: rgb(var(--ink));
+    background: rgb(var(--ink));
+    color: rgb(var(--paper));
+  }
+
+  .chip--answer:has(input:focus-visible) {
+    outline: 2px solid rgb(var(--label-gold));
+    outline-offset: 2px;
+  }
+
+  .pill {
+    padding: 0.125rem 0.5rem;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    background: rgb(var(--stone));
+    color: rgb(var(--fg-muted));
+  }
+
+  .pill--high {
+    background: rgb(var(--label-gold) / 0.25);
+    color: rgb(var(--gold-deep));
+  }
+
+  .review-item[data-state="confirmed"] .pill--state,
+  .review-item[data-state="done"] .pill--state {
+    background: rgb(var(--sage));
+    color: rgb(var(--forest));
+  }
+
+  .review-item:is([data-state="change"], [data-state="remove"], [data-state="question"]) .pill--state {
+    background: rgb(var(--ink));
+    color: rgb(var(--paper));
+  }
+
+  .review-stage {
+    margin-top: 1rem;
+  }
+
+  .review-stage :global(iframe) {
+    display: block;
+    width: 100%;
+    height: min(72vh, 52rem);
+    min-height: 26rem;
+    border: var(--rule) solid rgb(var(--line) / 0.2);
+    border-radius: var(--radius-media);
+    background: rgb(var(--paper));
+  }
+
+  .review-thread {
+    margin-top: 1.25rem;
+  }
+
+  .review-thread:empty {
+    display: none;
+  }
+
+  .review-thread :global(li) {
+    padding-block: 0.75rem;
+    border-top: var(--rule) solid rgb(var(--line) / var(--rule-alpha));
+    font-size: var(--text-small);
+  }
+
+  .review-answer {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: var(--rule) solid rgb(var(--line) / var(--rule-alpha));
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .field-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: rgb(var(--fg-muted));
+  }
+
+  .field-optional {
+    margin-left: 0.5rem;
+    color: rgb(var(--fg-subtle));
+    font-weight: var(--weight-regular);
+  }
+
+  .field :is(input, textarea) {
+    width: 100%;
+    padding-block: 0.5rem;
+    border: 0;
+    border-bottom: var(--rule) solid rgb(var(--line) / 0.35);
+    border-radius: 0;
+    background: transparent;
+    color: rgb(var(--fg));
+    font: inherit;
+    font-size: 1rem;
+  }
+
+  .field :is(input, textarea):focus {
+    outline: none;
+    border-bottom-color: rgb(var(--label-gold));
+  }
+</style>
+
+<script>
+  type Entry = { at: string; name: string; status?: string; action?: string; comment?: string };
+
+  const API = "/api/review";
+  const LABELS: Record<string, string> = { confirmed: "Confirmed", change: "Change it", remove: "Remove it", question: "Question", open: "To answer", done: "Fixed" };
+  const cards = [...document.querySelectorAll<HTMLElement>("[data-item]")];
+  const nameInput = document.querySelector<HTMLInputElement>("[data-name]")!;
+  const banner = document.querySelector<HTMLElement>("[data-banner]")!;
+  let store: Record<string, Entry[]> = {};
+  let filter = "all";
+
+  try {
+    nameInput.value = localStorage.getItem("review-name") ?? "";
+  } catch {}
+  nameInput.addEventListener("input", () => {
+    try {
+      localStorage.setItem("review-name", nameInput.value.trim());
+    } catch {}
+  });
+
+  const escape = (text: string) => text.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
+  const when = (iso: string) => new Date(iso).toLocaleString("en-AU", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" });
+
+  /** An item's state: fixed if its last done/reopen was done, otherwise its latest answer, otherwise open. */
+  function stateOf(entries: Entry[]) {
+    let done = false;
+    let answer: string | undefined;
+    for (const entry of entries) {
+      if (entry.action === "done") done = true;
+      if (entry.action === "reopen") done = false;
+      if (entry.status) answer = entry.status;
+    }
+    return done ? "done" : (answer ?? "open");
+  }
+
+  function renderCard(card: HTMLElement) {
+    const entries = store[card.dataset.item!] ?? [];
+    const state = stateOf(entries);
+    card.dataset.state = state;
+    card.querySelector("[data-state-label]")!.textContent = LABELS[state];
+    card.querySelector<HTMLElement>("[data-reopen]")!.hidden = state !== "done";
+    card.querySelector("[data-thread]")!.innerHTML = entries
+      .map((entry) => {
+        const what = entry.action === "done" ? "Marked as fixed" : entry.action === "reopen" ? "Reopened" : entry.status ? LABELS[entry.status] : "Comment";
+        return `<li><span class="text-fg">${escape(entry.name)}</span> <span class="text-fg-subtle">· ${when(entry.at)} · ${what}</span>${entry.comment ? `<p class="mt-1 whitespace-pre-line text-body">${escape(entry.comment)}</p>` : ""}</li>`;
+      })
+      .join("");
+  }
+
+  function applyFilter() {
+    let shown = 0;
+    for (const card of cards) {
+      const state = card.dataset.state!;
+      const show =
+        filter === "all" ? true
+        : filter === "open" ? state === "open"
+        : filter === "high" ? card.dataset.priority === "high" && state !== "done"
+        : filter === "answered" ? state !== "open" && state !== "done"
+        : state === "done";
+      card.hidden = !show;
+      if (show) shown++;
+    }
+    document.querySelectorAll<HTMLElement>("[data-section]").forEach((section) => {
+      const visible = section.querySelectorAll("[data-item]:not([hidden])").length;
+      section.hidden = visible === 0;
+      const count = document.querySelector(`[data-section-count="${section.dataset.section}"]`);
+      if (count) count.textContent = String(section.querySelectorAll('[data-item]:not([data-state="done"])').length);
+    });
+    document.querySelector<HTMLElement>("[data-empty]")!.hidden = shown > 0;
+    const open = cards.filter((card) => card.dataset.state === "open").length;
+    const done = cards.filter((card) => card.dataset.state === "done").length;
+    document.querySelector("[data-progress]")!.textContent = `${cards.length - open} of ${cards.length} answered · ${done} fixed`;
+  }
+
+  function renderAll() {
+    cards.forEach(renderCard);
+    applyFilter();
+  }
+
+  document.querySelectorAll<HTMLButtonElement>("[data-filter]").forEach((button) =>
+    button.addEventListener("click", () => {
+      filter = button.dataset.filter!;
+      document.querySelectorAll("[data-filter]").forEach((b) => b.setAttribute("aria-pressed", String(b === button)));
+      applyFilter();
+    }),
+  );
+
+  async function send(card: HTMLElement, body: Record<string, string>) {
+    const message = card.querySelector("[data-message]")!;
+    const name = nameInput.value.trim();
+    if (!name) {
+      message.textContent = "Add your name at the top first.";
+      nameInput.focus();
+      return false;
+    }
+    message.textContent = "Saving…";
+    try {
+      const response = await fetch(API, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ item: card.dataset.item, name, ...body }) });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error);
+      store[card.dataset.item!] = result.entries;
+      message.textContent = "Saved.";
+      renderCard(card);
+      applyFilter();
+      return true;
+    } catch (error) {
+      message.textContent = `Not saved. ${(error as Error).message || "Please try again."}`;
+      return false;
+    }
+  }
+
+  for (const card of cards) {
+    const form = card.querySelector<HTMLFormElement>("[data-answer]")!;
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const status = (form.elements.namedItem("status") as RadioNodeList).value;
+      const comment = (form.elements.namedItem("comment") as HTMLTextAreaElement).value.trim();
+      if (!status && !comment) {
+        card.querySelector("[data-message]")!.textContent = "Choose an answer or add a comment.";
+        return;
+      }
+      if (await send(card, { status, comment })) form.reset();
+    });
+    card.querySelector("[data-done]")!.addEventListener("click", () => {
+      const comment = (form.elements.namedItem("comment") as HTMLTextAreaElement).value.trim();
+      send(card, { action: "done", comment }).then((ok) => ok && form.reset());
+    });
+    card.querySelector("[data-reopen]")!.addEventListener("click", () => send(card, { action: "reopen" }));
+  }
+
+  // ---------------------------------------------------------------------------------------------------
+  // Show on the site: the page loads under the item, scrolled to the phrase and outlined. Closed accordions on the
+  // way are opened, and the reveal animations are skipped. One page is open at a time.
+
+  let openButton: HTMLButtonElement | null = null;
+
+  function closeStage() {
+    if (!openButton) return;
+    const stage = openButton.closest("[data-item]")!.querySelector<HTMLElement>("[data-stage]")!;
+    stage.querySelector("iframe")?.remove();
+    stage.hidden = true;
+    openButton.setAttribute("aria-pressed", "false");
+    openButton = null;
+  }
+
+  const normalise = (text: string) => text.replace(/\s+/g, " ").trim();
+
+  /** Outlines the deepest element holding the phrase. Returns "found", "hidden" or "missing". */
+  function highlight(frame: HTMLIFrameElement, find: string) {
+    const doc = frame.contentDocument;
+    if (!doc?.body) return "missing";
+    doc.querySelectorAll("[data-reveal]").forEach((el) => el.classList.add("is-visible"));
+    if (!doc.getElementById("review-style")) {
+      const style = doc.createElement("style");
+      style.id = "review-style";
+      style.textContent = ".review-hit{outline:3px solid #C9A14A !important;outline-offset:6px;background:rgb(201 161 74 / 0.16) !important;border-radius:2px}";
+      doc.head.append(style);
+    }
+    const target = normalise(find);
+    if (!target) return "found";
+    // Every deepest element holding the phrase, in page order; the first one a visitor can see wins
+    const holds = (el: Element) => !el.matches("script, style") && normalise(el.textContent ?? "").includes(target);
+    const matches = [...doc.body.querySelectorAll("*")].filter((el) => holds(el) && ![...el.children].some(holds));
+    if (matches.length === 0) return "missing";
+    for (const el of matches) for (let up: Element | null = el; up; up = up.parentElement) if (up.tagName === "DETAILS") (up as HTMLDetailsElement).open = true;
+    const match = matches.find((el) => el.getClientRects().length > 0) ?? matches[0];
+    match.classList.add("review-hit");
+    if (match.getClientRects().length === 0) return "hidden";
+    match.scrollIntoView({ block: "center" });
+    return "found";
+  }
+
+  document.querySelectorAll<HTMLButtonElement>("[data-show]").forEach((button) =>
+    button.addEventListener("click", () => {
+      if (openButton === button) return closeStage();
+      closeStage();
+      const { path, find } = button.dataset as { path: string; find: string };
+      const stage = button.closest("[data-item]")!.querySelector<HTMLElement>("[data-stage]")!;
+      const status = stage.querySelector("[data-stage-status]")!;
+      stage.querySelector<HTMLAnchorElement>("[data-stage-open]")!.href = path;
+      status.textContent = "Loading the page…";
+      const frame = document.createElement("iframe");
+      frame.title = "The page on the site";
+      frame.src = path;
+      frame.addEventListener("load", () => {
+        // Give the page a moment to run its own scripts before finding the phrase
+        setTimeout(() => {
+          const result = highlight(frame, find);
+          status.textContent =
+            result === "found" ? (find ? `Highlighted on ${path}` : `The page ${path}`)
+            : result === "hidden" ? "This text is on the page but only appears after an interaction, such as choosing an option or sending the form."
+            : "The text could not be found automatically. It may have changed, or appear only in the 3D view.";
+        }, 600);
+      });
+      stage.append(frame);
+      stage.hidden = false;
+      button.setAttribute("aria-pressed", "true");
+      openButton = button;
+    }),
+  );
+
+  // ---------------------------------------------------------------------------------------------------
+  // Load everyone's answers
+
+  async function load() {
+    try {
+      const response = await fetch(API, { headers: { accept: "application/json" } });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error);
+      store = result.items ?? {};
+    } catch (error) {
+      banner.hidden = false;
+      banner.textContent = `Answers can't be loaded or saved right now. ${(error as Error).message || ""}`.trim();
+      document.querySelectorAll<HTMLButtonElement>('[data-answer] button[type="submit"], [data-done]').forEach((b) => (b.disabled = true));
+    }
+    renderAll();
+  }
+
+  renderAll();
+  load();
+</script>
