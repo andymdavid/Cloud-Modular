@@ -1,0 +1,23 @@
+---
+import RefreshLayout from "@/layouts/RefreshLayout.astro";
+import PageIntro from "@/components/refresh/PageIntro.astro";
+import LegalSections from "@/components/refresh/LegalSections.astro";
+import { legalUpdated, termsSections } from "@/data/legal";
+import { site } from "@/data/site";
+
+const title = "Terms of Use | Cloud Modular";
+const description = "The terms that apply when you use the Cloud Modular website and the Cloud Homes design tool.";
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: site.url },
+    { "@type": "ListItem", position: 2, name: "Terms of Use", item: `${site.url}/terms/` },
+  ],
+};
+---
+
+<RefreshLayout title={title} description={description} canonical="/terms/" structuredData={breadcrumbSchema}>
+  <PageIntro label="Terms of Use" title="Terms of use" lead={`${description} Last updated ${legalUpdated}.`} />
+  <LegalSections sections={termsSections} />
+</RefreshLayout>

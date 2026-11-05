@@ -10,8 +10,8 @@ export default defineConfig({
   redirects: { "/alt-home/": "/" },
   integrations: [
     sitemap({
-      // Redirect stubs are not pages
-      filter: (page) => !page.includes("/alt-home/"),
+      // Redirect stubs are not pages, and the fact review is for the team only
+      filter: (page) => !page.includes("/alt-home/") && !page.includes("/review/"),
     }),
   ],
 });

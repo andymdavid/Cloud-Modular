@@ -173,7 +173,8 @@ export const sections: readonly Section[] = [
     id: "floors",
     label: "Floors",
     title: "Choose your floors",
-    body: "One floor finish through the living areas and bedrooms.",
+    // The Casuarina drawings name no floor finish; this follows the 6 mm SPC rigid-core vinyl in the Rowland proposal
+    body: "Rigid-core vinyl planks in an oak look, through the living areas and bedrooms.",
     kind: "swatch",
     camera: { azimuth: 25, polar: 30, inside: true },
     choices: [

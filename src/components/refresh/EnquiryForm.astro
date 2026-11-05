@@ -169,7 +169,7 @@ const routes = [...engagementModels.items.map((item) => item.title), "Not sure y
 
     <div class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
       <button type="submit" class="btn" data-enquiry-submit>{{ project: "Send enquiry", general: "Send message", design: "Send your design" }[variant]}</button>
-      <p class="text-caption text-fg-subtle">We use your details only to reply to you.</p>
+      <p class="text-caption text-fg-subtle">We use your details to reply to you and as set out in our <a href="/privacy-policy/" class="underline underline-offset-2 hover:text-fg">Privacy Policy</a>.</p>
     </div>
     <p class="enquiry-error mt-6 text-body" role="alert" data-enquiry-error hidden></p>
   </form>

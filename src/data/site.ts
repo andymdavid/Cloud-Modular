@@ -29,7 +29,7 @@ export const site = {
 // From the 2026 Capability Statement (Production Capability), written as our capability without naming the
 // manufacturer, as agreed with the user.
 export const productionCapability = {
-  intro: "Our production capability gives us access to more than 450,000 square metres of dedicated manufacturing facilities, with the systems, supply chain and capacity for repeatable modular delivery. That capability has delivered projects from design to installation in Shenzhen, Hong Kong, Melbourne, Saipan and Auckland, and we now bring it to Western Australia.",
+  intro: "Our production capability gives us access to more than 450,000 square metres of dedicated manufacturing facilities, with the systems, supply chain and capacity for repeatable modular delivery. That capability has delivered projects from design to installation in Shenzhen, Hong Kong, Melbourne, Saipan and Auckland, and we now bring it to projects across Australia.",
   body: "Established procurement and production relationships help us control lead times, certification and quality, and plan each delivery. The same model suits a small development or a large multi-unit programme where repeatability and speed matter.",
   stats: [
     { value: "450,000+", label: "Square metres of dedicated manufacturing facilities" },
@@ -278,7 +278,7 @@ export const projects = [
   {
     slug: "seashells-jurien-bay",
     name: "Seashells Jurien Bay",
-    sector: "Residential",
+    sector: "Residential and tourism",
     location: "Jurien Bay, WA",
     image: "/projects/jurien-bay-apartments.webp",
     imageAlt: "Seashells Jurien Bay apartments with rooftop terraces at sunset",
@@ -496,7 +496,7 @@ export const approachStages = {
     {
       index: "02",
       title: "Design for manufacture",
-      body: "The design is resolved around module sizes, transport limits and crane lifts. Our engineers design the structure for the site's wind region, including cyclone regions. You sign off the design and an updated budget.",
+      body: "The design is resolved around module sizes, transport limits and crane lifts. The engineer designs the structure for the site's wind region, including cyclone regions. You sign off the design and an updated budget.",
     },
     {
       index: "03",
