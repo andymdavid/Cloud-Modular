@@ -25,11 +25,11 @@ export const tradeIntro =
 /** How we work: one service with two halves. Every client is onboarded to an account on the platform, where their
  * documents live, and our team runs the procurement. Tiles as the home page's FeatureTiles. */
 export const tradeWays = {
-  intro: "We set you up with an account on our platform, where your schedules, quotes, approvals and documents live. Our team then runs the procurement for you, from pricing to delivery on site.",
+  intro: "Your account shows every order from quote to delivery, with your approvals, documents and tracking in one place. Behind it, our concierge team manages the procurement end to end.",
   tiles: [
     {
       label: "Your account",
-      title: "Every order in one place",
+      title: "Full oversight and control",
       href: "/trade/start/",
       cta: "Open an account",
       image: "/trade/projects/apartments.webp",
@@ -38,8 +38,8 @@ export const tradeWays = {
       imagePosition: "center",
     },
     {
-      label: "Our team",
-      title: "We run the procurement",
+      label: "Concierge support",
+      title: "End-to-end procurement management",
       href: "/trade/start/",
       cta: "Talk to our team",
       image: "/trade/projects/freestanding-bath.webp",
