@@ -47,7 +47,7 @@ const pageSchema = {
       <div class="grid-12 items-end gap-y-6">
         <h1 class="col-span-12 text-hero lg:col-span-8">{tradeHero.title}</h1>
         <div class="col-span-12 flex flex-col items-start gap-5 sm:col-span-8 lg:col-span-4 lg:items-end lg:text-right">
-          <p class="max-w-[34ch] text-body text-fg/85">{tradeHero.lead}</p>
+          <p class="max-w-[34ch] text-body text-fg/85 [text-wrap:balance]">{tradeHero.lead}</p>
           <a href={request.href} class="btn">{request.label}</a>
         </div>
       </div>
@@ -80,7 +80,7 @@ const pageSchema = {
           <a href="/trade/how-it-works/" class="btn mt-10">How it works</a>
         </div>
         <div class="col-span-12 md:col-span-7" data-reveal>
-          <div class="doc-fan" aria-hidden="true">
+          <div class="doc-fan" aria-hidden="true" data-fan>
             <div class="fan-inner">
               <TradeDocument doc="quote" staged={false} class="fan-1" />
               <TradeDocument doc="inspection" staged={false} class="fan-2" />
@@ -132,13 +132,13 @@ const pageSchema = {
       <SectionHead label="Clients" title="Who we supply" intro={tradeCaseStudies.intro} />
     </div>
 
-    <CardRow label="Clients" columns={4} class="mt-12 sm:mt-16">
+    <CardRow label="Clients" class="mt-12 sm:mt-16">
       {tradeCaseStudies.items.map((item, index) => (
         <li data-reveal style={`--reveal-delay:${index * 80}ms`}>
           <figure class="case">
             <div class="case-media">
-              {"image" in item ? (
-                <img src={item.image.src} alt="" width={item.image.width} height={item.image.height} loading="lazy" class="h-full w-full object-cover" />
+              {"text" in item ? (
+                <span class="case-text" role="img" aria-label={item.client}>{item.text.map((line) => <span>{line}</span>)}</span>
               ) : (
                 <span class="case-logo" role="img" aria-label={item.client} style={`--logo:url(/trade/clients/${item.logo}.png)`}></span>
               )}
@@ -171,20 +171,32 @@ const pageSchema = {
   /* Three documents fanned on a stone stage */
   .doc-fan {
     position: relative;
+    width: 100%;
     aspect-ratio: 5 / 4;
     overflow: hidden;
     border-radius: var(--radius-media);
     background: rgb(var(--stone));
   }
 
-  /* The fan sits centred in the stage: an inner box the documents spread across */
+  /* The documents spread across an inner box. A script measures the three rotated sheets together and sets the
+     stage's height and the box's offset so the group has the same margin on all four sides. */
   .fan-inner {
     position: absolute;
     left: 50%;
     top: 50%;
-    width: min(80%, 34rem);
+    width: min(68%, 34rem);
     height: 74%;
     transform: translate(-50%, -50%);
+  }
+
+  .doc-fan.is-measured {
+    aspect-ratio: auto;
+  }
+
+  .doc-fan.is-measured .fan-inner {
+    left: var(--fan-x);
+    top: var(--fan-y);
+    transform: none;
   }
 
   .fan-inner :global(.doc-stage) {
@@ -199,15 +211,16 @@ const pageSchema = {
     transform: rotate(-6deg);
   }
 
+  /* Vertical steps in rem, so the group's shape doesn't depend on the stage's height */
   .fan-inner :global(.fan-2) {
     left: 16%;
-    top: 9%;
+    top: 2.5rem;
     transform: rotate(1.5deg);
   }
 
   .fan-inner :global(.fan-3) {
     left: 32%;
-    top: 18%;
+    top: 5rem;
     transform: rotate(7deg);
   }
 
@@ -221,10 +234,10 @@ const pageSchema = {
     }
   }
 
-  /* Client cards: the same 4:5 frame and caption rhythm as the image cards; logos sit gold on slate */
+  /* Client cards: landscape frames with the image cards' caption rhythm; logos sit gold on slate */
   .case-media {
     display: flex;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 3 / 2;
     align-items: center;
     justify-content: center;
     overflow: hidden;
@@ -232,11 +245,64 @@ const pageSchema = {
     background: rgb(var(--slate));
   }
 
+  /* A client without a logo: its names set in gold, like a wordmark */
+  .case-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.625rem;
+    padding-inline: 12%;
+    color: rgb(var(--gold));
+    font-family: var(--font-display);
+    font-size: clamp(1.125rem, 0.9rem + 0.6vw, 1.5rem);
+    line-height: 1.15;
+    letter-spacing: var(--tracking-title);
+    text-align: center;
+    text-transform: uppercase;
+  }
+
   .case-logo {
-    width: 62%;
-    height: 30%;
+    width: 56%;
+    height: 38%;
     background: rgb(var(--gold));
     -webkit-mask: var(--logo) center / contain no-repeat;
     mask: var(--logo) center / contain no-repeat;
   }
 </style>
+
+<script>
+  // Centre the fanned documents: measure the three rotated sheets as one group (their rest positions, not the
+  // hover spread), then size the stage so the group has an equal margin on all four sides.
+  document.querySelectorAll<HTMLElement>("[data-fan]").forEach((fan) => {
+    const inner = fan.querySelector<HTMLElement>(".fan-inner")!;
+    const sheets = [...inner.querySelectorAll<HTMLElement>(".doc-stage")];
+
+    const measure = () => {
+      fan.classList.remove("is-measured");
+      fan.style.height = "";
+      const box = fan.getBoundingClientRect();
+      const rects = sheets.map((sheet) => sheet.getBoundingClientRect());
+      const left = Math.min(...rects.map((r) => r.left));
+      const right = Math.max(...rects.map((r) => r.right));
+      const top = Math.min(...rects.map((r) => r.top));
+      const bottom = Math.max(...rects.map((r) => r.bottom));
+      const innerRect = inner.getBoundingClientRect();
+      const margin = (box.width - (right - left)) / 2;
+      // Where the inner box must sit so the group starts one margin in from the stage's left and top
+      fan.style.setProperty("--fan-x", `${margin - (left - innerRect.left)}px`);
+      fan.style.setProperty("--fan-y", `${margin - (top - innerRect.top)}px`);
+      fan.style.height = `${bottom - top + margin * 2}px`;
+      fan.classList.add("is-measured");
+    };
+
+    // Re-measure whenever the stage's width changes (its height is ours to set), and once fonts and images settle
+    let width = 0;
+    new ResizeObserver(([entry]) => {
+      if (Math.abs(entry.contentRect.width - width) < 0.5) return;
+      width = entry.contentRect.width;
+      measure();
+    }).observe(fan);
+    document.fonts?.ready.then(measure);
+    window.addEventListener("load", measure);
+  });
+</script>

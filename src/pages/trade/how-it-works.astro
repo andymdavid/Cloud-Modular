@@ -7,7 +7,7 @@ import FaqSection from "@/components/refresh/FaqSection.astro";
 import GetStarted from "@/components/refresh/GetStarted.astro";
 import { brands } from "@/data/brands";
 import { site } from "@/data/site";
-import { tradeJourney } from "@/data/trade";
+import { tradeDelivered, tradeJourney } from "@/data/trade";
 
 /**
  * Cloud Trade, how it works: an order from schedule to site on the shared Journey line. Each step shows the
@@ -43,13 +43,28 @@ const account = brands.trade.cta;
 
   <section id="journey" data-theme="light" class="scroll-mt-header pb-section">
     <div class="shell">
-      <Journey items={tradeJourney} runOn={false}>
+      <Journey items={tradeJourney}>
         {(item: (typeof tradeJourney)[number]) => "doc" in item && <TradeDocument doc={item.doc} />}
       </Journey>
     </div>
   </section>
 
-  <FaqSection id="faq" topic="trade" more={false} />
+  <!-- Delivered: the end of the line, full bleed, with the after-sales offer (as Cloud Homes' Welcome home) -->
+  <section data-theme="dark" class="relative h-[90svh] min-h-[520px] overflow-hidden">
+    <img src="/trade/projects/apartments.webp" alt="A finished apartment building with sandstone-coloured brick, dark cladding and balconies under a blue sky" width="1920" height="1280" loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover" style="object-position:center 40%" />
+    <div class="absolute inset-0 bg-[linear-gradient(180deg,rgb(11_11_12/0)_40%,rgb(11_11_12/0.65)_100%)]" aria-hidden="true"></div>
+    <div class="shell relative flex h-full flex-col justify-end pb-10 sm:pb-14">
+      <div class="grid-12 items-end gap-y-6">
+        <h2 class="col-span-12 text-hero lg:col-span-8" data-reveal>{tradeDelivered.title}</h2>
+        <div class="col-span-12 flex flex-col items-start gap-5 sm:col-span-8 lg:col-span-4 lg:items-end lg:text-right" data-reveal>
+          <p class="max-w-[34ch] text-body text-fg/85">{tradeDelivered.body}</p>
+          <a href="/trade/start/" class="btn">Send us your schedule</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <FaqSection id="faq" topic="trade" more={false} rule={false} />
 
   <GetStarted
     text="Send us your schedule and we will come back with a quote, or open an account and start your first order."

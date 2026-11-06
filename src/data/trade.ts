@@ -6,28 +6,29 @@
 export const tradeClients = [
   { slug: "hanssen", name: "Hanssen", width: 1000, height: 432, ink: 0.279 },
   { slug: "griffin", name: "Griffin Group", width: 1000, height: 175, ink: 0.221 },
-  { slug: "roy-hill", name: "Roy Hill", width: 487, height: 600, ink: 0.399 },
+  { slug: "hancock", name: "Hancock Iron Ore", width: 1000, height: 364, ink: 0.617 },
   { slug: "probuild", name: "Probuild", width: 1000, height: 115, ink: 0.732 },
   { slug: "cimc", name: "CIMC", width: 375, height: 100, ink: 0.583 },
   { slug: "ausco", name: "Ausco Modular", width: 699, height: 573, ink: 0.324 },
   { slug: "ams", name: "AMS", width: 881, height: 221, ink: 0.279 },
+  { slug: "seashells", name: "Seashells Jurien Bay", width: 344, height: 222, ink: 0.106 },
 ] as const;
 
 export const tradeHero = {
   title: "End-to-end procurement for the built environment.",
-  lead: "A trade network built on 30 years of business in China, saving builders and developers at least 45%.",
+  lead: "A trade network built on 30 years of business in China, with prices at least 45% below local suppliers.",
 };
 
 export const tradeIntro =
-  "Cloud Trade is a specialist procurement services provider to the building and construction industry, delivering cost savings, project management and risk mitigation across the products every project needs. Our trade network is built on more than 30 years of doing business in China, with OEM factories that also supply hotel brands. You buy from us, so the risk of buying overseas is ours, and our clients save at least 45% on buying locally.";
+  "Cloud Trade is a specialist procurement services provider to the building and construction industry, providing cost savings, project management and risk mitigation across the products every project needs. Through trade relationships built over 30 years in China, we give builders and developers access to products made to Australian Standards at least 45% below local prices. Our concierge service covers manufacture, quality control and testing, freight and delivery to site.";
 
 /** Two ways to work: the team runs it, or the builder runs it in their account. Tiles as the home page's FeatureTiles. */
 export const tradeWays = {
-  intro: "Send us your schedule and our team manages the procurement through to delivery, or run your own orders in your account. Every order goes through the same network and the same checks.",
+  intro: "Every order runs on our platform with our team behind it. You choose how much of the procurement you hand to us.",
   tiles: [
     {
-      label: "Our team",
-      title: "We manage it",
+      label: "Fully managed",
+      title: "Hand it to us",
       href: "/trade/start/",
       cta: "Talk to our team",
       image: "/trade/projects/apartments.webp",
@@ -36,8 +37,8 @@ export const tradeWays = {
       imagePosition: "center",
     },
     {
-      label: "Your account",
-      title: "You manage it",
+      label: "Self-managed",
+      title: "Run it yourself",
       href: "/trade/start/",
       cta: "Open an account",
       image: "/trade/projects/freestanding-bath.webp",
@@ -48,7 +49,8 @@ export const tradeWays = {
   ],
 };
 
-/** How it works (/trade/how-it-works/): the order from schedule to site, each step with the document it produces. */
+/** How it works (/trade/how-it-works/): the order from schedule to site, each step with the document it produces.
+ * The page closes on a full-bleed image with the after-sales offer (tradeDelivered). */
 export const tradeJourney = [
   {
     kind: "step",
@@ -94,11 +96,6 @@ export const tradeJourney = [
     doc: "delivery",
   },
   { kind: "milestone", title: "On site" },
-  {
-    kind: "step",
-    title: "After-sales",
-    body: "Every order comes with warranty and after-sales support, provided by us and our after-sales partners.",
-  },
 ] as const;
 
 /** How it works. Each stage becomes a step in the platform sequence, with an interface vignette beside it. */
@@ -162,6 +159,11 @@ export const tradeAssistant = {
   ],
 } as const;
 
+export const tradeDelivered = {
+  title: "Delivered",
+  body: "Every order comes with warranty and after-sales support from our team and our after-sales partners.",
+};
+
 /** Range: categories until the product catalogue supplies them. Cards have no images yet. */
 export const tradeRange = [
   {
@@ -213,16 +215,18 @@ export const tradeTestimonial = {
 
 /** Clients and what we supplied them. No project names or savings figures until they are confirmed. */
 export const tradeCaseStudies = {
-  intro: "Our factories are OEM manufacturers that also supply hotel brands. In Australia we supply builders, developers and modular manufacturers, including these.",
+  intro: "We supply builders, developers and modular manufacturers across Australia, including these.",
   items: [
     { logo: "hanssen", client: "Hanssen", supplied: "Plumbing", body: "Tapware and sanitary ware across a number of Hanssen projects." },
     { logo: "griffin", client: "Griffin Group", supplied: "Plumbing", body: "Tapware and sanitary ware for Griffin Group projects." },
     { logo: "probuild", client: "Probuild", supplied: "Plumbing", body: "Tapware and sanitary ware for Probuild projects." },
+    { logo: "hancock", client: "Roy Hill, now Hancock Iron Ore", supplied: "Mining", body: "Supply for Roy Hill." },
+    { logo: "seashells", client: "Seashells Jurien Bay", supplied: "Resort", body: "Supply for the resort's villas at Jurien Bay." },
     {
-      image: { src: "/trade/projects/ductwork.webp", width: 1600, height: 1200 },
+      text: ["200 St Georges Terrace", "Central Park"],
       client: "200 St Georges Terrace and Central Park",
       supplied: "Air conditioning",
-      body: "Air conditioning diffusion and accessories, which we have supplied since 2014.",
+      body: "Air conditioning diffusion and accessories, supplied since 2014.",
     },
   ],
 } as const;
