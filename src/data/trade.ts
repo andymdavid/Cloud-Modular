@@ -25,7 +25,7 @@ export const tradeIntro =
 /** How we work: one service with two halves. Every client is onboarded to an account on the platform, where their
  * documents live, and our team runs the procurement. Tiles as the home page's FeatureTiles. */
 export const tradeWays = {
-  title: "Every order approved by you and handled by our team",
+  title: "Full control without the legwork",
   intro: "Every quote, approval, certificate and delivery date sits in your account, and nothing is ordered until you sign off. Our team takes care of everything else, from pricing your schedule to getting it onto your site.",
   tiles: [
     {
