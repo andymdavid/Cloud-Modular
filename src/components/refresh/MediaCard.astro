@@ -5,7 +5,8 @@
  * cards (with `href`) also show a gold arrow that follows the pointer. Unlinked cards render as a figure.
  */
 interface Props {
-  image: string;
+  /** Without an image the card shows its stone placeholder (Trade range, until the catalogue has photography). */
+  image?: string;
   alt: string;
   width?: number;
   height?: number;
@@ -41,7 +42,7 @@ const Title = href ? "h3" : "p";
 
 <Tag href={href} class="media-card group block" data-media-card={href ? "" : undefined}>
   <div class:list={["media-card-image relative overflow-hidden bg-stone", ratio]}>
-    <img src={image} alt={alt} width={width} height={height} loading="lazy" class="h-full w-full object-cover transition-transform duration-slow ease-cm-out group-hover:scale-[1.03]" style={`object-position:${imagePosition}`} />
+    {image && <img src={image} alt={alt} width={width} height={height} loading="lazy" class="h-full w-full object-cover transition-transform duration-slow ease-cm-out group-hover:scale-[1.03]" style={`object-position:${imagePosition}`} />}
     {tag && <span class="media-card-tag absolute left-4 top-4 sm:left-5 sm:top-5">{tag}</span>}
     {href && (
       <span class="media-card-cursor" aria-hidden="true" data-media-cursor>

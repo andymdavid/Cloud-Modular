@@ -313,6 +313,7 @@ export const faqTopics = [
   { id: "approach", label: "Process and engagement", href: "/our-approach/" },
   { id: "partner", label: "Working with us", href: "/partner-with-us/" },
   { id: "cloud-homes", label: "Cloud Homes", href: "/cloud-homes/" },
+  { id: "trade", label: "Cloud Trade", href: "/trade/" },
 ] as const;
 
 export type FaqTopic = (typeof faqTopics)[number]["id"];
@@ -429,6 +430,30 @@ export const faqItems = [
     question: "What should I include in a project enquiry?",
     answer:
       "Tell us where the site is, what you want to build and roughly how much, and when you would like to start. Drawings, a feasibility study or tender documents help if you have them. Leave out anything you are unsure of and we will talk it through.",
+  },
+  {
+    topic: "trade",
+    question: "Who can open a Cloud Trade account?",
+    answer:
+      "Builders, developers, architects and modular manufacturers can open an account. You set it up yourself and can add your first project straight away.",
+  },
+  {
+    topic: "trade",
+    question: "Who supplies the products?",
+    answer:
+      "Cloud Trade does. We source each product from our panel of manufacturers in China, India and South East Asia and manage it through manufacture, inspection and freight, so you deal with one supplier for the whole order.",
+  },
+  {
+    topic: "trade",
+    question: "Are the products made to Australian Standards?",
+    answer:
+      "Yes. Our products are manufactured to Australian Standards and go through quality checks before they are shipped.",
+  },
+  {
+    topic: "trade",
+    question: "How do I get started?",
+    answer:
+      "Open an account, add your project and upload your schedule or bill of quantities. If your project needs something unusual, talk to our team first and we will help you set it up.",
   },
 ] as const;
 

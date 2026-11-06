@@ -1,0 +1,46 @@
+---
+/**
+ * One client quote for the right half of a split section: the quote at split-paragraph size behind a gold
+ * opening mark, then a hairline and the client's logo (a gold mask), name and role.
+ */
+interface Props {
+  quote: string;
+  name: string;
+  role: string;
+  /** Logo image, used as a mask filled with gold. */
+  logo?: string;
+}
+
+const { quote, name, role, logo } = Astro.props;
+---
+
+<figure class="testimonial w-full">
+  <span class="testimonial-mark" aria-hidden="true">“</span>
+  <blockquote class="text-about">{quote}</blockquote>
+  <figcaption class="mt-10 flex items-center gap-5 border-t border-line/[var(--rule-alpha)] pt-6">
+    {logo && <span class="testimonial-logo shrink-0" style={`--logo:url(${logo})`} aria-hidden="true"></span>}
+    <span>
+      <span class="block text-body">{name}</span>
+      <span class="label label-muted mt-1 block">{role}</span>
+    </span>
+  </figcaption>
+</figure>
+
+<style>
+  .testimonial-mark {
+    display: block;
+    height: 2.25rem;
+    font-family: var(--font-hero);
+    font-size: 4.5rem;
+    line-height: 1;
+    color: rgb(var(--gold));
+  }
+
+  .testimonial-logo {
+    width: 4.5rem;
+    height: 2rem;
+    background: rgb(var(--gold));
+    -webkit-mask: var(--logo) left center / contain no-repeat;
+    mask: var(--logo) left center / contain no-repeat;
+  }
+</style>

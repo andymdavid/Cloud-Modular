@@ -1,0 +1,115 @@
+---
+import { sizeLogo } from "@/utils/logos";
+
+/**
+ * Client logos in a slow, endless row under a hero: the label at the page margin, then the logos drifting left as
+ * gold masks (as PartnerGrid), faded out at both ends. The set is repeated once so the loop has no seam. Hovering
+ * pauses it; reduced motion shows one still, wrapping row.
+ */
+interface Props {
+  label: string;
+  logos: readonly { slug: string; name: string; width: number; height: number; ink: number }[];
+  /** Folder in public/ that holds `<slug>.png`. */
+  path: string;
+  id?: string;
+}
+
+const { label, logos, path, id } = Astro.props;
+const sized = logos.map((logo) => ({ ...logo, ...sizeLogo(logo, 3.2, 9.5) }));
+---
+
+<section id={id} data-theme="light" class="client-strip scroll-mt-header pb-10 pt-gutter sm:pb-14">
+  <div class="shell">
+    <div class="grid-12 items-center gap-y-6">
+      <h2 class="label col-span-12 lg:col-span-2">{label}</h2>
+      <div class="client-viewport col-span-12 overflow-hidden lg:col-span-10" data-reveal>
+        <div class="client-track flex w-max">
+          {[0, 1].map((copy) => (
+            <ul class="client-set flex shrink-0 items-center" aria-label={copy ? undefined : label} aria-hidden={copy ? "true" : undefined}>
+              {sized.map((logo) => (
+                <li class="client-cell flex shrink-0 items-center justify-center">
+                  <span
+                    role={copy ? undefined : "img"}
+                    aria-label={copy ? undefined : logo.name}
+                    class="client-logo block"
+                    style={`--w:${logo.w.toFixed(2)}rem;--h:${logo.h.toFixed(2)}rem;--logo:url(${path}/${logo.slug}.png)`}
+                  ></span>
+                </li>
+              ))}
+            </ul>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Fade the logos in and out at the ends of the row */
+  .client-viewport {
+    -webkit-mask: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+    mask: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  }
+
+  .client-cell {
+    height: 4.5rem;
+    padding-inline: 1.75rem;
+  }
+
+  @media (min-width: 48rem) {
+    .client-cell {
+      height: 5.5rem;
+      padding-inline: 2.75rem;
+    }
+  }
+
+  .client-logo {
+    --scale: 0.75;
+    width: calc(var(--w) * var(--scale));
+    height: calc(var(--h) * var(--scale));
+    background: rgb(var(--gold));
+    -webkit-mask: var(--logo) center / contain no-repeat;
+    mask: var(--logo) center / contain no-repeat;
+  }
+
+  @media (min-width: 48rem) {
+    .client-logo {
+      --scale: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .client-track {
+      animation: client-drift 48s linear infinite;
+    }
+
+    .client-viewport:hover .client-track {
+      animation-play-state: paused;
+    }
+  }
+
+  /* One set's width, so the second set lands exactly where the first began */
+  @keyframes client-drift {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .client-viewport {
+      -webkit-mask: none;
+      mask: none;
+    }
+
+    .client-track,
+    .client-set:first-child {
+      flex-wrap: wrap;
+      width: auto;
+      justify-content: center;
+    }
+
+    .client-set:last-child {
+      display: none;
+    }
+  }
+</style>

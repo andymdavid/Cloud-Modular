@@ -1,54 +1,19 @@
 ---
 import { site } from "@/data/site";
 import Logo from "@/components/refresh/Logo.astro";
+import { brands, type Brand, type BrandId } from "@/data/brands";
 
 /**
  * Footer (olympic.no): full-width slate panel on a six-column grid. Row 1: link groups under grey mono labels.
  * Row 2: an enquiry block on the left; offices, contact icons and back-to-top on the right. Row 3: logo, hours
  * and copyright. Rows are split by soft hairlines.
  */
-interface FooterGroup {
-  label: string;
-  links: { label: string; href: string; external?: boolean }[];
+interface Props {
+  brand?: BrandId;
 }
 
-const groups: FooterGroup[] = [
-  {
-    label: "Company",
-    links: [
-      { label: "Home", href: "/" },
-      { label: "About", href: "/about/" },
-      { label: "Our Work", href: "/our-work/" },
-      { label: "Partner With Us", href: "/partner-with-us/" },
-    ],
-  },
-  {
-    label: "Explore",
-    links: [
-      { label: "Cloud Homes", href: "/cloud-homes/" },
-      { label: "How Cloud Homes Work", href: "/cloud-homes/how-it-works/" },
-      { label: "Projects", href: "/our-work/" },
-      { label: "How It's Made", href: "/#explore" },
-      { label: "Sectors", href: "/#sectors" },
-    ],
-  },
-  {
-    label: "Why Cloud Modular",
-    links: [
-      { label: "Manufacturing & Quality", href: "/quality/" },
-      { label: "Why Cloud Modular", href: "/why-cloud-modular/" },
-      { label: "Our Approach", href: "/our-approach/" },
-      { label: "FAQ", href: "/faq/" },
-    ],
-  },
-  {
-    label: "Contact",
-    links: [
-      { label: "Contact Us", href: site.contactHref },
-      { label: "LinkedIn", href: site.linkedIn, external: true },
-    ],
-  },
-];
+const brand: Brand = brands[Astro.props.brand ?? "modular"];
+const groups = brand.footer.groups;
 ---
 
 <!-- At least one screen tall: the link groups at the top, the enquiry block and base row pinned to the bottom -->
@@ -87,10 +52,9 @@ const groups: FooterGroup[] = [
     <div class="footer-rule mt-auto grid grid-cols-2 gap-x-gap-sm gap-y-12 pb-16 pt-[4.25rem] md:grid-cols-6">
       <div class="col-span-2 flex flex-col items-start" data-reveal>
         <p class="label label-muted">Let’s talk</p>
-        <p class="mt-4 max-w-[34ch] text-small text-sage">Have a project in mind? Tell us about it and we’ll show you how modular can deliver it.</p>
+        <p class="mt-4 max-w-[34ch] text-small text-sage">{brand.footer.prompt}</p>
         <div class="mt-10 flex flex-wrap gap-1 md:mt-auto md:pt-10">
-          <a href={site.contactHref} class="footer-btn">Enquire now</a>
-          <a href="/partner-with-us/" class="footer-btn">Partner with us</a>
+          {brand.footer.actions.map((action) => <a href={action.href} class="footer-btn">{action.label}</a>)}
         </div>
       </div>
 
@@ -123,8 +87,11 @@ const groups: FooterGroup[] = [
     <!-- Row 3: logo, copyright, Privacy Policy and Terms, on the same four starts as the link groups in row 1 -->
     <div class="footer-rule grid grid-cols-2 items-center gap-x-gap-sm gap-y-6 pb-12 pt-14 md:grid-cols-6">
       <div class="col-span-2 grid grid-cols-2 items-center gap-x-gap-sm gap-y-6 md:col-span-4 md:grid-cols-3">
-        <Logo class="col-span-2 h-[18px] w-auto justify-self-start text-fg md:col-span-1" />
-        <p class="label label-muted">{new Date().getFullYear()} © Cloud Modular</p>
+        <div class="col-span-2 flex flex-col items-start gap-1.5 justify-self-start text-fg md:col-span-1">
+          <Logo class="h-[18px] w-auto" title={brand.name} />
+          {brand.descriptor && <span class="footer-descriptor" aria-hidden="true">{brand.descriptor}</span>}
+        </div>
+        <p class="label label-muted">{new Date().getFullYear()} © {brand.name}</p>
         <a href="/privacy-policy/" class="label label-muted footer-legal hidden md:block">Privacy Policy</a>
       </div>
       <div class="col-span-2 flex items-center justify-between gap-6 md:col-span-2 md:col-start-5">
@@ -151,6 +118,17 @@ const groups: FooterGroup[] = [
     --surface: var(--slate);
     --surface-alt: var(--slate);
     background: rgb(var(--slate));
+  }
+
+  /* The brand word under the wordmark, as in the header */
+  .footer-descriptor {
+    padding-left: 0.0625rem;
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    font-weight: var(--weight-medium);
+    line-height: 1;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
   }
 
   .footer-rule {

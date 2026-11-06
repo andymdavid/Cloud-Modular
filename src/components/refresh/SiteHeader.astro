@@ -1,56 +1,18 @@
 ---
-import { site } from "@/data/site";
+import { brands, type Brand, type BrandId } from "@/data/brands";
 import Logo from "@/components/refresh/Logo.astro";
-
-export interface NavLink {
-  label: string;
-  href: string;
-}
-
-export interface NavGroup {
-  label: string;
-  links: NavLink[];
-}
 
 interface Props {
   overlay?: boolean;
-  /** Menu groups: a small label over each set of links. */
-  links?: NavGroup[];
+  /** Which Cloud brand's descriptor, menu and header action to show. */
+  brand?: BrandId;
   /** Keep the header in view while scrolling (the Cloud Homes design pages). */
   pinned?: boolean;
 }
 
-const {
-  overlay = false,
-  pinned = false,
-  links: groups = [
-    {
-      label: "Work",
-      links: [
-        { label: "Cloud Homes", href: "/cloud-homes/" },
-        { label: "How Cloud Homes Work", href: "/cloud-homes/how-it-works/" },
-        { label: "Our Work", href: "/our-work/" },
-        { label: "Sectors", href: "/#sectors" },
-      ],
-    },
-    {
-      label: "Company",
-      links: [
-        { label: "Our Approach", href: "/our-approach/" },
-        { label: "Manufacturing & Quality", href: "/quality/" },
-        { label: "Why Cloud Modular", href: "/why-cloud-modular/" },
-        { label: "About", href: "/about/" },
-      ],
-    },
-    {
-      label: "Help",
-      links: [
-        { label: "FAQ", href: "/faq/" },
-        { label: "Contact", href: site.contactHref },
-      ],
-    },
-  ],
-} = Astro.props;
+const { overlay = false, pinned = false, brand: brandId = "modular" } = Astro.props;
+const brand: Brand = brands[brandId];
+const groups = brand.menu;
 // Stagger each link's entrance in reading order across the groups
 let order = 0;
 const menu = groups.map((group) => ({ ...group, links: group.links.map((link) => ({ ...link, i: order++ })) }));
@@ -67,12 +29,13 @@ const menu = groups.map((group) => ({ ...group, links: group.links.map((link) =>
 >
   <div class="shell">
     <div class="header-row flex items-center justify-between gap-6 pt-gutter">
-      <a href="/" class="site-logo pointer-events-auto shrink-0" aria-label="Cloud Modular home">
-        <Logo class="h-[20px] w-auto sm:h-[24px]" />
+      <a href={brand.home} class="site-logo pointer-events-auto relative shrink-0" aria-label={`${brand.name} home`}>
+        <Logo class="h-[20px] w-auto sm:h-[24px]" title={brand.name} />
+        {brand.descriptor && <span class="logo-descriptor" aria-hidden="true">{brand.descriptor}</span>}
       </a>
 
       <div class="flex items-center gap-4 sm:gap-6">
-        <a href={site.startHref} class="btn pointer-events-auto">Get started</a>
+        <a href={brand.cta.href} class="btn pointer-events-auto">{brand.cta.label}</a>
         <button type="button" data-menu-open class="menu-icon pointer-events-auto" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu">
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
@@ -107,9 +70,9 @@ const menu = groups.map((group) => ({ ...group, links: group.links.map((link) =>
     </nav>
 
     <div class="menu-cta mt-auto pb-10 pt-16">
-      <p class="font-display text-[1.5rem] font-normal leading-[1.2] tracking-[var(--tracking-heading)]">Let’s talk about your next project</p>
+      <p class="font-display text-[1.5rem] font-normal leading-[1.2] tracking-[var(--tracking-heading)]">{brand.menuPrompt}</p>
       <div class="mt-6 flex flex-wrap gap-1">
-        <a data-menu-link href={site.startHref} class="btn-solid h-12 px-5">Get started</a>
+        <a data-menu-link href={brand.cta.href} class="btn-solid h-12 px-5">{brand.cta.label}</a>
       </div>
     </div>
   </div>
@@ -164,11 +127,41 @@ const menu = groups.map((group) => ({ ...group, links: group.links.map((link) =>
     transform: translateX(-626px);
   }
 
+  /* Brand descriptor (Trade, Modular …) hung under the wordmark, so the wordmark keeps its place in the row.
+     It leaves with the letters. */
+  .logo-descriptor {
+    position: absolute;
+    left: 0.0625rem;
+    top: calc(100% + 0.3125rem);
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    font-weight: var(--weight-medium);
+    line-height: 1;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    transition:
+      transform 0.8s cubic-bezier(0.22, 0.7, 0.2, 1),
+      opacity 0.4s var(--ease-standard);
+  }
+
+  @media (min-width: 40rem) {
+    .logo-descriptor {
+      font-size: 0.625rem;
+    }
+  }
+
+  .site-header.is-compact .logo-descriptor {
+    transform: translateY(-1.5rem);
+    opacity: 0;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .site-header,
     .header-row,
     .site-logo :global(.logo-letters),
-    .site-logo :global(.logo-mark) {
+    .site-logo :global(.logo-mark),
+    .logo-descriptor {
       transition: none;
     }
   }

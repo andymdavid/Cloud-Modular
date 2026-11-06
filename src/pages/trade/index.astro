@@ -1,0 +1,103 @@
+---
+import RefreshLayout from "@/layouts/RefreshLayout.astro";
+import SplitSection from "@/components/refresh/SplitSection.astro";
+import SectionHead from "@/components/refresh/SectionHead.astro";
+import CardRow from "@/components/refresh/CardRow.astro";
+import MediaCard from "@/components/refresh/MediaCard.astro";
+import Accordion from "@/components/refresh/Accordion.astro";
+import ClientStrip from "@/components/refresh/ClientStrip.astro";
+import Testimonial from "@/components/refresh/Testimonial.astro";
+import FaqSection from "@/components/refresh/FaqSection.astro";
+import GetStarted from "@/components/refresh/GetStarted.astro";
+import { brands } from "@/data/brands";
+import { faqItems, site } from "@/data/site";
+import { tradeClients, tradeIntro, tradeRange, tradeSteps, tradeTestimonial, tradeTrackRecord } from "@/data/trade";
+
+const title = "Cloud Trade | Building Products for Builders and Developers | Perth";
+const description =
+  "Cloud Trade supplies builders, developers, architects and modular manufacturers with products made to Australian Standards, quoted against your schedule and tracked to your programme.";
+
+const account = brands.trade.cta;
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqItems
+    .filter((item) => item.topic === "trade")
+    .map((item) => ({ "@type": "Question", name: item.question, acceptedAnswer: { "@type": "Answer", text: item.answer } })),
+};
+const pageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": `${site.url}/trade/#webpage`,
+  url: `${site.url}/trade/`,
+  name: title,
+  description,
+  isPartOf: { "@id": `${site.url}/#website` },
+};
+---
+
+<RefreshLayout title={title} description={description} canonical="/trade/" structuredData={[faqSchema, pageSchema]} brand="trade" overlayHeader>
+  <!-- Hero: as the home page, the display line bottom-left and the account action bottom-right. Slate until the
+       Trade hero image is made. -->
+  <section data-hero data-theme="dark" data-surface="slate" class="trade-hero relative h-[100svh] min-h-[560px] overflow-hidden">
+    <div class="shell relative flex h-full flex-col justify-end pb-10 sm:pb-14">
+      <div class="grid-12 items-end gap-y-6">
+        <h1 class="col-span-12 text-hero lg:col-span-9">The products your projects need, sourced, quoted and delivered by one team.</h1>
+        <div class="col-span-12 flex flex-col items-start gap-5 sm:col-span-8 lg:col-span-3 lg:items-end lg:text-right">
+          <p class="max-w-[34ch] text-body text-fg/85">For builders, developers, architects and modular manufacturers. Made to Australian Standards.</p>
+          <a href={account.href} class="btn">{account.label}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Clients straight after the hero, drifting slowly -->
+  <ClientStrip label="Our clients include" logos={tradeClients} path="/trade/clients" />
+
+  <SplitSection id="about" label="About Cloud Trade">
+    <p class="text-about">{tradeIntro}</p>
+    <a href="#how-it-works" class="btn mt-10">How it works</a>
+  </SplitSection>
+
+  <!-- How it works. Interim: the stages as an accordion, until the platform sequence (steps left, the interface
+       changing right) replaces it. -->
+  <SplitSection id="how-it-works" label="How it works">
+    <p class="text-about">Every purchase sits inside your project, from the first schedule to delivery on site.</p>
+    <Accordion class="mt-10" name="trade-steps" openFirst items={tradeSteps.map((step, index) => ({ title: `${String(index + 1).padStart(2, "0")} ${step.title}`, body: step.body }))} />
+  </SplitSection>
+
+  <!-- Range: categories until the catalogue supplies them -->
+  <section id="range" data-theme="light" class="scroll-mt-header pb-section">
+    <div class="shell">
+      <SectionHead label="Range" title="What we supply" intro="Products for residential and mixed-use developments, made to Australian Standards. The full range, with specifications, will be in the catalogue." />
+    </div>
+
+    <CardRow label="Range" columns={4} class="mt-12 sm:mt-16">
+      {tradeRange.map((category, index) => (
+        <li data-reveal style={`--reveal-delay:${index * 80}ms`}>
+          <MediaCard alt="" meta={String(index + 1).padStart(2, "0")} title={category.title} description={category.description} size="compact" />
+        </li>
+      ))}
+    </CardRow>
+  </section>
+
+  <!-- Proof: the Hanssen quote and the track record -->
+  <SplitSection id="clients" label="Clients">
+    <Testimonial {...tradeTestimonial} logo={`/trade/clients/${tradeTestimonial.logo}.png`} />
+    <p class="mt-12 max-w-measure text-body text-fg-muted">{tradeTrackRecord}</p>
+  </SplitSection>
+
+  <FaqSection id="faq" topic="trade" more={false} />
+
+  <GetStarted
+    text="Open an account to start your first project, or talk to our team if you need something unusual sourced."
+    actions={[account, { label: "Talk to the team", href: site.contactHref }]}
+  />
+</RefreshLayout>
+
+<style>
+  .trade-hero {
+    background: rgb(var(--slate));
+  }
+</style>

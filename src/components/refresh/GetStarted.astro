@@ -3,12 +3,23 @@ import SplitSection from "@/components/refresh/SplitSection.astro";
 import { site } from "@/data/site";
 
 /** Closing call to action before the footer: a split section with the enquiry buttons. Used on every page. */
+interface Props {
+  text?: string;
+  actions?: { label: string; href: string }[];
+}
+
+const {
+  text = "Ready to transform your next development? Let’s discuss how Cloud Modular can deliver your project faster, more cost-effectively and sustainably.",
+  actions = [
+    { label: "Enquire now", href: site.contactHref },
+    { label: "Partner with us", href: "/partner-with-us/" },
+  ],
+} = Astro.props;
 ---
 
 <SplitSection id="get-started" label="Get started">
-  <p class="text-about">Ready to transform your next development? Let’s discuss how Cloud Modular can deliver your project faster, more cost-effectively and sustainably.</p>
+  <p class="text-about">{text}</p>
   <div class="mt-10 flex flex-wrap gap-1">
-    <a href={site.contactHref} class="btn">Enquire now</a>
-    <a href="/partner-with-us/" class="btn">Partner with us</a>
+    {actions.map((action) => <a href={action.href} class="btn">{action.label}</a>)}
   </div>
 </SplitSection>
