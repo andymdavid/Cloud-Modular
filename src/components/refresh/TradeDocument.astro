@@ -1,0 +1,286 @@
+---
+/**
+ * A Cloud Trade document, drawn in HTML from the tokens: the paperwork a builder holds at each stage of an order
+ * (their schedule, our quote, the approved order, a production update, the inspection report, the delivery docket).
+ * Shown as a sheet on a stone stage in the how it works journey, or fanned in a stack. The content is
+ * illustrative; prices are grey bars so the page never shows a figure we haven't set.
+ */
+export type DocId = "schedule" | "quote" | "order" | "production" | "inspection" | "delivery";
+
+interface Props {
+  doc: DocId;
+  /** On a stone stage with the sheet tilted slightly (journey), or bare (stacks). */
+  staged?: boolean;
+  class?: string;
+}
+
+const { doc, staged = true, class: className } = Astro.props;
+
+const heads: Record<DocId, { title: string; ref: string }> = {
+  schedule: { title: "Schedule", ref: "Stage 1 apartments" },
+  quote: { title: "Quote", ref: "Q-2417" },
+  order: { title: "Purchase order", ref: "PO-2417" },
+  production: { title: "Production update", ref: "PO-2417" },
+  inspection: { title: "Inspection report", ref: "PO-2417" },
+  delivery: { title: "Delivery docket", ref: "PO-2417" },
+};
+const lines = [
+  { item: "Basin mixer", qty: "48", lead: "10 wks" },
+  { item: "Wall-hung toilet suite", qty: "48", lead: "12 wks" },
+  { item: "Kitchen cabinetry", qty: "24", lead: "14 wks" },
+  { item: "Sliding door, double glazed", qty: "24", lead: "14 wks" },
+];
+const head = heads[doc];
+---
+
+<div class:list={["doc-stage", { "is-staged": staged }, className]} aria-hidden="true">
+  <div class="doc">
+    <div class="doc-head">
+      <span class="doc-brand">Cloud Trade</span>
+      <span class="doc-mono text-fg-subtle">{head.ref}</span>
+    </div>
+    <p class="doc-title">{head.title}</p>
+
+    {doc === "schedule" && (
+      <>
+        <div class="doc-row doc-mono text-fg-subtle"><span>Item</span><span>Location</span><span class="text-right">Qty</span></div>
+        {[...lines.slice(0, 2).map((l) => ({ ...l, where: "Bathrooms" })), { ...lines[2], where: "Kitchens" }, { ...lines[3], where: "Living" }].map((line) => (
+          <div class="doc-row"><span>{line.item}</span><span class="text-fg-muted">{line.where}</span><span class="text-right tabular-nums">{line.qty}</span></div>
+        ))}
+        <p class="doc-foot doc-mono text-fg-subtle">Needed on site in week 14</p>
+      </>
+    )}
+
+    {doc === "quote" && (
+      <>
+        <div class="doc-row doc-row--4 doc-mono text-fg-subtle"><span>Item</span><span class="text-right">Qty</span><span class="text-right">Lead</span><span class="text-right">Price</span></div>
+        {lines.map((line) => (
+          <div class="doc-row doc-row--4"><span>{line.item}</span><span class="text-right tabular-nums">{line.qty}</span><span class="text-right text-fg-muted">{line.lead}</span><span class="flex justify-end"><span class="bar w-12"></span></span></div>
+        ))}
+        <div class="doc-foot flex items-center justify-between"><span class="doc-mono text-fg-subtle">Total</span><span class="bar w-20"></span></div>
+      </>
+    )}
+
+    {doc === "order" && (
+      <>
+        {lines.map((line) => (
+          <div class="doc-row doc-row--2"><span>{line.item}</span><span class="text-right tabular-nums text-fg-muted">{line.qty}</span></div>
+        ))}
+        <div class="mt-5 grid grid-cols-2 gap-4">
+          {["Builder", "Client"].map((role) => (
+            <div class="doc-sign"><span class="doc-mono text-fg-subtle">{role}</span><span class="doc-tick">Approved</span></div>
+          ))}
+        </div>
+      </>
+    )}
+
+    {doc === "production" && (
+      <>
+        <p class="doc-mono text-fg-subtle">Foshan office</p>
+        {[
+          { stage: "Materials in", done: 1 },
+          { stage: "In production", done: 0.6 },
+          { stage: "Packing", done: 0 },
+        ].map((row) => (
+          <div class="doc-row doc-row--2 items-center"><span>{row.stage}</span><span class="doc-progress"><span style={`width:${row.done * 100}%`}></span></span></div>
+        ))}
+        <div class="doc-photos">{[0, 1, 2].map(() => <span></span>)}</div>
+      </>
+    )}
+
+    {doc === "inspection" && (
+      <>
+        {["Dimensions", "Finish", "Function", "Markings and certification", "Packaging"].map((check) => (
+          <div class="doc-row doc-row--2"><span>{check}</span><span class="doc-pass">Pass</span></div>
+        ))}
+        <div class="doc-foot flex items-center justify-between"><span class="doc-mono text-fg-subtle">24 photos attached</span><span class="doc-stamp">Passed</span></div>
+      </>
+    )}
+
+    {doc === "delivery" && (
+      <>
+        <div class="doc-row doc-row--2"><span class="text-fg-muted">Deliver to</span><span class="text-right">Stage 1 apartments</span></div>
+        <div class="doc-row doc-row--2"><span class="text-fg-muted">Delivery</span><span class="text-right">Week 13</span></div>
+        <div class="doc-row doc-row--2"><span class="text-fg-muted">Items</span><span class="text-right">4 lines, 144 units</span></div>
+        <div class="doc-sign mt-6"><span class="doc-mono text-fg-subtle">Received on site</span><span class="doc-line"></span></div>
+      </>
+    )}
+  </div>
+</div>
+
+<style>
+  .doc-stage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .doc-stage.is-staged {
+    padding: 2rem 1rem;
+    border-radius: var(--radius-media);
+    background: rgb(var(--stone));
+  }
+
+  @media (min-width: 40rem) {
+    .doc-stage.is-staged {
+      aspect-ratio: 4 / 3;
+      padding: 8% 12%;
+    }
+  }
+
+  .doc {
+    width: 100%;
+    max-width: 26rem;
+    padding: 1.5rem 1.5rem 1.75rem;
+    border-radius: var(--radius-xs);
+    background: #fff;
+    color: rgb(var(--ink));
+    font-size: 0.75rem;
+    line-height: 1.35;
+    text-align: left;
+    box-shadow:
+      0 1px 2px rgb(var(--ink) / 0.06),
+      0 22px 50px -28px rgb(var(--ink) / 0.35);
+  }
+
+  .is-staged .doc {
+    transform: rotate(-1.25deg);
+  }
+
+  .doc-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 0.75rem;
+    border-bottom: var(--rule) solid rgb(var(--ink) / 0.1);
+  }
+
+  .doc-brand,
+  .doc-mono {
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .doc-brand::before {
+    content: "";
+    display: inline-block;
+    width: 0.4375rem;
+    height: 0.4375rem;
+    margin-right: 0.4375rem;
+    border-radius: 50%;
+    background: rgb(var(--gold));
+  }
+
+  .doc-title {
+    margin: 1rem 0 0.75rem;
+    font-size: 1rem;
+  }
+
+  .doc-row {
+    display: grid;
+    grid-template-columns: 1.7fr 1fr 0.5fr;
+    gap: 0.75rem;
+    padding-block: 0.5rem;
+    border-bottom: var(--rule) solid rgb(var(--ink) / 0.07);
+  }
+
+  .doc-row--2 {
+    grid-template-columns: 1fr auto;
+  }
+
+  .doc-row--4 {
+    grid-template-columns: 1.8fr 0.5fr 0.7fr 0.8fr;
+  }
+
+  .doc-row > span {
+    white-space: nowrap;
+  }
+
+  .doc-row > span:first-child {
+    white-space: normal;
+  }
+
+  .doc-foot {
+    margin-top: 1rem;
+  }
+
+  .bar {
+    display: block;
+    height: 0.4375rem;
+    border-radius: var(--radius-xs);
+    background: rgb(var(--grey-200));
+  }
+
+  .doc-sign {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  .doc-tick {
+    color: rgb(var(--forest));
+  }
+
+  .doc-tick::before {
+    content: "✓ ";
+  }
+
+  .doc-line {
+    height: 1.5rem;
+    border-bottom: var(--rule) solid rgb(var(--ink) / 0.3);
+  }
+
+  .doc-progress {
+    position: relative;
+    width: 7rem;
+    height: 0.3125rem;
+    border-radius: 999px;
+    background: rgb(var(--grey-200));
+    overflow: hidden;
+  }
+
+  .doc-progress span {
+    position: absolute;
+    inset: 0 auto 0 0;
+    background: rgb(var(--gold));
+  }
+
+  .doc-photos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .doc-photos span {
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-xs);
+    background: rgb(var(--mist));
+  }
+
+  .doc-pass {
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: rgb(var(--forest));
+  }
+
+  .doc-stamp {
+    padding: 0.3125rem 0.625rem;
+    border: 1.5px solid rgb(var(--gold));
+    border-radius: var(--radius-xs);
+    color: rgb(var(--gold-deep));
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    font-weight: var(--weight-medium);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transform: rotate(-4deg);
+  }
+</style>

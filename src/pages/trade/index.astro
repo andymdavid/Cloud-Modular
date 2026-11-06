@@ -4,24 +4,22 @@ import SplitSection from "@/components/refresh/SplitSection.astro";
 import SectionHead from "@/components/refresh/SectionHead.astro";
 import CardRow from "@/components/refresh/CardRow.astro";
 import MediaCard from "@/components/refresh/MediaCard.astro";
-import PlatformSequence from "@/components/refresh/PlatformSequence.astro";
-import ImagePanel from "@/components/refresh/ImagePanel.astro";
-import AssistantFeed from "@/components/refresh/AssistantFeed.astro";
-import Accordion from "@/components/refresh/Accordion.astro";
-import SourcingRoute from "@/components/refresh/SourcingRoute.astro";
 import ClientStrip from "@/components/refresh/ClientStrip.astro";
+import PlatformScreen from "@/components/refresh/PlatformScreen.astro";
+import TradeDocument from "@/components/refresh/TradeDocument.astro";
 import Testimonial from "@/components/refresh/Testimonial.astro";
 import FaqSection from "@/components/refresh/FaqSection.astro";
 import GetStarted from "@/components/refresh/GetStarted.astro";
 import { brands } from "@/data/brands";
 import { faqItems, site } from "@/data/site";
-import { tradeAssistant, tradeClients, tradeIntro, tradeRange, tradeRoute, tradeSteps, tradeTestimonial, tradeTrackRecord } from "@/data/trade";
+import { tradeClients, tradeHero, tradeIntro, tradeRange, tradeTestimonial, tradeTrackRecord, tradeWays } from "@/data/trade";
 
-const title = "Cloud Trade | Building Products for Builders and Developers | Perth";
+const title = "Cloud Trade | Procurement for Builders and Developers | Australia";
 const description =
-  "Cloud Trade supplies builders, developers, architects and modular manufacturers with products made to Australian Standards, quoted against your schedule and tracked to your programme.";
+  "Cloud Trade supplies builders and developers across Australia through a trade network built on 30 years of business in China, with manufacture, inspection, freight and delivery managed for you.";
 
 const account = brands.trade.cta;
+const request = { label: "Send us your schedule", href: "/trade/start/" };
 
 const faqSchema = {
   "@context": "https://schema.org",
@@ -42,15 +40,15 @@ const pageSchema = {
 ---
 
 <RefreshLayout title={title} description={description} canonical="/trade/" structuredData={[faqSchema, pageSchema]} brand="trade" overlayHeader>
-  <!-- Hero: as the home page, the display line bottom-left and the account action bottom-right. Slate until the
-       Trade hero image is made. -->
+  <!-- Hero: as the home page, the display line bottom-left and the action bottom-right. Slate until the Trade
+       hero image is made. -->
   <section data-hero data-theme="dark" data-surface="slate" class="trade-hero relative h-[100svh] min-h-[560px] overflow-hidden">
     <div class="shell relative flex h-full flex-col justify-end pb-10 sm:pb-14">
       <div class="grid-12 items-end gap-y-6">
-        <h1 class="col-span-12 text-hero lg:col-span-9">The products your projects need, sourced, quoted and delivered by one team.</h1>
-        <div class="col-span-12 flex flex-col items-start gap-5 sm:col-span-8 lg:col-span-3 lg:items-end lg:text-right">
-          <p class="max-w-[34ch] text-body text-fg/85">For builders, developers, architects and modular manufacturers. Made to Australian Standards.</p>
-          <a href={account.href} class="btn">{account.label}</a>
+        <h1 class="col-span-12 text-hero lg:col-span-8">{tradeHero.title}</h1>
+        <div class="col-span-12 flex flex-col items-start gap-5 sm:col-span-8 lg:col-span-4 lg:items-end lg:text-right">
+          <p class="max-w-[34ch] text-body text-fg/85">{tradeHero.lead}</p>
+          <a href={request.href} class="btn">{request.label}</a>
         </div>
       </div>
     </div>
@@ -61,37 +59,70 @@ const pageSchema = {
 
   <SplitSection id="about" label="About Cloud Trade">
     <p class="text-about">{tradeIntro}</p>
-    <a href="#how-it-works" class="btn mt-10">How it works</a>
   </SplitSection>
 
-  <!-- How it works: the steps on the left, the portal window on the right changing with them -->
-  <PlatformSequence
-    id="how-it-works"
-    label="How it works"
-    title="From schedule to site"
-    intro="Every purchase sits inside your project, from the first schedule to delivery on site."
-    steps={tradeSteps}
-  />
-
-  <!-- The assistant: its activity on one order (left), what it handles (right) -->
-  <ImagePanel id="assistant" label="The assistant" title="Work done in the background">
-    <AssistantFeed slot="media" title="Assistant, bathroom fittings" items={tradeAssistant.feed} />
-    <p class="text-body text-fg-muted">{tradeAssistant.intro}</p>
-    <Accordion class="mt-8" items={tradeAssistant.jobs} />
-  </ImagePanel>
-
-  <!-- How we source: the route from the supplier panel to site -->
-  <section id="sourcing" data-theme="light" class="scroll-mt-header pb-section pt-section">
+  <!-- Two ways to work: the team manages it (slate, with the two offices), or the builder runs it in their account
+       (stone, with a portal screen) -->
+  <section id="ways" data-theme="light" class="scroll-mt-header pb-section">
     <div class="shell">
-      <SectionHead rule={false} label="How we source" title="From our supplier panel to your site" intro={tradeRoute.intro} />
-      <SourcingRoute class="mt-12 sm:mt-16" zones={tradeRoute.zones} stages={tradeRoute.stages} />
+      <SectionHead label="Ways to work" title="Two ways to work with us" intro={tradeWays.intro} />
+    </div>
+    <div class="wide-row mt-12 grid gap-gap-sm sm:mt-16 md:grid-cols-2">
+      <div data-theme="dark" data-surface="slate" class="way way--team" data-reveal>
+        <div>
+          <p class="label">{tradeWays.team.label}</p>
+          <h3 class="mt-6 text-h2">{tradeWays.team.title}</h3>
+        </div>
+        <p class="way-offices" aria-label="Our offices">
+          {tradeWays.team.offices.map((office) => <span class="way-office">{office}</span>)}
+        </p>
+        <div>
+          <p class="max-w-[30ch] text-about">{tradeWays.team.body}</p>
+          <a href={request.href} class="btn mt-8">Talk to our team</a>
+        </div>
+      </div>
+
+      <div class="way way--account" data-reveal style="--reveal-delay:80ms">
+        <div>
+          <p class="label">{tradeWays.account.label}</p>
+          <h3 class="mt-6 text-h2">{tradeWays.account.title}</h3>
+        </div>
+        <div class="way-screen is-active" data-screen-host>
+          <PlatformScreen screen="quote" />
+        </div>
+        <div>
+          <p class="max-w-[30ch] text-about">{tradeWays.account.body}</p>
+          <a href={account.href} class="btn mt-8">{account.label}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works: the paperwork fanned on a stone stage, leading to the full journey -->
+  <section id="how-it-works" data-theme="light" class="scroll-mt-header pb-section">
+    <div class="shell">
+      <div class="rule grid-12 items-center gap-y-12 pt-section">
+        <div class="col-span-12 flex flex-col items-start md:col-span-5" data-reveal>
+          <p class="label">How it works</p>
+          <h2 class="mt-6 text-h2">From schedule to site</h2>
+          <p class="mt-6 max-w-[34ch] text-about">You send us a schedule. You get a quote, an inspection report and a delivery on site, and we handle everything in between.</p>
+          <a href="/trade/how-it-works/" class="btn mt-10">How it works</a>
+        </div>
+        <div class="col-span-12 md:col-span-7" data-reveal>
+          <div class="doc-fan" aria-hidden="true">
+            <TradeDocument doc="quote" staged={false} class="fan-1" />
+            <TradeDocument doc="inspection" staged={false} class="fan-2" />
+            <TradeDocument doc="delivery" staged={false} class="fan-3" />
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- Range: categories until the catalogue supplies them -->
   <section id="range" data-theme="light" class="scroll-mt-header pb-section">
     <div class="shell">
-      <SectionHead label="Range" title="What we supply" intro="Products for residential and mixed-use developments, made to Australian Standards. The full range, with specifications, will be in the catalogue." />
+      <SectionHead label="Range" title="What we supply" intro="Products for residential and mixed-use developments, made to Australian Standards." />
     </div>
 
     <CardRow label="Range" columns={4} class="mt-12 sm:mt-16">
@@ -111,14 +142,95 @@ const pageSchema = {
 
   <FaqSection id="faq" topic="trade" more={false} />
 
-  <GetStarted
-    text="Open an account to start your first project, or talk to our team if you need something unusual sourced."
-    actions={[account, { label: "Talk to the team", href: site.contactHref }]}
-  />
+  <GetStarted text="Send us your schedule and we will come back with a quote, or open an account and start your first order." actions={[request, account]} />
 </RefreshLayout>
 
 <style>
   .trade-hero {
     background: rgb(var(--slate));
+  }
+
+  /* Two ways to work: two tall panels, label and title at the top, the body and action at the bottom */
+  .way {
+    display: flex;
+    min-height: clamp(34rem, 52vw, 46rem);
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2.5rem;
+    padding: clamp(1.75rem, 3.5vw, 3.5rem);
+    border-radius: var(--radius-media);
+  }
+
+  .way--team {
+    background: rgb(var(--slate));
+    color: rgb(var(--paper));
+  }
+
+  .way--account {
+    background: rgb(var(--stone));
+  }
+
+  /* The team's two offices, set large on the slate */
+  .way-offices {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 1.5rem;
+  }
+
+  .way-office {
+    font-family: var(--font-hero);
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 1;
+    color: rgb(var(--sage));
+  }
+
+  .way-office + .way-office::before {
+    content: "·";
+    margin-right: 1.5rem;
+    color: rgb(var(--gold));
+  }
+
+  /* Three documents fanned on a stone stage */
+  .doc-fan {
+    position: relative;
+    aspect-ratio: 5 / 4;
+    overflow: hidden;
+    border-radius: var(--radius-media);
+    background: rgb(var(--stone));
+  }
+
+  .doc-fan :global(.doc-stage) {
+    position: absolute;
+    width: min(62%, 24rem);
+    transition: transform 0.9s var(--ease-out);
+  }
+
+  .doc-fan :global(.fan-1) {
+    left: 6%;
+    top: 17%;
+    transform: rotate(-6deg);
+  }
+
+  .doc-fan :global(.fan-2) {
+    left: 21%;
+    top: 25%;
+    transform: rotate(1.5deg);
+  }
+
+  .doc-fan :global(.fan-3) {
+    left: 35%;
+    top: 35%;
+    transform: rotate(7deg);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .doc-fan:hover :global(.fan-1) {
+      transform: rotate(-9deg) translate(-4%, -3%);
+    }
+
+    .doc-fan:hover :global(.fan-3) {
+      transform: rotate(10deg) translate(4%, 3%);
+    }
   }
 </style>

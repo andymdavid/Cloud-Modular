@@ -121,7 +121,7 @@ export const brands = {
       {
         label: "Trade",
         links: [
-          { label: "How It Works", href: "/trade/#how-it-works" },
+          { label: "How It Works", href: "/trade/how-it-works/" },
           { label: "Range", href: "/trade/#range" },
           { label: "Clients", href: "/trade/#clients" },
         ],
@@ -140,7 +140,7 @@ export const brands = {
           label: "Cloud Trade",
           links: [
             { label: "Home", href: "/trade/" },
-            { label: "How It Works", href: "/trade/#how-it-works" },
+            { label: "How It Works", href: "/trade/how-it-works/" },
             { label: "Range", href: "/trade/#range" },
           ],
         },

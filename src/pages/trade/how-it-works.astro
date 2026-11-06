@@ -1,0 +1,49 @@
+---
+import RefreshLayout from "@/layouts/RefreshLayout.astro";
+import PageIntro from "@/components/refresh/PageIntro.astro";
+import Journey from "@/components/refresh/Journey.astro";
+import TradeDocument from "@/components/refresh/TradeDocument.astro";
+import FaqSection from "@/components/refresh/FaqSection.astro";
+import GetStarted from "@/components/refresh/GetStarted.astro";
+import { brands } from "@/data/brands";
+import { site } from "@/data/site";
+import { tradeJourney } from "@/data/trade";
+
+/**
+ * Cloud Trade, how it works: an order from schedule to site on the shared Journey line. Each step shows the
+ * document it produces, drawn in HTML, and shipping is the one giant word.
+ */
+const title = "How It Works | Cloud Trade";
+const description =
+  "How an order works with Cloud Trade, from your schedule and our quote to manufacture, inspection, shipping, customs and delivery to your site.";
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Cloud Trade", item: `${site.url}/trade/` },
+    { "@type": "ListItem", position: 2, name: "How it works", item: `${site.url}/trade/how-it-works/` },
+  ],
+};
+const account = brands.trade.cta;
+---
+
+<RefreshLayout title={title} description={description} canonical="/trade/how-it-works/" structuredData={breadcrumbSchema} brand="trade">
+  <PageIntro label="Cloud Trade" title="How it works" lead="One order, from your schedule to your site.">
+    <a href="/trade/start/" class="btn mt-10">Send us your schedule</a>
+  </PageIntro>
+
+  <section id="journey" data-theme="light" class="scroll-mt-header pb-section">
+    <div class="shell">
+      <Journey items={tradeJourney} runOn={false}>
+        {(item: (typeof tradeJourney)[number]) => "doc" in item && <TradeDocument doc={item.doc} />}
+      </Journey>
+    </div>
+  </section>
+
+  <FaqSection id="faq" topic="trade" more={false} />
+
+  <GetStarted
+    text="Send us your schedule and we will come back with a quote, or open an account and start your first order."
+    actions={[{ label: "Send us your schedule", href: "/trade/start/" }, account]}
+  />
+</RefreshLayout>

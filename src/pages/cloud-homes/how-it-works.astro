@@ -4,13 +4,13 @@ import PageIntro from "@/components/refresh/PageIntro.astro";
 import SectionHead from "@/components/refresh/SectionHead.astro";
 import FaqSection from "@/components/refresh/FaqSection.astro";
 import GetStarted from "@/components/refresh/GetStarted.astro";
-import { homeJourney, sections } from "@/data/cloud-homes";
+import Journey from "@/components/refresh/Journey.astro";
+import { homeJourney, sections, type JourneyItem } from "@/data/cloud-homes";
 import { site } from "@/data/site";
 
 /**
- * Cloud Homes, how it works (cf. samara.com/adus/how-it-works): the journey from a design to the keys as one line
- * that draws down the page as it scrolls. Steps alternate either side of it with their images, milestones sit on it
- * as pills, and the crane day is one giant word across it. Then a full-bleed welcome, the questions and Get started.
+ * Cloud Homes, how it works (cf. samara.com/adus/how-it-works): the journey from a design to the keys, drawn by the
+ * shared Journey component, with the crane day as its one giant word. Then a full-bleed welcome, the questions and Get started.
  * Every step restates the published process (homeJourney in src/data/cloud-homes.ts).
  */
 
@@ -28,11 +28,10 @@ const schemas = [
   },
 ];
 
-// Steps alternate sides of the line, counted over the steps alone so milestones don't break the rhythm
-let stepCount = 0;
 // The demo's swatches: the tool's cladding colours
 const colours = sections.find((section) => section.id === "colour")!;
-const items = homeJourney.map((item) => (item.kind === "step" ? { ...item, side: stepCount++ % 2 === 0 ? "left" : "right" } : item));
+// The Design yours step shows the 2 Bed live in 3D in place of its render
+const demoItem = homeJourney.find((item) => item.kind === "step" && item.demo) as Extract<JourneyItem, { kind: "step" }>;
 ---
 
 <RefreshLayout title={title} description={description} canonical="/cloud-homes/how-it-works/" structuredData={schemas}>
@@ -54,55 +53,27 @@ const items = homeJourney.map((item) => (item.kind === "step" ? { ...item, side:
     <div class="shell">
       <SectionHead label="The journey" title="From your design to your keys" align="center" />
 
-      <div class="journey mt-section" data-journey>
-        <span class="journey-line" aria-hidden="true"><span class="journey-fill"></span></span>
-        <ol class="journey-list">
-        {items.map((item) => (
-          item.kind === "milestone" ? (
-            <li class="j-milestone" data-mark>
-              <span class="j-pill label">{item.title}</span>
-            </li>
-          ) : item.kind === "moment" ? (
-            <li class="j-moment" data-mark>
-              <h2 class="j-word" data-reveal>{item.title}</h2>
-              <p class="j-moment-body text-lead" data-reveal>{item.body}</p>
-            </li>
-          ) : (
-            <li class:list={["j-step", `j-step--${item.side}`, { "j-step--text": !item.image }]} data-mark>
-              <span class="j-dot" aria-hidden="true"></span>
-              <div class="j-text" data-reveal>
-                {item.eyebrow && <p class="label label-muted mb-3">{item.eyebrow}</p>}
-                <h2 class="text-h3">{item.title}</h2>
-                <p class="mt-3 text-body text-fg-muted">{item.body}</p>
-              </div>
-              {item.demo && item.image ? (
-                <div class="j-media j-demo" data-demo data-reveal>
-                  <img src={item.image.src} alt={item.image.alt} width={item.image.width} height={item.image.height} loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover" data-demo-still />
-                  <div class="absolute inset-0" data-demo-host></div>
-                  <fieldset class="j-demo-picker" hidden data-demo-picker>
-                    <legend class="sr-only">Try a cladding colour</legend>
-                    <div class="flex gap-1.5">
-                      {colours.choices.map((choice, index) => (
-                        <label class="j-swatch" title={choice.name}>
-                          <input type="radio" name="demo-colour" value={choice.id} checked={index === 0} class="sr-only" />
-                          <span class="j-swatch-chip" style={`background:${choice.swatch}`} aria-hidden="true"></span>
-                          <span class="sr-only">{choice.name}</span>
-                        </label>
-                      ))}
-                    </div>
-                    <span class="j-demo-name text-small" data-demo-name aria-live="polite">{colours.choices[0].name}</span>
-                  </fieldset>
-                </div>
-              ) : item.image && (
-                <div class:list={["j-media", { "j-media--portrait": item.image.height > item.image.width }]} style={`aspect-ratio:${item.image.height > item.image.width ? "4 / 5" : `${item.image.width} / ${item.image.height}`}`} data-reveal>
-                  <img src={item.image.src} alt={item.image.alt} width={item.image.width} height={item.image.height} loading="lazy" decoding="async" class="h-full w-full object-cover" />
-                </div>
-              )}
-            </li>
-          )
-        ))}
-        </ol>
-      </div>
+      <Journey class="mt-section" items={homeJourney}>
+        {(item: JourneyItem) => "demo" in item && item.demo && (
+        <div class="j-demo" data-demo>
+          <img src={demoItem.image!.src} alt={demoItem.image!.alt} width={demoItem.image!.width} height={demoItem.image!.height} loading="lazy" class="absolute inset-0 h-full w-full object-cover" data-demo-still />
+          <div class="absolute inset-0" data-demo-host></div>
+          <fieldset class="j-demo-picker" hidden data-demo-picker>
+            <legend class="sr-only">Try a cladding colour</legend>
+            <div class="flex gap-1.5">
+              {colours.choices.map((choice, index) => (
+                <label class="j-swatch" title={choice.name}>
+                  <input type="radio" name="demo-colour" value={choice.id} checked={index === 0} class="sr-only" />
+                  <span class="j-swatch-chip" style={`background:${choice.swatch}`} aria-hidden="true"></span>
+                  <span class="sr-only">{choice.name}</span>
+                </label>
+              ))}
+            </div>
+            <span class="j-demo-name text-small" data-demo-name aria-live="polite">{colours.choices[0].name}</span>
+          </fieldset>
+        </div>
+        )}
+      </Journey>
     </div>
   </section>
 
@@ -127,72 +98,6 @@ const items = homeJourney.map((item) => (item.kind === "step" ? { ...item, side:
 </RefreshLayout>
 
 <style>
-  /* The line: a faint track with an ink fill drawn to --p (0 to 1) of its height */
-  .journey {
-    --line-x: 0.6875rem;
-    position: relative;
-    padding-bottom: 1rem;
-  }
-
-  .journey-list {
-    display: grid;
-    gap: 4.5rem;
-  }
-
-  /* The line runs on through the section's bottom padding into the Welcome image, the end of the journey */
-  .journey-line {
-    position: absolute;
-    top: 0;
-    bottom: calc(-1 * var(--section));
-    left: var(--line-x);
-    width: 1px;
-    background: rgb(var(--line) / var(--rule-alpha));
-  }
-
-  .journey-fill {
-    position: absolute;
-    inset: 0 0 auto;
-    height: calc(var(--p, 1) * 100%);
-    background: rgb(var(--ink));
-  }
-
-  /* Phones and tablets: the line runs down the left and everything sits to its right */
-  .j-step,
-  .j-milestone,
-  .j-moment {
-    position: relative;
-    padding-left: calc(var(--line-x) * 2 + 1.5rem);
-  }
-
-  .j-dot {
-    position: absolute;
-    top: 0.45rem;
-    left: calc(var(--line-x) - 0.3125rem);
-    width: 0.625rem;
-    height: 0.625rem;
-    border: 1px solid rgb(var(--line) / 0.35);
-    border-radius: 999px;
-    background: rgb(var(--surface));
-    transition: background-color var(--dur-base) var(--ease-standard), border-color var(--dur-base) var(--ease-standard);
-  }
-
-  .j-step.is-reached .j-dot {
-    border-color: rgb(var(--ink));
-    background: rgb(var(--ink));
-  }
-
-  .j-text {
-    max-width: 30rem;
-  }
-
-  /* Each image keeps its own shape, portraits at 4:5 */
-  .j-media {
-    margin-top: 1.5rem;
-    overflow: hidden;
-    border-radius: var(--radius-media);
-    background: rgb(var(--stone));
-  }
-
   /* The live 2 Bed: the tool's stage colour, the swatches in a pill along the bottom */
   .j-demo {
     position: relative;
@@ -253,141 +158,6 @@ const items = homeJourney.map((item) => (item.kind === "step" ? { ...item, side:
     min-width: 6.5rem;
   }
 
-  .j-pill {
-    display: inline-flex;
-    align-items: center;
-    height: 2rem;
-    padding-inline: 0.875rem;
-    border: 1px solid rgb(var(--line) / 0.2);
-    border-radius: 999px;
-    background: rgb(var(--surface));
-    color: rgb(var(--fg-muted));
-    transition: background-color var(--dur-base) var(--ease-standard), color var(--dur-base) var(--ease-standard), border-color var(--dur-base) var(--ease-standard);
-  }
-
-  .j-milestone.is-reached .j-pill {
-    border-color: rgb(var(--ink));
-    background: rgb(var(--ink));
-    color: rgb(var(--paper));
-  }
-
-  /* Phones: the pill straddles the line */
-  .j-milestone {
-    padding-left: 0;
-  }
-
-  /* The crane day: one giant word over the line */
-  .j-word {
-    font-family: var(--font-hero);
-    font-size: clamp(4rem, 17vw, 15rem);
-    font-weight: var(--weight-regular);
-    line-height: 0.9;
-    letter-spacing: var(--tracking-hero);
-    white-space: nowrap;
-  }
-
-  .j-moment-body {
-    margin-top: 1.5rem;
-    max-width: 34ch;
-  }
-
-  /* From md: the line runs down the middle, steps alternate either side of it */
-  @media (min-width: 48rem) {
-    .journey {
-      --line-x: 50%;
-    }
-
-    .journey-list {
-      gap: 6rem;
-    }
-
-    .j-step {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      column-gap: clamp(3rem, 8vw, 8rem);
-      align-items: start;
-      padding-left: 0;
-    }
-
-    .j-dot {
-      left: calc(50% - 0.3125rem);
-    }
-
-    /* Text beside the line, image across it: left steps read right-aligned towards the line */
-    .j-step--left .j-text {
-      grid-column: 1;
-      grid-row: 1;
-      justify-self: end;
-      text-align: right;
-    }
-
-    .j-step--left .j-media {
-      grid-column: 2;
-      grid-row: 1;
-    }
-
-    .j-step--right .j-text {
-      grid-column: 2;
-      grid-row: 1;
-    }
-
-    .j-step--right .j-media {
-      grid-column: 1;
-      grid-row: 1;
-    }
-
-    .j-text {
-      max-width: 22rem;
-    }
-
-    .j-media {
-      margin-top: 0;
-    }
-
-    /* Portraits stay narrower, against the line */
-    .j-media--portrait {
-      width: min(100%, 24rem);
-    }
-
-    .j-step--left .j-media--portrait {
-      justify-self: start;
-    }
-
-    .j-step--right .j-media--portrait {
-      justify-self: end;
-    }
-
-    .j-milestone {
-      display: flex;
-      justify-content: center;
-    }
-
-    .j-moment {
-      padding-left: 0;
-      text-align: center;
-    }
-
-    .j-word {
-      position: relative;
-      display: inline-block;
-      padding-inline: 0.5rem;
-      background: rgb(var(--surface));
-    }
-
-    .j-moment-body {
-      position: relative;
-      margin-inline: auto;
-      padding-block: 0.5rem;
-      background: rgb(var(--surface));
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .j-dot,
-    .j-pill {
-      transition: none;
-    }
-  }
 </style>
 
 <script>
@@ -435,30 +205,5 @@ const items = homeJourney.map((item) => (item.kind === "step" ? { ...item, side:
       { rootMargin: "400px 0px" },
     );
     observer.observe(frame);
-  });
-
-  // The line draws as the journey passes the reading line (70% down the screen); each step's dot and each milestone
-  // fill once they reach it. Reduced motion shows it all drawn.
-  document.querySelectorAll<HTMLElement>("[data-journey]").forEach((root) => {
-    const still = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const marks = [...root.querySelectorAll<HTMLElement>("[data-mark]")];
-    const track = root.querySelector<HTMLElement>(".journey-line")!;
-    let frame = 0;
-
-    const update = () => {
-      frame = 0;
-      const line = window.innerHeight * 0.7;
-      const rect = track.getBoundingClientRect();
-      const p = still.matches ? 1 : Math.min(1, Math.max(0, (line - rect.top) / rect.height));
-      root.style.setProperty("--p", p.toFixed(4));
-      for (const mark of marks) mark.classList.toggle("is-reached", still.matches || mark.getBoundingClientRect().top < line);
-    };
-    const request = () => {
-      if (!frame) frame = requestAnimationFrame(update);
-    };
-
-    window.addEventListener("scroll", request, { passive: true });
-    window.addEventListener("resize", request);
-    update();
   });
 </script>

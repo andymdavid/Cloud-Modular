@@ -441,13 +441,23 @@ export const faqItems = [
     topic: "trade",
     question: "Who supplies the products?",
     answer:
-      "Cloud Trade does. We source each product from our panel of manufacturers in China, India and South East Asia and manage it through manufacture, inspection and freight, so you deal with one supplier for the whole order.",
+      "Cloud Trade does. You buy from us, and we source through our trade network in China and manage manufacture, inspection, freight and customs, so you deal with one supplier for the whole order.",
   },
   {
     topic: "trade",
     question: "Are the products made to Australian Standards?",
     answer:
       "Yes. Our products are manufactured to Australian Standards and go through quality checks before they are shipped.",
+  },
+  {
+    topic: "trade",
+    question: "Do you deliver outside Western Australia?",
+    answer: "Yes. We deliver to sites anywhere in Australia.",
+  },
+  {
+    topic: "trade",
+    question: "Is there a minimum order?",
+    answer: "It depends on the product. Tell us what you need and we will tell you the minimum that applies.",
   },
   {
     topic: "trade",
