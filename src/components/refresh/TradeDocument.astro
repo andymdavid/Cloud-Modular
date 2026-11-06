@@ -24,11 +24,12 @@ const heads: Record<DocId, { title: string; ref: string }> = {
   inspection: { title: "Inspection report", ref: "PO-2417" },
   delivery: { title: "Delivery docket", ref: "PO-2417" },
 };
-const lines = [
-  { item: "Basin mixer", qty: "48", lead: "10 wks" },
-  { item: "Wall-hung toilet suite", qty: "48", lead: "12 wks" },
-  { item: "Kitchen cabinetry", qty: "24", lead: "14 wks" },
-  { item: "Sliding door, double glazed", qty: "24", lead: "14 wks" },
+// Each line's product shot (studio renders in public/trade/products/); until one exists the row shows a stone tile
+const lines: { item: string; qty: string; where: string; image?: string }[] = [
+  { item: "Basin mixer", qty: "48", where: "Bathrooms" },
+  { item: "Wall-hung toilet suite", qty: "48", where: "Bathrooms" },
+  { item: "Kitchen cabinetry", qty: "24", where: "Kitchens" },
+  { item: "Sliding door, double glazed", qty: "24", where: "Living" },
 ];
 const head = heads[doc];
 ---
@@ -43,9 +44,9 @@ const head = heads[doc];
 
     {doc === "schedule" && (
       <>
-        <div class="doc-row doc-mono text-fg-subtle"><span>Item</span><span>Location</span><span class="text-right">Qty</span></div>
-        {[...lines.slice(0, 2).map((l) => ({ ...l, where: "Bathrooms" })), { ...lines[2], where: "Kitchens" }, { ...lines[3], where: "Living" }].map((line) => (
-          <div class="doc-row"><span>{line.item}</span><span class="text-fg-muted">{line.where}</span><span class="text-right tabular-nums">{line.qty}</span></div>
+        <div class="doc-row doc-row--product doc-mono text-fg-subtle"><span></span><span>Item</span><span>Location</span><span class="text-right">Qty</span></div>
+        {lines.map((line) => (
+          <div class="doc-row doc-row--product items-center"><span class="doc-thumb">{line.image && <img src={line.image} alt="" loading="lazy" />}</span><span>{line.item}</span><span class="text-fg-muted">{line.where}</span><span class="text-right tabular-nums">{line.qty}</span></div>
         ))}
         <p class="doc-foot doc-mono text-fg-subtle">Needed on site in week 14</p>
       </>
@@ -53,10 +54,12 @@ const head = heads[doc];
 
     {doc === "quote" && (
       <>
-        <div class="doc-row doc-row--4 doc-mono text-fg-subtle"><span>Item</span><span class="text-right">Qty</span><span class="text-right">Lead</span><span class="text-right">Price</span></div>
+        <div class="doc-row doc-row--3 doc-mono text-fg-subtle"><span>Item</span><span class="text-right">Qty</span><span class="text-right">Price</span></div>
         {lines.map((line) => (
-          <div class="doc-row doc-row--4"><span>{line.item}</span><span class="text-right tabular-nums">{line.qty}</span><span class="text-right text-fg-muted">{line.lead}</span><span class="flex justify-end"><span class="bar w-12"></span></span></div>
+          <div class="doc-row doc-row--3"><span>{line.item}</span><span class="text-right tabular-nums">{line.qty}</span><span class="flex justify-end"><span class="bar w-12"></span></span></div>
         ))}
+        <div class="doc-row doc-row--2"><span class="text-fg-muted">Production</span><span class="text-right">45 to 50 days</span></div>
+        <div class="doc-row doc-row--2"><span class="text-fg-muted">Shipping, all items together</span><span class="text-right">About 3 weeks</span></div>
         <div class="doc-foot flex items-center justify-between"><span class="doc-mono text-fg-subtle">Total</span><span class="bar w-20"></span></div>
       </>
     )}
@@ -64,7 +67,7 @@ const head = heads[doc];
     {doc === "order" && (
       <>
         {lines.map((line) => (
-          <div class="doc-row doc-row--2"><span>{line.item}</span><span class="text-right tabular-nums text-fg-muted">{line.qty}</span></div>
+          <div class="doc-row doc-row--thumb items-center"><span class="doc-thumb">{line.image && <img src={line.image} alt="" loading="lazy" />}</span><span>{line.item}</span><span class="text-right tabular-nums text-fg-muted">{line.qty}</span></div>
         ))}
         <div class="mt-5 grid grid-cols-2 gap-4">
           {["Builder", "Client"].map((role) => (
@@ -192,15 +195,39 @@ const head = heads[doc];
     grid-template-columns: 1fr auto;
   }
 
-  .doc-row--4 {
-    grid-template-columns: 1.8fr 0.5fr 0.7fr 0.8fr;
+  .doc-row--3 {
+    grid-template-columns: 1.8fr 0.5fr 0.8fr;
+  }
+
+  /* Rows that lead with the product shot */
+  .doc-row--product {
+    grid-template-columns: 2.25rem 1.6fr 1fr 0.4fr;
+  }
+
+  .doc-row--thumb {
+    grid-template-columns: 2.25rem 1fr auto;
+  }
+
+  .doc-thumb {
+    display: block;
+    width: 2.25rem;
+    height: 2.25rem;
+    overflow: hidden;
+    border-radius: var(--radius-xs);
+    background: rgb(var(--mist));
+  }
+
+  .doc-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .doc-row > span {
     white-space: nowrap;
   }
 
-  .doc-row > span:first-child {
+  .doc-row > span:nth-child(-n + 2) {
     white-space: normal;
   }
 

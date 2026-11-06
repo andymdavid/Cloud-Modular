@@ -28,9 +28,18 @@ const account = brands.trade.cta;
 ---
 
 <RefreshLayout title={title} description={description} canonical="/trade/how-it-works/" structuredData={breadcrumbSchema} brand="trade">
-  <PageIntro label="Cloud Trade" title="How it works" lead="One order, from your schedule to your site.">
-    <a href="/trade/start/" class="btn mt-10">Send us your schedule</a>
-  </PageIntro>
+  <!-- On phones the intro and the image under it fill the first screen, as Cloud Homes -->
+  <div class="intro-screen mb-section">
+    <PageIntro label="Cloud Trade" title="How it works" lead="One order, from your schedule to your site.">
+      <a href="/trade/start/" class="btn mt-10">Send us your schedule</a>
+    </PageIntro>
+
+    <div class="wide-row intro-grow" data-reveal>
+      <div class="intro-frame aspect-[4/3] overflow-hidden rounded bg-stone sm:aspect-[21/9]">
+        <img src="/trade/projects/kitchen-island.webp" alt="A finished apartment kitchen with dark cabinetry, an island bench and stools" width="1900" height="900" fetchpriority="high" class="h-full w-full object-cover" style="object-position:center 55%" />
+      </div>
+    </div>
+  </div>
 
   <section id="journey" data-theme="light" class="scroll-mt-header pb-section">
     <div class="shell">

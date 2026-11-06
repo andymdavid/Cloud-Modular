@@ -461,6 +461,17 @@ export const faqItems = [
   },
   {
     topic: "trade",
+    question: "How long does an order take?",
+    answer:
+      "Production takes 45 to 50 days once the samples are approved and the order is placed, then about three weeks at sea. Everything in your order ships together.",
+  },
+  {
+    topic: "trade",
+    question: "Can I see samples?",
+    answer: "Yes. You approve samples before production starts.",
+  },
+  {
+    topic: "trade",
     question: "How do I get started?",
     answer:
       "Open an account, add your project and upload your schedule or bill of quantities. If your project needs something unusual, talk to our team first and we will help you set it up.",

@@ -5,6 +5,7 @@
 /** Client logos as gold masks, from the old Buildsource site; sized like the partner logos (see utils/logos). */
 export const tradeClients = [
   { slug: "hanssen", name: "Hanssen", width: 1000, height: 432, ink: 0.279 },
+  { slug: "griffin", name: "Griffin Group", width: 1000, height: 175, ink: 0.221 },
   { slug: "roy-hill", name: "Roy Hill", width: 487, height: 600, ink: 0.399 },
   { slug: "probuild", name: "Probuild", width: 1000, height: 115, ink: 0.732 },
   { slug: "cimc", name: "CIMC", width: 375, height: 100, ink: 0.583 },
@@ -14,26 +15,37 @@ export const tradeClients = [
 
 export const tradeHero = {
   title: "End-to-end procurement for the built environment.",
-  lead: "A trade network built on 30 years of business in China, supplying builders and developers across Australia.",
+  lead: "A trade network built on 30 years of business in China, saving builders and developers at least 45%.",
 };
 
 export const tradeIntro =
-  "Cloud Trade gives builders and developers access to products that are hard to find in Australia, or too expensive to buy here. Our trade network is built on more than 30 years of doing business in China, and we have a long record of supplying product that meets Australian Standards. You buy from us, so the risk of buying overseas is ours. We manage manufacture, inspection, freight and customs, and deliver to your site when your programme needs it.";
+  "Cloud Trade is a specialist procurement services provider to the building and construction industry, delivering cost savings, project management and risk mitigation across the products every project needs. Our trade network is built on more than 30 years of doing business in China, with OEM factories that also supply hotel brands. You buy from us, so the risk of buying overseas is ours, and our clients save at least 45% on buying locally.";
 
-/** Two ways to work: the team runs it, or the builder runs it in their account. The same network and checks behind both. */
+/** Two ways to work: the team runs it, or the builder runs it in their account. Tiles as the home page's FeatureTiles. */
 export const tradeWays = {
-  intro: "Every order goes through the same network, the same team and the same checks.",
-  team: {
-    label: "Our team",
-    title: "We manage it",
-    body: "Send us your schedule and our team manages the procurement through to delivery.",
-    offices: ["Perth", "Foshan"],
-  },
-  account: {
-    label: "Your account",
-    title: "You manage it",
-    body: "Run your own orders, with quotes, approvals and tracking in one place.",
-  },
+  intro: "Send us your schedule and our team manages the procurement through to delivery, or run your own orders in your account. Every order goes through the same network and the same checks.",
+  tiles: [
+    {
+      label: "Our team",
+      title: "We manage it",
+      href: "/trade/start/",
+      cta: "Talk to our team",
+      image: "/trade/projects/apartments.webp",
+      width: 1920,
+      height: 1280,
+      imagePosition: "center",
+    },
+    {
+      label: "Your account",
+      title: "You manage it",
+      href: "/trade/start/",
+      cta: "Open an account",
+      image: "/trade/projects/freestanding-bath.webp",
+      width: 1280,
+      height: 957,
+      imagePosition: "center",
+    },
+  ],
 };
 
 /** How it works (/trade/how-it-works/): the order from schedule to site, each step with the document it produces. */
@@ -47,20 +59,20 @@ export const tradeJourney = [
   {
     kind: "step",
     title: "Your quote",
-    body: "We price every line through our trade network and send you one quote, with the lead time and compliance for each product.",
+    body: "We price every line through our trade network and send you one quote, with the compliance for each product and one lead time for the whole order, because it all ships together.",
     doc: "quote",
   },
   {
     kind: "step",
     title: "Approval",
-    body: "You check the quote, and your client signs off where they need to. Nothing is ordered until you approve it.",
+    body: "You approve the samples and the quote, and your client signs off where they need to. Nothing is ordered until you do.",
     doc: "order",
   },
   { kind: "milestone", title: "Order placed" },
   {
     kind: "step",
     title: "Manufacture",
-    body: "Your order is made to your specification and to Australian Standards. Our Foshan office follows it through production.",
+    body: "Your order is made to your specification and to Australian Standards, which takes 45 to 50 days. Our Foshan office follows it through production.",
     doc: "production",
   },
   {
@@ -73,7 +85,7 @@ export const tradeJourney = [
   {
     kind: "moment",
     title: "Shipped",
-    body: "Packed, loaded and on its way to Australia, with the shipping documents in your account.",
+    body: "Packed, loaded and at sea for about three weeks, with the shipping documents in your account.",
   },
   {
     kind: "step",
@@ -85,7 +97,7 @@ export const tradeJourney = [
   {
     kind: "step",
     title: "After-sales",
-    body: "If anything isn't right, you deal with us. We look after warranty and support with our after-sales partners.",
+    body: "Every order comes with warranty and after-sales support, provided by us and our after-sales partners.",
   },
 ] as const;
 
@@ -154,37 +166,66 @@ export const tradeAssistant = {
 export const tradeRange = [
   {
     slug: "tapware-sanitary",
+    image: "/trade/projects/bathroom-basin.webp",
+    width: 1920,
+    height: 1280,
+    imagePosition: "30% center",
     title: "Tapware and sanitary ware",
     description: "Tapware and sanitary ware with 5-star ratings, including rimless toilets with whirlpool flushing.",
   },
   {
     slug: "windows-doors",
+    image: "/trade/projects/pivot-door.webp",
+    width: 1440,
+    height: 550,
+    imagePosition: "42% center",
     title: "Windows and doors",
     description: "Double-glazed windows and doors in thermally broken aluminium frames.",
   },
   {
     slug: "cabinetry",
+    image: "/trade/projects/kitchen-timber.webp",
+    width: 1920,
+    height: 1280,
+    imagePosition: "60% center",
     title: "Kitchen and bathroom cabinetry",
     description: "Kitchen and bathroom cabinetry for residential and mixed-use developments.",
   },
   {
     slug: "flooring",
+    image: "/trade/projects/stair-timber.webp",
+    width: 1920,
+    height: 1340,
+    imagePosition: "45% center",
     title: "Flooring",
     description: "Stone and timber flooring.",
   },
 ] as const;
 
-/** Proof: the Hanssen testimonial (cleared to use), quoted as published on the Buildsource site. */
+/** Proof: the Hanssen testimonial (cleared to use). The business is referred to as "the team", not by name. */
 export const tradeTestimonial = {
   quote:
-    "I have had the privilege of working with the team at BuildSource for a number of years. Together we have successfully completed a number of projects. A significant part of their success is in their ability to provide quality products, competitive prices and on-time delivery. I look forward to working with the team at BuildSource for many years to come.",
+    "I have had the privilege of working with the team for a number of years. Together we have successfully completed a number of projects. A significant part of their success is in their ability to provide quality products, competitive prices and on-time delivery. I look forward to working with them for many years to come.",
   name: "Gerry Hanssen",
   role: "Executive Director, Hanssen",
   logo: "hanssen",
 } as const;
 
-export const tradeTrackRecord =
-  "For more than 30 years our team has supplied builders, developers, architects and modular manufacturers. Since 2014 we have supplied air conditioning diffusion and accessories, including for 200 St Georges Terrace and the Central Park building in Perth.";
+/** Clients and what we supplied them. No project names or savings figures until they are confirmed. */
+export const tradeCaseStudies = {
+  intro: "Our factories are OEM manufacturers that also supply hotel brands. In Australia we supply builders, developers and modular manufacturers, including these.",
+  items: [
+    { logo: "hanssen", client: "Hanssen", supplied: "Plumbing", body: "Tapware and sanitary ware across a number of Hanssen projects." },
+    { logo: "griffin", client: "Griffin Group", supplied: "Plumbing", body: "Tapware and sanitary ware for Griffin Group projects." },
+    { logo: "probuild", client: "Probuild", supplied: "Plumbing", body: "Tapware and sanitary ware for Probuild projects." },
+    {
+      image: { src: "/trade/projects/ductwork.webp", width: 1600, height: 1200 },
+      client: "200 St Georges Terrace and Central Park",
+      supplied: "Air conditioning",
+      body: "Air conditioning diffusion and accessories, which we have supplied since 2014.",
+    },
+  ],
+} as const;
 
 /** The request form on /trade/start/ (EnquiryForm variant "trade"). */
 export const tradeEnquiry = {
