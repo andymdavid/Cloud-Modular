@@ -24,12 +24,12 @@ const heads: Record<DocId, { title: string; ref: string }> = {
   inspection: { title: "Inspection report", ref: "PO-2417" },
   delivery: { title: "Delivery docket", ref: "PO-2417" },
 };
-// Each line's product shot (studio renders in public/trade/products/); until one exists the row shows a stone tile
+// Each line's product shot, cropped from the studio renders in public/trade/products/; without one the row shows a stone tile
 const lines: { item: string; qty: string; where: string; image?: string }[] = [
-  { item: "Basin mixer", qty: "48", where: "Bathrooms", image: "/trade/products/basin-mixer.webp" },
-  { item: "Wall-hung toilet suite", qty: "48", where: "Bathrooms" },
-  { item: "Kitchen cabinetry", qty: "24", where: "Kitchens" },
-  { item: "Sliding door, double glazed", qty: "24", where: "Living" },
+  { item: "Basin mixer", qty: "48", where: "Bathrooms", image: "/trade/products/basin-mixer-thumb.webp" },
+  { item: "Wall-hung toilet suite", qty: "48", where: "Bathrooms", image: "/trade/products/toilet-suite-thumb.webp" },
+  { item: "Kitchen cabinetry", qty: "24", where: "Kitchens", image: "/trade/products/kitchen-cabinetry-thumb.webp" },
+  { item: "Sliding door, double glazed", qty: "24", where: "Living", image: "/trade/products/sliding-door-thumb.webp" },
 ];
 const head = heads[doc];
 ---
