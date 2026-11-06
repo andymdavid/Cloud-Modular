@@ -435,7 +435,7 @@ export const faqItems = [
     topic: "trade",
     question: "Who can open a Cloud Trade account?",
     answer:
-      "Builders, developers, architects and modular manufacturers can open an account. You set it up yourself and can add your first project straight away.",
+      "Builders, developers and architects can open an account. You set it up yourself and can add your first project straight away.",
   },
   {
     topic: "trade",

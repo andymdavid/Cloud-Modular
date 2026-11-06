@@ -217,7 +217,7 @@ export const tradeTestimonial = {
 
 /** Clients and what we supplied them. No project names or savings figures until they are confirmed. */
 export const tradeCaseStudies = {
-  intro: "We supply builders, developers and modular manufacturers across Australia, including these.",
+  intro: "We supply builders and developers across Australia, including these.",
   items: [
     { logo: "hanssen", client: "Hanssen", supplied: "Plumbing and benchtops", body: "Tapware and sanitary ware across many projects, and granite benchtops for The Esplanade." },
     { logo: "griffin", client: "Griffin Group", supplied: "Plumbing", body: "Tapware and sanitary ware for Money Street, Loftus Street and two Edgecombe Street projects." },
