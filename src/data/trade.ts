@@ -33,9 +33,9 @@ export const tradeWays = {
       title: "Full oversight and control",
       href: "/trade/start/",
       cta: "Open an account",
-      image: "/trade/generated/kitchen-island.webp",
-      width: 1600,
-      height: 1600,
+      image: "/trade/projects/apartments.webp",
+      width: 1920,
+      height: 1280,
       imagePosition: "center",
     },
     {
