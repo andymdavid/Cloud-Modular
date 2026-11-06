@@ -5,15 +5,16 @@
  * edge to edge; the right half is a slate panel with the label and section title at the top and the slot pinned
  * to the bottom. Matches olympic.no at 1440: about 69vw tall, 120px top and bottom, content 125px in from the
  * centre line, a standard section title 28px under the label. On phones the image stacks above the panel.
+ * A `media` slot replaces the image with something drawn (the Cloud Trade assistant feed).
  */
 interface Props {
   id?: string;
   label: string;
   title: string;
-  image: string;
-  alt: string;
-  width: number;
-  height: number;
+  image?: string;
+  alt?: string;
+  width?: number;
+  height?: number;
   imagePosition?: string;
 }
 
@@ -21,9 +22,13 @@ const { id, label, title, image, alt, width, height, imagePosition = "center" } 
 ---
 
 <section id={id} data-theme="dark" data-surface="slate" class="image-panel scroll-mt-header grid md:grid-cols-2">
-  <div class="relative aspect-[4/5] overflow-hidden bg-stone md:aspect-auto">
-    <img src={image} alt={alt} width={width} height={height} loading="lazy" class="absolute inset-0 h-full w-full object-cover" style={`object-position:${imagePosition}`} />
-  </div>
+  {Astro.slots.has("media") ? (
+    <div class="relative overflow-hidden"><slot name="media" /></div>
+  ) : (
+    <div class="relative aspect-[4/5] overflow-hidden bg-stone md:aspect-auto">
+      <img src={image} alt={alt} width={width} height={height} loading="lazy" class="absolute inset-0 h-full w-full object-cover" style={`object-position:${imagePosition}`} />
+    </div>
+  )}
 
   <div class="image-panel-body flex flex-col justify-between gap-16 py-section">
     <div data-reveal>

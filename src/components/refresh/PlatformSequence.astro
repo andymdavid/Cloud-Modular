@@ -1,0 +1,157 @@
+---
+import SectionHead from "@/components/refresh/SectionHead.astro";
+import PlatformScreen, { type ScreenId } from "@/components/refresh/PlatformScreen.astro";
+
+/**
+ * The platform, stage by stage: the steps run down the left while the portal window on the right stays in view
+ * and changes to the screen for the step at the middle of the page. Steps ahead and behind are dimmed. Below lg
+ * each step shows its own screen under its text instead.
+ */
+interface Props {
+  id?: string;
+  label: string;
+  title: string;
+  intro?: string;
+  steps: readonly { title: string; body: string; screen: ScreenId }[];
+}
+
+const { id, label, title, intro, steps } = Astro.props;
+---
+
+<section id={id} data-theme="light" class="scroll-mt-header pb-section" data-sequence>
+  <div class="shell">
+    <SectionHead label={label} title={title} intro={intro} />
+
+    <div class="grid-12 mt-12 sm:mt-16">
+      <ol class="col-span-12 lg:col-span-5">
+        {steps.map((step, index) => (
+          <li class:list={["seq-step", { "is-active": index === 0 }]} data-step={index} data-screen-host>
+            <div class="seq-copy">
+              <p class="label">{String(index + 1).padStart(2, "0")}</p>
+              <h3 class="mt-4 text-about font-medium">{step.title}</h3>
+              <p class="mt-3 max-w-[40ch] text-body text-fg-muted">{step.body}</p>
+            </div>
+            <div class="seq-inline mt-8 lg:hidden">
+              <PlatformScreen screen={step.screen} />
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <!-- The window that stays in view (lg up) -->
+      <div class="seq-stage-col hidden lg:col-span-7 lg:block" aria-hidden="true">
+        <div class="seq-stage">
+          <p class="seq-count label label-muted"><span data-seq-count>01</span> / {String(steps.length).padStart(2, "0")}</p>
+          {steps.map((step, index) => (
+            <div class:list={["seq-slot", { "is-active": index === 0 }]} data-slot={index} data-screen-host>
+              <PlatformScreen screen={step.screen} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .seq-step + .seq-step {
+    margin-top: 4rem;
+  }
+
+  /* lg up: each step takes most of a screen so the window has time to show it; the others dim */
+  @media (min-width: 64rem) {
+    .seq-step {
+      display: flex;
+      min-height: 72svh;
+      align-items: center;
+    }
+
+    .seq-step + .seq-step {
+      margin-top: 0;
+    }
+
+    .seq-copy {
+      opacity: 0.28;
+      transition: opacity var(--dur-slow) var(--ease-standard);
+    }
+
+    .seq-step.is-active .seq-copy {
+      opacity: 1;
+    }
+  }
+
+  .seq-stage-col {
+    position: relative;
+  }
+
+  .seq-stage {
+    position: sticky;
+    top: calc(50svh - min(19rem, 36svh));
+    height: min(38rem, 72svh);
+    border-radius: var(--radius-media);
+    background: rgb(var(--surface-alt));
+  }
+
+  .seq-count {
+    position: absolute;
+    left: 1.75rem;
+    top: 1.5rem;
+  }
+
+  /* Screens stack in the stage; the active one rises into place */
+  .seq-slot {
+    position: absolute;
+    inset: 4rem 3rem 3rem;
+    display: flex;
+    align-items: center;
+    opacity: 0;
+    transform: translateY(1rem);
+    transition:
+      opacity var(--dur-slow) var(--ease-out),
+      transform var(--dur-slow) var(--ease-out);
+    pointer-events: none;
+  }
+
+  .seq-slot.is-active {
+    opacity: 1;
+    transform: none;
+  }
+
+  .seq-slot :global(.screen) {
+    max-height: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .seq-copy,
+    .seq-slot {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  // The step crossing the middle of the viewport is the active one: it lights up, and the stage shows its screen
+  document.querySelectorAll<HTMLElement>("[data-sequence]").forEach((section) => {
+    const steps = [...section.querySelectorAll<HTMLElement>("[data-step]")];
+    const slots = [...section.querySelectorAll<HTMLElement>("[data-slot]")];
+    const count = section.querySelector<HTMLElement>("[data-seq-count]");
+
+    const activate = (index: number) => {
+      // A step's own screen (phones) keeps its rows once shown; the stage's screens replay each time
+      steps.forEach((step, i) => step.classList.toggle("is-active", i === index));
+      steps[index]?.classList.add("has-shown");
+      slots.forEach((slot, i) => slot.classList.toggle("is-active", i === index));
+      if (count) count.textContent = String(index + 1).padStart(2, "0");
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) activate(steps.indexOf(entry.target as HTMLElement));
+        }
+      },
+      { rootMargin: "-50% 0px -50% 0px" },
+    );
+    steps.forEach((step) => observer.observe(step));
+  });
+</script>

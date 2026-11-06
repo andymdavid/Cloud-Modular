@@ -1,0 +1,98 @@
+---
+/**
+ * The Cloud Trade assistant's activity on one order, as a thread: each entry is a short card with the kind of
+ * work (quote, check, flag, update), what it did and when. Entries arrive one after another as the panel scrolls
+ * into view. Fills the dark half of an ImagePanel. The order and times are illustrative.
+ */
+interface Props {
+  title: string;
+  items: readonly { kind: string; text: string; time: string; flag?: boolean }[];
+}
+
+const { title, items } = Astro.props;
+---
+
+<div class="feed flex h-full flex-col justify-center px-gutter py-section md:px-[clamp(2rem,6vw,7rem)]">
+  <p class="label label-muted" data-reveal>{title}</p>
+  <ol class="feed-list mt-8">
+    {items.map((item, index) => (
+      <li class:list={["feed-item", { "is-flag": item.flag }]} data-reveal style={`--reveal-delay:${150 + index * 160}ms`}>
+        <span class="feed-dot" aria-hidden="true"></span>
+        <div class="feed-card">
+          <div class="flex items-center justify-between gap-4">
+            <span class="feed-kind">{item.kind}</span>
+            <span class="label label-muted">{item.time}</span>
+          </div>
+          <p class="mt-2 text-small">{item.text}</p>
+        </div>
+      </li>
+    ))}
+  </ol>
+</div>
+
+<style>
+  .feed {
+    background: rgb(var(--ink));
+  }
+
+  .feed-list {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding-left: 1.75rem;
+  }
+
+  /* The thread the entries hang on */
+  .feed-list::before {
+    content: "";
+    position: absolute;
+    left: 0.25rem;
+    top: 1.25rem;
+    bottom: 1.25rem;
+    border-left: var(--rule) solid rgb(var(--paper) / 0.12);
+  }
+
+  .feed-item {
+    position: relative;
+  }
+
+  .feed-dot {
+    position: absolute;
+    left: -1.75rem;
+    top: 1.125rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: rgb(var(--sage));
+  }
+
+  .feed-item.is-flag .feed-dot {
+    background: rgb(var(--gold));
+    box-shadow: 0 0 0 4px rgb(var(--gold) / 0.2);
+  }
+
+  .feed-card {
+    padding: 0.875rem 1rem;
+    border: var(--rule) solid rgb(var(--paper) / 0.1);
+    border-radius: var(--radius-media);
+    background: rgb(var(--ink-raised));
+  }
+
+  .feed-item.is-flag .feed-card {
+    border-color: rgb(var(--gold) / 0.5);
+  }
+
+  .feed-kind {
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: rgb(var(--sage));
+  }
+
+  .feed-item.is-flag .feed-kind {
+    color: rgb(var(--gold));
+  }
+</style>

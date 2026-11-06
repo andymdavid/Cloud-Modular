@@ -4,6 +4,9 @@ import SplitSection from "@/components/refresh/SplitSection.astro";
 import SectionHead from "@/components/refresh/SectionHead.astro";
 import CardRow from "@/components/refresh/CardRow.astro";
 import MediaCard from "@/components/refresh/MediaCard.astro";
+import PlatformSequence from "@/components/refresh/PlatformSequence.astro";
+import ImagePanel from "@/components/refresh/ImagePanel.astro";
+import AssistantFeed from "@/components/refresh/AssistantFeed.astro";
 import Accordion from "@/components/refresh/Accordion.astro";
 import ClientStrip from "@/components/refresh/ClientStrip.astro";
 import Testimonial from "@/components/refresh/Testimonial.astro";
@@ -11,7 +14,7 @@ import FaqSection from "@/components/refresh/FaqSection.astro";
 import GetStarted from "@/components/refresh/GetStarted.astro";
 import { brands } from "@/data/brands";
 import { faqItems, site } from "@/data/site";
-import { tradeClients, tradeIntro, tradeRange, tradeSteps, tradeTestimonial, tradeTrackRecord } from "@/data/trade";
+import { tradeAssistant, tradeClients, tradeIntro, tradeRange, tradeSteps, tradeTestimonial, tradeTrackRecord } from "@/data/trade";
 
 const title = "Cloud Trade | Building Products for Builders and Developers | Perth";
 const description =
@@ -60,17 +63,26 @@ const pageSchema = {
     <a href="#how-it-works" class="btn mt-10">How it works</a>
   </SplitSection>
 
-  <!-- How it works. Interim: the stages as an accordion, until the platform sequence (steps left, the interface
-       changing right) replaces it. -->
-  <SplitSection id="how-it-works" label="How it works">
-    <p class="text-about">Every purchase sits inside your project, from the first schedule to delivery on site.</p>
-    <Accordion class="mt-10" name="trade-steps" openFirst items={tradeSteps.map((step, index) => ({ title: `${String(index + 1).padStart(2, "0")} ${step.title}`, body: step.body }))} />
-  </SplitSection>
+  <!-- How it works: the steps on the left, the portal window on the right changing with them -->
+  <PlatformSequence
+    id="how-it-works"
+    label="How it works"
+    title="From schedule to site"
+    intro="Every purchase sits inside your project, from the first schedule to delivery on site."
+    steps={tradeSteps}
+  />
 
-  <!-- Range: categories until the catalogue supplies them -->
-  <section id="range" data-theme="light" class="scroll-mt-header pb-section">
+  <!-- The assistant: its activity on one order (left), what it handles (right) -->
+  <ImagePanel id="assistant" label="The assistant" title="Work done in the background">
+    <AssistantFeed slot="media" title="Assistant, bathroom fittings" items={tradeAssistant.feed} />
+    <p class="text-body text-fg-muted">{tradeAssistant.intro}</p>
+    <Accordion class="mt-8" items={tradeAssistant.jobs} />
+  </ImagePanel>
+
+  <!-- Range: categories until the catalogue supplies them. No divider straight after the dark panel. -->
+  <section id="range" data-theme="light" class="scroll-mt-header pb-section pt-section">
     <div class="shell">
-      <SectionHead label="Range" title="What we supply" intro="Products for residential and mixed-use developments, made to Australian Standards. The full range, with specifications, will be in the catalogue." />
+      <SectionHead rule={false} label="Range" title="What we supply" intro="Products for residential and mixed-use developments, made to Australian Standards. The full range, with specifications, will be in the catalogue." />
     </div>
 
     <CardRow label="Range" columns={4} class="mt-12 sm:mt-16">

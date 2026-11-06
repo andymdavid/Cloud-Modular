@@ -1,0 +1,356 @@
+---
+/**
+ * One screen of the Cloud Trade portal, drawn in HTML from the design tokens for the platform sequence: a window
+ * with the stage tabs, and the screen for one stage (schedule, quote comparison, approvals, purchase order,
+ * tracking). The content is illustrative. Prices are grey bars, so the page never shows a figure we haven't set.
+ * Its rows settle in one after another when the nearest `[data-screen-host]` becomes `.is-active`, and stay once it
+ * is also `.has-shown`.
+ */
+export type ScreenId = "select" | "quote" | "approve" | "order" | "track";
+
+interface Props {
+  screen: ScreenId;
+  class?: string;
+}
+
+const { screen, class: className } = Astro.props;
+const tabs: { id: ScreenId; label: string }[] = [
+  { id: "select", label: "Schedule" },
+  { id: "quote", label: "Quotes" },
+  { id: "approve", label: "Approvals" },
+  { id: "order", label: "Orders" },
+  { id: "track", label: "Tracking" },
+];
+
+const schedule = [
+  { item: "Basin mixer", where: "Bathrooms", qty: "48" },
+  { item: "Wall-hung toilet suite", where: "Bathrooms", qty: "48" },
+  { item: "Kitchen cabinetry", where: "Kitchens", qty: "24" },
+  { item: "Sliding door, double glazed", where: "Living", qty: "24" },
+  { item: "Engineered timber flooring", where: "Living, bedrooms", qty: "1,860 m²" },
+];
+const approvals = [
+  { role: "Builder", state: "Approved", done: true },
+  { role: "Client", state: "Approved", done: true },
+  { role: "Quantity surveyor", state: "Reviewing", done: false },
+];
+const milestones = [
+  { stage: "Manufacture", note: "Complete", state: "done" },
+  { stage: "Inspection", note: "Report attached", state: "done" },
+  { stage: "Shipped", note: "At sea", state: "current" },
+  { stage: "Customs", note: "", state: "next" },
+  { stage: "Delivered to site", note: "", state: "next" },
+];
+---
+
+<div class:list={["screen", className]} data-screen={screen} aria-hidden="true">
+  <!-- Window bar: the brand, the project and the stage tabs -->
+  <div class="screen-bar flex items-center justify-between gap-4">
+    <p class="screen-mono truncate"><span class="text-fg">Cloud Trade</span> <span class="text-fg-subtle">/ Stage 1 apartments</span></p>
+    <ul class="hidden shrink-0 gap-4 sm:flex">
+      {tabs.map((tab) => <li class:list={["screen-mono screen-tab", { "is-current": tab.id === screen }]}>{tab.label}</li>)}
+    </ul>
+  </div>
+
+  <div class="screen-body">
+    {screen === "select" && (
+      <>
+        <div class="screen-head"><p class="screen-title">Schedule</p><span class="chip chip-done">BOQ uploaded</span></div>
+        <div class="screen-row screen-mono text-fg-subtle" style="--i:0"><span>Item</span><span>Location</span><span class="text-right">Qty</span></div>
+        {schedule.map((row, i) => (
+          <div class="screen-row" style={`--i:${i + 1}`}><span>{row.item}</span><span class="text-fg-muted">{row.where}</span><span class="text-right tabular-nums">{row.qty}</span></div>
+        ))}
+        <div class="screen-foot" style="--i:7"><span class="screen-mono text-fg-subtle">5 items, levels 1 to 4</span><span class="screen-btn">Request quote</span></div>
+      </>
+    )}
+
+    {screen === "quote" && (
+      <>
+        <div class="screen-head"><p class="screen-title">Basin mixer, 48 units</p><span class="chip chip-done">Quote ready</span></div>
+        <div class="grid grid-cols-2 gap-3">
+          {[
+            { name: "Option A", spec: "Chrome, single lever", lead: "Meets programme", ok: true },
+            { name: "Option B", spec: "Brushed nickel, single lever", lead: "2 weeks late", ok: false },
+          ].map((option, i) => (
+            <div class:list={["option", { "is-picked": option.ok }]} style={`--i:${i + 1}`}>
+              <p class="screen-mono text-fg-subtle">{option.name}</p>
+              <p class="mt-2">{option.spec}</p>
+              <span class="bar mt-4 w-1/2"></span>
+              <ul class="mt-4 space-y-1.5 text-fg-muted">
+                <li class="flex items-center gap-2"><span class:list={["dot", option.ok ? "dot-done" : "dot-warn"]}></span>{option.lead}</li>
+                <li class="flex items-center gap-2"><span class="dot dot-done"></span>WaterMark certified</li>
+              </ul>
+            </div>
+          ))}
+        </div>
+        <div class="screen-foot" style="--i:4"><span class="flex items-center gap-3"><span class="screen-mono text-fg-subtle">Quote total</span><span class="bar w-16"></span></span><span class="screen-btn">Send for approval</span></div>
+      </>
+    )}
+
+    {screen === "approve" && (
+      <>
+        <div class="screen-head"><p class="screen-title">Selections and spend</p><span class="chip">2 of 3 approved</span></div>
+        {approvals.map((row, i) => (
+          <div class="screen-row screen-row--two" style={`--i:${i + 1}`}>
+            <span>{row.role}</span>
+            <span class="flex items-center justify-end gap-2 text-fg-muted"><span class:list={["dot", row.done ? "dot-done" : "dot-current"]}></span>{row.state}</span>
+          </div>
+        ))}
+        <div class="note" style="--i:5"><p class="screen-mono text-fg-subtle">Client</p><p class="mt-1.5">Option A for the basin mixers, please.</p></div>
+        <div class="screen-foot" style="--i:6"><span class="screen-mono text-fg-subtle">Waiting on one approval</span><span class="screen-btn">Approve</span></div>
+      </>
+    )}
+
+    {screen === "order" && (
+      <>
+        <div class="screen-head"><p class="screen-title">Purchase order</p><span class="chip chip-done">Placed</span></div>
+        {schedule.slice(0, 4).map((row, i) => (
+          <div class="screen-row screen-row--two" style={`--i:${i + 1}`}><span>{row.item}</span><span class="text-right tabular-nums text-fg-muted">{row.qty}</span></div>
+        ))}
+        <div class="screen-row screen-row--two" style="--i:5"><span class="text-fg-muted">Charged to</span><span class="text-right">Trade account</span></div>
+        <div class="screen-row screen-row--two" style="--i:6"><span class="text-fg-muted">Invoice</span><span class="text-right">On your trade terms</span></div>
+        <div class="screen-foot" style="--i:7"><span class="screen-mono text-fg-subtle">Delivery to site, stage 1</span><span class="screen-btn">View order</span></div>
+      </>
+    )}
+
+    {screen === "track" && (
+      <>
+        <div class="screen-head"><p class="screen-title">Bathroom fittings</p><span class="chip chip-done">On programme</span></div>
+        <ol class="timeline">
+          {milestones.map((m, i) => (
+            <li class:list={["milestone", `is-${m.state}`]} style={`--i:${i + 1}`}>
+              <span class="milestone-dot"></span>
+              <span class:list={{ "text-fg-subtle": m.state === "next" }}>{m.stage}</span>
+              {m.note && <span class="ml-auto text-fg-muted">{m.note}</span>}
+            </li>
+          ))}
+        </ol>
+        <div class="screen-foot" style="--i:7"><span class="screen-mono text-fg-subtle">Needed on site in week 14</span><span class="screen-mono">Arrives week 13</span></div>
+      </>
+    )}
+  </div>
+</div>
+
+<style>
+  .screen {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow: hidden;
+    border: var(--rule) solid rgb(var(--line) / var(--rule-alpha));
+    border-radius: var(--radius-media);
+    background: rgb(var(--paper));
+    color: rgb(var(--ink));
+    font-size: 0.8125rem;
+    line-height: 1.35;
+    box-shadow: 0 24px 60px -32px rgb(var(--ink) / 0.25);
+  }
+
+  .screen-bar {
+    padding: 0.875rem 1.25rem;
+    border-bottom: var(--rule) solid rgb(var(--line) / var(--rule-alpha));
+  }
+
+  .screen-mono {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .screen-tab {
+    color: rgb(var(--fg-subtle));
+  }
+
+  .screen-tab.is-current {
+    color: rgb(var(--ink));
+    box-shadow: 0 1px 0 rgb(var(--gold));
+  }
+
+  .screen-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 1.25rem;
+  }
+
+  @media (min-width: 40rem) {
+    .screen-body {
+      padding: 1.5rem 1.75rem 1.75rem;
+    }
+  }
+
+  .screen-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.125rem;
+  }
+
+  .screen-title {
+    font-size: 1.0625rem;
+  }
+
+  .screen-row {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 0.6fr;
+    gap: 1rem;
+    padding-block: 0.6875rem;
+    border-bottom: var(--rule) solid rgb(var(--line) / 0.07);
+  }
+
+  .screen-row--two {
+    grid-template-columns: 1fr auto;
+  }
+
+  .screen-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: auto;
+    padding-top: 1.25rem;
+  }
+
+  .screen-btn {
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius-media);
+    background: rgb(var(--graphite));
+    color: rgb(var(--paper));
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.5rem;
+    border: var(--rule) solid rgb(var(--gold) / 0.6);
+    border-radius: var(--radius-xs);
+    color: rgb(var(--gold-deep));
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .chip-done {
+    border-color: transparent;
+    background: rgb(var(--sage));
+    color: rgb(var(--ink));
+  }
+
+  /* A price or total we don't show */
+  .bar {
+    display: block;
+    height: 0.5rem;
+    border-radius: var(--radius-xs);
+    background: rgb(var(--grey-200));
+  }
+
+  .dot {
+    width: 0.4375rem;
+    height: 0.4375rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+  }
+
+  .dot-done {
+    background: rgb(var(--forest));
+  }
+
+  .dot-current {
+    background: rgb(var(--gold));
+  }
+
+  .dot-warn {
+    border: 1.5px solid rgb(var(--gold));
+  }
+
+  .option {
+    padding: 1rem;
+    border: var(--rule) solid rgb(var(--line) / var(--rule-alpha));
+    border-radius: var(--radius-media);
+  }
+
+  .option.is-picked {
+    border-color: rgb(var(--gold));
+  }
+
+  .note {
+    margin-top: 1.25rem;
+    padding: 0.875rem 1rem;
+    border-radius: var(--radius-media);
+    background: rgb(var(--mist));
+  }
+
+  .timeline {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.125rem;
+    padding-left: 1.5rem;
+  }
+
+  /* The route the milestones hang on: solid to the current stage, dotted after it */
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 0.21875rem;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    border-left: 1px dashed rgb(var(--line) / 0.2);
+  }
+
+  .milestone {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .milestone-dot {
+    position: absolute;
+    left: -1.5rem;
+    width: 0.4375rem;
+    height: 0.4375rem;
+    border-radius: 50%;
+    border: 1.5px solid rgb(var(--line) / 0.25);
+    background: rgb(var(--paper));
+  }
+
+  .milestone.is-done .milestone-dot {
+    border-color: rgb(var(--forest));
+    background: rgb(var(--forest));
+  }
+
+  .milestone.is-current .milestone-dot {
+    border-color: rgb(var(--gold));
+    background: rgb(var(--gold));
+    box-shadow: 0 0 0 4px rgb(var(--gold) / 0.2);
+  }
+
+  /* Rows settle in, one after another, each time the screen becomes the active one */
+  @media (prefers-reduced-motion: no-preference) {
+    [style*="--i"] {
+      transition:
+        opacity 0.5s var(--ease-out),
+        transform 0.5s var(--ease-out);
+      transition-delay: calc(var(--i) * 70ms + 150ms);
+    }
+
+    :global([data-screen-host]:not(.is-active):not(.has-shown)) .screen [style*="--i"] {
+      opacity: 0;
+      transform: translateY(0.375rem);
+      transition-delay: 0ms;
+    }
+  }
+</style>

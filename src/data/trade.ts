@@ -19,25 +19,62 @@ export const tradeIntro =
 export const tradeSteps = [
   {
     title: "Select",
+    screen: "select",
     body: "Add your project and upload your schedule or bill of quantities, or build your selections from our range. Quantities sit against each unit, floor or room.",
   },
   {
     title: "Quote",
+    screen: "quote",
     body: "We price your schedule from our supplier panel and send you one Cloud Trade quote. Where there is a choice of product, you can compare the options side by side.",
   },
   {
     title: "Approve",
+    screen: "approve",
     body: "You, your client and anyone else who needs to sign off can review the selections and approve the spend before anything is ordered.",
   },
   {
     title: "Order",
+    screen: "order",
     body: "Approved items are ordered on your trade account and invoiced on your trade terms.",
   },
   {
     title: "Track",
+    screen: "track",
     body: "Each order moves through manufacture, inspection, shipping and customs to delivery on site, and you can see every milestone against your build programme.",
   },
 ] as const;
+
+/** The assistant: what it handles, and its activity on one order (the same order the platform screens show). */
+export const tradeAssistant = {
+  intro:
+    "Our assistant does the repetitive work behind every order, and our sourcing, quality and freight team in Perth and Foshan handles the rest.",
+  jobs: [
+    {
+      title: "Prices from our supplier panel",
+      body: "It asks our supplier panel for prices and chases anyone who hasn't replied, so your quote comes back quickly. You never deal with the suppliers yourself.",
+    },
+    {
+      title: "Products to suit your specification",
+      body: "It matches your specification to suitable products, and suggests alternatives when something is unavailable or slow.",
+    },
+    {
+      title: "Problems before they cost money",
+      body: "It flags a lead time that misses your programme, a missing certificate, a price well off the others, or a gap or quantity error in your schedule.",
+    },
+    {
+      title: "Updates without asking",
+      body: "It tells you when each order reaches a new milestone, so nobody has to chase where things are.",
+    },
+  ],
+  feed: [
+    { kind: "Quote", text: "Asked the supplier panel to price 48 basin mixers.", time: "Mon 9:02" },
+    { kind: "Chase", text: "Followed up the one supplier who hadn't replied.", time: "Tue 8:30" },
+    { kind: "Flag", text: "Option B arrives two weeks after your programme needs it.", time: "Tue 14:15", flag: true },
+    { kind: "Quote", text: "Quote ready, with two options to compare.", time: "Tue 16:40" },
+    { kind: "Update", text: "Inspection passed. The report is attached to your order.", time: "Week 9" },
+    { kind: "Update", text: "Shipped. Arrives in week 13, a week before it's needed on site.", time: "Week 10" },
+  ],
+} as const;
 
 /** Range: categories until the product catalogue supplies them. Cards have no images yet. */
 export const tradeRange = [
