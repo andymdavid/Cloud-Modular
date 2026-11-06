@@ -219,9 +219,9 @@ export const tradeTestimonial = {
 export const tradeCaseStudies = {
   intro: "We supply builders, developers and modular manufacturers across Australia, including these.",
   items: [
-    { logo: "hanssen", client: "Hanssen", supplied: "Plumbing", body: "Tapware and sanitary ware across a number of Hanssen projects." },
-    { logo: "griffin", client: "Griffin Group", supplied: "Plumbing", body: "Tapware and sanitary ware for Griffin Group projects." },
-    { logo: "probuild", client: "Probuild", supplied: "Plumbing", body: "Tapware and sanitary ware for Probuild projects." },
+    { logo: "hanssen", client: "Hanssen", supplied: "Plumbing and benchtops", body: "Tapware and sanitary ware across a number of Hanssen projects, and granite benchtops for The Esplanade in Perth." },
+    { logo: "griffin", client: "Griffin Group", supplied: "Plumbing", body: "Tapware and sanitary ware for Money Street, Loftus Street and two projects on Edgecombe Street in Como." },
+    { logo: "probuild", client: "Probuild", supplied: "Plumbing", body: "Tapware and sanitary ware for Saffton Apartments on Adelaide Terrace." },
     { logo: "hancock", client: "Roy Hill, now Hancock Iron Ore", supplied: "Bathrooms", body: "Bathroom cabinets, taps and toilets for 980 bathrooms, supplied through AMS." },
     { logo: "seashells", client: "Seashells Jurien Bay", supplied: "Furnishing", body: "Furniture and fittings for the resort's tourism villas, which are sold fully furnished." },
     {
