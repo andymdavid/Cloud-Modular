@@ -76,6 +76,49 @@ export const tradeAssistant = {
   ],
 } as const;
 
+/** How we source: the route from the supplier panel to site, by where each stage happens. Suppliers are never named. */
+export const tradeRoute = {
+  intro:
+    "Every order follows the same route, managed by our team from the first price to after-sales. Our office in Foshan follows each order through production and inspection.",
+  zones: [
+    { id: "asia", label: "China, India and South East Asia" },
+    { id: "sea", label: "At sea" },
+    { id: "australia", label: "Australia" },
+  ],
+  stages: [
+    {
+      zone: "asia",
+      title: "Sourcing",
+      body: "We find the right manufacturer for each product from our panel in China, India and South East Asia, and agree the specification, price and lead time.",
+    },
+    {
+      zone: "asia",
+      title: "Manufacture",
+      body: "Your order is made to your schedule and to Australian Standards, and our Foshan office follows it through production.",
+    },
+    {
+      zone: "asia",
+      title: "Inspection",
+      body: "Products are checked and tested against the specification by our quality control partners before they leave the factory.",
+    },
+    {
+      zone: "sea",
+      title: "Freight and customs",
+      body: "We book sea freight to Australia and clear customs, timed to your build programme.",
+    },
+    {
+      zone: "australia",
+      title: "Delivery",
+      body: "Products are delivered to your site when your programme needs them.",
+    },
+    {
+      zone: "australia",
+      title: "After-sales",
+      body: "If something isn't right after delivery, we deal with it, with support from our after-sales partners.",
+    },
+  ],
+} as const;
+
 /** Range: categories until the product catalogue supplies them. Cards have no images yet. */
 export const tradeRange = [
   {

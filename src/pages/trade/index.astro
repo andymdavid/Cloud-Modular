@@ -8,13 +8,14 @@ import PlatformSequence from "@/components/refresh/PlatformSequence.astro";
 import ImagePanel from "@/components/refresh/ImagePanel.astro";
 import AssistantFeed from "@/components/refresh/AssistantFeed.astro";
 import Accordion from "@/components/refresh/Accordion.astro";
+import SourcingRoute from "@/components/refresh/SourcingRoute.astro";
 import ClientStrip from "@/components/refresh/ClientStrip.astro";
 import Testimonial from "@/components/refresh/Testimonial.astro";
 import FaqSection from "@/components/refresh/FaqSection.astro";
 import GetStarted from "@/components/refresh/GetStarted.astro";
 import { brands } from "@/data/brands";
 import { faqItems, site } from "@/data/site";
-import { tradeAssistant, tradeClients, tradeIntro, tradeRange, tradeSteps, tradeTestimonial, tradeTrackRecord } from "@/data/trade";
+import { tradeAssistant, tradeClients, tradeIntro, tradeRange, tradeRoute, tradeSteps, tradeTestimonial, tradeTrackRecord } from "@/data/trade";
 
 const title = "Cloud Trade | Building Products for Builders and Developers | Perth";
 const description =
@@ -79,10 +80,18 @@ const pageSchema = {
     <Accordion class="mt-8" items={tradeAssistant.jobs} />
   </ImagePanel>
 
-  <!-- Range: categories until the catalogue supplies them. No divider straight after the dark panel. -->
-  <section id="range" data-theme="light" class="scroll-mt-header pb-section pt-section">
+  <!-- How we source: the route from the supplier panel to site -->
+  <section id="sourcing" data-theme="light" class="scroll-mt-header pb-section pt-section">
     <div class="shell">
-      <SectionHead rule={false} label="Range" title="What we supply" intro="Products for residential and mixed-use developments, made to Australian Standards. The full range, with specifications, will be in the catalogue." />
+      <SectionHead rule={false} label="How we source" title="From our supplier panel to your site" intro={tradeRoute.intro} />
+      <SourcingRoute class="mt-12 sm:mt-16" zones={tradeRoute.zones} stages={tradeRoute.stages} />
+    </div>
+  </section>
+
+  <!-- Range: categories until the catalogue supplies them -->
+  <section id="range" data-theme="light" class="scroll-mt-header pb-section">
+    <div class="shell">
+      <SectionHead label="Range" title="What we supply" intro="Products for residential and mixed-use developments, made to Australian Standards. The full range, with specifications, will be in the catalogue." />
     </div>
 
     <CardRow label="Range" columns={4} class="mt-12 sm:mt-16">
