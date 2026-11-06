@@ -19,7 +19,7 @@ interface Env {
   TURNSTILE_SECRET_KEY?: string;
 }
 
-type Kind = "project" | "general" | "design";
+type Kind = "project" | "general" | "design" | "trade";
 
 const FIELDS: Record<Kind, [name: string, label: string][]> = {
   project: [
@@ -42,6 +42,17 @@ const FIELDS: Record<Kind, [name: string, label: string][]> = {
     ["organisation", "Organisation"],
     ["message", "Message"],
   ],
+  trade: [
+    ["name", "Name"],
+    ["email", "Email"],
+    ["phone", "Phone"],
+    ["organisation", "Organisation"],
+    ["role", "Role"],
+    ["location", "Project location"],
+    ["category", "What they need"],
+    ["timing", "Needed on site"],
+    ["message", "About the project"],
+  ],
   design: [
     ["first_name", "First name"],
     ["last_name", "Last name"],
@@ -63,9 +74,10 @@ const REQUIRED: Record<Kind, string[]> = {
   project: ["name", "email", "role", "location"],
   general: ["name", "email", "message"],
   design: ["first_name", "email", "address", "suburb", "state", "home"],
+  trade: ["name", "email", "role", "location"],
 };
 
-const ANCHOR: Record<Kind, string> = { project: "enquiry", general: "message", design: "design" };
+const ANCHOR: Record<Kind, string> = { project: "enquiry", general: "message", design: "design", trade: "trade-enquiry" };
 
 const escapeHtml = (text: string) =>
   text.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
@@ -80,7 +92,7 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
   }
 
   const form = data.get("form");
-  const kind: Kind = form === "general" || form === "design" ? form : "project";
+  const kind: Kind = form === "general" || form === "design" || form === "trade" ? form : "project";
   const rawPage = String(data.get("page") ?? "/");
   const page = rawPage.startsWith("/") && !rawPage.startsWith("//") ? rawPage : "/";
   const reply = (ok: boolean, status: number, error?: string) =>
@@ -115,7 +127,7 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
   if (!env.RESEND_API_KEY || !env.ENQUIRY_FROM) return reply(false, 503, "Email sending is not set up");
 
   const rows = FIELDS[kind].filter(([name]) => values[name]);
-  const subject = `${{ project: "Project enquiry", general: "Website message", design: `Cloud Home design (${values.home})` }[kind]} from ${values.name}${values.organisation ? `, ${values.organisation}` : ""}`;
+  const subject = `${{ project: "Project enquiry", general: "Website message", design: `Cloud Home design (${values.home})`, trade: "Cloud Trade request" }[kind]} from ${values.name}${values.organisation ? `, ${values.organisation}` : ""}`;
   const text = `${rows.map(([name, label]) => `${label}: ${values[name]}`).join("\n")}\n\nSent from ${new URL(page, request.url).toString()}`;
   const html = `<table cellpadding="6" style="font-family:Arial,sans-serif;font-size:14px;border-collapse:collapse">${rows
     .map(

@@ -3,25 +3,27 @@
  * Enquiry form, sent by the Cloudflare Pages function at /api/enquiry (functions/api/enquiry.ts), which emails it
  * to the site address. "project" is the full project enquiry on /partner-with-us/; "general" is the short message
  * form on /contact/; "design" sends a Cloud Homes design from /cloud-homes/design/, whose hidden home, selections
- * and link fields the page fills in. With JavaScript the form sends in place and swaps to a thank-you note; without it the function
+ * and link fields the page fills in; "trade" is the Cloud Trade request on /trade/start/. With JavaScript the form sends in place and swaps to a thank-you note; without it the function
  * redirects back to `#<id>-sent` or `#<id>-failed`, which CSS reveals. A hidden "website" field catches bots, and
  * Cloudflare Turnstile is added when PUBLIC_TURNSTILE_SITE_KEY is set at build time.
  */
 import { engagementModels, enquiryOptions, sectors, site } from "@/data/site";
 import { australianStates } from "@/data/cloud-homes";
+import { tradeEnquiry } from "@/data/trade";
 
 interface Props {
-  variant?: "project" | "general" | "design";
+  variant?: "project" | "general" | "design" | "trade";
   /** Anchor for the form; the thank-you and error notes use `<id>-sent` and `<id>-failed`. */
   id?: string;
   class?: string;
 }
 
-const { variant = "project", id = { project: "enquiry", general: "message", design: "design" }[variant], class: className } = Astro.props;
+const { variant = "project", id = { project: "enquiry", general: "message", design: "design", trade: "trade-enquiry" }[variant], class: className } = Astro.props;
 const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 const project = variant === "project";
 const design = variant === "design";
-const noun = { project: "enquiry", general: "message", design: "design" }[variant];
+const trade = variant === "trade";
+const noun = { project: "enquiry", general: "message", design: "design", trade: "request" }[variant];
 const routes = [...engagementModels.items.map((item) => item.title), "Not sure yet"];
 ---
 
@@ -63,14 +65,14 @@ const routes = [...engagementModels.items.map((item) => item.title), "Not sure y
         <span class="field-label">Email</span>
         <input type="email" name="email" autocomplete="email" required maxlength="200" />
       </label>
-      {(project || design) && (
+      {(project || design || trade) && (
         <label class="field">
           <span class="field-label">Phone <span class="field-optional">Optional</span></span>
           <input type="tel" name="phone" autocomplete="tel" maxlength="50" />
         </label>
       )}
       {!design && (
-        <label class:list={["field", { "sm:col-span-2": !project }]}>
+        <label class:list={["field", { "sm:col-span-2": !(project || trade) }]}>
           <span class="field-label">Organisation <span class="field-optional">Optional</span></span>
           <input type="text" name="organisation" autocomplete="organization" maxlength="200" />
         </label>
@@ -105,6 +107,36 @@ const routes = [...engagementModels.items.map((item) => item.title), "Not sure y
             <select name="timing">
               <option value="" selected>Choose one</option>
               {enquiryOptions.timing.map((timing) => <option>{timing}</option>)}
+            </select>
+          </label>
+        </Fragment>
+      )}
+
+      {trade && (
+        <Fragment>
+          <label class="field">
+            <span class="field-label">You are a</span>
+            <select name="role" required>
+              <option value="" selected disabled>Choose one</option>
+              {tradeEnquiry.roles.map((role) => <option>{role}</option>)}
+            </select>
+          </label>
+          <label class="field">
+            <span class="field-label">Project location</span>
+            <input type="text" name="location" required maxlength="200" placeholder="Suburb or town" />
+          </label>
+          <label class="field">
+            <span class="field-label">What you need</span>
+            <select name="category">
+              <option value="" selected>Choose one</option>
+              {tradeEnquiry.categories.map((category) => <option>{category}</option>)}
+            </select>
+          </label>
+          <label class="field">
+            <span class="field-label">Needed on site</span>
+            <select name="timing">
+              <option value="" selected>Choose one</option>
+              {tradeEnquiry.timing.map((timing) => <option>{timing}</option>)}
             </select>
           </label>
         </Fragment>
@@ -160,23 +192,23 @@ const routes = [...engagementModels.items.map((item) => item.title), "Not sure y
       )}
 
       <label class="field sm:col-span-2">
-        <span class="field-label">{project ? "About the project" : design ? "Anything else" : "Message"}{!(variant === "general") && <span class="field-optional">Optional</span>}</span>
-        <textarea name="message" rows={design ? 3 : 5} maxlength="5000" required={variant === "general"} placeholder={project ? "What you want to build, and anything else we should know" : design ? "For example how you plan to use the home" : undefined}></textarea>
+        <span class="field-label">{project || trade ? "About the project" : design ? "Anything else" : "Message"}{!(variant === "general") && <span class="field-optional">Optional</span>}</span>
+        <textarea name="message" rows={design ? 3 : 5} maxlength="5000" required={variant === "general"} placeholder={project ? "What you want to build, and anything else we should know" : trade ? "The products and quantities you need, and anything else we should know" : design ? "For example how you plan to use the home" : undefined}></textarea>
       </label>
     </div>
 
     {siteKey && <div class="cf-turnstile mt-8" data-sitekey={siteKey} data-size="flexible" data-theme="light"></div>}
 
     <div class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
-      <button type="submit" class="btn" data-enquiry-submit>{{ project: "Send enquiry", general: "Send message", design: "Send your design" }[variant]}</button>
+      <button type="submit" class="btn" data-enquiry-submit>{{ project: "Send enquiry", general: "Send message", design: "Send your design", trade: "Send request" }[variant]}</button>
       <p class="text-caption text-fg-subtle">We use your details to reply to you and as set out in our <a href="/privacy-policy/" class="underline underline-offset-2 hover:text-fg">Privacy Policy</a>.</p>
     </div>
     <p class="enquiry-error mt-6 text-body" role="alert" data-enquiry-error hidden></p>
   </form>
 
   <div id={`${id}-sent`} class="enquiry-note scroll-mt-header" tabindex="-1" data-enquiry-sent>
-    <p class="label">{{ project: "Enquiry sent", general: "Message sent", design: "Design sent" }[variant]}</p>
-    <p class="mt-4 text-about">Thank you. {{ project: "We will come back to you to arrange a first conversation.", general: "We will get back to you.", design: "We will check your site and come back to you to talk through your design." }[variant]}</p>
+    <p class="label">{{ project: "Enquiry sent", general: "Message sent", design: "Design sent", trade: "Request sent" }[variant]}</p>
+    <p class="mt-4 text-about">Thank you. {{ project: "We will come back to you to arrange a first conversation.", general: "We will get back to you.", design: "We will check your site and come back to you to talk through your design.", trade: "Our team will be in touch to talk through what your project needs." }[variant]}</p>
   </div>
   <div id={`${id}-failed`} class="enquiry-note scroll-mt-header" tabindex="-1">
     <p class="label">Not sent</p>

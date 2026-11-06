@@ -154,3 +154,10 @@ export const tradeTestimonial = {
 
 export const tradeTrackRecord =
   "For more than 30 years our team has sourced products for builders, developers, architects and modular manufacturers in Western Australia and the Northern Territory. Since 2014 we have supplied air conditioning diffusion and accessories, including for 200 St Georges Terrace and the Central Park building in Perth.";
+
+/** The request form on /trade/start/ (EnquiryForm variant "trade"). */
+export const tradeEnquiry = {
+  roles: ["Builder", "Developer", "Architect", "Modular manufacturer", "Other"],
+  categories: [...tradeRange.map((category) => category.title), "Something else", "Not sure yet"],
+  timing: ["Within 3 months", "3 to 6 months", "More than 6 months", "Not sure yet"],
+};
