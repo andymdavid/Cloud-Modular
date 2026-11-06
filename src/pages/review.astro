@@ -38,8 +38,8 @@ const answers = [
         <div class="col-span-12 max-w-measure space-y-4 text-body text-fg-muted md:col-span-6 md:col-start-7 md:self-end">
           <p>Before launch, the team needs to check the facts a customer might rely on. They're grouped by website page, in {cardCount} short cards.</p>
           <p>Open a page to see its cards with the page itself alongside. For each card, say whether it's all correct, what needs to change, or what you'd like to ask. Everyone sees the same answers.</p>
-          <label class="field max-w-[20rem] pt-2">
-            <span class="field-label">Your name</span>
+          <label class="field review-name">
+            <span class="field-label">Start here: your name <span class="field-required">Needed to save</span></span>
             <input type="text" name="reviewer" maxlength="80" autocomplete="name" placeholder="So we know who answered" data-name />
           </label>
         </div>
@@ -116,6 +116,17 @@ const answers = [
                 <ol class="review-thread" data-thread></ol>
 
                 <form class="review-answer" data-answer>
+                  <!-- The name again beside each answer, so no one types an answer that can't be saved -->
+                  <div class="mb-4">
+                    <label class="field review-name" data-as-field>
+                      <span class="field-label">Your name <span class="field-required">Needed to save</span></span>
+                      <input type="text" maxlength="80" autocomplete="name" placeholder="So we know who answered" data-name />
+                    </label>
+                    <p class="text-small text-fg-muted" hidden data-as-known>
+                      Answering as <span class="text-fg" data-as-name></span>
+                      <button type="button" class="text-link ml-2" data-as-change>Change</button>
+                    </p>
+                  </div>
                   <fieldset class="flex flex-wrap gap-1">
                     <legend class="sr-only">Your answer for {card.title}</legend>
                     {answers.map((answer) => (
@@ -388,6 +399,29 @@ const answers = [
     color: rgb(var(--fg-muted));
   }
 
+  .review-name {
+    max-width: 22rem;
+    margin-top: 0.5rem;
+    padding: 1rem 1.25rem;
+    border-left: 3px solid rgb(var(--label-gold));
+    background: rgb(var(--mist));
+  }
+
+  .review-answer .review-name {
+    max-width: none;
+    margin-top: 0;
+    background: rgb(var(--paper));
+  }
+
+  .review-name[hidden] {
+    display: none;
+  }
+
+  .field-required {
+    margin-left: 0.5rem;
+    color: rgb(var(--gold-deep));
+  }
+
   .field-optional {
     margin-left: 0.5rem;
     color: rgb(var(--fg-subtle));
@@ -421,19 +455,53 @@ const answers = [
   const LABELS: Record<string, string> = { confirmed: "All correct", change: "Needs changes", remove: "Remove", question: "Question", open: "To review", done: "Fixed" };
   const cards = [...document.querySelectorAll<HTMLElement>("[data-card]")];
   const views = [...document.querySelectorAll<HTMLElement>("[data-view]")];
-  const nameInput = document.querySelector<HTMLInputElement>("[data-name]")!;
+  const nameInputs = [...document.querySelectorAll<HTMLInputElement>("[data-name]")];
   const banner = document.querySelector<HTMLElement>("[data-banner]")!;
   const wide = window.matchMedia("(min-width: 1024px)");
   let store: Record<string, Entry[]> = {};
 
+  // ---------------------------------------------------------------------------------------------------
+  // The reviewer's name: one value kept in step across the box at the top and the one on every card. A card shows
+  // "Answering as …" once there is a name, and its own box again (until it is left) when there isn't or on Change.
+
+  let reviewer = "";
+  const editingName = new Set<HTMLElement>();
+
+  function showName() {
+    for (const card of cards) {
+      const field = card.querySelector<HTMLElement>("[data-as-field]")!;
+      field.hidden = Boolean(reviewer) && !editingName.has(card);
+      card.querySelector<HTMLElement>("[data-as-known]")!.hidden = !field.hidden;
+      card.querySelector("[data-as-name]")!.textContent = reviewer;
+    }
+  }
+
   try {
-    nameInput.value = localStorage.getItem("review-name") ?? "";
+    reviewer = localStorage.getItem("review-name") ?? "";
   } catch {}
-  nameInput.addEventListener("input", () => {
-    try {
-      localStorage.setItem("review-name", nameInput.value.trim());
-    } catch {}
-  });
+  for (const input of nameInputs) {
+    input.value = reviewer;
+    input.addEventListener("input", () => {
+      reviewer = input.value.trim();
+      for (const other of nameInputs) if (other !== input) other.value = input.value;
+      try {
+        localStorage.setItem("review-name", reviewer);
+      } catch {}
+    });
+    input.addEventListener("change", () => {
+      editingName.clear();
+      showName();
+    });
+  }
+  showName();
+
+  for (const card of cards) {
+    card.querySelector("[data-as-change]")!.addEventListener("click", () => {
+      editingName.add(card);
+      showName();
+      card.querySelector<HTMLInputElement>("[data-as-field] input")!.focus();
+    });
+  }
 
   const escape = (text: string) => text.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
   const when = (iso: string) => new Date(iso).toLocaleString("en-AU", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" });
@@ -493,9 +561,10 @@ const answers = [
 
   async function send(card: HTMLElement, body: Record<string, string>) {
     const message = card.querySelector("[data-message]")!;
-    const name = nameInput.value.trim();
+    const name = reviewer;
     if (!name) {
-      message.textContent = "Add your name at the top of the page first.";
+      message.textContent = "Add your name above to save. Your answer is still here.";
+      card.querySelector<HTMLInputElement>("[data-as-field] input")!.focus();
       return false;
     }
     message.textContent = "Saving…";
