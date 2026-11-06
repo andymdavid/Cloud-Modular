@@ -38,10 +38,10 @@ const answers = [
         <div class="col-span-12 max-w-measure space-y-4 text-body text-fg-muted md:col-span-6 md:col-start-7 md:self-end">
           <p>Before launch, the team needs to check the facts a customer might rely on. They're grouped by website page, in {cardCount} short cards.</p>
           <p>Open a page to see its cards with the page itself alongside. For each card, say whether it's all correct, what needs to change, or what you'd like to ask. Everyone sees the same answers.</p>
-          <label class="field review-name">
-            <span class="field-label">Start here: your name <span class="field-required">Needed to save</span></span>
-            <input type="text" name="reviewer" maxlength="80" autocomplete="name" placeholder="So we know who answered" data-name />
-          </label>
+          <p class="text-small" data-as-known>
+            Answering as <span class="text-fg" data-as-name></span>
+            <button type="button" class="text-link ml-2" data-as-change>Change</button>
+          </p>
         </div>
       </div>
       <p class="review-banner" hidden data-banner></p>
@@ -116,17 +116,10 @@ const answers = [
                 <ol class="review-thread" data-thread></ol>
 
                 <form class="review-answer" data-answer>
-                  <!-- The name again beside each answer, so no one types an answer that can't be saved -->
-                  <div class="mb-4">
-                    <label class="field review-name" data-as-field>
-                      <span class="field-label">Your name <span class="field-required">Needed to save</span></span>
-                      <input type="text" maxlength="80" autocomplete="name" placeholder="So we know who answered" data-name />
-                    </label>
-                    <p class="text-small text-fg-muted" hidden data-as-known>
-                      Answering as <span class="text-fg" data-as-name></span>
-                      <button type="button" class="text-link ml-2" data-as-change>Change</button>
-                    </p>
-                  </div>
+                  <p class="mb-4 text-small text-fg-muted" data-as-known>
+                    Answering as <span class="text-fg" data-as-name></span>
+                    <button type="button" class="text-link ml-2" data-as-change>Change</button>
+                  </p>
                   <fieldset class="flex flex-wrap gap-1">
                     <legend class="sr-only">Your answer for {card.title}</legend>
                     {answers.map((answer) => (
@@ -168,6 +161,20 @@ const answers = [
       </div>
     );
   })}
+
+  <!-- Asked once, on first visit, so every answer can be saved -->
+  <dialog class="review-dialog" aria-labelledby="review-dialog-title" data-name-dialog>
+    <form data-name-form>
+      <p class="label">Fact review</p>
+      <h2 id="review-dialog-title" class="mt-4 text-h3">What's your name?</h2>
+      <p class="mt-3 text-body text-fg-muted">It goes next to your answers so the team knows who said what. You only need to add it once.</p>
+      <label class="field mt-6">
+        <span class="field-label">Your name</span>
+        <input type="text" maxlength="80" autocomplete="name" required data-name />
+      </label>
+      <button type="submit" class="btn-solid mt-6 h-10 px-5">Start reviewing</button>
+    </form>
+  </dialog>
 </RefreshLayout>
 
 <style>
@@ -399,27 +406,18 @@ const answers = [
     color: rgb(var(--fg-muted));
   }
 
-  .review-name {
-    max-width: 22rem;
-    margin-top: 0.5rem;
-    padding: 1rem 1.25rem;
-    border-left: 3px solid rgb(var(--label-gold));
-    background: rgb(var(--mist));
-  }
-
-  .review-answer .review-name {
-    max-width: none;
-    margin-top: 0;
+  .review-dialog {
+    width: min(28rem, 100% - 32px);
+    margin: auto;
+    padding: 2rem;
+    border: 0;
+    border-radius: var(--radius-media);
     background: rgb(var(--paper));
+    color: rgb(var(--fg));
   }
 
-  .review-name[hidden] {
-    display: none;
-  }
-
-  .field-required {
-    margin-left: 0.5rem;
-    color: rgb(var(--gold-deep));
+  .review-dialog::backdrop {
+    background: rgb(var(--ink) / 0.55);
   }
 
   .field-optional {
@@ -455,53 +453,50 @@ const answers = [
   const LABELS: Record<string, string> = { confirmed: "All correct", change: "Needs changes", remove: "Remove", question: "Question", open: "To review", done: "Fixed" };
   const cards = [...document.querySelectorAll<HTMLElement>("[data-card]")];
   const views = [...document.querySelectorAll<HTMLElement>("[data-view]")];
-  const nameInputs = [...document.querySelectorAll<HTMLInputElement>("[data-name]")];
   const banner = document.querySelector<HTMLElement>("[data-banner]")!;
   const wide = window.matchMedia("(min-width: 1024px)");
   let store: Record<string, Entry[]> = {};
 
   // ---------------------------------------------------------------------------------------------------
-  // The reviewer's name: one value kept in step across the box at the top and the one on every card. A card shows
-  // "Answering as …" once there is a name, and its own box again (until it is left) when there isn't or on Change.
+  // The reviewer's name: asked in a dialog on first visit (it can't be closed empty), remembered in this browser,
+  // and shown as "Answering as …" at the top and on every card, where Change opens the dialog again.
 
+  const dialog = document.querySelector<HTMLDialogElement>("[data-name-dialog]")!;
+  const nameInput = dialog.querySelector<HTMLInputElement>("[data-name]")!;
   let reviewer = "";
-  const editingName = new Set<HTMLElement>();
 
   function showName() {
-    for (const card of cards) {
-      const field = card.querySelector<HTMLElement>("[data-as-field]")!;
-      field.hidden = Boolean(reviewer) && !editingName.has(card);
-      card.querySelector<HTMLElement>("[data-as-known]")!.hidden = !field.hidden;
-      card.querySelector("[data-as-name]")!.textContent = reviewer;
-    }
+    for (const el of document.querySelectorAll<HTMLElement>("[data-as-known]")) el.hidden = !reviewer;
+    for (const el of document.querySelectorAll("[data-as-name]")) el.textContent = reviewer;
   }
+
+  function askName() {
+    nameInput.value = reviewer;
+    if (!dialog.open) dialog.showModal();
+    nameInput.focus();
+  }
+
+  dialog.querySelector("[data-name-form]")!.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const name = nameInput.value.trim();
+    if (!name) return;
+    reviewer = name;
+    try {
+      localStorage.setItem("review-name", name);
+    } catch {}
+    showName();
+    dialog.close();
+  });
+  dialog.addEventListener("cancel", (event) => {
+    if (!reviewer) event.preventDefault();
+  });
+  for (const button of document.querySelectorAll("[data-as-change]")) button.addEventListener("click", askName);
 
   try {
-    reviewer = localStorage.getItem("review-name") ?? "";
+    reviewer = localStorage.getItem("review-name")?.trim() ?? "";
   } catch {}
-  for (const input of nameInputs) {
-    input.value = reviewer;
-    input.addEventListener("input", () => {
-      reviewer = input.value.trim();
-      for (const other of nameInputs) if (other !== input) other.value = input.value;
-      try {
-        localStorage.setItem("review-name", reviewer);
-      } catch {}
-    });
-    input.addEventListener("change", () => {
-      editingName.clear();
-      showName();
-    });
-  }
   showName();
-
-  for (const card of cards) {
-    card.querySelector("[data-as-change]")!.addEventListener("click", () => {
-      editingName.add(card);
-      showName();
-      card.querySelector<HTMLInputElement>("[data-as-field] input")!.focus();
-    });
-  }
+  if (!reviewer) askName();
 
   const escape = (text: string) => text.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
   const when = (iso: string) => new Date(iso).toLocaleString("en-AU", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" });
@@ -563,8 +558,8 @@ const answers = [
     const message = card.querySelector("[data-message]")!;
     const name = reviewer;
     if (!name) {
-      message.textContent = "Add your name above to save. Your answer is still here.";
-      card.querySelector<HTMLInputElement>("[data-as-field] input")!.focus();
+      message.textContent = "Add your name, then save again. Your answer is still here.";
+      askName();
       return false;
     }
     message.textContent = "Saving…";
