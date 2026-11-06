@@ -22,25 +22,26 @@ export const tradeHero = {
 export const tradeIntro =
   "Cloud Trade is a specialist procurement services provider to the building and construction industry, providing cost savings, project management and risk mitigation across the products every project needs. Through trade relationships built over 30 years in China, we give builders and developers access to products made to Australian Standards at least 45% below local prices. Our concierge service covers manufacture, quality control and testing, freight and delivery to site.";
 
-/** Two ways to work: the team runs it, or the builder runs it in their account. Tiles as the home page's FeatureTiles. */
+/** How we work: one service with two halves. Every client is onboarded to an account on the platform, where their
+ * documents live, and our team runs the procurement. Tiles as the home page's FeatureTiles. */
 export const tradeWays = {
-  intro: "Every order runs on our platform with our team behind it. You choose how much of the procurement you hand to us.",
+  intro: "We set you up with an account on our platform, where your schedules, quotes, approvals and documents live. Our team then runs the procurement for you, from pricing to delivery on site.",
   tiles: [
     {
-      label: "Fully managed",
-      title: "Hand it to us",
+      label: "Your account",
+      title: "Every order in one place",
       href: "/trade/start/",
-      cta: "Talk to our team",
+      cta: "Open an account",
       image: "/trade/projects/apartments.webp",
       width: 1920,
       height: 1280,
       imagePosition: "center",
     },
     {
-      label: "Self-managed",
-      title: "Run it yourself",
+      label: "Our team",
+      title: "We run the procurement",
       href: "/trade/start/",
-      cta: "Open an account",
+      cta: "Talk to our team",
       image: "/trade/projects/freestanding-bath.webp",
       width: 1280,
       height: 957,
@@ -220,7 +221,7 @@ export const tradeCaseStudies = {
     { logo: "hanssen", client: "Hanssen", supplied: "Plumbing", body: "Tapware and sanitary ware across a number of Hanssen projects." },
     { logo: "griffin", client: "Griffin Group", supplied: "Plumbing", body: "Tapware and sanitary ware for Griffin Group projects." },
     { logo: "probuild", client: "Probuild", supplied: "Plumbing", body: "Tapware and sanitary ware for Probuild projects." },
-    { logo: "hancock", client: "Roy Hill, now Hancock Iron Ore", supplied: "Mining", body: "Supply for Roy Hill." },
+    { logo: "hancock", client: "Roy Hill, now Hancock Iron Ore", supplied: "Bathrooms", body: "Bathroom cabinets, taps and toilets for 980 bathrooms, supplied through AMS." },
     { logo: "seashells", client: "Seashells Jurien Bay", supplied: "Furnishing", body: "Furniture and fittings for the resort's tourism villas, which are sold fully furnished." },
     {
       text: ["200 St Georges Terrace", "Central Park"],

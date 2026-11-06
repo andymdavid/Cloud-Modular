@@ -61,10 +61,11 @@ const pageSchema = {
     <p class="text-about">{tradeIntro}</p>
   </SplitSection>
 
-  <!-- Two ways to work: two image tiles, as The Cloud Modular difference on the home page -->
+  <!-- How we work: the two halves of one service, your account and our team, as image tiles (The Cloud Modular
+       difference on the home page) -->
   <section id="ways" data-theme="light" class="scroll-mt-header pb-section">
     <div class="shell">
-      <SectionHead label="Ways to work" title="Two ways to work with us" intro={tradeWays.intro} />
+      <SectionHead label="How we work" title="Your account, our team" intro={tradeWays.intro} />
     </div>
     <FeatureTiles items={tradeWays.tiles} class="mt-12 sm:mt-16" />
   </section>
@@ -132,7 +133,7 @@ const pageSchema = {
       <SectionHead label="Clients" title="Who we supply" intro={tradeCaseStudies.intro} />
     </div>
 
-    <CardRow label="Clients" class="mt-12 sm:mt-16">
+    <CardRow label="Clients" class="mt-12 sm:mt-16 lg:gap-y-14">
       {tradeCaseStudies.items.map((item, index) => (
         <li data-reveal style={`--reveal-delay:${index * 80}ms`}>
           <figure class="case">
@@ -144,9 +145,9 @@ const pageSchema = {
               )}
             </div>
             <figcaption>
-              <p class="label label-muted mt-5">{item.supplied}</p>
+              <p class="label label-muted mt-4">{item.supplied}</p>
               <p class="mt-2 text-body font-medium">{item.client}</p>
-              <p class="mt-2 text-small text-fg-muted">{item.body}</p>
+              <p class="mt-1 max-w-[40ch] text-caption text-fg-subtle">{item.body}</p>
             </figcaption>
           </figure>
         </li>
