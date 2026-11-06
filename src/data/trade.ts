@@ -219,9 +219,9 @@ export const tradeTestimonial = {
 export const tradeCaseStudies = {
   intro: "We supply builders, developers and modular manufacturers across Australia, including these.",
   items: [
-    { logo: "hanssen", client: "Hanssen", supplied: "Plumbing and benchtops", body: "Tapware and sanitary ware across a number of Hanssen projects, and granite benchtops for The Esplanade in Perth." },
-    { logo: "griffin", client: "Griffin Group", supplied: "Plumbing", body: "Tapware and sanitary ware for Money Street, Loftus Street and two projects on Edgecombe Street in Como." },
-    { logo: "probuild", client: "Probuild", supplied: "Plumbing", body: "Tapware and sanitary ware for Saffton Apartments on Adelaide Terrace." },
+    { logo: "hanssen", client: "Hanssen", supplied: "Plumbing and benchtops", body: "Tapware and sanitary ware across many projects, and granite benchtops for The Esplanade." },
+    { logo: "griffin", client: "Griffin Group", supplied: "Plumbing", body: "Tapware and sanitary ware for Money Street, Loftus Street and two Edgecombe Street projects." },
+    { logo: "probuild", client: "Probuild", supplied: "Plumbing", body: "Tapware and sanitary ware for Saffron Apartments on Adelaide Terrace." },
     { logo: "hancock", client: "Roy Hill, now Hancock Iron Ore", supplied: "Bathrooms", body: "Bathroom cabinets, taps and toilets for 980 bathrooms, supplied through AMS." },
     { logo: "seashells", client: "Seashells Jurien Bay", supplied: "Furnishing", body: "Furniture and fittings for the resort's tourism villas, which are sold fully furnished." },
     {
@@ -235,7 +235,7 @@ export const tradeCaseStudies = {
 
 /** The request form on /trade/start/ (EnquiryForm variant "trade"). */
 export const tradeEnquiry = {
-  roles: ["Builder", "Developer", "Architect", "Modular manufacturer", "Other"],
+  roles: ["Builder", "Developer", "Architect", "Other"],
   categories: [...tradeRange.map((category) => category.title), "Something else", "Not sure yet"],
   timing: ["Within 3 months", "3 to 6 months", "More than 6 months", "Not sure yet"],
 };
