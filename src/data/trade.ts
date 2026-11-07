@@ -242,8 +242,8 @@ export const tradeCaseStudies = {
     { logo: "hanssen", client: "Hanssen", supplied: "Plumbing and benchtops", body: "Tapware and sanitary ware across many projects, and granite benchtops for The Esplanade." },
     { logo: "griffin", client: "Griffin Group", href: "/trade/projects/griffin-group/", supplied: "Plumbing", body: "Tapware and sanitary ware for Reside on Money, Loft Haus and two Edgecombe Street projects." },
     { logo: "probuild", client: "Probuild", supplied: "Plumbing", body: "Tapware and sanitary ware for Saffron Apartments on Adelaide Terrace." },
-    { logo: "hancock", client: "Roy Hill, now Hancock Iron Ore", supplied: "Bathrooms", body: "Bathroom cabinets, taps and toilets for 980 bathrooms, supplied through AMS." },
-    { logo: "seashells", client: "Seashells Jurien Bay", supplied: "Furnishing", body: "Furniture and fittings for the resort's tourism villas, which are sold fully furnished." },
+    { logo: "hancock", client: "Roy Hill, now Hancock Iron Ore", href: "/trade/projects/roy-hill/", supplied: "Bathrooms", body: "Bathroom cabinets, taps and toilets for 980 bathrooms, supplied through AMS." },
+    { logo: "seashells", client: "Seashells Jurien Bay", href: "/trade/projects/seashells-jurien-bay/", supplied: "Furnishing", body: "Furniture and fittings for the resort's tourism villas, which are sold fully furnished." },
     {
       text: ["200 St Georges Terrace", "Central Park"],
       client: "200 St Georges Terrace and Central Park",
@@ -325,7 +325,9 @@ export interface TradeProject {
   name: string;
   body: string;
   details: { label: string; value: string }[];
-  gallery: GalleryRow[];
+  gallery?: GalleryRow[];
+  /** The project's own page, for a project another Cloud brand built. */
+  link?: { label: string; href: string };
 }
 
 export const tradeProjects = [
@@ -335,6 +337,7 @@ export const tradeProjects = [
     location: "Perth",
     sector: "Residential",
     supplied: "Tapware and sanitary ware",
+    credit: "Photographs courtesy of Griffin Group.",
     description: "The tapware and sanitary ware Cloud Trade supplied for Griffin Group's Reside on Money, Loft Haus and Como projects in Perth.",
     hero: {
       src: "/trade/projects/griffin/reside-street.webp",
@@ -392,6 +395,77 @@ export const tradeProjects = [
               { src: "/trade/projects/griffin/lofthaus-bathroom.webp", alt: "A bathroom with a timber vanity, a matt black mixer, green feature tiles and a black-framed shower screen", width: 1200, height: 780, caption: "A bathroom with matt black tapware" },
             ],
           },
+        ],
+      },
+    ] satisfies TradeProject[],
+  },
+  {
+    slug: "seashells-jurien-bay",
+    client: "Seashells Jurien Bay",
+    location: "Jurien Bay, WA",
+    sector: "Tourism",
+    supplied: "Furniture and fittings",
+    credit: "Images are artist's impressions.",
+    description: "The furniture and fittings Cloud Trade supplies for the tourism villas at Seashells Jurien Bay, which are sold fully furnished.",
+    hero: {
+      src: "/projects/seashells-jurien-bay/twilight.webp",
+      alt: "The residences at twilight, lit from inside, with garden lighting along the front path",
+      width: 1672,
+      height: 941,
+    },
+    intro:
+      "Seashells Jurien Bay is a beachfront resort community of 108 residences on Western Australia's Turquoise Coast, about two hours north of Perth. Its 77 three-bedroom tourism villas are sold fully furnished and let through the resort's on-site management, and we supply the furniture and fittings for them.",
+    stats: [
+      { value: "77", label: "Tourism villas, sold fully furnished" },
+      { value: "108", label: "Residences across the estate" },
+    ],
+    projects: [
+      {
+        name: "The tourism villas",
+        body: "Each villa is a two-storey detached home with two bedrooms downstairs and the master suite upstairs, over a living room open to the roof. The villas are built as modules by Cloud Modular and arrive with their kitchens, bathrooms and finishes in place. We supply the furniture and fittings that make them ready for guests.",
+        details: [
+          { label: "Location", value: "Jurien Bay, WA" },
+          { label: "Villas", value: "77, with three bedrooms" },
+          { label: "Developer", value: "MVP Group" },
+          { label: "Modules", value: "Cloud Modular" },
+          { label: "We supply", value: "Furniture and fittings" },
+        ],
+        link: { label: "The project on Cloud Modular", href: "/our-work/seashells-jurien-bay/" },
+        gallery: [
+          {
+            kind: "pair",
+            images: [
+              { src: "/projects/seashells-jurien-bay/path.webp", alt: "A garden path running past the residences, lined with lavender and olive trees", width: 1672, height: 941, caption: "Gardens between the villas" },
+              { src: "/projects/seashells-jurien-bay/terraces.webp", alt: "A row of two-storey villas with glass balustrades and roof terraces beside a lawn", width: 1054, height: 1492, caption: "Balconies and roof terraces" },
+            ],
+          },
+        ],
+      },
+    ] satisfies TradeProject[],
+  },
+  {
+    slug: "roy-hill",
+    client: "Roy Hill",
+    location: "Pilbara, WA",
+    sector: "Resources",
+    supplied: "Bathrooms",
+    description: "The bathroom cabinets, taps and toilets Cloud Trade supplied for 980 bathrooms at Roy Hill, now Hancock Iron Ore, through AMS.",
+    logo: "hancock",
+    intro:
+      "Roy Hill is an iron ore mine in Western Australia's Pilbara, now run by Hancock Iron Ore. Its workforce lives on site in an accommodation village of about 2,000 rooms, built for $200 million by Brookfield Multiplex. We supplied the bathroom cabinets, taps and toilets for 980 bathrooms at Roy Hill, through AMS.",
+    stats: [
+      { value: "980", label: "Bathrooms supplied" },
+      { value: "2,000", label: "Rooms in the Roy Hill accommodation village" },
+    ],
+    projects: [
+      {
+        name: "980 bathrooms",
+        body: "We supplied a cabinet, taps and a toilet for each of the 980 bathrooms, through AMS.",
+        details: [
+          { label: "Client", value: "Roy Hill, now Hancock Iron Ore" },
+          { label: "Supplied through", value: "AMS" },
+          { label: "Bathrooms", value: "980" },
+          { label: "We supplied", value: "Bathroom cabinets, taps and toilets" },
         ],
       },
     ] satisfies TradeProject[],

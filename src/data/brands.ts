@@ -130,13 +130,15 @@ export const brands = {
           { label: "How It Works", href: "/trade/how-it-works/" },
           { label: "Quality and Compliance", href: "/trade/quality/" },
           { label: "Range", href: "/trade/#range" },
+          { label: "Who We Supply", href: "/trade/#clients" },
         ],
       },
       {
-        label: "Clients",
+        label: "Case Studies",
         links: [
-          { label: "Who We Supply", href: "/trade/#clients" },
-          { label: "Griffin Case Study", href: "/trade/projects/griffin-group/" },
+          { label: "Griffin Group", href: "/trade/projects/griffin-group/" },
+          { label: "Seashells Jurien Bay", href: "/trade/projects/seashells-jurien-bay/" },
+          { label: "Roy Hill", href: "/trade/projects/roy-hill/" },
         ],
       },
       {
@@ -157,13 +159,15 @@ export const brands = {
             { label: "How It Works", href: "/trade/how-it-works/" },
             { label: "Quality and Compliance", href: "/trade/quality/" },
             { label: "Range", href: "/trade/#range" },
+            { label: "Who We Supply", href: "/trade/#clients" },
           ],
         },
         {
-          label: "Clients",
+          label: "Case Studies",
           links: [
-            { label: "Who We Supply", href: "/trade/#clients" },
-            { label: "Griffin Case Study", href: "/trade/projects/griffin-group/" },
+            { label: "Griffin Group", href: "/trade/projects/griffin-group/" },
+            { label: "Seashells Jurien Bay", href: "/trade/projects/seashells-jurien-bay/" },
+            { label: "Roy Hill", href: "/trade/projects/roy-hill/" },
           ],
         },
         {

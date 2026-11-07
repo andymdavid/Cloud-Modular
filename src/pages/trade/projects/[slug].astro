@@ -14,7 +14,12 @@ export function getStaticPaths() {
   return tradeProjects.map((project) => ({ params: { slug: project.slug }, props: { project } }));
 }
 
-const { project } = Astro.props as { project: (typeof tradeProjects)[number] };
+type TradeCase = (typeof tradeProjects)[number];
+const { project } = Astro.props as { project: TradeCase };
+// A case without photographs leads with the client's logo in gold on slate, as its client card
+const hero = "hero" in project ? project.hero : undefined;
+const logo = "logo" in project ? project.logo : undefined;
+const credit = "credit" in project ? project.credit : undefined;
 const title = `${project.client} | Case Study | Cloud Trade`;
 const breadcrumbSchema = {
   "@context": "https://schema.org",
@@ -27,9 +32,10 @@ const breadcrumbSchema = {
 const slugOf = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 ---
 
-<RefreshLayout title={title} description={project.description} canonical={`/trade/projects/${project.slug}/`} structuredData={breadcrumbSchema} brand="trade" image={project.hero.src} overlayHeader>
-  <section data-hero data-theme="dark" class="relative h-[100svh] min-h-[560px] overflow-hidden">
-    <img src={project.hero.src} alt={project.hero.alt} width={project.hero.width} height={project.hero.height} fetchpriority="high" class="hero-media absolute inset-0 h-full w-full object-cover" />
+<RefreshLayout title={title} description={project.description} canonical={`/trade/projects/${project.slug}/`} structuredData={breadcrumbSchema} brand="trade" image={hero?.src} overlayHeader>
+  <section data-hero data-theme="dark" data-surface="slate" class="case-hero relative h-[100svh] min-h-[560px] overflow-hidden">
+    {hero && <img src={hero.src} alt={hero.alt} width={hero.width} height={hero.height} fetchpriority="high" class="hero-media absolute inset-0 h-full w-full object-cover" />}
+    {logo && <span class="case-hero-logo" role="img" aria-label={project.client} style={`--logo:url(/trade/clients/${logo}.png)`}></span>}
     <div class="absolute inset-0 bg-[linear-gradient(180deg,rgb(11_11_12/0.5)_0%,rgb(11_11_12/0)_28%,rgb(11_11_12/0)_45%,rgb(11_11_12/0.65)_100%)]" aria-hidden="true"></div>
     <div class="shell relative flex h-full flex-col justify-end pb-10 sm:pb-14">
       <div class="grid-12 items-end gap-y-6">
@@ -70,14 +76,17 @@ const slugOf = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
             </li>
           ))}
         </ul>
+        {"link" in item && item.link && <a href={item.link.href} class="btn mt-10">{item.link.label}</a>}
       </SplitSection>
-      <ProjectGallery id={`${slugOf(item.name)}-gallery`} label={`${item.name} gallery`} rows={item.gallery} />
+      {"gallery" in item && item.gallery && <ProjectGallery id={`${slugOf(item.name)}-gallery`} label={`${item.name} gallery`} rows={item.gallery} />}
     </Fragment>
   ))}
 
-  <div class="shell -mt-8 pb-section">
-    <p class="text-caption text-fg-subtle">Photographs courtesy of {project.client}.</p>
-  </div>
+  {credit && (
+    <div class="shell -mt-8 pb-section">
+      <p class="text-caption text-fg-subtle">{credit}</p>
+    </div>
+  )}
 
   <GetStarted
     text="Send us your schedule and we will come back with a quote for your next project."
@@ -87,3 +96,22 @@ const slugOf = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
     ]}
   />
 </RefreshLayout>
+
+<style>
+  .case-hero {
+    background: rgb(var(--slate));
+  }
+
+  /* The client's logo in gold, centred in the upper part of the hero */
+  .case-hero-logo {
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    width: min(56vw, 34rem);
+    height: 30%;
+    transform: translate(-50%, -50%);
+    background: rgb(var(--gold));
+    -webkit-mask: var(--logo) center / contain no-repeat;
+    mask: var(--logo) center / contain no-repeat;
+  }
+</style>
