@@ -12,9 +12,11 @@ interface Props {
   label?: string;
   /** For pages with more than one gallery. */
   id?: string;
+  /** A line under the images, such as a photo credit, aligned with the captions. */
+  note?: string;
 }
 
-const { rows, label = "Gallery", id = "gallery" } = Astro.props;
+const { rows, label = "Gallery", id = "gallery", note } = Astro.props;
 const images = rows.flatMap((row) => (row.kind === "full" ? [row.image] : row.images));
 const indexOf = (src: string) => images.findIndex((image) => image.src === src);
 const number = (index: number) => String(index + 1).padStart(2, "0");
@@ -49,6 +51,7 @@ const number = (index: number) => String(index + 1).padStart(2, "0");
         </div>
       ),
     )}
+    {note && <p class="text-caption text-fg-subtle">{note}</p>}
   </div>
 
   <!-- Full-screen viewer -->

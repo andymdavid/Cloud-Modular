@@ -64,7 +64,7 @@ const slugOf = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
     </dl>
   </SplitSection>
 
-  {project.projects.map((item) => (
+  {project.projects.map((item, index) => (
     <Fragment>
       <SplitSection id={slugOf(item.name)} label={item.name}>
         <p class="text-about">{item.body}</p>
@@ -78,15 +78,11 @@ const slugOf = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
         </ul>
         {"link" in item && item.link && <a href={item.link.href} class="btn mt-10">{item.link.label}</a>}
       </SplitSection>
-      {"gallery" in item && item.gallery && <ProjectGallery id={`${slugOf(item.name)}-gallery`} label={`${item.name} gallery`} rows={item.gallery} />}
+      {"gallery" in item && item.gallery && (
+        <ProjectGallery id={`${slugOf(item.name)}-gallery`} label={`${item.name} gallery`} rows={item.gallery} note={index === project.projects.length - 1 ? credit : undefined} />
+      )}
     </Fragment>
   ))}
-
-  {credit && (
-    <div class="shell -mt-8 pb-section">
-      <p class="text-caption text-fg-subtle">{credit}</p>
-    </div>
-  )}
 
   <GetStarted
     text="Send us your schedule and we will come back with a quote for your next project."

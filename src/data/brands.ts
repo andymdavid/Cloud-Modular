@@ -138,7 +138,7 @@ export const brands = {
         links: [
           { label: "Griffin Group", href: "/trade/projects/griffin-group/" },
           { label: "Seashells Jurien Bay", href: "/trade/projects/seashells-jurien-bay/" },
-          { label: "Roy Hill", href: "/trade/projects/roy-hill/" },
+          { label: "Hancock Iron Ore", href: "/trade/projects/hancock-iron-ore/" },
         ],
       },
       {
@@ -167,7 +167,7 @@ export const brands = {
           links: [
             { label: "Griffin Group", href: "/trade/projects/griffin-group/" },
             { label: "Seashells Jurien Bay", href: "/trade/projects/seashells-jurien-bay/" },
-            { label: "Roy Hill", href: "/trade/projects/roy-hill/" },
+            { label: "Hancock Iron Ore", href: "/trade/projects/hancock-iron-ore/" },
           ],
         },
         {

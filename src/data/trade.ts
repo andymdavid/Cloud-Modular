@@ -242,7 +242,7 @@ export const tradeCaseStudies = {
     { logo: "hanssen", client: "Hanssen", supplied: "Plumbing and benchtops", body: "Tapware and sanitary ware across many projects, and granite benchtops for The Esplanade." },
     { logo: "griffin", client: "Griffin Group", href: "/trade/projects/griffin-group/", supplied: "Plumbing", body: "Tapware and sanitary ware for Reside on Money, Loft Haus and two Edgecombe Street projects." },
     { logo: "probuild", client: "Probuild", supplied: "Plumbing", body: "Tapware and sanitary ware for Saffron Apartments on Adelaide Terrace." },
-    { logo: "hancock", client: "Roy Hill, now Hancock Iron Ore", href: "/trade/projects/roy-hill/", supplied: "Bathrooms", body: "Bathroom cabinets, taps and toilets for 980 bathrooms, supplied through AMS." },
+    { logo: "hancock", client: "Roy Hill, now Hancock Iron Ore", href: "/trade/projects/hancock-iron-ore/", supplied: "Bathrooms", body: "Bathroom cabinets, taps and toilets for 980 bathrooms, supplied through AMS." },
     { logo: "seashells", client: "Seashells Jurien Bay", href: "/trade/projects/seashells-jurien-bay/", supplied: "Furnishing", body: "Furniture and fittings for the resort's tourism villas, which are sold fully furnished." },
     {
       text: ["200 St Georges Terrace", "Central Park"],
@@ -444,15 +444,15 @@ export const tradeProjects = [
     ] satisfies TradeProject[],
   },
   {
-    slug: "roy-hill",
-    client: "Roy Hill",
+    slug: "hancock-iron-ore",
+    client: "Hancock Iron Ore",
     location: "Pilbara, WA",
     sector: "Resources",
     supplied: "Bathrooms",
     description: "The bathroom cabinets, taps and toilets Cloud Trade supplied for 980 bathrooms at Roy Hill, now Hancock Iron Ore, through AMS.",
     logo: "hancock",
     intro:
-      "Roy Hill is an iron ore mine in Western Australia's Pilbara, now run by Hancock Iron Ore. Its workforce lives on site in an accommodation village of about 2,000 rooms, built for $200 million by Brookfield Multiplex. We supplied the bathroom cabinets, taps and toilets for 980 bathrooms at Roy Hill, through AMS.",
+      "Hancock Iron Ore runs the Roy Hill iron ore mine in Western Australia's Pilbara. Its workforce lives on site in an accommodation village of about 2,000 rooms, each with its own ensuite, built for $200 million by Brookfield Multiplex. We supplied the bathroom cabinets, taps and toilets for 980 bathrooms at Roy Hill, through AMS.",
     stats: [
       { value: "980", label: "Bathrooms supplied" },
       { value: "2,000", label: "Rooms in the Roy Hill accommodation village" },
