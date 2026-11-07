@@ -57,8 +57,7 @@ const pageSchema = {
       data-hero-video
       class="hero-media absolute inset-0 h-full w-full object-cover"
     ></video>
-    <!-- Deeper at the foot than the home page's, as the factory floor is pale behind the headline -->
-    <div class="absolute inset-0 bg-[linear-gradient(180deg,rgb(11_11_12/0.55)_0%,rgb(11_11_12/0)_28%,rgb(11_11_12/0.05)_45%,rgb(11_11_12/0.72)_100%)]" aria-hidden="true"></div>
+    <div class="trade-hero-scrim absolute inset-0" aria-hidden="true"></div>
     <div class="shell relative flex h-full flex-col justify-end pb-10 sm:pb-14">
       <div class="grid-12 items-end gap-y-6">
         <h1 class="col-span-12 text-hero lg:col-span-8">{tradeHero.title}</h1>
@@ -183,6 +182,23 @@ const pageSchema = {
 <style>
   .trade-hero {
     background: rgb(var(--slate));
+  }
+
+  /* A light fade under the header, and an eased dark fade rising from the foot behind the headline (as
+     olympic.no's hero), mixed in oklab so it has no visible band */
+  .trade-hero-scrim {
+    --scrim: 52svh;
+    background:
+      linear-gradient(to bottom, rgb(11 11 12 / 0.45) 0, rgb(11 11 12 / 0) 9rem),
+      linear-gradient(
+        to top in oklab,
+        rgb(11 11 12 / 0.86) 0,
+        rgb(11 11 12 / 0.62) calc(var(--scrim) * 0.3),
+        rgb(11 11 12 / 0.38) calc(var(--scrim) * 0.55),
+        rgb(11 11 12 / 0.16) calc(var(--scrim) * 0.75),
+        rgb(11 11 12 / 0.04) calc(var(--scrim) * 0.9),
+        rgb(11 11 12 / 0) var(--scrim)
+      );
   }
 
   /* Three documents fanned on a stone stage */
