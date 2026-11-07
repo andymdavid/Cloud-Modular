@@ -450,7 +450,13 @@ export const tradeProjects = [
     sector: "Resources",
     supplied: "Bathrooms",
     description: "The bathroom cabinets, taps and toilets Cloud Trade supplied for 980 bathrooms at Roy Hill, now Hancock Iron Ore, through AMS.",
-    logo: "hancock",
+    credit: "Photographs courtesy of Brookfield Multiplex.",
+    hero: {
+      src: "/trade/projects/hancock/village-aerial.webp",
+      alt: "An aerial view of the Roy Hill accommodation village on red Pilbara earth, with rows of accommodation blocks",
+      width: 2400,
+      height: 1026,
+    },
     intro:
       "Hancock Iron Ore runs the Roy Hill iron ore mine in Western Australia's Pilbara. Its workforce lives on site in an accommodation village of about 2,000 rooms, each with its own ensuite, built for $200 million by Brookfield Multiplex. We supplied the bathroom cabinets, taps and toilets for 980 bathrooms at Roy Hill, through AMS.",
     stats: [
@@ -459,13 +465,22 @@ export const tradeProjects = [
     ],
     projects: [
       {
-        name: "980 bathrooms",
+        name: "Roy Hill",
         body: "We supplied a cabinet, taps and a toilet for each of the 980 bathrooms, through AMS.",
         details: [
           { label: "Client", value: "Roy Hill, now Hancock Iron Ore" },
           { label: "Supplied through", value: "AMS" },
           { label: "Bathrooms", value: "980" },
           { label: "We supplied", value: "Bathroom cabinets, taps and toilets" },
+        ],
+        gallery: [
+          {
+            kind: "pair",
+            images: [
+              { src: "/trade/projects/hancock/village-blocks.webp", alt: "The village from the air, with rows of accommodation blocks beside the access road", width: 650, height: 433, caption: "Accommodation blocks from the air" },
+              { src: "/trade/projects/hancock/village-wide.webp", alt: "The village set in a curve of accommodation blocks in the green Pilbara landscape", width: 650, height: 433, caption: "The village in the Pilbara landscape" },
+            ],
+          },
         ],
       },
     ] satisfies TradeProject[],
