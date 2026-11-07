@@ -21,6 +21,8 @@ export interface Brand {
   /** Small mono word under the wordmark; none keeps the wordmark on its own. */
   descriptor?: string;
   home: string;
+  /** The link-preview image for the brand's pages; none uses the site's default. */
+  image?: string;
   /** The header button and the menu panel's closing action. */
   cta: NavLink;
   menuPrompt: string;
@@ -114,6 +116,7 @@ export const brands = {
     name: "Cloud Trade",
     descriptor: "Trade",
     home: "/trade/",
+    image: "/trade/og-image.webp",
     // Open an account goes to the portal's sign-up; until the portal has an address it leads to /trade/start/
     cta: { label: "Open an account", href: "/trade/start/" },
     menuPrompt: "Open an account and start your first project",
@@ -130,7 +133,7 @@ export const brands = {
         label: "Help",
         links: [
           { label: "FAQ", href: "/trade/#faq" },
-          { label: "Contact", href: site.contactHref },
+          { label: "Contact", href: "/trade/contact/" },
         ],
       },
     ],
@@ -155,7 +158,7 @@ export const brands = {
         {
           label: "Contact",
           links: [
-            { label: "Contact Us", href: site.contactHref },
+            { label: "Contact Us", href: "/trade/contact/" },
             { label: "LinkedIn", href: site.linkedIn, external: true },
           ],
         },
@@ -163,7 +166,7 @@ export const brands = {
       prompt: "Sourcing something for a project? Tell us what you need and our team will help you price it.",
       actions: [
         { label: "Open an account", href: "/trade/start/" },
-        { label: "Talk to the team", href: site.contactHref },
+        { label: "Talk to the team", href: "/trade/contact/" },
       ],
     },
   },

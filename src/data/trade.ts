@@ -41,7 +41,7 @@ export const tradeWays = {
     {
       label: "Concierge support",
       title: "End-to-end procurement management",
-      href: "/trade/start/",
+      href: "/trade/contact/",
       cta: "Talk to our team",
       image: "/trade/projects/freestanding-bath.webp",
       width: 1280,

@@ -5,7 +5,7 @@ import SiteFooter from "@/components/refresh/SiteFooter.astro";
 import "@/styles/refresh.css";
 
 import type { Props as SeoProps } from "@/components/SeoHead.astro";
-import type { BrandId } from "@/data/brands";
+import { brands, type Brand, type BrandId } from "@/data/brands";
 
 type Props = SeoProps & {
   /** Header starts transparent over a full-bleed hero, then turns solid. */
@@ -30,7 +30,7 @@ const { overlayHeader = false, brand = "modular", footer = true, pinHeader = fal
       if ("scrollRestoration" in history) history.scrollRestoration = "manual";
       if (!location.hash) window.scrollTo(0, 0);
     </script>
-    <SeoHead {...seo} />
+    <SeoHead image={(brands[brand] as Brand).image} {...seo} />
   </head>
   <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
