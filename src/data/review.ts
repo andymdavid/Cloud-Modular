@@ -31,7 +31,7 @@ export interface ReviewSection {
   items: ReviewItem[];
 }
 
-export const reviewUpdated = "7 November 2026";
+export const reviewUpdated = "3 November 2026";
 
 export const pageNames: Record<string, string> = {
   "/": "Home",
@@ -49,7 +49,6 @@ export const pageNames: Record<string, string> = {
   "/our-work/seashells-jurien-bay/": "Seashells Jurien Bay",
   "/our-work/capel-village/": "Capel Village",
   "/our-work/25-on-rowland-and-forrest/": "25 On Rowland and Forrest",
-  "/trade/quality/": "Cloud Trade quality and compliance",
   "/privacy-policy/": "Privacy Policy",
   "/terms/": "Terms of Use",
 };
@@ -62,7 +61,6 @@ const APPROACH = "/our-approach/";
 const SEASHELLS = "/our-work/seashells-jurien-bay/";
 const CAPEL = "/our-work/capel-village/";
 const ROWLAND = "/our-work/25-on-rowland-and-forrest/";
-const TQ = "/trade/quality/";
 
 export const reviewSections: ReviewSection[] = [
   {
@@ -190,21 +188,6 @@ export const reviewSections: ReviewSection[] = [
       { id: "L6", priority: "med", says: `Damage in transit is "repaired on site by **our installation team**, using **spare materials shipped with the modules**"`, question: `Do we have our own installation team? Do we ship spares?`, at: [{ path: Q, find: "repaired on site by our installation team" }] },
       { id: "L7", priority: "low", says: `"A **licensed electrician** tests the connections before the building is powered."`, question: `Confirm.`, at: [{ path: Q, find: "A licensed electrician tests the connections" }] },
       { id: "L8", priority: "med", says: `"We manage the modules from the factory floor to the crane on site, including in **cyclone regions** and on **regional and remote** sites."`, question: `Confirm our experience in cyclone regions.`, at: [{ path: Q, find: "We manage the modules from the factory floor to the crane" }] },
-    ],
-  },
-  {
-    id: "trade-quality",
-    title: "Cloud Trade quality and compliance",
-    note: `The certification, inspection and warranty copy is a **draft from what the site already says**, with the usual Australian requirements for each category. Correct anything that isn't how we work.`,
-    items: [
-      { id: "TQ1", priority: "high", says: `Tapware and toilets are **WaterMark certified** and carry **WELS** ratings, "with 5-star ratings across the range"`, question: `Confirm both, and that every tapware and sanitary product we supply is 5-star rated.`, at: [{ path: TQ, find: "WaterMark certified" }] },
-      { id: "TQ2", priority: "high", says: `Windows and doors are made to **AS 2047**, with glazing to **AS 1288**, and come with their **energy performance ratings**`, question: `Confirm the standards and that the ratings (WERS or similar) come with each product.`, at: [{ path: TQ, find: "made to AS 2047" }] },
-      { id: "TQ3", priority: "med", says: `Flooring "is supplied with its specification and **test reports** for each product"`, question: `Which test reports do we provide (slip resistance, for example)?`, at: [{ path: TQ, find: "test reports for each product" }] },
-      { id: "TQ4", priority: "med", says: `Benchtops are made "in a stone and finish you approve from samples"; cabinetry and furniture are made to your specification`, question: `Confirm. When are furniture samples available (you mentioned after the first order)?`, at: [{ path: TQ, find: "approve from samples" }] },
-      { id: "TQ5", priority: "high", says: `Every order is inspected before it leaves the factory for **dimensions, finish, function, markings and certification, and packing**, and "the inspection report, **with photographs**, comes to you"`, question: `Is this what is checked? Who inspects: our Foshan team or a third-party inspector? Is the report with photos sent for every order?`, at: [{ path: TQ, find: "The inspection report, with photographs" }] },
-      { id: "TQ6", priority: "med", says: `"We clear your order through customs, so you have **nothing to arrange at the port**"`, question: `Confirm we handle customs clearance and delivery from the port for every order.`, at: [{ path: TQ, find: "nothing to arrange at the port" }] },
-      { id: "TQ7", priority: "high", says: `"Every order comes with **warranty and after-sales support** from our team and our after-sales partners"`, question: `What are the warranty terms (length and scope, by category), and who are the after-sales partners?`, at: [{ path: TQ, find: "warranty and after-sales support" }] },
-      { id: "TQ8", priority: "low", says: `"We work with **established manufacturers who make to Australian Standards**, and our office in Foshan follows every order through production"`, question: `Confirm the wording.`, at: [{ path: TQ, find: "established manufacturers" }] },
     ],
   },
   {
@@ -407,15 +390,6 @@ export const reviewPages: ReviewPage[] = [
     path: ROWLAND,
     title: "25 On Rowland and Forrest",
     cards: [{ id: "rowland-project", title: "The project", items: ["R1", "R2", "R3", "R4"] }],
-  },
-  {
-    id: "trade-quality",
-    path: TQ,
-    title: "Cloud Trade quality and compliance",
-    cards: [
-      { id: "trade-quality-standards", title: "Standards and samples", items: ["TQ1", "TQ2", "TQ3", "TQ4", "TQ8"] },
-      { id: "trade-quality-inspection", title: "Inspection, delivery and warranty", items: ["TQ5", "TQ6", "TQ7"] },
-    ],
   },
   {
     id: "legal",

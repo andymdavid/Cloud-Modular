@@ -1,3 +1,5 @@
+import type { GalleryRow } from "@/data/projects";
+
 // Cloud Trade (formerly Buildsource) at /trade/. Facts come from the old Buildsource site and the Trade briefing.
 // The trade network is China; Cloud Trade is the supplier and delivers nationally. Claims still to confirm
 // (exclusive licences, the five-year warranty, stock on hand, factory-direct pricing) stay off the page.
@@ -204,6 +206,24 @@ export const tradeRange = [
     title: "Flooring",
     description: "Stone and timber flooring.",
   },
+  {
+    slug: "benchtops",
+    image: "/trade/products/benchtop.webp",
+    width: 1024,
+    height: 1024,
+    imagePosition: "center",
+    title: "Benchtops",
+    description: "Granite benchtops, supplied for projects such as The Esplanade.",
+  },
+  {
+    slug: "furniture",
+    image: "/trade/products/furniture.webp",
+    width: 1024,
+    height: 1024,
+    imagePosition: "center",
+    title: "Furniture",
+    description: "Furniture and fittings, including the fully furnished villas at Seashells Jurien Bay.",
+  },
 ] as const;
 
 /** Proof: the Hanssen testimonial (cleared to use). The business is referred to as "the team", not by name. */
@@ -220,7 +240,7 @@ export const tradeCaseStudies = {
   intro: "We supply builders and developers across Australia, including these.",
   items: [
     { logo: "hanssen", client: "Hanssen", supplied: "Plumbing and benchtops", body: "Tapware and sanitary ware across many projects, and granite benchtops for The Esplanade." },
-    { logo: "griffin", client: "Griffin Group", supplied: "Plumbing", body: "Tapware and sanitary ware for Money Street, Loftus Street and two Edgecombe Street projects." },
+    { logo: "griffin", client: "Griffin Group", href: "/trade/projects/griffin-group/", supplied: "Plumbing", body: "Tapware and sanitary ware for Reside on Money, Loft Haus and two Edgecombe Street projects." },
     { logo: "probuild", client: "Probuild", supplied: "Plumbing", body: "Tapware and sanitary ware for Saffron Apartments on Adelaide Terrace." },
     { logo: "hancock", client: "Roy Hill, now Hancock Iron Ore", supplied: "Bathrooms", body: "Bathroom cabinets, taps and toilets for 980 bathrooms, supplied through AMS." },
     { logo: "seashells", client: "Seashells Jurien Bay", supplied: "Furnishing", body: "Furniture and fittings for the resort's tourism villas, which are sold fully furnished." },
@@ -298,3 +318,82 @@ export const tradeQuality = {
     ],
   },
 } as const;
+
+/** Case studies (/trade/projects/<slug>/): a client and the projects we supplied, from the client's own project pages.
+ * Photographs are the client's, credited on the page. */
+export interface TradeProject {
+  name: string;
+  body: string;
+  details: { label: string; value: string }[];
+  gallery: GalleryRow[];
+}
+
+export const tradeProjects = [
+  {
+    slug: "griffin-group",
+    client: "Griffin Group",
+    location: "Perth",
+    sector: "Residential",
+    supplied: "Tapware and sanitary ware",
+    description: "The tapware and sanitary ware Cloud Trade supplied for Griffin Group's Reside on Money, Loft Haus and Como projects in Perth.",
+    hero: {
+      src: "/trade/projects/griffin/reside-street.webp",
+      alt: "Reside on Money, a six-storey apartment building on Money Street in Northbridge, behind a row of plane trees",
+      width: 1920,
+      height: 1280,
+    },
+    intro:
+      "Griffin Group is a property developer with apartment and townhouse projects across Australia. We supplied the tapware and sanitary ware for four of its Perth projects: Reside on Money in Northbridge, Loft Haus in Leederville and two projects on Edgecombe Street in Como.",
+    stats: [
+      { value: "4", label: "Griffin projects supplied" },
+      { value: "37", label: "Apartments across Reside on Money and Loft Haus" },
+    ],
+    projects: [
+      {
+        name: "Reside on Money",
+        body: "A boutique building of 22 one and two bedroom apartments in Northbridge, a short walk from the Perth CBD. The six-storey building uses renewable energy to lower the cost of electricity, heating, cooling and hot water.",
+        details: [
+          { label: "Location", value: "Money Street, Northbridge" },
+          { label: "Apartments", value: "22" },
+          { label: "Architect", value: "Fratelle Group" },
+          { label: "Builder", value: "JCM Construction" },
+          { label: "We supplied", value: "Tapware and sanitary ware" },
+        ],
+        gallery: [
+          {
+            kind: "pair",
+            images: [
+              { src: "/trade/projects/griffin/reside-bathroom.webp", alt: "An apartment bathroom with a navy vanity, a round vessel basin, a wall-mounted mixer and a frameless shower", width: 1920, height: 1280, caption: "A bathroom at Reside on Money" },
+              { src: "/trade/projects/griffin/reside-basin.webp", alt: "A round white vessel basin on a stone vanity top under a wall-mounted chrome mixer", width: 1920, height: 1280, caption: "Basin and wall mixer" },
+            ],
+          },
+          {
+            kind: "full",
+            image: { src: "/trade/projects/griffin/reside-rooftop.webp", alt: "The rooftop deck at Reside on Money, with shade sails, tables and the Perth skyline", width: 1920, height: 1280, caption: "The rooftop deck, looking to the city" },
+          },
+        ],
+      },
+      {
+        name: "Loft Haus",
+        body: "Fifteen apartments, including two penthouses, on an elevated site in Leederville with views to the city. The three-storey building is set around a landscaped central courtyard and was completed in March 2023.",
+        details: [
+          { label: "Location", value: "Loftus Street, Leederville" },
+          { label: "Apartments", value: "15" },
+          { label: "Architect", value: "Carrier and Postmus Architects" },
+          { label: "Builder", value: "The ABN Group" },
+          { label: "Completed", value: "March 2023" },
+          { label: "We supplied", value: "Tapware and sanitary ware" },
+        ],
+        gallery: [
+          {
+            kind: "pair",
+            images: [
+              { src: "/trade/projects/griffin/lofthaus-street.webp", alt: "Loft Haus, a three-storey pale brick apartment building on Loftus Street at dusk", width: 1200, height: 780, caption: "Loft Haus from Loftus Street" },
+              { src: "/trade/projects/griffin/lofthaus-bathroom.webp", alt: "A bathroom with a timber vanity, a matt black mixer, green feature tiles and a black-framed shower screen", width: 1200, height: 780, caption: "A bathroom with matt black tapware" },
+            ],
+          },
+        ],
+      },
+    ] satisfies TradeProject[],
+  },
+] as const;

@@ -10,15 +10,17 @@ import type { GalleryRow } from "@/data/projects";
 interface Props {
   rows: readonly GalleryRow[];
   label?: string;
+  /** For pages with more than one gallery. */
+  id?: string;
 }
 
-const { rows, label = "Gallery" } = Astro.props;
+const { rows, label = "Gallery", id = "gallery" } = Astro.props;
 const images = rows.flatMap((row) => (row.kind === "full" ? [row.image] : row.images));
 const indexOf = (src: string) => images.findIndex((image) => image.src === src);
 const number = (index: number) => String(index + 1).padStart(2, "0");
 ---
 
-<section id="gallery" data-theme="light" class="scroll-mt-header pb-section" data-gallery>
+<section id={id} data-theme="light" class="scroll-mt-header pb-section" data-gallery>
   <div class="shell">
     <div class="rule grid-12 gap-y-6 pt-section">
       <h2 class="label col-span-12 md:col-span-6" data-reveal>{label}</h2>

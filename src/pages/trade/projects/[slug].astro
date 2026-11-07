@@ -1,0 +1,89 @@
+---
+import RefreshLayout from "@/layouts/RefreshLayout.astro";
+import SplitSection from "@/components/refresh/SplitSection.astro";
+import ProjectGallery from "@/components/refresh/ProjectGallery.astro";
+import GetStarted from "@/components/refresh/GetStarted.astro";
+import { tradeProjects } from "@/data/trade";
+import { site } from "@/data/site";
+
+/**
+ * Cloud Trade case study: one client and the projects we supplied, as the Cloud Modular project pages. A full-bleed
+ * hero, an overview with the headline figures, then each project with its details and the client's photographs.
+ */
+export function getStaticPaths() {
+  return tradeProjects.map((project) => ({ params: { slug: project.slug }, props: { project } }));
+}
+
+const { project } = Astro.props as { project: (typeof tradeProjects)[number] };
+const title = `${project.client} | Case Study | Cloud Trade`;
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Cloud Trade", item: `${site.url}/trade/` },
+    { "@type": "ListItem", position: 2, name: project.client, item: `${site.url}/trade/projects/${project.slug}/` },
+  ],
+};
+const slugOf = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+---
+
+<RefreshLayout title={title} description={project.description} canonical={`/trade/projects/${project.slug}/`} structuredData={breadcrumbSchema} brand="trade" image={project.hero.src} overlayHeader>
+  <section data-hero data-theme="dark" class="relative h-[100svh] min-h-[560px] overflow-hidden">
+    <img src={project.hero.src} alt={project.hero.alt} width={project.hero.width} height={project.hero.height} fetchpriority="high" class="hero-media absolute inset-0 h-full w-full object-cover" />
+    <div class="absolute inset-0 bg-[linear-gradient(180deg,rgb(11_11_12/0.5)_0%,rgb(11_11_12/0)_28%,rgb(11_11_12/0)_45%,rgb(11_11_12/0.65)_100%)]" aria-hidden="true"></div>
+    <div class="shell relative flex h-full flex-col justify-end pb-10 sm:pb-14">
+      <div class="grid-12 items-end gap-y-6">
+        <div class="col-span-12 lg:col-span-9">
+          <a href="/trade/#clients" class="label text-sage">Case study</a>
+          <h1 class="mt-5 text-hero">{project.client}</h1>
+        </div>
+        <dl class="col-span-12 flex flex-wrap gap-x-8 gap-y-3 lg:col-span-3 lg:flex-col lg:items-end lg:text-right">
+          <div><dt class="sr-only">Location</dt><dd class="label text-fg">{project.location}</dd></div>
+          <div><dt class="sr-only">Sector</dt><dd class="label text-fg/80">{project.sector}</dd></div>
+          <div><dt class="sr-only">Supplied</dt><dd class="label text-fg/80">{project.supplied}</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <SplitSection id="overview" label="Overview" rule={false} spacing="tight">
+    <p class="text-about">{project.intro}</p>
+    <dl class="mt-10 grid w-full grid-cols-2 gap-x-gap-sm gap-y-10">
+      {project.stats.map((stat, index) => (
+        <div class="flex flex-col border-t border-line/[var(--rule-alpha)] pt-5" data-reveal style={`--reveal-delay:${index * 80}ms`}>
+          <dt class="order-2 mt-3 max-w-[24ch] text-small text-fg-muted">{stat.label}</dt>
+          <dd class="order-1 text-h1 tabular-nums">{stat.value}</dd>
+        </div>
+      ))}
+    </dl>
+  </SplitSection>
+
+  {project.projects.map((item) => (
+    <Fragment>
+      <SplitSection id={slugOf(item.name)} label={item.name}>
+        <p class="text-about">{item.body}</p>
+        <ul class="mt-10 w-full border-b border-line/[var(--rule-alpha)]">
+          {item.details.map((detail) => (
+            <li class="grid grid-cols-2 gap-x-gap-sm border-t border-line/[var(--rule-alpha)] py-4">
+              <span class="text-small text-fg-muted">{detail.label}</span>
+              <span class="text-body">{detail.value}</span>
+            </li>
+          ))}
+        </ul>
+      </SplitSection>
+      <ProjectGallery id={`${slugOf(item.name)}-gallery`} label={`${item.name} gallery`} rows={item.gallery} />
+    </Fragment>
+  ))}
+
+  <div class="shell -mt-8 pb-section">
+    <p class="text-caption text-fg-subtle">Photographs courtesy of {project.client}.</p>
+  </div>
+
+  <GetStarted
+    text="Send us your schedule and we will come back with a quote for your next project."
+    actions={[
+      { label: "Send us your schedule", href: "/trade/start/" },
+      { label: "Talk to our team", href: "/trade/contact/" },
+    ]}
+  />
+</RefreshLayout>

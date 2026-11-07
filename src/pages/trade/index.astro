@@ -152,6 +152,7 @@ const pageSchema = {
       {tradeCaseStudies.items.map((item, index) => (
         <li data-reveal style={`--reveal-delay:${index * 80}ms`}>
           <figure class="case">
+            {"href" in item && <a href={item.href} class="case-link" aria-label={`${item.client} case study`}></a>}
             <div class="case-media">
               {"text" in item ? (
                 <span class="case-text" role="img" aria-label={item.client}>{item.text.map((line) => <span>{line}</span>)}</span>
@@ -163,6 +164,7 @@ const pageSchema = {
               <p class="label label-muted mt-4">{item.supplied}</p>
               <p class="mt-2 text-body font-medium">{item.client}</p>
               <p class="mt-1 max-w-[40ch] text-caption text-fg-subtle">{item.body}</p>
+              {"href" in item && <p class="case-more label mt-3">Read the case study</p>}
             </figcaption>
           </figure>
         </li>
@@ -268,6 +270,26 @@ const pageSchema = {
   }
 
   /* Client cards: landscape frames with the image cards' caption rhythm; logos sit gold on slate */
+  /* A case card with a case study is one link, laid over the whole card */
+  .case {
+    position: relative;
+  }
+
+  .case-link {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .case-more {
+    color: rgb(var(--gold-deep));
+  }
+
+  .case:has(.case-link:hover) .case-more {
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+
   .case-media {
     display: flex;
     aspect-ratio: 3 / 2;
