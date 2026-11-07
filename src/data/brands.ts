@@ -21,6 +21,8 @@ export interface Brand {
   /** Small mono word under the wordmark; none keeps the wordmark on its own. */
   descriptor?: string;
   home: string;
+  /** A contact page that stands in for the email address, which the brand doesn't show. */
+  contact?: string;
   /** The link-preview image for the brand's pages; none uses the site's default. */
   image?: string;
   /** The header button and the menu panel's closing action. */
@@ -117,6 +119,7 @@ export const brands = {
     descriptor: "Trade",
     home: "/trade/",
     image: "/trade/og-image.webp",
+    contact: "/trade/contact/",
     // Open an account goes to the portal's sign-up; until the portal has an address it leads to /trade/start/
     cta: { label: "Open an account", href: "/trade/start/" },
     menuPrompt: "Open an account and start your first project",
@@ -125,6 +128,7 @@ export const brands = {
         label: "Trade",
         links: [
           { label: "How It Works", href: "/trade/how-it-works/" },
+          { label: "Quality", href: "/trade/quality/" },
           { label: "Range", href: "/trade/#range" },
           { label: "Clients", href: "/trade/#clients" },
         ],
@@ -144,6 +148,7 @@ export const brands = {
           links: [
             { label: "Home", href: "/trade/" },
             { label: "How It Works", href: "/trade/how-it-works/" },
+            { label: "Quality", href: "/trade/quality/" },
             { label: "Range", href: "/trade/#range" },
           ],
         },

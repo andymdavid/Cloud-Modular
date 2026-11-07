@@ -239,3 +239,62 @@ export const tradeEnquiry = {
   categories: [...tradeRange.map((category) => category.title), "Something else", "Not sure yet"],
   timing: ["Within 3 months", "3 to 6 months", "More than 6 months", "Not sure yet"],
 };
+
+/** Quality and compliance (/trade/quality/), from what the site already states. The certification, inspection and
+ * warranty specifics are in the fact review (src/data/review.ts, section "trade-quality") for the team to confirm. */
+export const tradeQuality = {
+  network:
+    "Our trade network is built on 30 years of business in China. We work with established manufacturers who make to Australian Standards, and our office in Foshan follows every order through production.",
+  standards: {
+    intro:
+      "Every product comes with the compliance it needs in Australia. It is listed against each line of your quote and kept in your account with the rest of your order.",
+    items: [
+      {
+        title: "Tapware and sanitary ware",
+        body: "Tapware and toilets are WaterMark certified for use in Australia and carry WELS water efficiency ratings, with 5-star ratings across the range.",
+      },
+      {
+        title: "Windows and doors",
+        body: "Windows and doors are made to AS 2047, with glazing to AS 1288, and come with their energy performance ratings.",
+      },
+      {
+        title: "Kitchen and bathroom cabinetry",
+        body: "Cabinetry is made to your drawings and specification, with the board, hardware and finishes listed on your quote.",
+      },
+      {
+        title: "Benchtops",
+        body: "Granite benchtops are made to your drawings, in a stone and finish you approve from samples.",
+      },
+      {
+        title: "Flooring",
+        body: "Stone and timber flooring is supplied with its specification and test reports for each product.",
+      },
+      {
+        title: "Furniture",
+        body: "Furniture and fittings are made to your specification, with the materials and finishes listed on your quote.",
+      },
+    ],
+  },
+  samples:
+    "You approve the samples and the quote before anything goes into production, and your client signs off where they need to. Production starts once you have.",
+  inspection: {
+    intro:
+      "Every order is checked against its specification before it leaves the factory. The inspection report, with photographs, comes to you and is kept in your account.",
+    items: [
+      { title: "Dimensions", body: "Each product is measured against the drawings and the specification on your order." },
+      { title: "Finish", body: "Surfaces, colours and finishes are checked against the samples you approved." },
+      { title: "Function", body: "Taps, doors, drawers and fittings are tested to make sure they work as they should." },
+      { title: "Markings and certification", body: "Certification marks and labels are checked against the compliance listed on your quote." },
+      { title: "Packing", body: "Packing is checked so everything arrives on site in the condition it left the factory." },
+    ],
+  },
+  delivery: {
+    intro: "Your whole order is packed and shipped together, so it arrives on site as one delivery.",
+    items: [
+      { title: "Shipping", body: "Your order is at sea for about three weeks, with the shipping documents in your account." },
+      { title: "Customs", body: "We clear your order through customs, so you have nothing to arrange at the port." },
+      { title: "Delivery", body: "We deliver to your site, anywhere in Australia, in the week your programme needs it." },
+      { title: "Warranty and after-sales", body: "Every order comes with warranty and after-sales support from our team and our after-sales partners." },
+    ],
+  },
+} as const;

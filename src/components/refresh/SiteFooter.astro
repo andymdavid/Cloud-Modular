@@ -72,7 +72,7 @@ const groups = brand.footer.groups;
           <a href={site.linkedIn} target="_blank" rel="noreferrer" class="footer-icon" aria-label="Cloud Modular on LinkedIn">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.75h4v11H3v-11Zm6.5 0h3.8v1.5h.05c.53-1 1.84-2.05 3.78-2.05 4.05 0 4.8 2.66 4.8 6.13v5.42h-4v-4.8c0-1.15-.02-2.62-1.6-2.62-1.6 0-1.84 1.25-1.84 2.54v4.88h-4v-11Z" /></svg>
           </a>
-          <a href={`mailto:${site.email}`} class="footer-icon" aria-label={`Email ${site.email}`}>
+          <a href={brand.contact ?? `mailto:${site.email}`} class="footer-icon" aria-label={brand.contact ? `Message ${brand.name}` : `Email ${site.email}`}>
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="1.5" y="3" width="11" height="8" rx="0.5" stroke="currentColor" stroke-width="1.1" /><path d="m2 3.5 5 4 5-4" stroke="currentColor" stroke-width="1.1" /></svg>
           </a>
         </div>

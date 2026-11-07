@@ -1,0 +1,73 @@
+---
+import RefreshLayout from "@/layouts/RefreshLayout.astro";
+import PageIntro from "@/components/refresh/PageIntro.astro";
+import SplitSection from "@/components/refresh/SplitSection.astro";
+import ImagePanel from "@/components/refresh/ImagePanel.astro";
+import Accordion from "@/components/refresh/Accordion.astro";
+import TradeDocument from "@/components/refresh/TradeDocument.astro";
+import GetStarted from "@/components/refresh/GetStarted.astro";
+import { tradeQuality } from "@/data/trade";
+import { site } from "@/data/site";
+
+/**
+ * Cloud Trade, quality and compliance: the Trade counterpart of /quality/. What a builder receives at each stage,
+ * from the standards each category is made to, through samples and inspection, to delivery and after-sales.
+ */
+const title = "Quality and Compliance | Cloud Trade";
+const description =
+  "How Cloud Trade products are made to Australian Standards, approved from samples, inspected before shipping and delivered to site anywhere in Australia.";
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Cloud Trade", item: `${site.url}/trade/` },
+    { "@type": "ListItem", position: 2, name: "Quality and compliance", item: `${site.url}/trade/quality/` },
+  ],
+};
+---
+
+<RefreshLayout title={title} description={description} canonical="/trade/quality/" structuredData={breadcrumbSchema} brand="trade">
+  <!-- On phones the intro and the image under it fill the first screen, as /quality/ -->
+  <div class="intro-screen">
+    <PageIntro label="Quality and compliance" title="Made to Australian Standards" lead="Every product we supply is made to Australian Standards, approved by you before production and checked before it ships." />
+
+    <div class="wide-row intro-grow" data-reveal>
+      <div class="intro-frame aspect-[4/3] overflow-hidden rounded bg-stone sm:aspect-[21/9]">
+        <img src="/trade/quality/factory.webp" alt="A clean, modern joinery factory with finished panels on pallets and automated machinery" width="1920" height="1072" fetchpriority="high" class="h-full w-full object-cover" />
+      </div>
+    </div>
+  </div>
+
+  <SplitSection id="network" label="Our trade network" rule={false}>
+    <p class="text-about">{tradeQuality.network}</p>
+  </SplitSection>
+
+  <SplitSection id="standards" label="Australian Standards">
+    <p class="text-about">{tradeQuality.standards.intro}</p>
+    <Accordion items={tradeQuality.standards.items} name="standards" class="mt-10" />
+  </SplitSection>
+
+  <SplitSection id="samples" label="Samples and approval">
+    <p class="text-about">{tradeQuality.samples}</p>
+    <TradeDocument doc="order" class="mt-10" />
+  </SplitSection>
+
+  <SplitSection id="inspection" label="Inspection before shipping">
+    <p class="text-about">{tradeQuality.inspection.intro}</p>
+    <TradeDocument doc="inspection" class="mt-10" />
+    <Accordion items={tradeQuality.inspection.items} name="inspection" class="mt-10" />
+  </SplitSection>
+
+  <ImagePanel id="delivery" label="Shipping and delivery" title="Shipped together, delivered to site" image="/trade/quality/at-sea.webp" alt="A container ship heading out across calm water at dusk" width={1920} height={1080} imagePosition="center">
+    <p class="text-body text-fg-muted">{tradeQuality.delivery.intro}</p>
+    <Accordion items={tradeQuality.delivery.items} name="delivery" openFirst class="mt-10" />
+  </ImagePanel>
+
+  <GetStarted
+    text="Send us your schedule and we will come back with a quote, with the compliance for every product."
+    actions={[
+      { label: "Send us your schedule", href: "/trade/start/" },
+      { label: "Talk to our team", href: "/trade/contact/" },
+    ]}
+  />
+</RefreshLayout>
