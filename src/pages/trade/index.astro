@@ -40,9 +40,25 @@ const pageSchema = {
 ---
 
 <RefreshLayout title={title} description={description} canonical="/trade/" structuredData={[faqSchema, pageSchema]} brand="trade" overlayHeader>
-  <!-- Hero: as the home page, the display line bottom-left and the action bottom-right. Slate until the Trade
-       hero image is made. -->
+  <!-- Hero: as the home page, the display line bottom-left and the action bottom-right, over a looping film from
+       the factory floor to a container ship at sea -->
   <section data-hero data-theme="dark" data-surface="slate" class="trade-hero relative h-[100svh] min-h-[560px] overflow-hidden">
+    <video
+      src="/media/trade-hero.mp4"
+      poster="/trade/hero-poster.webp"
+      width="1920"
+      height="1080"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+      aria-hidden="true"
+      data-hero-video
+      class="hero-media absolute inset-0 h-full w-full object-cover"
+    ></video>
+    <!-- Deeper at the foot than the home page's, as the factory floor is pale behind the headline -->
+    <div class="absolute inset-0 bg-[linear-gradient(180deg,rgb(11_11_12/0.55)_0%,rgb(11_11_12/0)_28%,rgb(11_11_12/0.05)_45%,rgb(11_11_12/0.72)_100%)]" aria-hidden="true"></div>
     <div class="shell relative flex h-full flex-col justify-end pb-10 sm:pb-14">
       <div class="grid-12 items-end gap-y-6">
         <h1 class="col-span-12 text-hero lg:col-span-8">{tradeHero.title}</h1>
@@ -272,6 +288,12 @@ const pageSchema = {
 </style>
 
 <script>
+  const heroVideo = document.querySelector<HTMLVideoElement>("[data-hero-video]");
+  if (heroVideo && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    heroVideo.removeAttribute("autoplay");
+    heroVideo.pause();
+  }
+
   // Centre the fanned documents: measure the three rotated sheets as one group (their rest positions, not the
   // hover spread), then size the stage so the group has an equal margin on all four sides.
   document.querySelectorAll<HTMLElement>("[data-fan]").forEach((fan) => {
