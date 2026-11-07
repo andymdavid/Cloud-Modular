@@ -128,14 +128,21 @@ export const brands = {
         label: "Trade",
         links: [
           { label: "How It Works", href: "/trade/how-it-works/" },
-          { label: "Quality", href: "/trade/quality/" },
+          { label: "Quality and Compliance", href: "/trade/quality/" },
           { label: "Range", href: "/trade/#range" },
-          { label: "Clients", href: "/trade/#clients" },
+        ],
+      },
+      {
+        label: "Clients",
+        links: [
+          { label: "Who We Supply", href: "/trade/#clients" },
+          { label: "Griffin Group", href: "/trade/projects/griffin-group/" },
         ],
       },
       {
         label: "Help",
         links: [
+          { label: "Get Started", href: "/trade/start/" },
           { label: "FAQ", href: "/trade/#faq" },
           { label: "Contact", href: "/trade/contact/" },
         ],
@@ -148,17 +155,23 @@ export const brands = {
           links: [
             { label: "Home", href: "/trade/" },
             { label: "How It Works", href: "/trade/how-it-works/" },
-            { label: "Quality", href: "/trade/quality/" },
+            { label: "Quality and Compliance", href: "/trade/quality/" },
             { label: "Range", href: "/trade/#range" },
           ],
         },
         {
-          label: "Account",
-          links: [{ label: "Open an Account", href: "/trade/start/" }],
+          label: "Clients",
+          links: [
+            { label: "Who We Supply", href: "/trade/#clients" },
+            { label: "Griffin Group", href: "/trade/projects/griffin-group/" },
+          ],
         },
         {
           label: "Help",
-          links: [{ label: "FAQ", href: "/trade/#faq" }],
+          links: [
+            { label: "Get Started", href: "/trade/start/" },
+            { label: "FAQ", href: "/trade/#faq" },
+          ],
         },
         {
           label: "Contact",

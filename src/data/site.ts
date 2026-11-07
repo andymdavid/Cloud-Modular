@@ -19,7 +19,7 @@ export const site = {
     },
     {
       city: "Foshan, China",
-      lines: ["3F, 48L, No.26", "Lang Bao West Road", "Foshan City", "Guangdong Province", "China"],
+      lines: ["3F, 48L, No.26", "Lang Bao West Road", "Foshan City", "Guangdong Province"],
     },
   ],
 } as const;
