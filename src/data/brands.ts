@@ -136,7 +136,7 @@ export const brands = {
         label: "Clients",
         links: [
           { label: "Who We Supply", href: "/trade/#clients" },
-          { label: "Griffin Group", href: "/trade/projects/griffin-group/" },
+          { label: "Griffin Case Study", href: "/trade/projects/griffin-group/" },
         ],
       },
       {
@@ -163,7 +163,7 @@ export const brands = {
           label: "Clients",
           links: [
             { label: "Who We Supply", href: "/trade/#clients" },
-            { label: "Griffin Group", href: "/trade/projects/griffin-group/" },
+            { label: "Griffin Case Study", href: "/trade/projects/griffin-group/" },
           ],
         },
         {
