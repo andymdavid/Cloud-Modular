@@ -2,6 +2,7 @@
 import SeoHead from "@/components/SeoHead.astro";
 import SiteHeader from "@/components/refresh/SiteHeader.astro";
 import SiteFooter from "@/components/refresh/SiteFooter.astro";
+import CartDrawer from "@/components/living/CartDrawer.astro";
 import "@/styles/refresh.css";
 
 import type { Props as SeoProps } from "@/components/SeoHead.astro";
@@ -37,6 +38,7 @@ const { overlayHeader = false, brand = "modular", footer = true, pinHeader = fal
     <SiteHeader overlay={overlayHeader} brand={brand} pinned={pinHeader} />
     <main id="main-content"><slot /></main>
     {footer && <SiteFooter brand={brand} />}
+    {(brands[brand] as Brand).cart && <CartDrawer />}
 
     <script>
       // Scroll to in-page sections without writing the #hash to the URL, so a reload opens at the

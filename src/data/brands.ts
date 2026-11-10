@@ -25,6 +25,10 @@ export interface Brand {
   contact?: string;
   /** The link-preview image for the brand's pages; none uses the site's default. */
   image?: string;
+  /** A shop's cart page: the header shows a bag with the item count, which opens the cart drawer. */
+  cart?: string;
+  /** Links shown inline in the header on wide screens (a shop's departments). */
+  nav?: NavLink[];
   /** The header button and the menu panel's closing action. */
   cta: NavLink;
   menuPrompt: string;
@@ -189,6 +193,105 @@ export const brands = {
       actions: [
         { label: "Open an account", href: "/trade/start/" },
         { label: "Talk to the team", href: "/trade/contact/" },
+      ],
+    },
+  },
+  living: {
+    name: "Cloud Living",
+    descriptor: "Living",
+    home: "/living/",
+    contact: "/living/contact/",
+    cart: "/living/cart/",
+    cta: { label: "Shop all", href: "/living/shop/" },
+    nav: [
+      { label: "Shop All", href: "/living/shop/" },
+      { label: "Living", href: "/living/rooms/living/" },
+      { label: "Dining", href: "/living/rooms/dining/" },
+      { label: "Bedroom", href: "/living/rooms/bedroom/" },
+      { label: "Kitchen", href: "/living/rooms/kitchen/" },
+      { label: "Bathroom", href: "/living/rooms/bathroom/" },
+      { label: "Outdoor", href: "/living/rooms/outdoor/" },
+    ],
+    menuPrompt: "Furniture and homewares for every room",
+    menu: [
+      {
+        label: "Shop by room",
+        links: [
+          { label: "Living", href: "/living/rooms/living/" },
+          { label: "Dining", href: "/living/rooms/dining/" },
+          { label: "Bedroom", href: "/living/rooms/bedroom/" },
+          { label: "Kitchen", href: "/living/rooms/kitchen/" },
+          { label: "Bathroom", href: "/living/rooms/bathroom/" },
+          { label: "Outdoor", href: "/living/rooms/outdoor/" },
+        ],
+      },
+      {
+        label: "Shop by category",
+        links: [
+          { label: "Sofas", href: "/living/shop/sofas/" },
+          { label: "Chairs", href: "/living/shop/chairs/" },
+          { label: "Tables", href: "/living/shop/tables/" },
+          { label: "Beds and Mattresses", href: "/living/shop/beds/" },
+          { label: "Storage", href: "/living/shop/storage/" },
+          { label: "Lighting", href: "/living/shop/lighting/" },
+          { label: "Linen and Rugs", href: "/living/shop/textiles/" },
+          { label: "Bathroom", href: "/living/shop/bathroom/" },
+          { label: "Appliances", href: "/living/shop/appliances/" },
+        ],
+      },
+      {
+        label: "Help",
+        links: [
+          { label: "Delivery and Returns", href: "/living/help/" },
+          { label: "Contact", href: "/living/contact/" },
+          { label: "Furnishing a Project", href: "/trade/" },
+        ],
+      },
+    ],
+    footer: {
+      groups: [
+        {
+          label: "Shop",
+          links: [
+            { label: "Shop All", href: "/living/shop/" },
+            { label: "New In", href: "/living/shop/?sort=new" },
+            { label: "Sofas", href: "/living/shop/sofas/" },
+            { label: "Beds and Mattresses", href: "/living/shop/beds/" },
+            { label: "Lighting", href: "/living/shop/lighting/" },
+          ],
+        },
+        {
+          label: "Rooms",
+          links: [
+            { label: "Living", href: "/living/rooms/living/" },
+            { label: "Dining", href: "/living/rooms/dining/" },
+            { label: "Bedroom", href: "/living/rooms/bedroom/" },
+            { label: "Kitchen", href: "/living/rooms/kitchen/" },
+            { label: "Bathroom", href: "/living/rooms/bathroom/" },
+            { label: "Outdoor", href: "/living/rooms/outdoor/" },
+          ],
+        },
+        {
+          label: "Help",
+          links: [
+            { label: "Delivery", href: "/living/help/#delivery" },
+            { label: "Returns", href: "/living/help/#returns" },
+            { label: "Orders and Payment", href: "/living/help/#orders" },
+            { label: "Cart", href: "/living/cart/" },
+          ],
+        },
+        {
+          label: "Contact",
+          links: [
+            { label: "Contact Us", href: "/living/contact/" },
+            { label: "Cloud Trade", href: "/trade/" },
+          ],
+        },
+      ],
+      prompt: "Need help choosing, or furnishing a whole home? Send us a message and our team will help.",
+      actions: [
+        { label: "Shop all", href: "/living/shop/" },
+        { label: "Contact us", href: "/living/contact/" },
       ],
     },
   },

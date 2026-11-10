@@ -127,7 +127,7 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
   if (!env.RESEND_API_KEY || !env.ENQUIRY_FROM) return reply(false, 503, "Email sending is not set up");
 
   const rows = FIELDS[kind].filter(([name]) => values[name]);
-  const subject = `${{ project: "Project enquiry", general: page.startsWith("/trade/") ? "Cloud Trade message" : "Website message", design: `Cloud Home design (${values.home})`, trade: "Cloud Trade request" }[kind]} from ${values.name}${values.organisation ? `, ${values.organisation}` : ""}`;
+  const subject = `${{ project: "Project enquiry", general: page.startsWith("/trade/") ? "Cloud Trade message" : page.startsWith("/living/") ? "Cloud Living message" : "Website message", design: `Cloud Home design (${values.home})`, trade: "Cloud Trade request" }[kind]} from ${values.name}${values.organisation ? `, ${values.organisation}` : ""}`;
   const text = `${rows.map(([name, label]) => `${label}: ${values[name]}`).join("\n")}\n\nSent from ${new URL(page, request.url).toString()}`;
   const html = `<table cellpadding="6" style="font-family:Arial,sans-serif;font-size:14px;border-collapse:collapse">${rows
     .map(

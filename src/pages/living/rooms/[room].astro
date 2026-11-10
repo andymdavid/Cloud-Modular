@@ -1,0 +1,25 @@
+---
+import RefreshLayout from "@/layouts/RefreshLayout.astro";
+import CollectionHead from "@/components/living/CollectionHead.astro";
+import CollectionView from "@/components/living/CollectionView.astro";
+import { livingProducts, livingRooms, type Room } from "@/data/living";
+
+/** Cloud Living, one room: its photograph as a banner, then the products for it, filtered by category. */
+export function getStaticPaths() {
+  return livingRooms.map((room) => ({ params: { room: room.slug }, props: { room } }));
+}
+
+const { room } = Astro.props as { room: Room };
+const products = livingProducts.filter((product) => product.rooms.includes(room.slug));
+const title = `${room.title} | Shop by Room | Cloud Living`;
+---
+
+<RefreshLayout title={title} description={room.description} canonical={`/living/rooms/${room.slug}/`} brand="living">
+  <CollectionHead
+    title={room.title}
+    description={room.description}
+    crumbs={[{ label: "Shop by room", href: "/living/#rooms" }]}
+    image={{ src: room.image, width: room.width, height: room.height, position: room.imagePosition }}
+  />
+  <CollectionView products={products} filters={["category", "colour", "price"]} />
+</RefreshLayout>

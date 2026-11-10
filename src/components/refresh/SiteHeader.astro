@@ -34,8 +34,20 @@ const menu = groups.map((group) => ({ ...group, links: group.links.map((link) =>
         {brand.descriptor && <span class="logo-descriptor" aria-hidden="true">{brand.descriptor}</span>}
       </a>
 
+      {brand.nav && (
+        <nav class="header-nav pointer-events-auto hidden xl:flex" aria-label="Departments">
+          {brand.nav.map((link) => <a href={link.href} class="header-nav-link">{link.label}</a>)}
+        </nav>
+      )}
+
       <div class="flex items-center gap-4 sm:gap-6">
-        <a href={brand.cta.href} class="btn pointer-events-auto">{brand.cta.label}</a>
+        <a href={brand.cta.href} class:list={["btn pointer-events-auto", { "max-sm:hidden": brand.cart }]}>{brand.cta.label}</a>
+        {brand.cart && (
+          <a href={brand.cart} class="cart-icon pointer-events-auto" data-cart-open aria-label="Cart">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 6.5h12l-1 10.5H5L4 6.5Z" stroke="currentColor" stroke-width="1.2" /><path d="M7.25 8.5V5.75a2.75 2.75 0 0 1 5.5 0V8.5" stroke="currentColor" stroke-width="1.2" /></svg>
+            <span class="cart-count" data-cart-count hidden></span>
+          </a>
+        )}
         <button type="button" data-menu-open class="menu-icon pointer-events-auto" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu">
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
@@ -164,6 +176,69 @@ const menu = groups.map((group) => ({ ...group, links: group.links.map((link) =>
     .logo-descriptor {
       transition: none;
     }
+  }
+
+  /* A shop's departments, inline between the logo and the actions on wide screens */
+  .header-nav {
+    gap: 1.75rem;
+    color: rgb(var(--fg));
+    transition:
+      color var(--dur-base) var(--ease-standard),
+      opacity 0.4s var(--ease-standard);
+  }
+
+  .header-nav-link {
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    transition: opacity var(--dur-base) var(--ease-standard);
+  }
+
+  .header-nav-link:hover {
+    opacity: 0.6;
+  }
+
+  .site-header.is-compact .header-nav {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Cart bag with the item count */
+  .cart-icon {
+    position: relative;
+    display: inline-flex;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-right: -0.75rem;
+    align-items: center;
+    justify-content: center;
+    color: rgb(var(--fg));
+    transition:
+      opacity var(--dur-base) var(--ease-standard),
+      color var(--dur-base) var(--ease-standard);
+  }
+
+  .cart-icon:hover {
+    opacity: 0.6;
+  }
+
+  .cart-count {
+    position: absolute;
+    right: 0.3125rem;
+    top: 0.4375rem;
+    min-width: 0.9375rem;
+    height: 0.9375rem;
+    padding-inline: 0.25rem;
+    border-radius: var(--radius-pill);
+    background: rgb(var(--gold));
+    color: rgb(var(--ink));
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    font-weight: var(--weight-medium);
+    line-height: 0.9375rem;
+    text-align: center;
   }
 
   .site-logo {

@@ -1,0 +1,265 @@
+---
+import ProductArt from "@/components/living/ProductArt.astro";
+import { artOf, livingProducts, type ArtId } from "@/data/living";
+
+/**
+ * Cart drawer: slides in from the right (as the menu panel) whenever something is added or the header bag is
+ * pressed. Lines are drawn in the browser from the cart in living-cart.ts and the catalogue below; checkout waits
+ * for the commerce engine. Also draws the cart page (/living/cart/) through [data-cart-lines] there.
+ */
+const catalogue = Object.fromEntries(
+  livingProducts.map((product) => [product.slug, { name: product.name, price: product.price, image: product.image?.src, art: artOf(product) }]),
+);
+const arts = [...new Set(livingProducts.map(artOf))] as ArtId[];
+---
+
+<script is:inline type="application/json" id="living-catalogue" set:html={JSON.stringify(catalogue)} />
+<div hidden>
+  {arts.map((art) => <template data-art={art}><ProductArt art={art} /></template>)}
+</div>
+
+<div data-cart-root class="cart-root" aria-hidden="true" inert>
+  <div class="cart-scrim" data-cart-close></div>
+  <div data-theme="light" class="cart-panel" role="dialog" aria-modal="true" aria-label="Cart">
+    <div class="flex h-header shrink-0 items-center justify-between">
+      <p class="label label-muted">Cart <span data-cart-count-label></span></p>
+      <button type="button" class="cart-close" data-cart-close aria-label="Close cart">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="m2 2 10 10M12 2 2 12" stroke="currentColor" stroke-width="1.2" /></svg>
+      </button>
+    </div>
+    <div class="flex-1 overflow-y-auto" data-cart-lines></div>
+    <div class="cart-foot py-6" data-cart-foot>
+      <div class="flex items-center justify-between text-body"><span>Subtotal</span><span class="tabular-nums" data-cart-subtotal></span></div>
+      <p class="mt-1 text-caption text-fg-subtle">Delivery is worked out at checkout.</p>
+      <div class="mt-5 flex flex-col gap-1">
+        <button type="button" class="btn-solid h-11 bg-ink text-paper hover:bg-graphite" data-checkout>Checkout</button>
+        <a href="/living/cart/" class="btn h-11">View cart</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .cart-root {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+  }
+
+  .cart-root.is-open {
+    pointer-events: auto;
+  }
+
+  .cart-scrim {
+    position: absolute;
+    inset: 0;
+    background: rgb(var(--ink) / 0.35);
+    opacity: 0;
+    transition: opacity var(--dur-panel) var(--ease-out);
+  }
+
+  .cart-panel {
+    position: absolute;
+    inset: 0 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    width: min(var(--menu-w), 100%);
+    padding-inline: var(--gap) var(--gutter);
+    transform: translateX(100%);
+    transition: transform var(--dur-panel) var(--ease-out);
+  }
+
+  .cart-root.is-open .cart-scrim {
+    opacity: 1;
+  }
+
+  .cart-root.is-open .cart-panel {
+    transform: none;
+  }
+
+  .cart-close {
+    display: inline-flex;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-right: -0.875rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cart-foot {
+    border-top: var(--rule) solid rgb(var(--line) / var(--rule-alpha));
+  }
+
+  /* One cart line, shared by the drawer and the cart page */
+  :global(.cart-line) {
+    display: grid;
+    grid-template-columns: 5rem 1fr auto;
+    gap: 1rem;
+    padding-block: 1.25rem;
+    border-top: var(--rule) solid rgb(var(--line) / var(--rule-alpha));
+  }
+
+  :global(.cart-line:first-child) {
+    border-top: 0;
+  }
+
+  :global(.cart-line-image) {
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: var(--radius-media);
+    background: rgb(var(--stone));
+  }
+
+  :global(.cart-line-image img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  :global(.qty) {
+    display: inline-flex;
+    align-items: center;
+    height: 2rem;
+    border: var(--rule) solid rgb(var(--line) / 0.15);
+    border-radius: var(--radius-media);
+  }
+
+  :global(.qty button) {
+    width: 2rem;
+    height: 100%;
+  }
+
+  :global(.qty span) {
+    min-width: 1.5rem;
+    text-align: center;
+    font-size: var(--text-small);
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cart-panel,
+    .cart-scrim {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { cartCount, lineKey, readCart, setQty } from "@/scripts/living-cart";
+
+  type Entry = { name: string; price: number; image?: string; art: string };
+  const catalogue: Record<string, Entry> = JSON.parse(document.getElementById("living-catalogue")?.textContent ?? "{}");
+  const money = (dollars: number) => new Intl.NumberFormat("en-AU", { style: "currency", currency: "AUD", maximumFractionDigits: 0 }).format(dollars);
+  const root = document.querySelector<HTMLElement>("[data-cart-root]");
+  let opener: HTMLElement | null = null;
+
+  const artFor = (art: string) => document.querySelector<HTMLTemplateElement>(`template[data-art="${art}"]`)?.content.cloneNode(true);
+
+  // Draw the lines into every [data-cart-lines] (the drawer, and the cart page when it's open)
+  const render = () => {
+    const lines = readCart().filter((line) => catalogue[line.slug]);
+    const count = cartCount(lines);
+    const subtotal = lines.reduce((sum, line) => sum + catalogue[line.slug].price * line.qty, 0);
+
+    document.querySelectorAll("[data-cart-count]").forEach((el) => {
+      el.textContent = count ? String(count) : "";
+      el.toggleAttribute("hidden", !count);
+    });
+    document.querySelectorAll("[data-cart-count-label]").forEach((el) => (el.textContent = count ? `(${count})` : ""));
+    document.querySelectorAll("[data-cart-subtotal]").forEach((el) => (el.textContent = money(subtotal)));
+    document.querySelectorAll<HTMLElement>("[data-cart-foot]").forEach((el) => (el.hidden = !count));
+    document.querySelectorAll<HTMLElement>("[data-cart-empty]").forEach((el) => (el.hidden = count > 0));
+
+    document.querySelectorAll<HTMLElement>("[data-cart-lines]").forEach((container) => {
+      container.replaceChildren();
+      if (!lines.length) {
+        if (container.closest("[data-cart-root]")) {
+          const empty = document.createElement("div");
+          empty.className = "py-10";
+          empty.innerHTML = `<p class="text-about">Your cart is empty.</p><a href="/living/shop/" class="btn mt-6">Shop all</a>`;
+          container.append(empty);
+        }
+        return;
+      }
+      for (const line of lines) {
+        const entry = catalogue[line.slug];
+        const key = lineKey(line);
+        const row = document.createElement("div");
+        row.className = "cart-line";
+        const href = `/living/products/${line.slug}/`;
+        const options = [line.colour, line.size].filter(Boolean).join(", ");
+        row.innerHTML = `
+          <a href="${href}" class="cart-line-image" aria-hidden="true" tabindex="-1"></a>
+          <div class="flex min-w-0 flex-col items-start">
+            <a href="${href}" class="text-body font-medium"></a>
+            <p class="mt-1 text-caption text-fg-subtle"></p>
+            <div class="mt-auto flex items-center gap-3 pt-3">
+              <div class="qty"><button type="button" data-step="-1" aria-label="Fewer">−</button><span></span><button type="button" data-step="1" aria-label="More">+</button></div>
+              <button type="button" class="text-caption text-fg-subtle text-link" data-remove>Remove</button>
+            </div>
+          </div>
+          <p class="text-body tabular-nums"></p>`;
+        const image = row.querySelector(".cart-line-image")!;
+        if (entry.image) {
+          const img = document.createElement("img");
+          img.src = entry.image;
+          img.alt = "";
+          image.append(img);
+        } else {
+          const art = artFor(entry.art);
+          if (art) image.append(art);
+        }
+        row.querySelector("a.font-medium")!.textContent = entry.name;
+        row.querySelector("p.text-caption")!.textContent = options;
+        row.querySelector(".qty span")!.textContent = String(line.qty);
+        row.querySelector("p.tabular-nums")!.textContent = money(entry.price * line.qty);
+        row.querySelectorAll<HTMLButtonElement>("[data-step]").forEach((button) =>
+          button.addEventListener("click", () => setQty(key, line.qty + Number(button.dataset.step))),
+        );
+        row.querySelector("[data-remove]")!.addEventListener("click", () => setQty(key, 0));
+        container.append(row);
+      }
+    });
+  };
+
+  const setOpen = (open: boolean) => {
+    if (!root) return;
+    if (open) opener = document.activeElement as HTMLElement;
+    root.classList.toggle("is-open", open);
+    root.setAttribute("aria-hidden", String(!open));
+    root.toggleAttribute("inert", !open);
+    document.documentElement.classList.toggle("menu-open", open);
+    if (open) root.querySelector<HTMLElement>(".cart-close")?.focus({ preventScroll: true });
+    else opener?.focus({ preventScroll: true });
+  };
+
+  document.addEventListener("cart:change", render);
+  // The cart page shows its own lines, so adding there doesn't open the drawer
+  document.addEventListener("cart:open", () => {
+    if (!document.querySelector("[data-cart-page]")) setOpen(true);
+  });
+  document.querySelectorAll("[data-cart-open]").forEach((button) =>
+    button.addEventListener("click", (event) => {
+      if (document.querySelector("[data-cart-page]")) return;
+      event.preventDefault();
+      setOpen(true);
+    }),
+  );
+  root?.querySelectorAll("[data-cart-close]").forEach((el) => el.addEventListener("click", () => setOpen(false)));
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && root?.classList.contains("is-open")) setOpen(false);
+  });
+  // Checkout opens once a commerce engine is connected
+  document.querySelectorAll<HTMLButtonElement>("[data-checkout]").forEach((button) =>
+    button.addEventListener("click", () => {
+      button.textContent = "Checkout opens at launch";
+      button.disabled = true;
+    }),
+  );
+  // Another tab changed the cart
+  window.addEventListener("storage", (event) => {
+    if (event.key === "cloud-living-cart") render();
+  });
+  render();
+</script>

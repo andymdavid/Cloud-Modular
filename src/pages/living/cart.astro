@@ -1,0 +1,37 @@
+---
+import RefreshLayout from "@/layouts/RefreshLayout.astro";
+import CollectionHead from "@/components/living/CollectionHead.astro";
+
+/**
+ * Cloud Living cart page: the same lines as the drawer (drawn by CartDrawer into [data-cart-lines]) with the order
+ * summary beside them. Checkout waits for the commerce engine.
+ */
+const title = "Cart | Cloud Living";
+---
+
+<RefreshLayout title={title} description="Your Cloud Living cart." canonical="/living/cart/" brand="living" noindex>
+  <CollectionHead title="Cart" crumbs={[{ label: "Shop all", href: "/living/shop/" }]} />
+  <section data-theme="light" class="pb-section" data-cart-page>
+    <div class="shell">
+      <div class="grid-12 gap-y-10 border-t border-line/[var(--rule-alpha)]">
+        <div class="col-span-12 lg:col-span-8">
+          <div data-cart-lines></div>
+          <div class="py-10" data-cart-empty>
+            <p class="text-about">Your cart is empty.</p>
+            <a href="/living/shop/" class="btn mt-6">Shop all</a>
+          </div>
+        </div>
+        <aside class="col-span-12 lg:col-span-4" data-cart-foot hidden>
+          <div class="rounded bg-mist p-6 lg:sticky lg:top-[calc(var(--header-h)+1rem)] lg:mt-5">
+            <p class="label label-muted">Order summary</p>
+            <div class="mt-6 flex items-center justify-between text-body"><span>Subtotal</span><span class="tabular-nums" data-cart-subtotal></span></div>
+            <div class="mt-2 flex items-center justify-between text-small text-fg-muted"><span>Delivery</span><span>At checkout</span></div>
+            <p class="mt-6 text-caption text-fg-subtle">Prices include GST.</p>
+            <button type="button" class="btn-solid mt-6 h-12 w-full bg-ink text-paper hover:bg-graphite" data-checkout>Checkout</button>
+            <a href="/living/shop/" class="btn mt-1 h-12 w-full">Keep shopping</a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</RefreshLayout>

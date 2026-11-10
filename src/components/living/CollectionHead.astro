@@ -1,0 +1,39 @@
+---
+/**
+ * Top of a shop listing: breadcrumbs, the title (the page's h1) and a line about the range, clear of the fixed
+ * header. A room page adds its photograph as a wide banner under the title.
+ */
+interface Props {
+  title: string;
+  description?: string;
+  crumbs?: { label: string; href: string }[];
+  image?: { src: string; width: number; height: number; position?: string };
+}
+
+const { title, description, crumbs = [], image } = Astro.props;
+const trail = [{ label: "Cloud Living", href: "/living/" }, ...crumbs];
+---
+
+<section data-theme="light" class="pb-8 pt-[calc(var(--header-h)+var(--section-sm))]">
+  <div class="shell" data-reveal>
+    <nav aria-label="Breadcrumb">
+      <ol class="flex flex-wrap items-center gap-2 text-caption text-fg-subtle">
+        {trail.map((crumb) => (
+          <li class="flex items-center gap-2"><a href={crumb.href} class="hover:text-fg">{crumb.label}</a><span aria-hidden="true">/</span></li>
+        ))}
+        <li aria-current="page" class="text-fg">{title}</li>
+      </ol>
+    </nav>
+    <div class="mt-6 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+      <h1 class="text-feature">{title}</h1>
+      {description && <p class="max-w-[38ch] text-about text-fg-muted md:text-right">{description}</p>}
+    </div>
+  </div>
+  {image && (
+    <div class="wide-row mt-10" data-reveal>
+      <div class="aspect-[16/9] overflow-hidden rounded bg-stone sm:aspect-[21/7]">
+        <img src={image.src} alt="" width={image.width} height={image.height} fetchpriority="high" class="h-full w-full object-cover" style={`object-position:${image.position ?? "center"}`} />
+      </div>
+    </div>
+  )}
+</section>

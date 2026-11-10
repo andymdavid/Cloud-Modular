@@ -1,0 +1,158 @@
+---
+import RefreshLayout from "@/layouts/RefreshLayout.astro";
+import SectionHead from "@/components/refresh/SectionHead.astro";
+import ImagePanel from "@/components/refresh/ImagePanel.astro";
+import GetStarted from "@/components/refresh/GetStarted.astro";
+import ProductCard from "@/components/living/ProductCard.astro";
+import ProductArt from "@/components/living/ProductArt.astro";
+import ShopTheRoom from "@/components/living/ShopTheRoom.astro";
+import { livingCategories, livingHero, livingProducts, livingRooms } from "@/data/living";
+import { site } from "@/data/site";
+
+/**
+ * Cloud Living home, a shop front in the site's style laid out as a conventional store (cf. the Wonder theme):
+ * a full-bleed hero, shop by room, new in, shop the room, shop by category, bestsellers, then the furnished
+ * Seashells villas and a door to Cloud Trade for whole projects. The catalogue is placeholder (src/data/living.ts).
+ */
+const title = "Cloud Living | Furniture and Homewares | Perth";
+const description = "Furniture, lighting, linen, bathroom and appliances for every room of the home, delivered across Perth.";
+
+const newIn = [...livingProducts].sort((a, b) => a.added - b.added).slice(0, 4);
+const bestsellers = livingProducts.filter((product) => product.badge === "Bestseller").slice(0, 4);
+const pageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": `${site.url}/living/#webpage`,
+  url: `${site.url}/living/`,
+  name: title,
+  description,
+  isPartOf: { "@id": `${site.url}/#website` },
+};
+---
+
+<RefreshLayout title={title} description={description} canonical="/living/" structuredData={pageSchema} brand="living" overlayHeader>
+  <section data-hero data-theme="dark" data-surface="slate" class="relative h-[100svh] min-h-[560px] overflow-hidden">
+    <img src="/cloud-homes/generated/bedroom.webp" alt="" width="2560" height="1717" fetchpriority="high" class="hero-media absolute inset-0 h-full w-full object-cover" style="object-position:40% 50%" />
+    <div class="living-hero-scrim absolute inset-0" aria-hidden="true"></div>
+    <div class="shell relative flex h-full flex-col justify-end pb-10 sm:pb-14">
+      <div class="grid-12 items-end gap-y-6">
+        <h1 class="col-span-12 text-hero lg:col-span-8">{livingHero.title}</h1>
+        <div class="col-span-12 flex flex-col items-start gap-5 sm:col-span-8 lg:col-span-4 lg:items-end lg:text-right">
+          <p class="max-w-[34ch] text-body text-fg/85 [text-wrap:balance]">{livingHero.lead}</p>
+          <div class="flex flex-wrap gap-1">
+            <a href="/living/shop/" class="btn">Shop all</a>
+            <a href="#rooms" class="btn">Shop by room</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Service strip under the hero (the Wonder announcement bar, kept in the page so the header stays clear) -->
+  <section data-theme="light" class="border-b border-line/[var(--rule-alpha)]">
+    <ul class="shell grid grid-cols-1 gap-y-3 py-5 text-small sm:grid-cols-3">
+      <li class="flex items-center gap-3"><span class="label">Preview</span><span class="text-fg-muted">Products, prices and images are placeholders</span></li>
+      <li class="flex items-center gap-3 sm:justify-center"><span class="label label-muted">Delivery</span><span class="text-fg-muted">Across the Perth metropolitan area</span></li>
+      <li class="flex items-center gap-3 sm:justify-end"><span class="label label-muted">Help</span><a href="/living/contact/" class="text-link text-fg-muted">Ask our team</a></li>
+    </ul>
+  </section>
+
+  <section id="rooms" data-theme="light" class="scroll-mt-header pb-section pt-section">
+    <div class="shell">
+      <SectionHead label="Shop by room" title="Every room in the home" rule={false} />
+      <ul class="mt-10 grid sm:mt-12 grid-cols-2 gap-gap-sm lg:grid-cols-3" aria-label="Rooms">
+        {livingRooms.map((room, index) => (
+          <li data-reveal style={`--reveal-delay:${(index % 3) * 80}ms`}>
+            <a href={`/living/rooms/${room.slug}/`} class="room-tile group relative block aspect-[4/5] overflow-hidden rounded bg-stone sm:aspect-[4/3]">
+              <img src={room.image} alt="" width={room.width} height={room.height} loading="lazy" class="h-full w-full object-cover transition-transform duration-slow ease-cm-out group-hover:scale-[1.03]" style={`object-position:${room.imagePosition ?? "center"}`} />
+              <span class="room-tile-shade absolute inset-0" aria-hidden="true"></span>
+              <span class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-4 text-paper sm:p-5">
+                <span class="text-h3 font-normal">{room.title}</span>
+                <span class="label text-paper max-sm:hidden">Shop</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section id="new-in" data-theme="light" class="scroll-mt-header pb-section">
+    <div class="shell">
+      <SectionHead label="New in" title="Just arrived">
+        <Fragment slot="actions"><a href="/living/shop/?sort=new" class="btn">Shop new in</a></Fragment>
+      </SectionHead>
+      <ul class="mt-10 grid grid-cols-2 gap-x-gap-sm gap-y-10 sm:mt-12 lg:grid-cols-4">
+        {newIn.map((product, index) => <li data-reveal style={`--reveal-delay:${index * 80}ms`}><ProductCard product={product} /></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <ShopTheRoom />
+
+  <section id="categories" data-theme="light" class="scroll-mt-header pb-section">
+    <div class="shell">
+      <SectionHead label="Shop by category" title="Find what you need" />
+    </div>
+    <ul class="no-scrollbar mt-10 flex snap-x gap-gap-sm overflow-x-auto scroll-px-gutter px-gutter sm:mt-12 xl:mx-auto xl:grid xl:max-w-page xl:grid-cols-9 xl:overflow-visible" aria-label="Categories">
+      {livingCategories.map((category, index) => (
+        <li class="w-[38vw] shrink-0 snap-start sm:w-[22vw] xl:w-auto" data-reveal style={`--reveal-delay:${index * 50}ms`}>
+          <a href={`/living/shop/${category.slug}/`} class="group block">
+            <span class="block aspect-square overflow-hidden rounded transition-transform duration-slow ease-cm-out">
+              <ProductArt art={category.art} class="transition-transform duration-slow ease-cm-out group-hover:scale-[1.04]" />
+            </span>
+            <span class="mt-3 block text-small font-medium transition-colors duration-base group-hover:text-gold-deep">{category.title}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section id="bestsellers" data-theme="light" class="scroll-mt-header pb-section">
+    <div class="shell">
+      <SectionHead label="Bestsellers" title="Most loved">
+        <Fragment slot="actions"><a href="/living/shop/" class="btn">Shop all</a></Fragment>
+      </SectionHead>
+      <ul class="mt-10 grid grid-cols-2 gap-x-gap-sm gap-y-10 sm:mt-12 lg:grid-cols-4">
+        {bestsellers.map((product, index) => <li data-reveal style={`--reveal-delay:${index * 80}ms`}><ProductCard product={product} /></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <ImagePanel id="seashells" label="Furnished by Cloud" title="Ready to live in at Seashells" image="/projects/seashells-jurien-bay/villa.webp" alt="A villa at Seashells Jurien Bay" width={1536} height={1024}>
+    <p class="text-body text-fg-muted">The villas at Seashells Jurien Bay are sold fully furnished, with the furniture and fittings supplied by Cloud.</p>
+    <a href="/trade/projects/seashells-jurien-bay/" class="btn mt-10">Read the case study</a>
+  </ImagePanel>
+
+  <GetStarted
+    text="Furnishing a whole development or several homes? Cloud Trade quotes the full schedule at trade prices and delivers it to site."
+    actions={[
+      { label: "Furnish a project", href: "/trade/" },
+      { label: "Contact us", href: "/living/contact/" },
+    ]}
+  />
+</RefreshLayout>
+
+<style>
+  .living-hero-scrim {
+    --scrim: 52svh;
+    background:
+      linear-gradient(to bottom, rgb(11 11 12 / 0.4) 0, rgb(11 11 12 / 0) 9rem),
+      linear-gradient(
+        to top in oklab,
+        rgb(11 11 12 / 0.72) 0,
+        rgb(11 11 12 / 0.5) calc(var(--scrim) * 0.3),
+        rgb(11 11 12 / 0.28) calc(var(--scrim) * 0.55),
+        rgb(11 11 12 / 0.1) calc(var(--scrim) * 0.75),
+        rgb(11 11 12 / 0) var(--scrim)
+      );
+  }
+
+  .room-tile {
+    clip-path: inset(0 round var(--radius-media));
+  }
+
+  .room-tile-shade {
+    background: linear-gradient(to top, rgb(11 11 12 / 0.5), rgb(11 11 12 / 0) 45%);
+  }
+</style>
