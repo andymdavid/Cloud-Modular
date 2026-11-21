@@ -272,7 +272,7 @@ export const homeJourney: JourneyItem[] = [
     kind: "step",
     title: "Site review",
     body: "We review your site to check that your home suits it, including access for delivery and the crane.",
-    image: { src: "/cloud-homes/generated/backyard.webp", alt: "A Cloud Home 2 Bed in a suburban backyard, with a paved path to its deck and native planting", width: 2560, height: 1429 },
+    image: { src: "/cloud-homes/generated/site-review.webp", alt: "A Cloud Home on a leafy Perth street in morning light, between brick bungalows, with the city in the distance", width: 1126, height: 1397 },
   },
   {
     kind: "step",
