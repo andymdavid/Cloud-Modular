@@ -107,11 +107,11 @@ const groups = brand.footer.groups;
       <p class="label label-muted">{new Date().getFullYear()} © {brand.name}</p>
       <a href="/privacy-policy/" class="label label-muted footer-legal">Privacy Policy</a>
       <a href="/terms/" class="label label-muted footer-legal">Terms</a>
-      <!-- Site credit: the studio's icon, its name shown on hover -->
+      <!-- Site credit: the studio's icon, which winks on hover, its name shown above -->
       <a href="https://offpistestudio.com" target="_blank" rel="noopener" class="site-by label label-muted justify-self-end" aria-label="Site by Off Piste Studio">
         <span aria-hidden="true">Site by</span>
         <svg class="site-by-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
-          <rect x="16" y="11" width="10" height="10" /><rect x="38" y="11" width="10" height="10" />
+          <rect x="16" y="11" width="10" height="10" /><rect class="site-by-eye" x="38" y="11" width="10" height="10" />
           <rect x="6" y="33" width="10" height="10" /><rect x="48" y="33" width="10" height="10" />
           <rect x="16" y="43" width="32" height="10" />
         </svg>
@@ -207,6 +207,37 @@ const groups = brand.footer.groups;
   .site-by:hover,
   .site-by:focus-visible {
     color: rgb(var(--paper));
+  }
+
+  /* The studio glyph's Wink (offpistestudio.com): the right eye closes to a slit (37, 14, 12 × 3) over 180ms,
+     holds for 480ms and opens again */
+  .site-by-eye {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  .site-by:hover .site-by-eye,
+  .site-by:focus-visible .site-by-eye {
+    animation: site-by-wink 840ms var(--ease-standard);
+  }
+
+  @keyframes site-by-wink {
+    0%,
+    100% {
+      transform: none;
+    }
+
+    21%,
+    79% {
+      transform: translateY(-0.5px) scale(1.2, 0.3);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-by:hover .site-by-eye,
+    .site-by:focus-visible .site-by-eye {
+      animation: none;
+    }
   }
 
   .site-by:hover .site-by-name,
