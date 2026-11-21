@@ -2,39 +2,25 @@
 import RefreshLayout from "@/layouts/RefreshLayout.astro";
 import SplitSection from "@/components/refresh/SplitSection.astro";
 import SectionHead from "@/components/refresh/SectionHead.astro";
-import CardRow from "@/components/refresh/CardRow.astro";
 import MediaCard from "@/components/refresh/MediaCard.astro";
 import Accordion from "@/components/refresh/Accordion.astro";
 import EnquiryForm from "@/components/refresh/EnquiryForm.astro";
 import WaterSequence from "@/components/water/WaterSequence.astro";
-import ChlorineScale from "@/components/water/ChlorineScale.astro";
-import ParticleScale from "@/components/water/ParticleScale.astro";
+import RemovalTable from "@/components/water/RemovalTable.astro";
 import SpecSheetModal from "@/components/water/SpecSheetModal.astro";
 import { site } from "@/data/site";
-import {
-  waterActions,
-  waterBenefits,
-  waterFacts,
-  waterFaqs,
-  waterHero,
-  waterModels,
-  waterProblem,
-  waterRemoval,
-  waterSequence,
-  waterSources,
-  waterTrade,
-} from "@/data/water";
+import { waterActions, waterBenefits, waterFaqs, waterHero, waterModels, waterPricing, waterRemoval, waterSequence } from "@/data/water";
 
 /**
  * Cloud whole-house water filtration, a product page that branches off Cloud Trade (as Cloud Homes does off Modular).
- * Written for plumbers and builders, who sell it on to homeowners: the problem in the mains, what changes at home,
- * how it works, why plumbers fit it, the two models, what it takes out, questions, then the one form (trade pricing).
- * The spec sheet download opens in a modal. Images are placeholders and the drawn schematic stands in for the 3D model.
- * Copy and sources are in src/data/water.ts.
+ * It sells the product first: the system itself in the hero, what it does for the household, how it works, what it
+ * takes out, the two models and the questions people ask, then trade pricing as the one form. The spec sheet opens in
+ * a modal. Images are placeholders until the 3D model and renders are made, and the drawn schematic stands in for the
+ * 3D sequence. Copy is in src/data/water.ts.
  */
 const title = "Whole-House Water Filtration | Cloud Trade";
 const description =
-  "A three-stage whole-house water filtration system for the mains supply, with coconut carbon block cartridges and everything needed to install it. Trade pricing for plumbers and builders.";
+  "A three-stage whole-house water filter for the mains supply. Cleaner, better-tasting water from every tap, shower and appliance. Trade pricing for plumbers and builders.";
 
 const specRows = waterModels[0].specs.map((row, index) => ({ label: row.label, values: waterModels.map((model) => model.specs[index].value) }));
 
@@ -56,95 +42,62 @@ const schemas = [
 ---
 
 <RefreshLayout title={title} description={description} canonical="/trade/water-filtration/" structuredData={schemas} brand="trade" overlayHeader>
-  <!-- Hero: as the Trade home, the display line bottom-left and the actions bottom-right over a full-bleed image -->
-  <section data-hero data-theme="dark" data-surface="slate" class="relative h-[100svh] min-h-[560px] overflow-hidden">
-    <img src={waterHero.image.src} alt="" width={waterHero.image.width} height={waterHero.image.height} fetchpriority="high" class="hero-media absolute inset-0 h-full w-full object-cover" style={`object-position:${waterHero.image.position}`} />
-    <div class="water-hero-scrim absolute inset-0" aria-hidden="true"></div>
-    <div class="shell relative flex h-full flex-col justify-end pb-10 sm:pb-14">
-      <div class="grid-12 items-end gap-y-6">
-        <div class="col-span-12 lg:col-span-8">
-          <p class="label">{waterHero.byline}</p>
-          <h1 class="mt-6 text-hero">{waterHero.title}</h1>
-        </div>
-        <div class="col-span-12 flex flex-col items-start gap-5 sm:col-span-8 lg:col-span-4 lg:items-end lg:text-right">
-          <p class="max-w-[36ch] text-body text-fg/85 [text-wrap:balance]">{waterHero.lead}</p>
-          <div class="flex flex-wrap gap-1 lg:justify-end">
-            <a href={waterActions.pricing.href} class="btn">{waterActions.pricing.label}</a>
-            <button type="button" class="btn" data-spec-sheet-open>{waterActions.specSheet.label}</button>
-          </div>
+  <!-- Hero: the product on a warm stone stage on the right, the headline and actions on the left -->
+  <section data-hero data-theme="light" class="relative overflow-hidden">
+    <div class="shell grid min-h-[100svh] grid-cols-12 items-end gap-x-gap-sm gap-y-10 pb-10 pt-[calc(var(--header-h)+2rem)] sm:pb-14">
+      <div class="water-hero-product col-span-12 self-stretch lg:col-span-7 lg:col-start-6 lg:row-start-1" aria-hidden="true">
+        <span class="label label-muted">Product render to come</span>
+      </div>
+      <div class="col-span-12 lg:col-span-5 lg:row-start-1">
+        <p class="label">{waterHero.byline}</p>
+        <h1 class="mt-6 text-hero">{waterHero.title}</h1>
+        <p class="mt-8 max-w-[38ch] text-body text-fg-muted">{waterHero.lead}</p>
+        <div class="mt-10 flex flex-wrap gap-1">
+          <a href={waterActions.pricing.href} class="btn">{waterActions.pricing.label}</a>
+          <button type="button" class="btn" data-spec-sheet-open>{waterActions.specSheet.label}</button>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Key facts -->
-  <section data-theme="light" class="border-b border-line/[var(--rule-alpha)]">
-    <dl class="shell grid grid-cols-2 gap-x-gap-sm gap-y-10 py-12 lg:grid-cols-4">
-      {waterFacts.map((fact, index) => (
-        <div data-reveal style={`--reveal-delay:${index * 80}ms`}>
-          <dt class="sr-only">{fact.label}</dt>
-          <dd class="water-fact">{fact.value}</dd>
-          <dd class="mt-3 max-w-[24ch] text-small text-fg-muted">{fact.label}</dd>
-        </div>
-      ))}
-    </dl>
-  </section>
-
-  <!-- The problem: the chlorine chart beside what households notice -->
-  <section id="problem" data-theme="light" class="scroll-mt-header pb-section pt-section">
+  <!-- At home: what it does for the people who live with it, a portrait over each -->
+  <section id="at-home" data-theme="light" class="scroll-mt-header pb-section pt-section">
     <div class="shell">
-      <SectionHead label="The problem" title={waterProblem.title} intro={waterProblem.intro} rule={false} />
-      <div class="grid-12 mt-12 gap-y-14 sm:mt-16">
-        <div class="col-span-12 lg:col-span-6" data-reveal>
-          <ChlorineScale {...waterProblem.chlorine} />
-        </div>
-        <ul class="col-span-12 lg:col-span-5 lg:col-start-8">
-          {waterProblem.points.map((point, index) => (
-            <li class="water-row" data-reveal style={`--reveal-delay:${index * 80}ms`}>
-              <h3 class="text-lead font-medium">{point.title}</h3>
-              <p class="mt-2 text-body text-fg-muted">{point.body}</p>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <SectionHead label="At home" title="Better water in every room" rule={false} align="center" />
+      <ul class="mt-14 grid gap-x-gap-sm gap-y-16 sm:mt-20 md:grid-cols-2 lg:grid-cols-4">
+        {waterBenefits.map((benefit, index) => (
+          <li class="text-center" data-reveal style={`--reveal-delay:${index * 80}ms`}>
+            <div class="water-portrait mx-auto" aria-hidden="true"></div>
+            <h3 class="mt-8 text-lead font-medium">{benefit.title}</h3>
+            <p class="mx-auto mt-3 max-w-[30ch] text-body text-fg-muted">{benefit.body}</p>
+          </li>
+        ))}
+      </ul>
     </div>
-  </section>
-
-  <!-- What changes at home: the story a plumber tells the homeowner -->
-  <section id="at-home" data-theme="light" class="scroll-mt-header pb-section">
-    <div class="shell">
-      <SectionHead label="At home" title="What changes for the household" intro="This is what you are offering the homeowner. One system where the water comes in, and every room is better for it." />
-    </div>
-    <CardRow label="What changes at home" columns={3} class="mt-10 sm:mt-12">
-      {waterBenefits.map((benefit, index) => (
-        <li data-reveal style={`--reveal-delay:${index * 80}ms`}>
-          <MediaCard alt="" title={benefit.title} description={benefit.body} size="compact" ratio="aspect-[4/5]" />
-        </li>
-      ))}
-    </CardRow>
   </section>
 
   <WaterSequence
     id="how-it-works"
     label="How it works"
     title="Three stages, one path"
-    intro="Water passes through each housing in turn. It runs down the outside of the cartridge, through it to the core and on to the next."
+    intro="Every drop that comes into the house passes through three cartridges in turn, each with its own job."
     steps={waterSequence}
   />
 
-  <!-- Why plumbers fit Cloud: six reasons on hairlines, three across -->
-  <section id="for-plumbers" data-theme="light" class="scroll-mt-header pb-section">
+  <!-- What it takes out: the headline figure beside the stage-by-stage table -->
+  <section id="what-it-takes-out" data-theme="light" class="scroll-mt-header pb-section">
     <div class="shell">
-      <SectionHead label="For plumbers" title={waterTrade.title} intro={waterTrade.intro} />
-      <ol class="mt-12 grid gap-x-gap-sm sm:mt-16 md:grid-cols-2 lg:grid-cols-3">
-        {waterTrade.points.map((point, index) => (
-          <li class="water-reason" data-reveal style={`--reveal-delay:${(index % 3) * 80}ms`}>
-            <p class="label">{String(index + 1).padStart(2, "0")}</p>
-            <h3 class="mt-5 text-lead font-medium">{point.title}</h3>
-            <p class="mt-3 max-w-[38ch] text-body text-fg-muted">{point.body}</p>
-          </li>
-        ))}
-      </ol>
+      <SectionHead label="Filtration" title={waterRemoval.title} intro={waterRemoval.intro} />
+      <div class="grid-12 mt-12 gap-y-14 sm:mt-16">
+        <div class="col-span-12 lg:col-span-4" data-reveal>
+          <p class="water-stat">{waterRemoval.stat.value}</p>
+          <p class="mt-4 max-w-[24ch] text-body text-fg-muted">{waterRemoval.stat.label}</p>
+          <p class="mt-10 max-w-[30ch] border-t border-line/[var(--rule-alpha)] pt-6 text-small text-fg-muted">{waterRemoval.note}</p>
+        </div>
+        <div class="col-span-12 lg:col-span-8" data-reveal>
+          <RemovalTable contaminants={waterRemoval.contaminants} />
+        </div>
+      </div>
     </div>
   </section>
 
@@ -182,67 +135,35 @@ const schemas = [
     </div>
   </section>
 
-  <!-- What it takes out: the headline figure, then the particle scale -->
-  <section id="performance" data-theme="light" class="scroll-mt-header pb-section">
-    <div class="shell">
-      <SectionHead label="What it takes out" title="Chlorine, taste, odour and sediment" intro={waterRemoval.intro} />
-      <div class="grid-12 mt-12 gap-y-14 sm:mt-16">
-        <div class="col-span-12 lg:col-span-4" data-reveal>
-          <p class="water-stat">{waterRemoval.stat.value}</p>
-          <p class="mt-4 max-w-[26ch] text-body text-fg-muted">{waterRemoval.stat.label}</p>
-        </div>
-        <div class="col-span-12 lg:col-span-7 lg:col-start-6" data-reveal>
-          <ParticleScale rating={waterRemoval.rating} particles={waterRemoval.particles} />
-        </div>
-      </div>
-    </div>
-  </section>
-
   <SplitSection id="faq" label="Questions">
     <Accordion items={waterFaqs} name="water-faq" />
   </SplitSection>
 
-  <SplitSection id="get-pricing" label="Trade pricing">
-    <h2 class="text-h3">Get trade pricing</h2>
-    <p class="mt-4 max-w-[48ch] text-body text-fg-muted">Tell us about your business and how many systems you expect to fit, and our team will come back to you with trade pricing.</p>
+  <SplitSection id="get-pricing" label="For the trade">
+    <h2 class="text-h3">{waterPricing.title}</h2>
+    <p class="mt-4 max-w-[52ch] text-body text-fg-muted">{waterPricing.intro}</p>
     <EnquiryForm variant="water" class="mt-10" />
   </SplitSection>
-
-  <!-- Sources for the facts on the page -->
-  <section data-theme="light" class="pb-12">
-    <div class="shell border-t border-line/[var(--rule-alpha)] pt-10">
-      <p class="label label-muted">Sources</p>
-      <ol class="mt-4 space-y-1.5 text-caption text-fg-muted">
-        {waterSources.map((source) => (
-          <li><a href={source.href} target="_blank" rel="noopener" class="underline underline-offset-2 hover:text-fg">{source.label}</a></li>
-        ))}
-      </ol>
-    </div>
-  </section>
 
   <SpecSheetModal />
 </RefreshLayout>
 
 <style>
-  .water-hero-scrim {
-    --scrim: 56svh;
-    background:
-      linear-gradient(to bottom, rgb(11 11 12 / 0.4) 0, rgb(11 11 12 / 0) 9rem),
-      linear-gradient(
-        to top in oklab,
-        rgb(11 11 12 / 0.74) 0,
-        rgb(11 11 12 / 0.52) calc(var(--scrim) * 0.3),
-        rgb(11 11 12 / 0.28) calc(var(--scrim) * 0.55),
-        rgb(11 11 12 / 0.1) calc(var(--scrim) * 0.75),
-        rgb(11 11 12 / 0) var(--scrim)
-      );
+  /* The product's stage until the render is made: warm stone, as the Trade range renders */
+  .water-hero-product {
+    display: flex;
+    min-height: 24rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-media);
+    background: radial-gradient(70% 60% at 50% 55%, rgb(var(--stone)), rgb(var(--stone) / 0.55));
   }
 
-  .water-fact {
-    font-size: clamp(2.5rem, 4.5vw, 3.5rem);
-    font-weight: var(--weight-medium);
-    line-height: 1;
-    letter-spacing: -0.02em;
+  .water-portrait {
+    width: 9.5rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: rgb(var(--stone));
   }
 
   .water-stat {
@@ -250,21 +171,6 @@ const schemas = [
     font-weight: var(--weight-medium);
     line-height: 1;
     letter-spacing: -0.03em;
-  }
-
-  .water-row {
-    padding-block: 1.5rem;
-    border-top: var(--rule) solid rgb(var(--line) / var(--rule-alpha));
-  }
-
-  .water-row:first-child {
-    padding-top: 0;
-    border-top: 0;
-  }
-
-  .water-reason {
-    padding-block: 2rem 3rem;
-    border-top: var(--rule) solid rgb(var(--line) / var(--rule-alpha));
   }
 
   .water-specs {

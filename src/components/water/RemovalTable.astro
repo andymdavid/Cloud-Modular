@@ -1,0 +1,150 @@
+---
+/**
+ * What it takes out: one hairline row per contaminant, its name and a sentence on what it means at home, then a mark
+ * in each stage column that acts on it (a filled gold dot) or doesn't (a faint ring). The stage headers carry the
+ * cartridge codes. A real table, so screen readers get "Yes" or "No" for every stage.
+ */
+interface Props {
+  contaminants: readonly { name: string; body: string; stages: readonly number[] }[];
+  class?: string;
+}
+
+const { contaminants, class: className } = Astro.props;
+const stages = [
+  { number: 1, code: "PP20BB-CC" },
+  { number: 2, code: "CTO20BB" },
+  { number: 3, code: "CTO20BB" },
+];
+---
+
+<table class:list={["removal", className]}>
+  <caption class="sr-only">What each stage of the system reduces</caption>
+  <thead>
+    <tr>
+      <th scope="col"><span class="label label-muted">Reduces</span></th>
+      {stages.map((stage) => (
+        <th scope="col" class="removal-stage">
+          <span class="label">Stage {stage.number}</span>
+          <span class="removal-code">{stage.code}</span>
+        </th>
+      ))}
+    </tr>
+  </thead>
+  <tbody>
+    {contaminants.map((item) => (
+      <tr>
+        <th scope="row">
+          <span class="removal-name">{item.name}</span>
+          <span class="removal-body">{item.body}</span>
+        </th>
+        {stages.map((stage) => {
+          const on = item.stages.includes(stage.number);
+          return (
+            <td class="removal-cell">
+              <span class:list={["removal-mark", { "is-on": on }]} aria-hidden="true"></span>
+              <span class="sr-only">{on ? "Yes" : "No"}</span>
+            </td>
+          );
+        })}
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+<style>
+  .removal {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .removal :is(th, td) {
+    border-bottom: var(--rule) solid rgb(var(--line) / var(--rule-alpha));
+    text-align: left;
+    vertical-align: middle;
+    font-weight: var(--weight-regular);
+  }
+
+  .removal thead th {
+    padding: 0 0 1.25rem;
+    vertical-align: bottom;
+  }
+
+  .removal-stage {
+    width: 6.5rem;
+    text-align: center !important;
+  }
+
+  .removal-stage .label {
+    display: block;
+  }
+
+  .removal-code {
+    display: block;
+    margin-top: 0.375rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    color: rgb(var(--fg-subtle));
+  }
+
+  .removal tbody th {
+    padding: 1.5rem 2rem 1.5rem 0;
+  }
+
+  .removal-name {
+    display: block;
+    font-size: var(--text-lead);
+    font-weight: var(--weight-medium);
+  }
+
+  .removal-body {
+    display: block;
+    max-width: 44ch;
+    margin-top: 0.375rem;
+    font-size: var(--text-body);
+    color: rgb(var(--fg-muted));
+  }
+
+  .removal-cell {
+    text-align: center !important;
+  }
+
+  .removal-mark {
+    display: inline-block;
+    width: 0.875rem;
+    height: 0.875rem;
+    border: 1px solid rgb(var(--line) / 0.18);
+    border-radius: 50%;
+    transition:
+      transform var(--dur-base) var(--ease-standard),
+      background-color var(--dur-base) var(--ease-standard);
+  }
+
+  .removal-mark.is-on {
+    border-color: rgb(var(--gold));
+    background: rgb(var(--gold));
+  }
+
+  .removal tbody tr:hover .removal-mark.is-on {
+    transform: scale(1.2);
+  }
+
+  @media (max-width: 40rem) {
+    .removal-stage {
+      width: 3.25rem;
+    }
+
+    .removal-code {
+      display: none;
+    }
+
+    .removal-stage .label {
+      font-size: 0.625rem;
+      letter-spacing: 0.04em;
+    }
+
+    .removal tbody th {
+      padding-right: 1rem;
+    }
+  }
+</style>
