@@ -1,8 +1,6 @@
 ---
 import RefreshLayout from "@/layouts/RefreshLayout.astro";
 import SectionHead from "@/components/refresh/SectionHead.astro";
-import ImagePanel from "@/components/refresh/ImagePanel.astro";
-import GetStarted from "@/components/refresh/GetStarted.astro";
 import ProductCard from "@/components/living/ProductCard.astro";
 import ProductArt from "@/components/living/ProductArt.astro";
 import ShopTheRoom from "@/components/living/ShopTheRoom.astro";
@@ -11,8 +9,8 @@ import { site } from "@/data/site";
 
 /**
  * Cloud Living home, a shop front in the site's style laid out as a conventional store (cf. the Wonder theme):
- * a full-bleed hero, shop by room, new in, shop the room, shop by category, bestsellers, then the furnished
- * Seashells villas and a door to Cloud Trade for whole projects. The catalogue is placeholder (src/data/living.ts).
+ * a full-bleed hero, shop by room, new in, shop the room, shop by category and bestsellers.
+ * The catalogue is placeholder (src/data/living.ts).
  */
 const title = "Cloud Living | Furniture and Homewares | Perth";
 const description = "Furniture, lighting, linen, bathroom and appliances for every room of the home, delivered across Perth.";
@@ -118,19 +116,6 @@ const pageSchema = {
       </ul>
     </div>
   </section>
-
-  <ImagePanel id="seashells" label="Furnished by Cloud" title="Ready to live in at Seashells" image="/projects/seashells-jurien-bay/villa.webp" alt="A villa at Seashells Jurien Bay" width={1536} height={1024}>
-    <p class="text-body text-fg-muted">The villas at Seashells Jurien Bay are sold fully furnished, with the furniture and fittings supplied by Cloud.</p>
-    <a href="/trade/projects/seashells-jurien-bay/" class="btn mt-10">Read the case study</a>
-  </ImagePanel>
-
-  <GetStarted
-    text="Furnishing a whole development or several homes? Cloud Trade quotes the full schedule at trade prices and delivers it to site."
-    actions={[
-      { label: "Furnish a project", href: "/trade/" },
-      { label: "Contact us", href: "/living/contact/" },
-    ]}
-  />
 </RefreshLayout>
 
 <style>
