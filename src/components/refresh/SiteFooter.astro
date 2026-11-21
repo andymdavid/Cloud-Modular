@@ -2,7 +2,7 @@
 import { site } from "@/data/site";
 import Logo from "@/components/refresh/Logo.astro";
 import MvpGroupLogo from "@/components/refresh/MvpGroupLogo.astro";
-import { brands, family, masterbrand, type Brand, type BrandId } from "@/data/brands";
+import { brands, family, masterbrand, parent, type Brand, type BrandId } from "@/data/brands";
 
 /**
  * Footer (olympic.no): full-width slate panel on a six-column grid. Row 1: the brand's logo and a line about it,
@@ -99,7 +99,9 @@ const groups = brand.footer.groups;
     <div class="footer-rule grid grid-cols-2 items-center gap-x-gap-sm gap-y-6 pb-8 pt-6 md:grid-cols-6">
       <p class="footer-parent label label-muted col-span-2">
         <span>An</span>
-        <MvpGroupLogo class="h-[34px] w-auto text-fg" />
+        <a href={parent.href} target="_blank" rel="noopener" class="footer-parent-logo" aria-label={`${parent.name} website`}>
+          <MvpGroupLogo class="h-[34px] w-auto text-fg" />
+        </a>
         <span>company</span>
       </p>
       <p class="label label-muted">{new Date().getFullYear()} © {brand.name}</p>
@@ -142,6 +144,14 @@ const groups = brand.footer.groups;
     display: inline-flex;
     align-items: center;
     gap: 0.75rem;
+  }
+
+  .footer-parent-logo {
+    transition: opacity var(--dur-base) var(--ease-standard);
+  }
+
+  .footer-parent-logo:hover {
+    opacity: 0.75;
   }
 
   .footer-rule {

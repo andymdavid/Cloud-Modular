@@ -308,3 +308,6 @@ export const family: BrandId[] = ["modular", "trade", "living"];
 
 // The masterbrand over the three sites, named in every footer. It links to the group home once that has an address.
 export const masterbrand: { name: string; href?: string } = { name: "Made by Cloud" };
+
+// The parent company, credited beside the copyright in every footer.
+export const parent = { name: "MVP Group", href: "https://www.mvpgroup.group/" };
