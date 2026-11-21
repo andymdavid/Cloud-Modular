@@ -1,5 +1,5 @@
 ---
-import { brands, type Brand, type BrandId } from "@/data/brands";
+import { brands, family, type Brand, type BrandId } from "@/data/brands";
 import Logo from "@/components/refresh/Logo.astro";
 
 interface Props {
@@ -86,6 +86,14 @@ const menu = groups.map((group) => ({ ...group, links: group.links.map((link) =>
       <div class="mt-6 flex flex-wrap gap-1">
         <a data-menu-link href={brand.cta.href} class="btn-solid h-12 px-5">{brand.cta.label}</a>
       </div>
+      <!-- The Cloud sites, this one unlinked -->
+      <nav class="mt-12 flex flex-wrap gap-x-6 gap-y-2" aria-label="Cloud sites">
+        {family.map((id) =>
+          id === brandId
+            ? <span class="label" aria-current="page">{brands[id].name}</span>
+            : <a data-menu-link href={brands[id].home} class="label label-muted menu-family-link">{brands[id].name}</a>
+        )}
+      </nav>
     </div>
   </div>
 </div>
@@ -348,6 +356,14 @@ const menu = groups.map((group) => ({ ...group, links: group.links.map((link) =>
       opacity var(--dur-slow) var(--ease-out),
       transform var(--dur-slow) var(--ease-out),
       color var(--dur-base) var(--ease-standard);
+  }
+
+  .menu-family-link {
+    transition: color var(--dur-base) var(--ease-standard);
+  }
+
+  .menu-family-link:hover {
+    color: rgb(var(--fg));
   }
 
   .menu-link:hover {

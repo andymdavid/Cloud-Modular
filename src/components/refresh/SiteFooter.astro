@@ -1,41 +1,38 @@
 ---
 import { site } from "@/data/site";
 import Logo from "@/components/refresh/Logo.astro";
-import { brands, type Brand, type BrandId } from "@/data/brands";
+import MvpGroupLogo from "@/components/refresh/MvpGroupLogo.astro";
+import { brands, family, masterbrand, type Brand, type BrandId } from "@/data/brands";
 
 /**
- * Footer (olympic.no): full-width slate panel on a six-column grid. Row 1: link groups under grey mono labels.
- * Row 2: an enquiry block on the left; offices, contact icons and back-to-top on the right. Row 3: logo, hours
- * and copyright. Rows are split by soft hairlines.
+ * Footer (olympic.no): full-width slate panel on a six-column grid. Row 1: the brand's logo and a line about it,
+ * then link groups under grey mono labels. Row 2: an enquiry block on the left; offices, contact icons and
+ * back-to-top on the right. Row 3: Made by Cloud and the three Cloud sites, this one as plain text. Row 4: the MVP
+ * Group lockup, copyright and legal links. Rows are split by soft hairlines.
  */
 interface Props {
   brand?: BrandId;
 }
 
-const brand: Brand = brands[Astro.props.brand ?? "modular"];
+const brandId: BrandId = Astro.props.brand ?? "modular";
+const brand: Brand = brands[brandId];
 const groups = brand.footer.groups;
 ---
 
 <!-- At least one screen tall: the link groups at the top, the enquiry block and base row pinned to the bottom -->
 <footer id="contact" data-theme="dark" class="site-footer flex min-h-[100svh] scroll-mt-header flex-col">
   <div class="shell flex flex-1 flex-col">
-    <!-- Row 1: link groups. Contact sits on column 5 (over Offices); the first three share columns 1–4 in three
-         equal parts, so all four groups start an equal distance apart -->
+    <!-- Row 1: the brand's logo and a line about it on columns 1–2, then one link group on each of columns 3–6 -->
     <div class="grid grid-cols-2 gap-x-gap-sm gap-y-10 pb-16 pt-[calc(var(--header-h)+2.75rem)] md:grid-cols-6">
-      <div class="col-span-2 grid grid-cols-2 gap-x-gap-sm gap-y-10 md:col-span-4 md:grid-cols-3">
-        {groups.slice(0, 3).map((group) => (
-          <nav aria-label={group.label}>
-            <p class="label label-muted">{group.label}</p>
-            <ul class="mt-4 space-y-2">
-              {group.links.map((link) => (
-                <li><a href={link.href} class="footer-link">{link.label}</a></li>
-              ))}
-            </ul>
-          </nav>
-        ))}
+      <div class="col-span-2 flex flex-col items-start">
+        <a href={brand.home} class="flex flex-col items-start gap-1.5 text-fg" aria-label={`${brand.name} home`}>
+          <Logo class="h-[22px] w-auto" title={brand.name} />
+          {brand.descriptor && <span class="footer-descriptor" aria-hidden="true">{brand.descriptor}</span>}
+        </a>
+        <p class="mt-8 max-w-[32ch] text-small text-sage">{brand.footer.blurb}</p>
       </div>
-      {groups.slice(3).map((group) => (
-        <nav class="md:col-start-5" aria-label={group.label}>
+      {groups.map((group) => (
+        <nav aria-label={group.label}>
           <p class="label label-muted">{group.label}</p>
           <ul class="mt-4 space-y-2">
             {group.links.map((link) => (
@@ -49,7 +46,7 @@ const groups = brand.footer.groups;
     </div>
 
     <!-- Row 2: enquiry left; offices, contact icons and back-to-top right -->
-    <div class="footer-rule mt-auto grid grid-cols-2 gap-x-gap-sm gap-y-12 pb-16 pt-[4.25rem] md:grid-cols-6">
+    <div class="footer-rule mt-auto grid grid-cols-2 gap-x-gap-sm gap-y-12 pb-12 pt-12 md:grid-cols-6">
       <div class="col-span-2 flex flex-col items-start" data-reveal>
         <p class="label label-muted">Let’s talk</p>
         <p class="mt-4 max-w-[34ch] text-small text-sage">{brand.footer.prompt}</p>
@@ -67,7 +64,7 @@ const groups = brand.footer.groups;
           </div>
         ))}
 
-        <p class="label label-muted col-span-2 mt-12">Connect</p>
+        <p class="label label-muted col-span-2 mt-10">Connect</p>
         <div class="mt-4 flex gap-1">
           <a href={site.linkedIn} target="_blank" rel="noreferrer" class="footer-icon" aria-label="Cloud Modular on LinkedIn">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.75h4v11H3v-11Zm6.5 0h3.8v1.5h.05c.53-1 1.84-2.05 3.78-2.05 4.05 0 4.8 2.66 4.8 6.13v5.42h-4v-4.8c0-1.15-.02-2.62-1.6-2.62-1.6 0-1.84 1.25-1.84 2.54v4.88h-4v-11Z" /></svg>
@@ -84,31 +81,40 @@ const groups = brand.footer.groups;
       </div>
     </div>
 
-    <!-- Row 3: logo, copyright, Privacy Policy and Terms, on the same four starts as the link groups in row 1 -->
-    <div class="footer-rule grid grid-cols-2 items-center gap-x-gap-sm gap-y-6 pb-12 pt-14 md:grid-cols-6">
-      <div class="col-span-2 grid grid-cols-2 items-center gap-x-gap-sm gap-y-6 md:col-span-4 md:grid-cols-3">
-        <div class="col-span-2 flex flex-col items-start gap-1.5 justify-self-start text-fg md:col-span-1">
-          <Logo class="h-[18px] w-auto" title={brand.name} />
-          {brand.descriptor && <span class="footer-descriptor" aria-hidden="true">{brand.descriptor}</span>}
-        </div>
-        <p class="label label-muted">{new Date().getFullYear()} © {brand.name}</p>
-        <a href="/privacy-policy/" class="label label-muted footer-legal hidden md:block">Privacy Policy</a>
-      </div>
-      <div class="col-span-2 flex items-center justify-between gap-6 md:col-span-2 md:col-start-5">
-        <a href="/terms/" class="label label-muted footer-legal">Terms</a>
-        <!-- Phones: Privacy Policy sits between Terms and the credit -->
-        <a href="/privacy-policy/" class="label label-muted footer-legal md:hidden">Privacy Policy</a>
-        <!-- Site credit: the studio's icon, its name shown on hover -->
-        <a href="https://offpistestudio.com" target="_blank" rel="noopener" class="site-by label label-muted" aria-label="Site by Off Piste Studio">
-          <span aria-hidden="true">Site by</span>
-          <svg class="site-by-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
-            <rect x="16" y="11" width="10" height="10" /><rect x="38" y="11" width="10" height="10" />
-            <rect x="6" y="33" width="10" height="10" /><rect x="48" y="33" width="10" height="10" />
-            <rect x="16" y="43" width="32" height="10" />
-          </svg>
-          <span class="site-by-name" aria-hidden="true">Off Piste Studio</span>
-        </a>
-      </div>
+    <!-- Row 3: Made by Cloud on columns 1–2, then the Cloud sites on columns 3–5 (this one unlinked) -->
+    <div class="footer-rule grid grid-cols-2 gap-x-gap-sm gap-y-4 py-6 md:grid-cols-6">
+      {masterbrand.href
+        ? <a href={masterbrand.href} class="label label-muted footer-legal col-span-2">{masterbrand.name}</a>
+        : <p class="label label-muted col-span-2">{masterbrand.name}</p>}
+      <nav class="col-span-2 grid grid-cols-3 gap-x-gap-sm md:col-span-3" aria-label="Cloud sites">
+        {family.map((id) =>
+          id === brandId
+            ? <span class="label" aria-current="page">{brands[id].name}</span>
+            : <a href={brands[id].home} class="label label-muted footer-legal">{brands[id].name}</a>
+        )}
+      </nav>
+    </div>
+
+    <!-- Row 4: An MVP Group company, then copyright, Privacy Policy, Terms and the credit on columns 3–6 -->
+    <div class="footer-rule grid grid-cols-2 items-center gap-x-gap-sm gap-y-6 pb-8 pt-6 md:grid-cols-6">
+      <p class="footer-parent label label-muted col-span-2">
+        <span>An</span>
+        <MvpGroupLogo class="h-[34px] w-auto text-fg" />
+        <span>company</span>
+      </p>
+      <p class="label label-muted">{new Date().getFullYear()} © {brand.name}</p>
+      <a href="/privacy-policy/" class="label label-muted footer-legal">Privacy Policy</a>
+      <a href="/terms/" class="label label-muted footer-legal">Terms</a>
+      <!-- Site credit: the studio's icon, its name shown on hover -->
+      <a href="https://offpistestudio.com" target="_blank" rel="noopener" class="site-by label label-muted justify-self-end" aria-label="Site by Off Piste Studio">
+        <span aria-hidden="true">Site by</span>
+        <svg class="site-by-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+          <rect x="16" y="11" width="10" height="10" /><rect x="38" y="11" width="10" height="10" />
+          <rect x="6" y="33" width="10" height="10" /><rect x="48" y="33" width="10" height="10" />
+          <rect x="16" y="43" width="32" height="10" />
+        </svg>
+        <span class="site-by-name" aria-hidden="true">Off Piste Studio</span>
+      </a>
     </div>
   </div>
 </footer>
@@ -129,6 +135,13 @@ const groups = brand.footer.groups;
     line-height: 1;
     letter-spacing: 0.42em;
     text-transform: uppercase;
+  }
+
+  /* "An [MVP Group logo] company", the logo set on the words' midline */
+  .footer-parent {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
   }
 
   .footer-rule {

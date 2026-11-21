@@ -34,6 +34,8 @@ export interface Brand {
   menuPrompt: string;
   menu: NavGroup[];
   footer: {
+    /** A line about the brand under its logo, in the first column. */
+    blurb: string;
     groups: NavGroup[];
     prompt: string;
     actions: NavLink[];
@@ -43,6 +45,7 @@ export interface Brand {
 export const brands = {
   modular: {
     name: "Cloud Modular",
+    descriptor: "Modular",
     home: "/",
     cta: { label: "Get started", href: site.startHref },
     menuPrompt: "Let’s talk about your next project",
@@ -74,6 +77,7 @@ export const brands = {
       },
     ],
     footer: {
+      blurb: "Architecturally designed modular buildings, certified to Australian Standards.",
       groups: [
         {
           label: "Company",
@@ -155,6 +159,7 @@ export const brands = {
       },
     ],
     footer: {
+      blurb: "Supply for builders and developers across Australia, with manufacture, inspection, freight and delivery managed for you.",
       groups: [
         {
           label: "Cloud Trade",
@@ -244,11 +249,11 @@ export const brands = {
         links: [
           { label: "Delivery and Returns", href: "/living/help/" },
           { label: "Contact", href: "/living/contact/" },
-          { label: "Furnishing a Project", href: "/trade/" },
         ],
       },
     ],
     footer: {
+      blurb: "Furniture and homewares for every room of the home, delivered across Perth.",
       groups: [
         {
           label: "Shop",
@@ -284,7 +289,6 @@ export const brands = {
           label: "Contact",
           links: [
             { label: "Contact Us", href: "/living/contact/" },
-            { label: "Cloud Trade", href: "/trade/" },
           ],
         },
       ],
@@ -298,3 +302,9 @@ export const brands = {
 } satisfies Record<string, Brand>;
 
 export type BrandId = keyof typeof brands;
+
+// The Cloud sites, in the order every footer and menu lists them.
+export const family: BrandId[] = ["modular", "trade", "living"];
+
+// The masterbrand over the three sites, named in every footer. It links to the group home once that has an address.
+export const masterbrand: { name: string; href?: string } = { name: "Made by Cloud" };
