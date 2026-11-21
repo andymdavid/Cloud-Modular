@@ -1,0 +1,168 @@
+---
+/**
+ * Chlorine at the tap (WA Health): the usual range in Western Australian scheme water as a band on a 0 to 2 mg/L
+ * scale, with the levels at which most people (0.6) and sensitive people (0.2) can smell it drawn as lines. One series
+ * in brand gold, labelled directly (gold is below 3:1 on paper), a tooltip on hover or focus, and a table for screen
+ * readers.
+ */
+interface Props {
+  min: number;
+  max: number;
+  smell: number;
+  sensitive: number;
+  axisMax: number;
+  class?: string;
+}
+
+const { min, max, smell, sensitive, axisMax, class: className } = Astro.props;
+const pos = (value: number) => `${(value / axisMax) * 100}%`;
+const ticks = Array.from({ length: axisMax * 2 + 1 }, (_, i) => i / 2);
+const format = (n: number) => n.toLocaleString("en-AU", { minimumFractionDigits: n % 1 ? 1 : 0 });
+---
+
+<figure class:list={["chlorine-scale", className]}>
+  <figcaption class="label label-muted">Chlorine in the tap, <span class="normal-case">mg/L</span></figcaption>
+
+  <div class="cs-plot mt-8" aria-hidden="true">
+    <div class="cs-marks">
+      <div class="cs-mark cs-mark--high" style={`left:${pos(sensitive)}`}><span>Some people can smell it from {format(sensitive)}</span></div>
+      <div class="cs-mark" style={`left:${pos(smell)}`}><span>Most people can smell it from {format(smell)}</span></div>
+    </div>
+
+    <div class="cs-track" tabindex="0">
+      <span class="cs-band" style={`left:${pos(min)};right:calc(100% - ${pos(max)})`}></span>
+      <span class="cs-tip" role="tooltip" style={`left:${pos((min + max) / 2)}`}>
+        <strong>Usual level</strong> {format(min)} to {format(max)} mg/L
+      </span>
+    </div>
+    <p class="cs-band-label" style={`left:${pos(min)}`}>Usual level in WA scheme water, {format(min)} to {format(max)}</p>
+
+    <div class="cs-axis">
+      {ticks.map((tick) => <span class="cs-tick" style={`left:${pos(tick)}`}>{format(tick)}</span>)}
+    </div>
+  </div>
+
+  <table class="sr-only">
+    <caption>Chlorine levels in Western Australian scheme water, in milligrams per litre</caption>
+    <tbody>
+      <tr><th scope="row">Usual level in scheme water</th><td>{min} to {max}</td></tr>
+      <tr><th scope="row">Most people can smell it from</th><td>{smell}</td></tr>
+      <tr><th scope="row">Sensitive people can smell it from</th><td>{sensitive}</td></tr>
+    </tbody>
+  </table>
+</figure>
+
+<style>
+  .cs-plot {
+    position: relative;
+    padding-top: 4.5rem;
+  }
+
+  /* The two smell levels: lines from their labels down through the track */
+  /* Ends at the foot of the track, above the band label and the axis */
+  .cs-marks {
+    position: absolute;
+    inset: 0 0 4.75rem;
+    pointer-events: none;
+  }
+
+  .cs-mark {
+    position: absolute;
+    top: 2.25rem;
+    bottom: 0;
+    border-left: 1px solid rgb(var(--fg));
+  }
+
+  .cs-mark--high {
+    top: 0;
+    border-left-color: rgb(var(--fg) / 0.45);
+  }
+
+  .cs-mark span {
+    position: absolute;
+    top: -0.125rem;
+    left: 0.5rem;
+    white-space: nowrap;
+    font-size: var(--text-caption);
+    color: rgb(var(--fg));
+  }
+
+  .cs-mark--high span {
+    color: rgb(var(--fg-muted));
+  }
+
+  .cs-track {
+    position: relative;
+    height: 3rem;
+    border-top: 1px solid rgb(var(--line) / 0.08);
+    border-bottom: 1px solid rgb(var(--line) / 0.08);
+    outline: none;
+  }
+
+  .cs-band {
+    position: absolute;
+    top: 50%;
+    height: 12px;
+    border-radius: 4px;
+    background: rgb(var(--gold));
+    transform: translateY(-50%);
+    transition: background-color var(--dur-base) var(--ease-standard);
+  }
+
+  .cs-track:is(:hover, :focus-visible) .cs-band {
+    background: rgb(var(--gold-deep));
+  }
+
+  .cs-tip {
+    position: absolute;
+    bottom: calc(50% + 1rem);
+    z-index: 2;
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius-xs);
+    background: rgb(var(--ink));
+    color: rgb(var(--paper));
+    font-size: var(--text-caption);
+    white-space: nowrap;
+    opacity: 0;
+    transform: translate(-50%, 0.25rem);
+    pointer-events: none;
+    transition:
+      opacity var(--dur-base) var(--ease-standard),
+      transform var(--dur-base) var(--ease-standard);
+  }
+
+  .cs-track:is(:hover, :focus-visible) .cs-tip {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  .cs-band-label {
+    position: relative;
+    margin-top: 0.75rem;
+    font-size: var(--text-caption);
+    color: rgb(var(--fg-muted));
+  }
+
+  .cs-axis {
+    position: relative;
+    height: 2.5rem;
+  }
+
+  .cs-tick {
+    position: absolute;
+    top: 0.75rem;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    color: rgb(var(--fg-subtle));
+    font-variant-numeric: tabular-nums;
+  }
+
+  .cs-tick:first-child {
+    transform: none;
+  }
+
+  .cs-tick:last-child {
+    transform: translateX(-100%);
+  }
+</style>

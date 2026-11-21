@@ -1,0 +1,209 @@
+---
+/**
+ * What 5 microns means: common particles as size ranges on a log scale from 1 to 1,000 microns, with the carbon block
+ * cartridges' 5 micron rating drawn as a line. Everything to its right is held back. One series in brand gold, every
+ * range labelled (gold is below 3:1 on paper, so labels carry the values), a tooltip on hover or focus, and a table
+ * for screen readers.
+ */
+interface Props {
+  rating: number;
+  particles: readonly { name: string; min: number; max: number }[];
+  class?: string;
+}
+
+const { rating, particles, class: className } = Astro.props;
+const pos = (microns: number) => `${(Math.log10(microns) / 3) * 100}%`;
+const ticks = [1, 10, 100, 1000];
+const format = (n: number) => n.toLocaleString("en-AU");
+---
+
+<figure class:list={["particle-scale", className]}>
+  <figcaption class="label label-muted">Particle size, microns (log scale)</figcaption>
+
+  <div class="ps-plot mt-8" aria-hidden="true">
+    <!-- Held back: the wash from the rating to the right edge, and the rating line -->
+    <div class="ps-overlay">
+      <div class="ps-held" style={`left:${pos(rating)}`}></div>
+      <div class="ps-rating" style={`left:${pos(rating)}`}>
+        <span class="ps-rating-label">Cartridge rating, {rating} <span class="normal-case">µm</span></span>
+      </div>
+    </div>
+
+    <ul class="ps-rows">
+      {particles.map((particle) => (
+        <li class="ps-row" tabindex="0">
+          <span class="ps-name">{particle.name}</span>
+          <span class="ps-track">
+            <span class="ps-bar" style={`left:${pos(particle.min)};right:calc(100% - ${pos(particle.max)})`}></span>
+            <span class="ps-value" style={`left:calc(${pos(particle.max)} + 0.625rem)`}>{format(particle.min)}–{format(particle.max)} µm</span>
+            <span class="ps-tip" role="tooltip" style={`left:${pos(Math.sqrt(particle.min * particle.max))}`}>
+              <strong>{particle.name}</strong> {format(particle.min)} to {format(particle.max)} microns
+            </span>
+          </span>
+        </li>
+      ))}
+    </ul>
+
+    <div class="ps-axis">
+      <span class="ps-axis-spacer"></span>
+      <span class="ps-ticks">
+        {ticks.map((tick) => <span class="ps-tick" style={`left:${pos(tick)}`}>{format(tick)}</span>)}
+      </span>
+    </div>
+  </div>
+
+  <table class="sr-only">
+    <caption>Particle sizes compared with the {rating} micron cartridge rating</caption>
+    <thead><tr><th scope="col">Particle</th><th scope="col">Smallest, microns</th><th scope="col">Largest, microns</th></tr></thead>
+    <tbody>
+      {particles.map((particle) => <tr><th scope="row">{particle.name}</th><td>{particle.min}</td><td>{particle.max}</td></tr>)}
+    </tbody>
+  </table>
+</figure>
+
+<style>
+  .ps-plot {
+    --name-w: 8.5rem;
+    position: relative;
+  }
+
+  /* The wash and the rating line sit over the bar area only (right of the names, above the axis) */
+  .ps-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 2rem;
+    left: var(--name-w);
+    pointer-events: none;
+  }
+
+  .ps-held {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: rgb(var(--gold) / 0.07);
+  }
+
+  .ps-rating {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border-left: 1px solid rgb(var(--fg));
+  }
+
+  .ps-rating-label {
+    position: absolute;
+    top: -1.75rem;
+    left: 0.5rem;
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: rgb(var(--fg));
+  }
+
+  .ps-rows {
+    position: relative;
+  }
+
+  .ps-row {
+    display: grid;
+    grid-template-columns: var(--name-w) 1fr;
+    align-items: center;
+    height: 3.5rem;
+    border-bottom: 1px solid rgb(var(--line) / 0.08);
+    outline: none;
+  }
+
+  .ps-name {
+    font-size: var(--text-small);
+    color: rgb(var(--fg));
+  }
+
+  .ps-track {
+    position: relative;
+    height: 100%;
+  }
+
+  .ps-bar {
+    position: absolute;
+    top: 50%;
+    height: 12px;
+    border-radius: 4px;
+    background: rgb(var(--gold));
+    transform: translateY(-50%);
+    transition: background-color var(--dur-base) var(--ease-standard);
+  }
+
+  .ps-value {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    white-space: nowrap;
+    font-size: var(--text-caption);
+    color: rgb(var(--fg-muted));
+  }
+
+  .ps-tip {
+    position: absolute;
+    bottom: calc(50% + 1rem);
+    z-index: 2;
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius-xs);
+    background: rgb(var(--ink));
+    color: rgb(var(--paper));
+    font-size: var(--text-caption);
+    white-space: nowrap;
+    opacity: 0;
+    transform: translate(-50%, 0.25rem);
+    pointer-events: none;
+    transition:
+      opacity var(--dur-base) var(--ease-standard),
+      transform var(--dur-base) var(--ease-standard);
+  }
+
+  .ps-row:is(:hover, :focus-visible) .ps-tip {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  .ps-row:is(:hover, :focus-visible) .ps-bar {
+    background: rgb(var(--gold-deep, var(--gold)));
+  }
+
+  .ps-axis {
+    display: grid;
+    grid-template-columns: var(--name-w) 1fr;
+    height: 2rem;
+  }
+
+  .ps-ticks {
+    position: relative;
+  }
+
+  .ps-tick {
+    position: absolute;
+    top: 0.625rem;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    color: rgb(var(--fg-subtle));
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ps-tick:first-child {
+    transform: none;
+  }
+
+  .ps-tick:last-child {
+    transform: translateX(-100%);
+  }
+
+  @media (max-width: 40rem) {
+    .ps-plot {
+      --name-w: 6.5rem;
+    }
+  }
+</style>

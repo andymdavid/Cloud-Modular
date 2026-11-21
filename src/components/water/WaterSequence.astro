@@ -1,0 +1,137 @@
+---
+import SectionHead from "@/components/refresh/SectionHead.astro";
+import FilterSchematic from "@/components/water/FilterSchematic.astro";
+
+/**
+ * Follow the water (after PlatformSequence): the steps run down the left while the schematic on the right stays in
+ * view, and the water fills it up to the step at the middle of the page. Below lg the schematic sits pinned under the
+ * header above the steps. The schematic stands in until the 3D model is built.
+ */
+interface Props {
+  id?: string;
+  label: string;
+  title: string;
+  intro?: string;
+  steps: readonly { stage: number; label: string; title: string; body: string }[];
+}
+
+const { id, label, title, intro, steps } = Astro.props;
+---
+
+<section id={id} data-theme="light" class="scroll-mt-header pb-section" data-water-sequence>
+  <div class="shell">
+    <SectionHead label={label} title={title} intro={intro} />
+
+    <div class="grid-12 mt-12 sm:mt-16">
+      <div class="water-stage-col col-span-12 lg:col-span-7 lg:col-start-6 lg:row-start-1" aria-hidden="true">
+        <div class="water-stage">
+          <FilterSchematic active={steps[0].stage} />
+        </div>
+      </div>
+
+      <ol class="col-span-12 lg:col-span-5 lg:col-start-1 lg:row-start-1">
+        {steps.map((step, index) => (
+          <li class:list={["water-step", { "is-active": index === 0 }]} data-step={index} data-stage={step.stage}>
+            <div class="water-copy">
+              <p class="label">{step.label}</p>
+              <h3 class="mt-4 text-about font-medium">{step.title}</h3>
+              <p class="mt-3 max-w-[42ch] text-body text-fg-muted">{step.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .water-step {
+    display: flex;
+    min-height: 44svh;
+    align-items: center;
+  }
+
+  .water-copy {
+    opacity: 0.28;
+    transition: opacity var(--dur-slow) var(--ease-standard);
+  }
+
+  .water-step.is-active .water-copy {
+    opacity: 1;
+  }
+
+  /* Phones and tablets: the schematic's column pinned under the header (it is a grid item, so it sticks for the
+     height of the whole grid), the steps scrolling beneath it */
+  .water-stage-col {
+    position: sticky;
+    top: var(--header-h);
+    z-index: 1;
+    align-self: start;
+  }
+
+  .water-stage {
+    padding: 1.25rem 0.5rem 1rem;
+    background: rgb(var(--surface));
+  }
+
+  .water-stage :global(.schematic) {
+    max-height: 34svh;
+  }
+
+  /* lg up: each step takes most of a screen, and the schematic stays in the middle of the view beside them */
+  @media (min-width: 64rem) {
+    .water-step {
+      min-height: 72svh;
+    }
+
+    .water-stage-col {
+      position: relative;
+      top: auto;
+      align-self: stretch;
+    }
+
+    .water-stage {
+      position: sticky;
+      top: calc(50svh - min(19rem, 36svh));
+      display: flex;
+      height: min(38rem, 72svh);
+      align-items: center;
+      justify-content: center;
+      padding: 3rem;
+      border-radius: var(--radius-media);
+      background: rgb(var(--surface-alt));
+    }
+
+    .water-stage :global(.schematic) {
+      max-height: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .water-copy {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  // The step crossing the middle of the viewport is the active one: it lights up and the water fills the schematic
+  // up to its stage
+  document.querySelectorAll<HTMLElement>("[data-water-sequence]").forEach((section) => {
+    const steps = [...section.querySelectorAll<HTMLElement>("[data-step]")];
+    const schematic = section.querySelector<SVGElement>("[data-schematic]");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const step = entry.target as HTMLElement;
+          steps.forEach((s) => s.classList.toggle("is-active", s === step));
+          schematic?.setAttribute("data-active", step.dataset.stage ?? "0");
+        }
+      },
+      { rootMargin: "-50% 0px -50% 0px" },
+    );
+    steps.forEach((step) => observer.observe(step));
+  });
+</script>
