@@ -2,11 +2,12 @@
 import RefreshLayout from "@/layouts/RefreshLayout.astro";
 import SplitSection from "@/components/refresh/SplitSection.astro";
 import SectionHead from "@/components/refresh/SectionHead.astro";
+import CardRow from "@/components/refresh/CardRow.astro";
 import MediaCard from "@/components/refresh/MediaCard.astro";
 import Accordion from "@/components/refresh/Accordion.astro";
 import EnquiryForm from "@/components/refresh/EnquiryForm.astro";
 import WaterSequence from "@/components/water/WaterSequence.astro";
-import RemovalTable from "@/components/water/RemovalTable.astro";
+import FiltrationExplorer from "@/components/water/FiltrationExplorer.astro";
 import SpecSheetModal from "@/components/water/SpecSheetModal.astro";
 import { site } from "@/data/site";
 import { waterActions, waterBenefits, waterFaqs, waterHero, waterModels, waterPricing, waterRemoval, waterSequence } from "@/data/water";
@@ -60,20 +61,18 @@ const schemas = [
     </div>
   </section>
 
-  <!-- At home: what it does for the people who live with it, a portrait over each -->
+  <!-- At home: what it does for the people who live with it, an image over each (Cloud Homes' card row) -->
   <section id="at-home" data-theme="light" class="scroll-mt-header pb-section pt-section">
     <div class="shell">
-      <SectionHead label="At home" title="Better water in every room" rule={false} align="center" />
-      <ul class="mt-14 grid gap-x-gap-sm gap-y-16 sm:mt-20 md:grid-cols-2 lg:grid-cols-4">
-        {waterBenefits.map((benefit, index) => (
-          <li class="text-center" data-reveal style={`--reveal-delay:${index * 80}ms`}>
-            <div class="water-portrait mx-auto" aria-hidden="true"></div>
-            <h3 class="mt-8 text-lead font-medium">{benefit.title}</h3>
-            <p class="mx-auto mt-3 max-w-[30ch] text-body text-fg-muted">{benefit.body}</p>
-          </li>
-        ))}
-      </ul>
+      <SectionHead label="At home" title="Better water in every room" rule={false} />
     </div>
+    <CardRow label="What it does at home" columns={4} class="mt-10 sm:mt-12">
+      {waterBenefits.map((benefit, index) => (
+        <li data-reveal style={`--reveal-delay:${index * 80}ms`}>
+          <MediaCard alt="" title={benefit.title} description={benefit.body} size="compact" ratio="aspect-[4/5]" />
+        </li>
+      ))}
+    </CardRow>
   </section>
 
   <WaterSequence
@@ -84,22 +83,15 @@ const schemas = [
     steps={waterSequence}
   />
 
-  <!-- What it takes out: the headline figure beside the stage-by-stage table -->
-  <section id="what-it-takes-out" data-theme="light" class="scroll-mt-header pb-section">
-    <div class="shell">
-      <SectionHead label="Filtration" title={waterRemoval.title} intro={waterRemoval.intro} />
-      <div class="grid-12 mt-12 gap-y-14 sm:mt-16">
-        <div class="col-span-12 lg:col-span-4" data-reveal>
-          <p class="water-stat">{waterRemoval.stat.value}</p>
-          <p class="mt-4 max-w-[24ch] text-body text-fg-muted">{waterRemoval.stat.label}</p>
-          <p class="mt-10 max-w-[30ch] border-t border-line/[var(--rule-alpha)] pt-6 text-small text-fg-muted">{waterRemoval.note}</p>
-        </div>
-        <div class="col-span-12 lg:col-span-8" data-reveal>
-          <RemovalTable contaminants={waterRemoval.contaminants} />
-        </div>
-      </div>
-    </div>
-  </section>
+  <FiltrationExplorer
+    id="what-it-takes-out"
+    label="Filtration"
+    title={waterRemoval.title}
+    intro={waterRemoval.intro}
+    stages={waterRemoval.stages}
+    contaminants={waterRemoval.contaminants}
+    figures={waterRemoval.figures}
+  />
 
   <!-- The two models, then their specifications side by side -->
   <section id="models" data-theme="light" class="scroll-mt-header pb-section">
@@ -157,20 +149,6 @@ const schemas = [
     justify-content: center;
     border-radius: var(--radius-media);
     background: radial-gradient(70% 60% at 50% 55%, rgb(var(--stone)), rgb(var(--stone) / 0.55));
-  }
-
-  .water-portrait {
-    width: 9.5rem;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    background: rgb(var(--stone));
-  }
-
-  .water-stat {
-    font-size: clamp(3.5rem, 7vw, 6rem);
-    font-weight: var(--weight-medium);
-    line-height: 1;
-    letter-spacing: -0.03em;
   }
 
   .water-specs {

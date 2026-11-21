@@ -33,7 +33,7 @@ export const waterBenefits = [
   },
   {
     title: "Built to last",
-    body: "Food-grade housings on a steel frame, with a 304 stainless steel cover on the FH20BB3-SSS. Cartridges are changed with the wrench that comes in the box.",
+    body: "Food-grade housings on a steel frame, or inside a lockable 304 stainless steel cover on the FH20BB3-SSS. Cartridges are changed with the wrench that comes in the box.",
   },
 ];
 
@@ -72,17 +72,22 @@ export const waterSequence = [
   },
 ] as const;
 
-/** What it takes out: each contaminant, what it means at home, and the stages that act on it (from the supplier
- * deck). The chlorine figure is the supplier's. */
+/** What it takes out: the three cartridges, each contaminant with what it means at home and the stages that act on
+ * it (from the supplier deck), and the key figures (chlorine from the deck, the rest from the supplier's
+ * specification). */
 export const waterRemoval = {
   title: "What it takes out",
   intro:
-    "Each of the three cartridges has its own job, and most things are caught more than once. Here is what the system reduces and where.",
-  stat: { value: "Up to 99%", label: "of chlorine taken out by the carbon block cartridges" },
+    "Each cartridge has its own job, and most of what comes through the mains is caught more than once on the way through. Choose one to see where it is taken out.",
+  stages: [
+    { number: 1, code: "PP20BB-CC", name: "Polypropylene and carbon", kind: "pp", body: "Layers of polypropylene around granular coconut shell carbon." },
+    { number: 2, code: "CTO20BB", name: "Carbon block", kind: "carbon", body: "Sintered coconut carbon, filtering down to 5 microns." },
+    { number: 3, code: "CTO20BB", name: "Carbon block", kind: "carbon", body: "A second block to catch what the first leaves behind." },
+  ],
   contaminants: [
     {
       name: "Chlorine",
-      body: "Added to mains water to keep it safe on the way to the tap. It is what gives tap water a swimming pool taste and smell.",
+      body: "Added to mains water to keep it safe on the way to the tap. It is what gives tap water a swimming pool taste and smell. The carbon blocks take out up to 99% of it.",
       stages: [1, 2, 3],
     },
     {
@@ -92,17 +97,17 @@ export const waterRemoval = {
     },
     {
       name: "Sediment, sand and silt",
-      body: "Fine grit that clouds the water and wears tapware and appliance valves.",
+      body: "Fine grit that clouds the water and wears tapware and appliance valves. The carbon blocks catch anything down to 5 microns.",
       stages: [1, 2, 3],
     },
     {
       name: "Rust and pipe debris",
-      body: "Flakes from older pipes and mains works that discolour water and block aerators.",
+      body: "Flakes from older pipes and mains works that discolour water and block aerators. The first stage holds them back.",
       stages: [1],
     },
     {
       name: "Chloramines",
-      body: "A longer-lasting form of chlorine used on some supplies.",
+      body: "A longer-lasting form of chlorine used on some supplies, taken out by the first carbon block.",
       stages: [2],
     },
     {
@@ -111,7 +116,12 @@ export const waterRemoval = {
       stages: [2, 3],
     },
   ],
-  note: "The carbon block cartridges filter down to 5 microns, about a fourteenth of the width of a human hair.",
+  figures: [
+    { value: "Up to 99%", label: "Chlorine reduction" },
+    { value: "5 µm", label: "Carbon block filtration" },
+    { value: "55 L/min", label: "Flow rate" },
+    { value: "689 kPa", label: "Working pressure" },
+  ],
 };
 
 /** The two models. Dimensions are as given in the supplier sheet, which lists the same size for both. */
@@ -125,19 +135,29 @@ export const waterModels = [
       { label: "Weight", value: "29 kg" },
       { label: "Housings", value: "Three 20 inch jumbo housings, food-grade polypropylene" },
       { label: "Frame", value: "Steel support frame" },
-      { label: "In the box", value: "Housing wrench, three pressure gauges, 1 inch brass ports" },
+      { label: "Connections", value: "1 inch brass ports" },
+      { label: "Gauges", value: "Three pressure gauges" },
+      { label: "Flow rate", value: "55 L/min" },
+      { label: "Working pressure", value: "689 kPa" },
+      { label: "Operating temperature", value: "4 to 38 °C" },
+      { label: "In the box", value: "Support frame and housing wrench" },
     ],
   },
   {
     model: "FH20BB3-SSS",
     name: "Stainless steel cover",
-    summary: "The same system inside a 304 stainless steel cover, made for long-term durability.",
+    summary: "The same system inside a lockable 304 stainless steel cover, made for long-term durability.",
     specs: [
       { label: "Dimensions", value: "58 × 21 × 74 cm" },
       { label: "Weight", value: "38 kg" },
       { label: "Housings", value: "Three 20 inch jumbo housings, food-grade polypropylene" },
-      { label: "Frame", value: "Steel support frame and 304 stainless steel cover" },
-      { label: "In the box", value: "Housing wrench, three pressure gauges, 1 inch brass ports" },
+      { label: "Frame", value: "Steel support frame in a 1.5 mm, 304 stainless steel cover with a door lock" },
+      { label: "Connections", value: "1 inch BSP stainless steel unions and nipples" },
+      { label: "Gauges", value: "Three 60 mm oil-filled gauges, 0 to 150 PSI" },
+      { label: "Flow rate", value: "55 L/min" },
+      { label: "Working pressure", value: "689 kPa" },
+      { label: "Operating temperature", value: "4 to 38 °C" },
+      { label: "In the box", value: "Housing wrench" },
     ],
   },
 ];
@@ -169,8 +189,12 @@ export const waterFaqs = [
     body: "Turn off the water, release the pressure with the red pressure-release valve, then undo the housing with the wrench that comes with the system. Swap the cartridge, refit the housing and turn the water back on.",
   },
   {
+    title: "Will it affect the water pressure?",
+    body: "The system is rated for a flow rate of 55 litres a minute at a working pressure of 689 kPa. The pressure gauge on each housing shows how the system is running, and a growing difference between stages is the sign that a cartridge is due for a change.",
+  },
+  {
     title: "What is the difference between the two models?",
-    body: "Both have the same three housings and cartridges. The FH20BB3 sits on an open steel frame and weighs 29 kg. The FH20BB3-SSS adds a 304 stainless steel cover over the housings and weighs 38 kg.",
+    body: "Both have the same three housings and cartridges. The FH20BB3 sits on an open steel frame and weighs 29 kg. The FH20BB3-SSS adds a lockable 304 stainless steel cover over the housings and weighs 38 kg.",
   },
   {
     title: "Where is it installed, and who can install it?",

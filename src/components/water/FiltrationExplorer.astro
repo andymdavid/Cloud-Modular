@@ -1,0 +1,308 @@
+---
+import Cartridge from "@/components/water/Cartridge.astro";
+
+/**
+ * What it takes out, as a dark band: the contaminants listed down the left, the three cartridges standing on a lit
+ * stage on the right. Choosing a contaminant opens its sentence and lights the cartridges that take it out; the others
+ * fall back into the dark. It steps through the list on its own while in view until someone chooses one. The key
+ * figures run along the foot. Without JavaScript every row is open and every cartridge lit.
+ */
+interface Props {
+  id?: string;
+  label: string;
+  title: string;
+  intro: string;
+  stages: readonly { number: number; code: string; name: string; kind: string; body: string }[];
+  contaminants: readonly { name: string; body: string; stages: readonly number[] }[];
+  figures: readonly { value: string; label: string }[];
+}
+
+const { id, label, title, intro, stages, contaminants, figures } = Astro.props;
+---
+
+<section id={id} data-theme="dark" data-surface="slate" class="filtration scroll-mt-header" data-filtration>
+  <div class="shell pb-section pt-section">
+    <div class="grid-12 gap-y-8">
+      <div class="col-span-12 lg:col-span-6">
+        <p class="label">{label}</p>
+        <h2 class="mt-7 text-h2">{title}</h2>
+      </div>
+      <p class="col-span-12 max-w-[46ch] self-end text-body text-fg-muted lg:col-span-5 lg:col-start-8">{intro}</p>
+    </div>
+
+    <div class="grid-12 mt-14 gap-y-12 sm:mt-20">
+      <!-- The contaminants: each a button that opens its sentence and lights its stages -->
+      <ul class="col-span-12 lg:col-span-5 lg:row-start-1" role="list">
+        {contaminants.map((item, index) => (
+          <li class="f-row" data-row>
+            <button
+              type="button"
+              class:list={["f-toggle", { "is-active": index === 0 }]}
+              aria-pressed={index === 0 ? "true" : "false"}
+              data-stages={item.stages.join(",")}
+              data-index={index}
+            >
+              <span class="f-name">{item.name}</span>
+              <span class="f-dots" aria-hidden="true">
+                {stages.map((stage) => <span class:list={["f-dot", { "is-on": item.stages.includes(stage.number) }]}></span>)}
+              </span>
+            </button>
+            <div class="f-body">
+              <p class="f-body-inner">
+                {item.body}
+                <span class="sr-only">Taken out at stage {item.stages.join(", ")}.</span>
+              </p>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <!-- The three cartridges on a lit stage -->
+      <div class="col-span-12 max-lg:order-first lg:col-span-6 lg:col-start-7 lg:row-start-1">
+        <div class="f-stage" aria-hidden="true">
+          {stages.map((stage) => (
+            <div class:list={["f-cartridge", { "is-lit": contaminants[0].stages.includes(stage.number) }]} data-stage={stage.number}>
+              <div class="f-cartridge-art">
+                <Cartridge kind={stage.kind as "pp" | "carbon"} />
+              </div>
+              <p class="label mt-10">Stage {String(stage.number).padStart(2, "0")}</p>
+              <p class="f-code mt-2">{stage.code}</p>
+              <p class="mt-3 text-small text-fg-muted">{stage.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <!-- Key figures -->
+    <dl class="f-figures mt-20 grid grid-cols-2 gap-x-gap-sm gap-y-10 pt-10 sm:mt-24 lg:grid-cols-4">
+      {figures.map((figure) => (
+        <div>
+          <dt class="sr-only">{figure.label}</dt>
+          <dd class="f-figure">{figure.value}</dd>
+          <dd class="mt-3 text-small text-fg-muted">{figure.label}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>
+
+<style>
+  .filtration {
+    background: rgb(var(--slate));
+  }
+
+  /* Contaminant rows on hairlines; the open one shows its sentence */
+  .f-row {
+    border-top: var(--rule) solid rgb(var(--line) / 0.12);
+  }
+
+  .f-row:last-child {
+    border-bottom: var(--rule) solid rgb(var(--line) / 0.12);
+  }
+
+  .f-toggle {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 1.25rem;
+    text-align: left;
+    color: rgb(var(--fg) / 0.5);
+    transition: color var(--dur-base) var(--ease-standard);
+  }
+
+  .f-toggle:hover,
+  .f-toggle.is-active {
+    color: rgb(var(--fg));
+  }
+
+  .f-name {
+    font-size: clamp(1.25rem, 2vw, 1.625rem);
+    letter-spacing: var(--tracking-title);
+  }
+
+  .f-dots {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .f-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border: 1px solid rgb(var(--line) / 0.3);
+    border-radius: 50%;
+  }
+
+  .f-dot.is-on {
+    border-color: rgb(var(--gold));
+    background: rgb(var(--gold));
+  }
+
+  .f-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    max-width: 44ch;
+    overflow: hidden;
+    color: rgb(var(--fg-muted));
+    font-size: var(--text-body);
+    transition: grid-template-rows var(--dur-slow) var(--ease-out);
+  }
+
+  .f-body-inner {
+    min-height: 0;
+    overflow: hidden;
+    transition: padding var(--dur-slow) var(--ease-out);
+  }
+
+  /* No JavaScript: every row open */
+  .filtration:not(.is-ready) .f-body,
+  .f-row:has(.is-active) .f-body {
+    grid-template-rows: 1fr;
+  }
+
+  .filtration:not(.is-ready) .f-body-inner,
+  .f-row:has(.is-active) .f-body-inner {
+    padding-bottom: 1.5rem;
+  }
+
+  /* The stage: three cartridges in a pool of light */
+  .f-stage {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--gap-sm);
+    padding: 3.5rem 1rem 2.5rem;
+    border-radius: var(--radius-media);
+    background:
+      radial-gradient(60% 42% at 50% 46%, rgb(255 255 255 / 0.09), rgb(255 255 255 / 0) 70%),
+      linear-gradient(to bottom, rgb(255 255 255 / 0.03), rgb(0 0 0 / 0.18));
+  }
+
+  .f-cartridge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    opacity: 0.3;
+    filter: saturate(0.3);
+    transition:
+      opacity var(--dur-slow) var(--ease-standard),
+      filter var(--dur-slow) var(--ease-standard);
+  }
+
+  .filtration:not(.is-ready) .f-cartridge,
+  .f-cartridge.is-lit {
+    opacity: 1;
+    filter: none;
+  }
+
+  .f-cartridge-art {
+    position: relative;
+    transition: transform var(--dur-slow) var(--ease-out);
+  }
+
+  /* A gold glow on the floor under a lit cartridge */
+  .f-cartridge-art::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -1.75rem;
+    width: 160%;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgb(var(--gold) / 0.45), rgb(var(--gold) / 0));
+    opacity: 0;
+    transform: translateX(-50%);
+    transition: opacity var(--dur-slow) var(--ease-standard);
+  }
+
+  .f-cartridge.is-lit .f-cartridge-art {
+    transform: translateY(-0.5rem);
+  }
+
+  .f-cartridge.is-lit .f-cartridge-art::after {
+    opacity: 1;
+  }
+
+  .f-cartridge :global(.cartridge) {
+    --w: clamp(3.5rem, 7vw, 5.75rem);
+  }
+
+  .f-code {
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    letter-spacing: var(--tracking-label);
+    color: rgb(var(--fg));
+  }
+
+  .f-figures {
+    border-top: var(--rule) solid rgb(var(--line) / 0.12);
+  }
+
+  .f-figure {
+    font-size: clamp(2.25rem, 4.5vw, 3.75rem);
+    font-weight: var(--weight-medium);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  @media (max-width: 40rem) {
+    .f-cartridge .text-small {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .f-body,
+    .f-cartridge,
+    .f-cartridge-art,
+    .f-cartridge-art::after {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  // Choosing a contaminant opens its row and lights its stages. While the section is in view it steps through the
+  // list every few seconds, until someone chooses one themselves.
+  document.querySelectorAll<HTMLElement>("[data-filtration]").forEach((section) => {
+    section.classList.add("is-ready");
+    const toggles = [...section.querySelectorAll<HTMLButtonElement>(".f-toggle")];
+    const cartridges = [...section.querySelectorAll<HTMLElement>("[data-stage]")];
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let current = 0;
+    let timer = 0;
+    let chosen = false;
+
+    const select = (index: number) => {
+      current = index;
+      const stages = (toggles[index].dataset.stages ?? "").split(",");
+      toggles.forEach((toggle, i) => {
+        toggle.classList.toggle("is-active", i === index);
+        toggle.setAttribute("aria-pressed", String(i === index));
+      });
+      cartridges.forEach((cartridge) => cartridge.classList.toggle("is-lit", stages.includes(cartridge.dataset.stage ?? "")));
+    };
+
+    const stop = () => {
+      window.clearInterval(timer);
+      timer = 0;
+    };
+    const start = () => {
+      if (chosen || reduced || timer) return;
+      timer = window.setInterval(() => select((current + 1) % toggles.length), 3800);
+    };
+
+    toggles.forEach((toggle, index) =>
+      toggle.addEventListener("click", () => {
+        chosen = true;
+        stop();
+        select(index);
+      }),
+    );
+
+    new IntersectionObserver(([entry]) => (entry.isIntersecting ? start() : stop()), { threshold: 0.35 }).observe(section);
+  });
+</script>
