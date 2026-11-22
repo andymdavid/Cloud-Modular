@@ -1,0 +1,35 @@
+---
+import RefreshLayout from "@/layouts/RefreshLayout.astro";
+import PageIntro from "@/components/refresh/PageIntro.astro";
+import SplitSection from "@/components/refresh/SplitSection.astro";
+import Accordion from "@/components/refresh/Accordion.astro";
+import GetStarted from "@/components/refresh/GetStarted.astro";
+import { livingHelp } from "@/data/living";
+
+/** Cloud Living help: delivery, returns, and orders and payment, each a split section of questions. */
+const title = "Delivery and Returns | Cloud Living";
+const description = "How Cloud Living delivers across Perth, how returns work, and how to pay.";
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: livingHelp.flatMap((topic) => topic.items).map((item) => ({ "@type": "Question", name: item.title, acceptedAnswer: { "@type": "Answer", text: item.body } })),
+};
+---
+
+<RefreshLayout title={title} description={description} canonical="/living/help/" structuredData={faqSchema} brand="living">
+  <PageIntro label="Help" title="Delivery and returns" lead="Everything you need to know about getting your order home." />
+
+  {livingHelp.map((topic, index) => (
+    <SplitSection id={topic.id} label={topic.label} rule={index > 0}>
+      <Accordion items={topic.items} name={topic.id} openFirst={index === 0} />
+    </SplitSection>
+  ))}
+
+  <GetStarted
+    text="Can’t find what you need? Send us a message and our team will get back to you."
+    actions={[
+      { label: "Contact us", href: "/living/contact/" },
+      { label: "Shop all", href: "/living/shop/" },
+    ]}
+  />
+</RefreshLayout>

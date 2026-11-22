@@ -1,0 +1,46 @@
+---
+import type { ArtId } from "@/data/living";
+
+/**
+ * Placeholder for a product without photography: a fine line drawing of its type, centred on the catalogue's stone
+ * backdrop, so the shop's grids read as products until the catalogue supplies the studio renders.
+ */
+interface Props {
+  art: ArtId;
+  class?: string;
+}
+
+const { art, class: className } = Astro.props;
+
+// Each drawing in a 100 × 100 box, standing on the floor line at y 80
+const drawings: Record<ArtId, string> = {
+  sofa: "M14 70V52a4 4 0 0 1 4-4h64a4 4 0 0 1 4 4v18M20 48V36a4 4 0 0 1 4-4h52a4 4 0 0 1 4 4v12M14 70h72M22 58h56M18 70v8M82 70v8M50 48v10",
+  chair: "M30 46V24a4 4 0 0 1 4-4h28a4 4 0 0 1 4 4v22M26 46h44a2 2 0 0 1 2 2v8H24v-8a2 2 0 0 1 2-2ZM28 56l-4 24M68 56l4 24M24 40h-4M72 40h4M20 40v16M76 40v16",
+  stool: "M34 30h32a2 2 0 0 1 2 2v3H32v-3a2 2 0 0 1 2-2ZM38 35l-6 45M62 35l6 45M36 60h28",
+  table: "M10 38h80v4H10zM18 42l-4 38M82 42l4 38M24 42l2 30M76 42l-2 30",
+  "side-table": "M30 34h40v32H30zM30 48h40M46 41h8M32 66l-2 14M68 66l2 14",
+  bed: "M16 66V36a4 4 0 0 1 4-4h60a4 4 0 0 1 4 4v30M10 66h80v8H10zM12 74v6M88 74v6M22 52h56M26 46h18M56 46h18M22 60h56",
+  mattress: "M12 50l14-12h62l-14 12zM12 50v16h62V50M74 66l14-12V38M20 58h46",
+  storage: "M14 34h72v38H14zM38 34v38M62 34v38M18 72v8M82 72v8M34 50v6M42 50v6M66 50v6",
+  lamp: "M38 22h24l6 22H32zM50 44v6M50 50c-8 0-11 8-11 15s3 15 11 15 11-8 11-15-3-15-11-15Z",
+  pendant: "M50 8v34M20 42h60v6H20zM26 48h48",
+  textile: "M18 30h64v44H18zM18 42h64M18 54c10 4 22 4 32 0s22-4 32 0M26 74v6M34 74v6M42 74v6M50 74v6M58 74v6M66 74v6M74 74v6",
+  rug: "M10 70l14-22h52l14 22zM18 66l9-14h46l9 14zM10 70v4h80v-4",
+  tap: "M44 80V44h12v36M38 80h24M50 44V30h20a4 4 0 0 1 4 4v4M70 38v6M40 30h20",
+  toilet: "M34 20h32v20H34zM30 48h40c0 8-9 14-20 14s-20-6-20-14ZM42 62l-2 18h20l-2-18",
+  fridge: "M28 12h44v68H28zM28 38h44M50 38v42M46 46v12M54 46v12M32 80v2M68 80v2",
+  tv: "M10 22h80v46H10zM14 26h72v38H14zM50 68v6M36 80l14-6 14 6",
+};
+---
+
+<div class:list={["product-art flex h-full w-full items-center justify-center bg-stone", className]} aria-hidden="true">
+  <svg viewBox="0 0 100 100" fill="none" class="h-[46%] w-[46%]">
+    <path d={drawings[art]} stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+  </svg>
+</div>
+
+<style>
+  .product-art {
+    color: rgb(var(--ink) / 0.55);
+  }
+</style>

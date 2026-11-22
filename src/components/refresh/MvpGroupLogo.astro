@@ -1,0 +1,35 @@
+---
+/**
+ * The MVP Group logo, from Design-Docs/Partner Logos/MVP Group.svg, cropped to the frame and the GROUP line.
+ * M and P take currentColor so they follow the section theme; the V and the frame keep the brand's gold gradient.
+ * The artwork sets GROUP in Arnika, which the site doesn't load, so the line falls back to the display serif.
+ */
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<svg class={className} viewBox="160 160 962 540" role="img" aria-label="MVP Group" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="mvp-gold-v" x1="544.9" y1="410.58" x2="838.28" y2="410.58" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#dec897" />
+      <stop offset=".5" stop-color="#ead7a8" />
+      <stop offset="1" stop-color="#c7ad7b" />
+    </linearGradient>
+    <linearGradient id="mvp-gold-frame" x1="165.57" y1="414.42" x2="1115.99" y2="414.42" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ead7a8" />
+      <stop offset=".5" stop-color="#ead7a8" />
+      <stop offset=".66" stop-color="#e7d3a4" />
+      <stop offset=".8" stop-color="#dec999" />
+      <stop offset=".93" stop-color="#d0b887" />
+      <stop offset="1" stop-color="#c7ad7b" />
+    </linearGradient>
+  </defs>
+  <polygon fill="currentColor" points="561.08 322.23 561.08 573.65 535.71 573.65 535.71 304.74 429.29 573.65 396.71 573.65 279.24 282.95 279.24 573.65 253.87 573.65 253.87 247.51 292.73 247.51 413.01 545.17 533.31 248.11 561.08 322.23" />
+  <path fill="currentColor" d="M979.3,252.96c-12.82-3.66-26.99-5.45-41.88-5.45h-83.14l-10.44,25.38v300.75h25.37v-150.39h79.18c10.04,0,20.04-1.57,29.53-4.87,1.87-.65,3.71-1.33,5.52-2.03,34.76-13.33,58.7-42.58,58.7-83.9s-25.85-68.96-62.84-79.5ZM954.35,397.89c-9.59.71-85.13,0-85.13,0v-125h68.21c43.82,0,76.56,15.75,76.56,59.57,0,37.95-24.29,62.79-59.64,65.43Z" />
+  <polygon fill="url(#mvp-gold-v)" points="838.28 247.51 709.28 573.65 673.9 573.65 544.9 247.51 575.47 247.51 691.58 544.54 807.7 247.51 838.28 247.51" />
+  <text fill="currentColor" x="660" y="684.33" text-anchor="middle" font-size="88" letter-spacing="0.43em" style="font-family: var(--font-display)">GROUP</text>
+  <polygon fill="url(#mvp-gold-frame)" points="165.57 165.86 165.57 662.99 374.91 662.99 374.91 651.29 178.19 651.29 178.19 177.54 1103.37 177.54 1103.37 651.29 907.69 651.29 907.69 662.99 1115.99 662.99 1115.99 165.86 165.57 165.86" />
+</svg>

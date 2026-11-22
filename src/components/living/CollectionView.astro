@@ -1,0 +1,325 @@
+---
+import ProductCard from "@/components/living/ProductCard.astro";
+import { livingCategories, livingRooms, priceBands, type Product } from "@/data/living";
+
+/**
+ * Shop grid (cf. the Wonder collection page): a toolbar with the filter button, the product count and sort, then
+ * the grid, two across on phones, three at md and four at xl. Filters open in a drawer from the left and apply as
+ * they're ticked. Filtering and sorting run in the browser over the cards' data attributes.
+ */
+interface Props {
+  products: Product[];
+  /** Filter groups to offer; a category page leaves out Category, a room page leaves out Room. */
+  filters?: ("category" | "room" | "colour" | "price")[];
+}
+
+const { products, filters = ["category", "room", "colour", "price"] } = Astro.props;
+
+const usedColours = [...new Map(products.flatMap((product) => product.colours ?? []).map((colour) => [colour.name, colour])).values()];
+const groups = [
+  filters.includes("category") && {
+    name: "category",
+    label: "Category",
+    options: livingCategories.filter((category) => products.some((product) => product.category === category.slug)).map((category) => ({ value: category.slug, label: category.title })),
+  },
+  filters.includes("room") && {
+    name: "room",
+    label: "Room",
+    options: livingRooms.filter((room) => products.some((product) => product.rooms.includes(room.slug))).map((room) => ({ value: room.slug, label: room.title })),
+  },
+  filters.includes("colour") && {
+    name: "colour",
+    label: "Colour",
+    options: usedColours.map((colour) => ({ value: colour.name, label: colour.name, hex: colour.hex })),
+  },
+  filters.includes("price") && {
+    name: "price",
+    label: "Price",
+    options: priceBands.map((band) => ({ value: band.id, label: band.label })),
+  },
+].filter((group): group is { name: string; label: string; options: { value: string; label: string; hex?: string }[] } => group !== false && group.options.length > 1);
+const bands = Object.fromEntries(priceBands.map((band) => [band.id, [band.min, band.max === Infinity ? 1e9 : band.max]]));
+---
+
+<section data-theme="light" class="collection pb-section" data-collection data-bands={JSON.stringify(bands)}>
+  <div class="shell">
+    <div class="collection-bar flex items-center justify-between gap-4 border-y border-line/[var(--rule-alpha)] py-3">
+      <div class="flex items-center gap-4">
+        {groups.length > 0 && (
+          <button type="button" class="btn" data-filter-open aria-controls="collection-filters" aria-expanded="false">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M1 3h10M3 6h6M5 9h2" stroke="currentColor" stroke-width="1.1" /></svg>
+            Filter<span data-filter-count></span>
+          </button>
+        )}
+        <p class="text-small text-fg-muted" aria-live="polite"><span data-visible-count>{products.length}</span> products</p>
+      </div>
+      <label class="flex items-center gap-2 text-small">
+        <span class="hidden text-fg-muted sm:inline">Sort by</span>
+        <select class="sort-select" data-sort>
+          <option value="featured">Featured</option>
+          <option value="new">Newest</option>
+          <option value="price-asc">Price, low to high</option>
+          <option value="price-desc">Price, high to low</option>
+        </select>
+      </label>
+    </div>
+
+    <ul class="mt-8 grid grid-cols-2 gap-x-gap-sm gap-y-10 md:grid-cols-3 xl:grid-cols-4" data-grid>
+      {products.map((product, index) => (
+        <li data-order={index}><ProductCard product={product} eager={index < 4} /></li>
+      ))}
+    </ul>
+    <div class="hidden py-section-sm text-center" data-empty>
+      <p class="text-about">No products match those filters.</p>
+      <button type="button" class="btn mt-6" data-filter-clear>Clear filters</button>
+    </div>
+  </div>
+
+  {groups.length > 0 && (
+    <div class="filter-root" data-filter-root aria-hidden="true" inert>
+      <div class="filter-scrim" data-filter-close></div>
+      <form id="collection-filters" data-theme="light" class="filter-panel" role="dialog" aria-modal="true" aria-label="Filters" data-filter-form>
+        <div class="flex h-header shrink-0 items-center justify-between">
+          <p class="label label-muted">Filter</p>
+          <button type="button" class="filter-close" data-filter-close aria-label="Close filters">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="m2 2 10 10M12 2 2 12" stroke="currentColor" stroke-width="1.2" /></svg>
+          </button>
+        </div>
+        <div class="flex-1 overflow-y-auto">
+          {groups.map((group, index) => (
+            <details class="filter-group" open={index < 2}>
+              <summary class="flex cursor-pointer list-none items-center justify-between py-4 text-body font-medium">
+                {group.label}
+                <span class="filter-plus" aria-hidden="true"></span>
+              </summary>
+              <ul class="flex flex-col gap-3 pb-6">
+                {group.options.map((option) => (
+                  <li>
+                    <label class="filter-option">
+                      <input type="checkbox" name={group.name} value={option.value} />
+                      {option.hex && <span class="filter-swatch" style={`--swatch:${option.hex}`}></span>}
+                      <span>{option.label}</span>
+                    </label>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          ))}
+        </div>
+        <div class="flex gap-1 py-6">
+          <button type="button" class="btn flex-1" data-filter-clear>Clear</button>
+          <button type="button" class="btn-solid flex-1 bg-ink text-paper hover:bg-graphite" data-filter-close>Show <span data-visible-count>{products.length}</span> products</button>
+        </div>
+      </form>
+    </div>
+  )}
+</section>
+
+<style>
+  .sort-select {
+    appearance: none;
+    height: 2rem;
+    padding: 0 1.75rem 0 0.75rem;
+    border: var(--rule) solid rgb(var(--line) / 0.15);
+    border-radius: var(--radius-media);
+    background: rgb(var(--surface)) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='none'%3E%3Cpath d='m2 3.5 3 3 3-3' stroke='%230B0B0C' stroke-width='1.1'/%3E%3C/svg%3E") no-repeat right 0.625rem center;
+    font: inherit;
+    font-size: var(--text-small);
+    color: rgb(var(--fg));
+  }
+
+  .filter-root {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+  }
+
+  .filter-root.is-open {
+    pointer-events: auto;
+  }
+
+  .filter-scrim {
+    position: absolute;
+    inset: 0;
+    background: rgb(var(--ink) / 0.35);
+    opacity: 0;
+    transition: opacity var(--dur-panel) var(--ease-out);
+  }
+
+  .filter-panel {
+    position: absolute;
+    inset: 0 auto 0 0;
+    display: flex;
+    flex-direction: column;
+    width: min(26rem, 100%);
+    padding-inline: var(--gutter);
+    transform: translateX(-100%);
+    transition: transform var(--dur-panel) var(--ease-out);
+  }
+
+  .filter-root.is-open .filter-scrim {
+    opacity: 1;
+  }
+
+  .filter-root.is-open .filter-panel {
+    transform: none;
+  }
+
+  .filter-close {
+    display: inline-flex;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-right: -0.875rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .filter-group {
+    border-top: var(--rule) solid rgb(var(--line) / var(--rule-alpha));
+  }
+
+  .filter-group summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .filter-plus {
+    position: relative;
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+
+  .filter-plus::before,
+  .filter-plus::after {
+    content: "";
+    position: absolute;
+    background: currentColor;
+    transition: transform var(--dur-base) var(--ease-standard);
+  }
+
+  .filter-plus::before {
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 1px;
+  }
+
+  .filter-plus::after {
+    left: 50%;
+    top: 0;
+    width: 1px;
+    height: 100%;
+  }
+
+  .filter-group[open] .filter-plus::after {
+    transform: scaleY(0);
+  }
+
+  .filter-option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: var(--text-small);
+    cursor: pointer;
+  }
+
+  .filter-option input {
+    width: 1rem;
+    height: 1rem;
+    margin: 0;
+    accent-color: rgb(var(--ink));
+  }
+
+  .filter-swatch {
+    width: 0.875rem;
+    height: 0.875rem;
+    border-radius: 50%;
+    background: var(--swatch);
+    box-shadow: inset 0 0 0 1px rgb(var(--ink) / 0.12);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .filter-panel,
+    .filter-scrim {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-collection]").forEach((section) => {
+    const grid = section.querySelector<HTMLElement>("[data-grid]")!;
+    const items = [...grid.children] as HTMLElement[];
+    const form = section.querySelector<HTMLFormElement>("[data-filter-form]");
+    const root = section.querySelector<HTMLElement>("[data-filter-root]");
+    const openButton = section.querySelector<HTMLButtonElement>("[data-filter-open]");
+    const bands: Record<string, [number, number]> = JSON.parse(section.dataset.bands ?? "{}");
+
+    const card = (item: HTMLElement) => item.querySelector<HTMLElement>("[data-product]")!.dataset;
+    const checked = (name: string) => [...(form?.querySelectorAll<HTMLInputElement>(`[name="${name}"]:checked`) ?? [])].map((input) => input.value);
+
+    const apply = () => {
+      const category = checked("category");
+      const room = checked("room");
+      const colour = checked("colour");
+      const price = checked("price");
+      let visible = 0;
+      for (const item of items) {
+        const data = card(item);
+        const amount = Number(data.price);
+        const show =
+          (!category.length || category.includes(data.category!)) &&
+          (!room.length || data.rooms!.split(" ").some((value) => room.includes(value))) &&
+          (!colour.length || data.colours!.split("|").some((value) => colour.includes(value))) &&
+          (!price.length || price.some((id) => amount >= bands[id][0] && amount < bands[id][1]));
+        item.hidden = !show;
+        if (show) visible++;
+      }
+      section.querySelectorAll("[data-visible-count]").forEach((el) => (el.textContent = String(visible)));
+      const active = category.length + room.length + colour.length + price.length;
+      const count = section.querySelector("[data-filter-count]");
+      if (count) count.textContent = active ? ` (${active})` : "";
+      section.querySelector<HTMLElement>("[data-empty]")!.classList.toggle("hidden", visible > 0);
+    };
+
+    const sort = section.querySelector<HTMLSelectElement>("[data-sort]")!;
+    sort.addEventListener("change", () => {
+      const by = sort.value;
+      const value = (item: HTMLElement) =>
+        by === "new" ? Number(card(item).added) : by.startsWith("price") ? Number(card(item).price) : Number(item.dataset.order);
+      const sorted = [...items].sort((a, b) => (by === "price-desc" ? value(b) - value(a) : value(a) - value(b)));
+      grid.append(...sorted);
+    });
+
+    // Footer links can open the shop sorted (?sort=new)
+    const initial = new URLSearchParams(location.search).get("sort");
+    if (initial && [...sort.options].some((option) => option.value === initial)) {
+      sort.value = initial;
+      sort.dispatchEvent(new Event("change"));
+    }
+
+    form?.addEventListener("change", apply);
+    section.querySelectorAll("[data-filter-clear]").forEach((button) =>
+      button.addEventListener("click", () => {
+        form?.reset();
+        apply();
+      }),
+    );
+
+    const setOpen = (open: boolean) => {
+      if (!root || !openButton) return;
+      root.classList.toggle("is-open", open);
+      root.setAttribute("aria-hidden", String(!open));
+      root.toggleAttribute("inert", !open);
+      openButton.setAttribute("aria-expanded", String(open));
+      document.documentElement.classList.toggle("menu-open", open);
+      if (open) root.querySelector<HTMLElement>("[data-filter-close]:not(.filter-scrim)")?.focus({ preventScroll: true });
+      else openButton.focus({ preventScroll: true });
+    };
+    openButton?.addEventListener("click", () => setOpen(true));
+    root?.querySelectorAll("[data-filter-close]").forEach((el) => el.addEventListener("click", () => setOpen(false)));
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && root?.classList.contains("is-open")) setOpen(false);
+    });
+  });
+</script>

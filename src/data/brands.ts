@@ -25,11 +25,17 @@ export interface Brand {
   contact?: string;
   /** The link-preview image for the brand's pages; none uses the site's default. */
   image?: string;
+  /** A shop's cart page: the header shows a bag with the item count, which opens the cart drawer. */
+  cart?: string;
+  /** Links shown inline in the header on wide screens (a shop's departments). */
+  nav?: NavLink[];
   /** The header button and the menu panel's closing action. */
   cta: NavLink;
   menuPrompt: string;
   menu: NavGroup[];
   footer: {
+    /** A line about the brand under its logo, in the first column. */
+    blurb: string;
     groups: NavGroup[];
     prompt: string;
     actions: NavLink[];
@@ -39,6 +45,7 @@ export interface Brand {
 export const brands = {
   modular: {
     name: "Cloud Modular",
+    descriptor: "Modular",
     home: "/",
     cta: { label: "Get started", href: site.startHref },
     menuPrompt: "Let’s talk about your next project",
@@ -70,6 +77,7 @@ export const brands = {
       },
     ],
     footer: {
+      blurb: "Architecturally designed modular buildings, certified to Australian Standards.",
       groups: [
         {
           label: "Company",
@@ -152,6 +160,7 @@ export const brands = {
       },
     ],
     footer: {
+      blurb: "Supply for builders and developers across Australia, with manufacture, inspection, freight and delivery managed for you.",
       groups: [
         {
           label: "Cloud Trade",
@@ -194,6 +203,113 @@ export const brands = {
       ],
     },
   },
+  living: {
+    name: "Cloud Living",
+    descriptor: "Living",
+    home: "/living/",
+    contact: "/living/contact/",
+    cart: "/living/cart/",
+    cta: { label: "Shop all", href: "/living/shop/" },
+    nav: [
+      { label: "Shop All", href: "/living/shop/" },
+      { label: "Living", href: "/living/rooms/living/" },
+      { label: "Dining", href: "/living/rooms/dining/" },
+      { label: "Bedroom", href: "/living/rooms/bedroom/" },
+      { label: "Kitchen", href: "/living/rooms/kitchen/" },
+      { label: "Bathroom", href: "/living/rooms/bathroom/" },
+      { label: "Outdoor", href: "/living/rooms/outdoor/" },
+    ],
+    menuPrompt: "Furniture and homewares for every room",
+    menu: [
+      {
+        label: "Shop by room",
+        links: [
+          { label: "Living", href: "/living/rooms/living/" },
+          { label: "Dining", href: "/living/rooms/dining/" },
+          { label: "Bedroom", href: "/living/rooms/bedroom/" },
+          { label: "Kitchen", href: "/living/rooms/kitchen/" },
+          { label: "Bathroom", href: "/living/rooms/bathroom/" },
+          { label: "Outdoor", href: "/living/rooms/outdoor/" },
+        ],
+      },
+      {
+        label: "Shop by category",
+        links: [
+          { label: "Sofas", href: "/living/shop/sofas/" },
+          { label: "Chairs", href: "/living/shop/chairs/" },
+          { label: "Tables", href: "/living/shop/tables/" },
+          { label: "Beds and Mattresses", href: "/living/shop/beds/" },
+          { label: "Storage", href: "/living/shop/storage/" },
+          { label: "Lighting", href: "/living/shop/lighting/" },
+          { label: "Linen and Rugs", href: "/living/shop/textiles/" },
+          { label: "Bathroom", href: "/living/shop/bathroom/" },
+          { label: "Appliances", href: "/living/shop/appliances/" },
+        ],
+      },
+      {
+        label: "Help",
+        links: [
+          { label: "Delivery and Returns", href: "/living/help/" },
+          { label: "Contact", href: "/living/contact/" },
+        ],
+      },
+    ],
+    footer: {
+      blurb: "Furniture and homewares for every room of the home, delivered across Perth.",
+      groups: [
+        {
+          label: "Shop",
+          links: [
+            { label: "Shop All", href: "/living/shop/" },
+            { label: "New In", href: "/living/shop/?sort=new" },
+            { label: "Sofas", href: "/living/shop/sofas/" },
+            { label: "Beds and Mattresses", href: "/living/shop/beds/" },
+            { label: "Lighting", href: "/living/shop/lighting/" },
+          ],
+        },
+        {
+          label: "Rooms",
+          links: [
+            { label: "Living", href: "/living/rooms/living/" },
+            { label: "Dining", href: "/living/rooms/dining/" },
+            { label: "Bedroom", href: "/living/rooms/bedroom/" },
+            { label: "Kitchen", href: "/living/rooms/kitchen/" },
+            { label: "Bathroom", href: "/living/rooms/bathroom/" },
+            { label: "Outdoor", href: "/living/rooms/outdoor/" },
+          ],
+        },
+        {
+          label: "Help",
+          links: [
+            { label: "Delivery", href: "/living/help/#delivery" },
+            { label: "Returns", href: "/living/help/#returns" },
+            { label: "Orders and Payment", href: "/living/help/#orders" },
+            { label: "Cart", href: "/living/cart/" },
+          ],
+        },
+        {
+          label: "Contact",
+          links: [
+            { label: "Contact Us", href: "/living/contact/" },
+          ],
+        },
+      ],
+      prompt: "Need help choosing, or furnishing a whole home? Send us a message and our team will help.",
+      actions: [
+        { label: "Shop all", href: "/living/shop/" },
+        { label: "Contact us", href: "/living/contact/" },
+      ],
+    },
+  },
 } satisfies Record<string, Brand>;
 
 export type BrandId = keyof typeof brands;
+
+// The Cloud sites, in the order every footer and menu lists them.
+export const family: BrandId[] = ["modular", "trade", "living"];
+
+// The masterbrand over the three sites, named in every footer. It links to the group home once that has an address.
+export const masterbrand: { name: string; href?: string } = { name: "Made by Cloud" };
+
+// The parent company, credited beside the copyright in every footer.
+export const parent = { name: "MVP Group", href: "https://www.mvpgroup.group/" };

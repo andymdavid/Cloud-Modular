@@ -1,0 +1,138 @@
+---
+import ProductArt from "@/components/living/ProductArt.astro";
+import { artOf, categoryOf, formatPrice, type Product } from "@/data/living";
+
+/**
+ * Shop product card (cf. the Wonder theme): a square image on the stone backdrop with a badge, a quick-add button
+ * over the image, then the name and price, the category and the colour swatches. The data attributes feed the
+ * shop's filter and sort.
+ */
+interface Props {
+  product: Product;
+  /** First cards on a page load eagerly. */
+  eager?: boolean;
+}
+
+const { product, eager = false } = Astro.props;
+const href = `/living/products/${product.slug}/`;
+const colours = product.colours ?? [];
+---
+
+<article
+  class="product-card group relative"
+  data-product={product.slug}
+  data-category={product.category}
+  data-rooms={product.rooms.join(" ")}
+  data-colours={colours.map((colour) => colour.name).join("|")}
+  data-price={product.price}
+  data-added={product.added}
+>
+  <div class="product-card-image relative aspect-square overflow-hidden rounded bg-stone">
+    <a href={href} tabindex="-1" aria-hidden="true" class="block h-full w-full">
+      {product.image ? (
+        <img src={product.image.src} alt="" width={product.image.width} height={product.image.height} loading={eager ? "eager" : "lazy"} class="h-full w-full object-cover transition-transform duration-slow ease-cm-out group-hover:scale-[1.03]" />
+      ) : (
+        <ProductArt art={artOf(product)} class="transition-transform duration-slow ease-cm-out group-hover:scale-[1.03]" />
+      )}
+    </a>
+    {product.badge && <span class:list={["product-badge", { "is-sale": product.badge === "Sale" }]}>{product.badge}</span>}
+    <button
+      type="button"
+      class="product-quick-add icon-btn"
+      data-add-to-cart
+      data-slug={product.slug}
+      data-colour={colours[0]?.name}
+      data-size={product.sizes?.[0]}
+      aria-label={`Add ${product.name} to cart`}
+    >
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="1.2" /></svg>
+    </button>
+  </div>
+
+  <div class="mt-4 flex flex-col gap-0.5 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+    <h3 class="text-body font-medium"><a href={href} class="product-card-link">{product.name}</a></h3>
+    <p class="shrink-0 text-small tabular-nums sm:text-body">
+      {product.was && <s class="mr-1.5 text-fg-subtle">{formatPrice(product.was)}</s>}
+      <span>{formatPrice(product.price)}</span>
+    </p>
+  </div>
+  <p class="mt-1 text-caption text-fg-subtle">{categoryOf(product).title}</p>
+  {colours.length > 1 && (
+    <ul class="mt-3 flex gap-1.5" aria-label={`${colours.length} colours`}>
+      {colours.map((colour) => <li class="swatch" style={`--swatch:${colour.hex}`} title={colour.name}><span class="sr-only">{colour.name}</span></li>)}
+    </ul>
+  )}
+</article>
+
+<style>
+  .product-card-image {
+    clip-path: inset(0 round var(--radius-media));
+  }
+
+  .product-card-link {
+    transition: color var(--dur-base) var(--ease-standard);
+  }
+
+  .product-card:hover .product-card-link {
+    color: rgb(var(--gold-deep));
+  }
+
+  .product-badge {
+    position: absolute;
+    left: 0.75rem;
+    top: 0.75rem;
+    padding: 0.3125rem 0.5rem;
+    border-radius: var(--radius-xs);
+    background: rgb(var(--paper));
+    color: rgb(var(--ink));
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .product-badge.is-sale {
+    background: rgb(var(--gold));
+  }
+
+  /* Quick add sits in the image's corner; on hover-capable screens it fades in with the card */
+  .product-quick-add {
+    position: absolute;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    background: rgb(var(--paper));
+  }
+
+  @media (hover: hover) {
+    .product-quick-add {
+      opacity: 0;
+      transform: translateY(0.25rem);
+      transition:
+        opacity var(--dur-base) var(--ease-standard),
+        transform var(--dur-base) var(--ease-out),
+        background-color var(--dur-base) var(--ease-standard),
+        color var(--dur-base) var(--ease-standard);
+    }
+
+    .product-card:hover .product-quick-add,
+    .product-quick-add:focus-visible {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .swatch {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    background: var(--swatch);
+    box-shadow: inset 0 0 0 1px rgb(var(--ink) / 0.12);
+  }
+</style>
+
+<script>
+  import { bindAddButtons } from "@/scripts/living-cart";
+  bindAddButtons();
+</script>

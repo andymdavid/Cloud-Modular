@@ -1,0 +1,252 @@
+---
+import RefreshLayout from "@/layouts/RefreshLayout.astro";
+import SectionHead from "@/components/refresh/SectionHead.astro";
+import Accordion from "@/components/refresh/Accordion.astro";
+import ProductArt from "@/components/living/ProductArt.astro";
+import ProductCard from "@/components/living/ProductCard.astro";
+import { artOf, categoryOf, formatPrice, livingHelp, livingProducts, livingRooms, type Product } from "@/data/living";
+import { site } from "@/data/site";
+
+/**
+ * Cloud Living product page (cf. the Wonder product template): the gallery on the left, and on the right a sticky
+ * panel with the name, price, options, quantity and add to cart, then the details in accordions. Products for
+ * the same rooms follow.
+ */
+export function getStaticPaths() {
+  return livingProducts.map((product) => ({ params: { slug: product.slug }, props: { product } }));
+}
+
+const { product } = Astro.props as { product: Product };
+const category = categoryOf(product);
+const room = livingRooms.find((item) => item.slug === product.rooms[0])!;
+// The "in the room" shot comes from the first of the product's rooms with a styled interior
+const scene = product.rooms.map((slug) => livingRooms.find((item) => item.slug === slug)!).find((item) => item.interior);
+const colours = product.colours ?? [];
+const sizes = product.sizes ?? [];
+const related = livingProducts
+  .filter((item) => item.slug !== product.slug && item.rooms.some((value) => product.rooms.includes(value)))
+  .sort((a, b) => Number(b.category !== product.category) - Number(a.category !== product.category))
+  .slice(0, 4);
+const delivery = livingHelp.find((topic) => topic.id === "delivery")!.items;
+const details = [
+  { title: "Dimensions", body: product.dimensions },
+  { title: "Materials and care", body: product.materials },
+  { title: "Delivery and returns", body: `${delivery[0].body} ${delivery[1].body}` },
+];
+
+const title = `${product.name} | ${category.title} | Cloud Living`;
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Cloud Living", item: `${site.url}/living/` },
+    { "@type": "ListItem", position: 2, name: category.title, item: `${site.url}/living/shop/${category.slug}/` },
+    { "@type": "ListItem", position: 3, name: product.name, item: `${site.url}/living/products/${product.slug}/` },
+  ],
+};
+---
+
+<RefreshLayout title={title} description={product.summary} canonical={`/living/products/${product.slug}/`} structuredData={breadcrumbSchema} brand="living" image={product.image?.src}>
+  <section data-theme="light" class="pb-section pt-[calc(var(--header-h)+var(--gutter)+1.25rem)]">
+    <div class="shell">
+      <nav aria-label="Breadcrumb">
+        <ol class="flex flex-wrap items-center gap-2 text-caption text-fg-subtle">
+          <li class="flex items-center gap-2"><a href="/living/" class="hover:text-fg">Cloud Living</a><span aria-hidden="true">/</span></li>
+          <li class="flex items-center gap-2"><a href={`/living/shop/${category.slug}/`} class="hover:text-fg">{category.title}</a><span aria-hidden="true">/</span></li>
+          <li aria-current="page" class="text-fg">{product.name}</li>
+        </ol>
+      </nav>
+
+      <div class="grid-12 mt-6 gap-y-10">
+        <!-- Gallery: a swiping row on phones, stacked from md -->
+        <div class="col-span-12 md:col-span-7">
+          <ul class="no-scrollbar -mx-gutter flex snap-x snap-mandatory gap-2 overflow-x-auto px-gutter md:mx-0 md:grid md:grid-cols-2 md:gap-gap-sm md:overflow-visible md:px-0" aria-label={`${product.name} images`}>
+            <li class="w-[86vw] shrink-0 snap-start md:col-span-2 md:w-auto">
+              <div class="aspect-square overflow-hidden rounded bg-stone">
+                {product.image ? <img src={product.image.src} alt={product.name} width={product.image.width} height={product.image.height} fetchpriority="high" class="h-full w-full object-cover" /> : <ProductArt art={artOf(product)} />}
+              </div>
+            </li>
+            {scene && <li class="w-[86vw] shrink-0 snap-start md:w-auto">
+              <figure>
+                <div class="aspect-[4/5] overflow-hidden rounded bg-stone">
+                  <img src={scene.image} alt={`A ${scene.title.toLowerCase()} styled with Cloud Living pieces`} width={scene.width} height={scene.height} loading="lazy" class="h-full w-full object-cover" style={`object-position:${scene.imagePosition ?? "center"}`} />
+                </div>
+                <figcaption class="mt-2 text-caption text-fg-subtle">In the {scene.title.toLowerCase()}</figcaption>
+              </figure>
+            </li>}
+            <li class:list={["w-[86vw] shrink-0 snap-start md:w-auto", { "md:col-span-2": !scene }]}>
+              <figure>
+                <div class:list={["overflow-hidden rounded bg-mist", scene ? "aspect-[4/5]" : "aspect-[2/1]"]}>
+                  {product.image ? <img src={product.image.src} alt="" loading="lazy" class="h-full w-full scale-[1.8] object-cover" /> : <ProductArt art={artOf(product)} class="bg-mist" />}
+                </div>
+                <figcaption class="mt-2 text-caption text-fg-subtle">Detail</figcaption>
+              </figure>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Buy panel -->
+        <div class="col-span-12 md:col-span-5 md:col-start-8">
+          <form class="buy-panel" data-buy onsubmit="return false">
+            <div class="flex items-center gap-3">
+              <p class="label">{category.title}</p>
+              {product.badge && <span class:list={["label", product.badge === "Sale" ? "text-gold-deep" : "label-muted"]}>· {product.badge}</span>}
+            </div>
+            <h1 class="mt-4 text-statement">{product.name}</h1>
+            <p class="mt-3 text-lead tabular-nums">
+              {product.was && <s class="mr-2 font-normal text-fg-subtle">{formatPrice(product.was)}</s>}
+              {formatPrice(product.price)}
+            </p>
+            <p class="mt-1 text-caption text-fg-subtle">Including GST</p>
+            <p class="mt-6 max-w-[44ch] text-body text-fg-muted">{product.summary}</p>
+
+            {colours.length > 0 && (
+              <fieldset class="mt-8">
+                <legend class="text-small">Colour <span class="text-fg-muted" data-picked="colour">{colours[0].name}</span></legend>
+                <div class="mt-3 flex flex-wrap gap-2">
+                  {colours.map((colour, index) => (
+                    <label class="swatch-option" title={colour.name}>
+                      <input type="radio" name="colour" value={colour.name} checked={index === 0} class="sr-only" />
+                      <span class="swatch-option-dot" style={`--swatch:${colour.hex}`}></span>
+                      <span class="sr-only">{colour.name}</span>
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+            )}
+
+            {sizes.length > 0 && (
+              <fieldset class="mt-6">
+                <legend class="text-small">Size <span class="text-fg-muted" data-picked="size">{sizes[0]}</span></legend>
+                <div class="mt-3 flex flex-wrap gap-1">
+                  {sizes.map((size, index) => (
+                    <label class="size-option">
+                      <input type="radio" name="size" value={size} checked={index === 0} class="sr-only" />
+                      <span>{size}</span>
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+            )}
+
+            <div class="mt-8 flex gap-1">
+              <div class="qty qty--lg">
+                <button type="button" data-qty-step="-1" aria-label="Fewer">−</button>
+                <input type="number" name="qty" value="1" min="1" max="20" aria-label="Quantity" class="w-8 bg-transparent text-center text-small tabular-nums [appearance:textfield]" />
+                <button type="button" data-qty-step="1" aria-label="More">+</button>
+              </div>
+              <button type="button" class="btn-solid h-12 flex-1 bg-ink text-paper hover:bg-graphite" data-add-to-cart data-slug={product.slug}>Add to cart</button>
+            </div>
+            <p class="mt-4 flex items-center gap-2 text-caption text-fg-subtle">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 3.5h7.5v6H1zM8.5 5.5h2.5l2 2v2h-4.5" stroke="currentColor" stroke-width="1" /><circle cx="3.5" cy="10.5" r="1.1" fill="rgb(var(--paper))" stroke="currentColor" stroke-width="1" /><circle cx="10.5" cy="10.5" r="1.1" fill="rgb(var(--paper))" stroke="currentColor" stroke-width="1" /></svg>
+              Delivery across the Perth metropolitan area
+            </p>
+
+            <Accordion items={details} name="product-details" openFirst class="mt-10" />
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {related.length > 0 && (
+    <section data-theme="light" class="pb-section">
+      <div class="shell">
+        <SectionHead label="Complete the room" title="Goes well with">
+          <Fragment slot="actions"><a href={`/living/rooms/${room.slug}/`} class="btn">Shop {room.title.toLowerCase()}</a></Fragment>
+        </SectionHead>
+        <ul class="mt-10 grid grid-cols-2 gap-x-gap-sm gap-y-10 sm:mt-12 lg:grid-cols-4">
+          {related.map((item) => <li><ProductCard product={item} /></li>)}
+        </ul>
+      </div>
+    </section>
+  )}
+</RefreshLayout>
+
+<style>
+  @media (min-width: 48rem) {
+    .buy-panel {
+      position: sticky;
+      top: calc(var(--header-h) + 1rem);
+    }
+  }
+
+  .swatch-option {
+    display: inline-flex;
+    padding: 0.1875rem;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px transparent;
+    cursor: pointer;
+    transition: box-shadow var(--dur-base) var(--ease-standard);
+  }
+
+  .swatch-option:has(:checked) {
+    box-shadow: inset 0 0 0 1px rgb(var(--ink));
+  }
+
+  .swatch-option:has(:focus-visible) {
+    outline: 1px solid rgb(var(--fg));
+    outline-offset: 2px;
+  }
+
+  .swatch-option-dot {
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    background: var(--swatch);
+    box-shadow: inset 0 0 0 1px rgb(var(--ink) / 0.12);
+  }
+
+  .size-option span {
+    display: inline-flex;
+    align-items: center;
+    height: 2.25rem;
+    padding-inline: 0.875rem;
+    border: var(--rule) solid rgb(var(--line) / 0.15);
+    border-radius: var(--radius-media);
+    font-size: var(--text-small);
+    cursor: pointer;
+    transition:
+      border-color var(--dur-base) var(--ease-standard),
+      background-color var(--dur-base) var(--ease-standard);
+  }
+
+  .size-option:has(:checked) span {
+    border-color: rgb(var(--ink));
+    background: rgb(var(--ink));
+    color: rgb(var(--paper));
+  }
+
+  .size-option:has(:focus-visible) span {
+    outline: 1px solid rgb(var(--fg));
+    outline-offset: 2px;
+  }
+
+  .qty--lg {
+    height: 3rem;
+  }
+
+  .qty--lg input::-webkit-inner-spin-button {
+    appearance: none;
+  }
+</style>
+
+<script>
+  import { bindAddButtons } from "@/scripts/living-cart";
+  bindAddButtons();
+
+  const form = document.querySelector<HTMLFormElement>("[data-buy]");
+  // Show the picked colour and size beside their legends
+  form?.addEventListener("change", (event) => {
+    const input = event.target as HTMLInputElement;
+    const picked = form.querySelector(`[data-picked="${input.name}"]`);
+    if (picked) picked.textContent = input.value;
+  });
+  const qty = form?.querySelector<HTMLInputElement>("[name='qty']");
+  form?.querySelectorAll<HTMLButtonElement>("[data-qty-step]").forEach((button) =>
+    button.addEventListener("click", () => {
+      if (!qty) return;
+      qty.value = String(Math.min(20, Math.max(1, Number(qty.value) + Number(button.dataset.qtyStep))));
+    }),
+  );
+</script>

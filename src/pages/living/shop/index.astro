@@ -1,0 +1,15 @@
+---
+import RefreshLayout from "@/layouts/RefreshLayout.astro";
+import CollectionHead from "@/components/living/CollectionHead.astro";
+import CollectionView from "@/components/living/CollectionView.astro";
+import { livingProducts } from "@/data/living";
+
+/** Cloud Living, the whole range: every product with every filter. */
+const title = "Shop All | Cloud Living";
+const description = "Furniture, lighting, linen, bathroom and appliances from Cloud Living, delivered across Perth.";
+---
+
+<RefreshLayout title={title} description={description} canonical="/living/shop/" brand="living">
+  <CollectionHead title="Shop all" description="The full range, for every room of the home." />
+  <CollectionView products={livingProducts} />
+</RefreshLayout>

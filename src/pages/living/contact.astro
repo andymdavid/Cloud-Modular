@@ -1,0 +1,23 @@
+---
+import RefreshLayout from "@/layouts/RefreshLayout.astro";
+import PageIntro from "@/components/refresh/PageIntro.astro";
+import SplitSection from "@/components/refresh/SplitSection.astro";
+import EnquiryForm from "@/components/refresh/EnquiryForm.astro";
+
+/**
+ * Cloud Living, contact: a general message to the team. As on Trade the details stay Cloud Modular's, so the page
+ * shows only the form; the enquiry function labels messages from /living/ pages as Cloud Living.
+ */
+const title = "Contact Us | Cloud Living";
+const description = "Send the Cloud Living team a message about a product, an order or a delivery.";
+---
+
+<RefreshLayout title={title} description={description} canonical="/living/contact/" brand="living">
+  <PageIntro label="Contact" title="Get in touch" lead="Ask us about a product, an order or a delivery and we will get back to you.">
+    <a href="/living/help/" class="btn mt-10">Delivery and returns</a>
+  </PageIntro>
+
+  <SplitSection id="send-a-message" label="Send a message">
+    <EnquiryForm variant="general" />
+  </SplitSection>
+</RefreshLayout>
