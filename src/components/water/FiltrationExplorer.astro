@@ -1,11 +1,9 @@
 ---
-import Cartridge from "@/components/water/Cartridge.astro";
 
 /**
  * What it takes out, as a dark band: the contaminants listed down the left, the three cartridges standing on a lit
  * stage on the right. Choosing a contaminant opens its sentence and lights the cartridges that take it out; the others
- * fall back into the dark. It steps through the list on its own while in view until someone chooses one. The key
- * figures run along the foot. Without JavaScript every row is open and every cartridge lit.
+ * fall back into the dark. It steps through the list on its own while in view until someone chooses one. Without JavaScript every row is open and every cartridge lit.
  */
 interface Props {
   id?: string;
@@ -14,27 +12,25 @@ interface Props {
   intro: string;
   stages: readonly { number: number; code: string; name: string; kind: string; body: string }[];
   contaminants: readonly { name: string; body: string; stages: readonly number[] }[];
-  figures: readonly { value: string; label: string }[];
 }
 
-const { id, label, title, intro, stages, contaminants, figures } = Astro.props;
+const { id, label, title, intro, stages, contaminants } = Astro.props;
 ---
 
 <section id={id} data-theme="dark" data-surface="slate" class="filtration scroll-mt-header" data-filtration>
   <div class="shell pb-section pt-section">
-    <div class="grid-12 gap-y-8">
-      <div class="col-span-12 lg:col-span-6">
-        <p class="label">{label}</p>
-        <h2 class="mt-7 text-h2">{title}</h2>
-      </div>
-      <p class="col-span-12 max-w-[46ch] self-end text-body text-fg-muted lg:col-span-5 lg:col-start-8">{intro}</p>
-    </div>
-
-    <div class="grid-12 mt-14 gap-y-12 sm:mt-20">
-      <!-- The contaminants: each a button that opens its sentence and lights its stages -->
-      <ul class="col-span-12 lg:col-span-5 lg:row-start-1" role="list">
+    <div class="grid-12 gap-y-12">
+      <!-- The heading and intro at the top of the left column, the contaminants at its foot: each a button that opens
+           its sentence and lights its stages -->
+      <div class="col-span-12 flex flex-col justify-between gap-12 lg:col-span-5 lg:row-start-1">
+        <div>
+          <p class="label">{label}</p>
+          <h2 class="mt-7 text-h2">{title}</h2>
+          <p class="mt-8 max-w-[46ch] text-body text-fg-muted">{intro}</p>
+        </div>
+      <ul role="list">
         {contaminants.map((item, index) => (
-          <li class="f-row" data-row>
+          <li class="f-row line-item" data-row>
             <button
               type="button"
               class:list={["f-toggle", { "is-active": index === 0 }]}
@@ -42,13 +38,13 @@ const { id, label, title, intro, stages, contaminants, figures } = Astro.props;
               data-stages={item.stages.join(",")}
               data-index={index}
             >
-              <span class="f-name">{item.name}</span>
+              <span class="text-body font-medium">{item.name}</span>
               <span class="f-dots" aria-hidden="true">
                 {stages.map((stage) => <span class:list={["f-dot", { "is-on": item.stages.includes(stage.number) }]}></span>)}
               </span>
             </button>
             <div class="f-body">
-              <p class="f-body-inner">
+              <p class="f-body-inner text-small">
                 {item.body}
                 <span class="sr-only">Taken out at stage {item.stages.join(", ")}.</span>
               </p>
@@ -56,16 +52,17 @@ const { id, label, title, intro, stages, contaminants, figures } = Astro.props;
           </li>
         ))}
       </ul>
+      </div>
 
       <!-- The three cartridges on a lit stage -->
-      <div class="col-span-12 max-lg:order-first lg:col-span-6 lg:col-start-7 lg:row-start-1">
+      <div class="col-span-12 lg:col-span-6 lg:col-start-7 lg:row-start-1 lg:self-end">
         <div class="f-stage" aria-hidden="true">
           {stages.map((stage) => (
             <div class:list={["f-cartridge", { "is-lit": contaminants[0].stages.includes(stage.number) }]} data-stage={stage.number}>
               <div class="f-cartridge-art">
-                <Cartridge kind={stage.kind as "pp" | "carbon"} />
+                <img src={`/trade/water/cartridge-${stage.kind}.webp`} alt="" width="360" height="1200" loading="lazy" decoding="async" class="f-cartridge-img" />
               </div>
-              <p class="label mt-10">Stage {String(stage.number).padStart(2, "0")}</p>
+              <p class="label mt-6">Stage {String(stage.number).padStart(2, "0")}</p>
               <p class="f-code mt-2">{stage.code}</p>
               <p class="mt-3 text-small text-fg-muted">{stage.body}</p>
             </div>
@@ -74,16 +71,6 @@ const { id, label, title, intro, stages, contaminants, figures } = Astro.props;
       </div>
     </div>
 
-    <!-- Key figures -->
-    <dl class="f-figures mt-20 grid grid-cols-2 gap-x-gap-sm gap-y-10 pt-10 sm:mt-24 lg:grid-cols-4">
-      {figures.map((figure) => (
-        <div>
-          <dt class="sr-only">{figure.label}</dt>
-          <dd class="f-figure">{figure.value}</dd>
-          <dd class="mt-3 text-small text-fg-muted">{figure.label}</dd>
-        </div>
-      ))}
-    </dl>
   </div>
 </section>
 
@@ -92,13 +79,9 @@ const { id, label, title, intro, stages, contaminants, figures } = Astro.props;
     background: rgb(var(--slate));
   }
 
-  /* Contaminant rows on hairlines; the open one shows its sentence */
-  .f-row {
-    border-top: var(--rule) solid rgb(var(--line) / 0.12);
-  }
-
+  /* Contaminant rows as the site's Accordion: hairlines, body-size titles, small answers */
   .f-row:last-child {
-    border-bottom: var(--rule) solid rgb(var(--line) / 0.12);
+    border-bottom: var(--rule) solid rgb(var(--line) / var(--rule-alpha));
   }
 
   .f-toggle {
@@ -107,20 +90,15 @@ const { id, label, title, intro, stages, contaminants, figures } = Astro.props;
     align-items: center;
     justify-content: space-between;
     gap: 1.5rem;
-    padding-block: 1.25rem;
+    padding-block: 1rem;
     text-align: left;
-    color: rgb(var(--fg) / 0.5);
+    color: rgb(var(--fg) / 0.6);
     transition: color var(--dur-base) var(--ease-standard);
   }
 
   .f-toggle:hover,
   .f-toggle.is-active {
     color: rgb(var(--fg));
-  }
-
-  .f-name {
-    font-size: clamp(1.25rem, 2vw, 1.625rem);
-    letter-spacing: var(--tracking-title);
   }
 
   .f-dots {
@@ -143,10 +121,9 @@ const { id, label, title, intro, stages, contaminants, figures } = Astro.props;
   .f-body {
     display: grid;
     grid-template-rows: 0fr;
-    max-width: 44ch;
+    max-width: 60ch;
     overflow: hidden;
     color: rgb(var(--fg-muted));
-    font-size: var(--text-body);
     transition: grid-template-rows var(--dur-slow) var(--ease-out);
   }
 
@@ -164,20 +141,14 @@ const { id, label, title, intro, stages, contaminants, figures } = Astro.props;
 
   .filtration:not(.is-ready) .f-body-inner,
   .f-row:has(.is-active) .f-body-inner {
-    padding-bottom: 1.5rem;
+    padding-bottom: 1.25rem;
   }
 
-  /* The stage: three cartridges in a pool of light */
+  /* The stage: three cartridges standing on a hairline floor, on the section's own colour */
   .f-stage {
-    position: relative;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: var(--gap-sm);
-    padding: 3.5rem 1rem 2.5rem;
-    border-radius: var(--radius-media);
-    background:
-      radial-gradient(60% 42% at 50% 46%, rgb(255 255 255 / 0.09), rgb(255 255 255 / 0) 70%),
-      linear-gradient(to bottom, rgb(255 255 255 / 0.03), rgb(0 0 0 / 0.18));
   }
 
   .f-cartridge {
@@ -186,48 +157,32 @@ const { id, label, title, intro, stages, contaminants, figures } = Astro.props;
     align-items: center;
     text-align: center;
     opacity: 0.3;
-    filter: saturate(0.3);
-    transition:
-      opacity var(--dur-slow) var(--ease-standard),
-      filter var(--dur-slow) var(--ease-standard);
+    transition: opacity var(--dur-slow) var(--ease-standard);
   }
 
   .filtration:not(.is-ready) .f-cartridge,
   .f-cartridge.is-lit {
     opacity: 1;
-    filter: none;
   }
 
   .f-cartridge-art {
-    position: relative;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    padding-bottom: 1.5rem;
+    border-bottom: var(--rule) solid rgb(var(--line) / var(--rule-alpha));
     transition: transform var(--dur-slow) var(--ease-out);
   }
 
-  /* A gold glow on the floor under a lit cartridge */
-  .f-cartridge-art::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    bottom: -1.75rem;
-    width: 160%;
-    height: 2.5rem;
-    border-radius: 50%;
-    background: radial-gradient(closest-side, rgb(var(--gold) / 0.45), rgb(var(--gold) / 0));
-    opacity: 0;
-    transform: translateX(-50%);
-    transition: opacity var(--dur-slow) var(--ease-standard);
+  /* The cartridge renders (from the three.js model in src/lib/water/cartridge.ts), each with a little air either side */
+  .f-cartridge-img {
+    width: clamp(4.5rem, 9vw, 7.5rem);
+    height: auto;
+    transition: transform var(--dur-slow) var(--ease-out);
   }
 
-  .f-cartridge.is-lit .f-cartridge-art {
+  .f-cartridge.is-lit .f-cartridge-img {
     transform: translateY(-0.5rem);
-  }
-
-  .f-cartridge.is-lit .f-cartridge-art::after {
-    opacity: 1;
-  }
-
-  .f-cartridge :global(.cartridge) {
-    --w: clamp(3.5rem, 7vw, 5.75rem);
   }
 
   .f-code {
@@ -237,16 +192,6 @@ const { id, label, title, intro, stages, contaminants, figures } = Astro.props;
     color: rgb(var(--fg));
   }
 
-  .f-figures {
-    border-top: var(--rule) solid rgb(var(--line) / 0.12);
-  }
-
-  .f-figure {
-    font-size: clamp(2.25rem, 4.5vw, 3.75rem);
-    font-weight: var(--weight-medium);
-    line-height: 1;
-    letter-spacing: -0.02em;
-  }
 
   @media (max-width: 40rem) {
     .f-cartridge .text-small {
@@ -257,8 +202,7 @@ const { id, label, title, intro, stages, contaminants, figures } = Astro.props;
   @media (prefers-reduced-motion: reduce) {
     .f-body,
     .f-cartridge,
-    .f-cartridge-art,
-    .f-cartridge-art::after {
+    .f-cartridge-img {
       transition: none;
     }
   }
