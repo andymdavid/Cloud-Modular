@@ -135,10 +135,12 @@ const d = (points: number[][]) => points.map(([x, y], i) => `${i ? "L" : "M"}${x
     transition: opacity var(--dur-slow) var(--ease-standard);
   }
 
+  /* the image and its water overlay fit the same box the same way, so they stay aligned at any size */
   .water-render img,
   .water-flow {
     width: 100%;
     height: 100%;
+    object-fit: contain;
   }
 
   .water-flow {
@@ -212,11 +214,6 @@ const d = (points: number[][]) => points.map(([x, y], i) => `${i ? "L" : "M"}${x
       display: none;
     }
 
-    .water-renders {
-      width: 100%;
-      height: auto;
-      max-height: 100%;
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {
