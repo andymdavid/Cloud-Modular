@@ -9,7 +9,13 @@ import { site } from "@/data/site";
 export const waterHero = {
   byline: "Cloud by MVP",
   title: "Filtered water for the whole home",
-  lead: "A three-stage filter that sits where the mains comes into the house, so the kitchen, the bathrooms and the laundry all run on cleaner, better-tasting water.",
+  lead: "One system where the water comes in, and every tap, shower and appliance in the house runs on cleaner, better-tasting water.",
+};
+
+export const waterSpotlight = {
+  label: "The system",
+  title: "Fitted once, working every day",
+  body: "All three stages sit in one compact unit, fitted out of sight where the water comes into the home. A gauge on each housing shows how it is running, and changing a cartridge takes nothing more than the wrench in the box. Choose the open steel frame or the lockable stainless steel cover.",
 };
 
 export const waterActions = {
@@ -20,20 +26,20 @@ export const waterActions = {
 /** What it does for the household, the reasons people buy it. Portraits to come. */
 export const waterBenefits = [
   {
-    title: "Better water to drink",
-    body: "Water from every tap tastes and smells cleaner, with the chlorine taste and odour taken down.",
+    title: "Water you want to drink",
+    body: "Every tap pours fresh, clean-tasting water without the chlorine taste and smell of the mains. Fill a glass from any tap in the house.",
   },
   {
     title: "Kinder on skin and hair",
-    body: "Showers and baths run through the same three filters, so the water you wash in has less chlorine in it too.",
+    body: "Your shower runs through the same filters as the kitchen tap, so the water you wash in has much less chlorine in it too.",
   },
   {
-    title: "Protects the home",
-    body: "Sand, silt and rust are caught before they reach the hot water system, the washing machine and the tapware.",
+    title: "Looks after the house",
+    body: "Sand, silt and rust are stopped where the water comes in, before they can wear on the hot water system, the washing machine or your tapware.",
   },
   {
-    title: "Built to last",
-    body: "Food-grade housings on a steel frame, or inside a lockable 304 stainless steel cover on the FH20BB3-SSS. Cartridges are changed with the wrench that comes in the box.",
+    title: "Made to last",
+    body: "The housings are food-grade polypropylene, rated to a working pressure of 689 kPa, and the stainless steel model locks them behind a 1.5 mm steel cover.",
   },
 ];
 
@@ -44,37 +50,56 @@ export const waterSequence = [
     stage: 0,
     label: "In",
     title: "Mains water comes in",
-    body: "Water from the mains enters the first housing through a 1 inch brass port. A pressure gauge on each housing shows how the system is running.",
+    body: "The system goes in where the mains enters the home, before the hot water system, so every tap gets filtered water. Water arrives through a stainless steel union and runs through all three housings in turn. A gauge on each one shows the pressure at a glance.",
+    facts: [
+      { value: "55 L/min", label: "Flow through the system" },
+      { value: "1 inch", label: "Stainless steel connections" },
+    ],
   },
   {
     stage: 1,
     label: "Stage 1 · PP20BB-CC",
     title: "Sediment out, chlorine down",
-    body: "The first cartridge does two jobs. An outer layer of polypropylene traps sand, silt, rust and pipe debris, and a layer of coconut shell carbon inside it starts taking out chlorine, taste and odour.",
+    body: "The first cartridge does two jobs. Layers of polypropylene trap sand, silt, rust and pipe debris, and coconut shell carbon inside them starts taking out chlorine, taste and odour. Catching the grit first keeps the carbon blocks behind it working for longer.",
+    facts: [
+      { value: "3 to 6 months", label: "Between changes, depending on the water" },
+      { value: "2 in 1", label: "Sediment and carbon in one cartridge" },
+    ],
   },
   {
     stage: 2,
     label: "Stage 2 · CTO20BB",
     title: "A coconut carbon block",
-    body: "The second cartridge is a solid block of compressed coconut carbon. It takes out most of the chlorine, along with chloramines and organic compounds, and filters out particles down to 5 microns.",
+    body: "The second cartridge is a solid block of compressed coconut carbon. Water passes through it from the outside in, and it takes out most of the chlorine along with chloramines and organic compounds. It also filters out particles down to 5 microns, far finer than a human hair.",
+    facts: [
+      { value: "5 microns", label: "The finest particles it filters" },
+      { value: "6 months", label: "Between changes" },
+    ],
   },
   {
     stage: 3,
     label: "Stage 3 · CTO20BB",
     title: "A second carbon block",
-    body: "The third cartridge is another carbon block of the same kind. It catches whatever chlorine, taste and fine particles are left after the second stage.",
+    body: "The third cartridge is another carbon block of the same kind. It catches whatever chlorine, taste and fine particles the second stage leaves behind, so the water stays at its best as the first block ages.",
+    facts: [
+      { value: "5 microns", label: "The finest particles it filters" },
+      { value: "6 months", label: "Between changes" },
+    ],
   },
   {
     stage: 4,
     label: "Out",
     title: "Filtered water to the whole home",
-    body: "The water leaves the third housing and goes on to every tap, shower and appliance in the house.",
+    body: "Filtered water goes on to every tap, shower and appliance in the home, from the kitchen to the laundry and the garden. Hot water systems, kettles and washing machines see far less sediment and chlorine, which is easier on them over the years.",
+    facts: [
+      { value: "Every tap", label: "Kitchen, bathrooms, laundry and garden" },
+      { value: "1 year", label: "Warranty on the system" },
+    ],
   },
 ] as const;
 
 /** What it takes out: the three cartridges, each contaminant with what it means at home and the stages that act on
- * it (from the supplier deck), and the key figures (chlorine from the deck, the rest from the supplier's
- * specification). */
+ * it (from the supplier deck). */
 export const waterRemoval = {
   title: "What it takes out",
   intro:
@@ -87,40 +112,34 @@ export const waterRemoval = {
   contaminants: [
     {
       name: "Chlorine",
-      body: "Added to mains water to keep it safe on the way to the tap. It is what gives tap water a swimming pool taste and smell. The carbon blocks take out up to 99% of it.",
+      body: "Chlorine is added to the mains to keep water safe on its way to you, and it gives tap water that swimming pool taste and smell. The carbon blocks take out up to 99% of it.",
       stages: [1, 2, 3],
     },
     {
       name: "Taste and odour",
-      body: "The flat, chemical or earthy taste that puts people off drinking from the tap.",
+      body: "Mains water can taste flat, chemical or earthy, which puts many people off drinking from the tap. All three stages work on it.",
       stages: [1, 2, 3],
     },
     {
       name: "Sediment, sand and silt",
-      body: "Fine grit that clouds the water and wears tapware and appliance valves. The carbon blocks catch anything down to 5 microns.",
+      body: "Fine grit clouds the water and wears out tapware and appliance valves. The carbon blocks catch particles down to 5 microns.",
       stages: [1, 2, 3],
     },
     {
       name: "Rust and pipe debris",
-      body: "Flakes from older pipes and mains works that discolour water and block aerators. The first stage holds them back.",
+      body: "Older pipes and mains works shed flakes of rust that discolour the water and block tap aerators. The first stage holds them back.",
       stages: [1],
     },
     {
       name: "Chloramines",
-      body: "A longer-lasting form of chlorine used on some supplies, taken out by the first carbon block.",
+      body: "Some supplies use chloramines, a longer-lasting form of chlorine. The first carbon block takes them out.",
       stages: [2],
     },
     {
       name: "Organic compounds",
-      body: "Volatile organic compounds and the by-products left when chlorine reacts in the water.",
+      body: "Both carbon blocks take out volatile organic compounds and the by-products chlorine leaves when it reacts in the water.",
       stages: [2, 3],
     },
-  ],
-  figures: [
-    { value: "Up to 99%", label: "Chlorine reduction" },
-    { value: "5 µm", label: "Carbon block filtration" },
-    { value: "55 L/min", label: "Flow rate" },
-    { value: "689 kPa", label: "Working pressure" },
   ],
 };
 
@@ -135,12 +154,13 @@ export const waterModels = [
       { label: "Weight", value: "29 kg" },
       { label: "Housings", value: "Three 20 inch jumbo housings, food-grade polypropylene" },
       { label: "Frame", value: "Steel support frame" },
-      { label: "Connections", value: "1 inch brass ports" },
-      { label: "Gauges", value: "Three pressure gauges" },
+      { label: "Connections", value: "1 inch BSP stainless steel unions and nipples" },
+      { label: "Gauges", value: "Three 60 mm oil-filled gauges, 0 to 150 PSI" },
       { label: "Flow rate", value: "55 L/min" },
       { label: "Working pressure", value: "689 kPa" },
       { label: "Operating temperature", value: "4 to 38 °C" },
       { label: "In the box", value: "Support frame and housing wrench" },
+      { label: "Warranty", value: "1 year" },
     ],
   },
   {
@@ -158,6 +178,7 @@ export const waterModels = [
       { label: "Working pressure", value: "689 kPa" },
       { label: "Operating temperature", value: "4 to 38 °C" },
       { label: "In the box", value: "Housing wrench" },
+      { label: "Warranty", value: "1 year" },
     ],
   },
 ];
@@ -182,7 +203,7 @@ export const waterFaqs = [
   },
   {
     title: "How do I know when to change the cartridges?",
-    body: "How long a cartridge lasts depends on how much water the household uses and what is in it. When the water flow drops, the pressure gauges show a difference between stages, or the taste and smell of chlorine come back, it is time for new cartridges.",
+    body: "The first cartridge usually lasts three to six months, and the two carbon blocks about six months. How long they last depends on the water where you live and how much the household uses. If the flow drops or the chlorine taste comes back sooner, it is time for new cartridges.",
   },
   {
     title: "How are the cartridges changed?",
@@ -198,7 +219,11 @@ export const waterFaqs = [
   },
   {
     title: "Where is it installed, and who can install it?",
-    body: "It is installed where the mains water supply enters the home, and as it connects to the mains it has to be fitted by a licensed plumber.",
+    body: "It goes on the cold mains where the water enters the home, before the hot water system. It is rated for water between 4 and 38 °C, so it should be kept out of frost and hot spots. As it connects to the mains, it has to be fitted by a licensed plumber.",
+  },
+  {
+    title: "What warranty does it come with?",
+    body: "The system comes with a one-year warranty. The cartridges are consumables and are replaced as part of normal servicing.",
   },
   {
     title: "Can I buy one for my own home?",
@@ -206,11 +231,23 @@ export const waterFaqs = [
   },
 ];
 
+/** Looking after it: how long the cartridges last, from the supplier's service-life figures, in the stat split used
+ * on Why Cloud Modular and Quality. */
+export const waterCare = {
+  label: "Looking after it",
+  intro: "Clean water comes down to fresh cartridges, and they are easy to stay on top of. Most homes need new ones about twice a year.",
+  stats: [
+    { value: "6 months", label: "The two carbon blocks" },
+    { value: "3 to 6 months", label: "The first cartridge, depending on the water" },
+  ],
+  body: "How long each cartridge lasts depends on the water where you live and how much the household uses. Your plumber can change all three in one visit, and the system is WaterMark certified and covered by a one-year warranty.",
+};
+
 /** Trade pricing: the page's one form, with a short word for the trade above it. */
 export const waterPricing = {
   title: "Get trade pricing",
   intro:
-    "Cloud sells the system through plumbers and builders. Tell us about your business and how many systems you expect to fit, and our team will come back to you with trade pricing for the systems and their replacement cartridges.",
+    "Give your customers better water from every tap. Each system needs new cartridges about twice a year, so every one you fit brings you back for service. Tell us about your business and how many systems you expect to fit, and we will come back to you with trade pricing for the systems and their replacement cartridges.",
 };
 
 export const waterEnquiry = {

@@ -10,7 +10,7 @@ import WaterSequence from "@/components/water/WaterSequence.astro";
 import FiltrationExplorer from "@/components/water/FiltrationExplorer.astro";
 import SpecSheetModal from "@/components/water/SpecSheetModal.astro";
 import { site } from "@/data/site";
-import { waterActions, waterBenefits, waterFaqs, waterHero, waterModels, waterPricing, waterRemoval, waterSequence } from "@/data/water";
+import { waterActions, waterBenefits, waterCare, waterFaqs, waterHero, waterModels, waterPricing, waterRemoval, waterSequence, waterSpotlight } from "@/data/water";
 
 /**
  * Cloud whole-house water filtration, a product page that branches off Cloud Trade (as Cloud Homes does off Modular).
@@ -43,19 +43,22 @@ const schemas = [
 ---
 
 <RefreshLayout title={title} description={description} canonical="/trade/water-filtration/" structuredData={schemas} brand="trade" overlayHeader>
-  <!-- Hero: the product on a warm stone stage on the right, the headline and actions on the left -->
-  <section data-hero data-theme="light" class="relative overflow-hidden">
-    <div class="shell grid min-h-[100svh] grid-cols-12 items-end gap-x-gap-sm gap-y-10 pb-10 pt-[calc(var(--header-h)+2rem)] sm:pb-14">
-      <div class="water-hero-product col-span-12 self-stretch lg:col-span-7 lg:col-start-6 lg:row-start-1" aria-hidden="true">
-        <span class="label label-muted">Product render to come</span>
-      </div>
-      <div class="col-span-12 lg:col-span-5 lg:row-start-1">
-        <p class="label">{waterHero.byline}</p>
-        <h1 class="mt-6 text-hero">{waterHero.title}</h1>
-        <p class="mt-8 max-w-[38ch] text-body text-fg-muted">{waterHero.lead}</p>
-        <div class="mt-10 flex flex-wrap gap-1">
+  <!-- Hero (as the other landing pages): a lifestyle image full bleed under the header, the display line bottom-left
+       and the lead and the one main action bottom-right. The image is a placeholder until the render is made. -->
+  <section data-hero data-theme="dark" class="relative h-[100svh] min-h-[560px] overflow-hidden">
+    <div class="water-hero-media absolute inset-0" aria-hidden="true">
+      <span class="label label-muted">Lifestyle image to come</span>
+    </div>
+    <div class="absolute inset-0 bg-[linear-gradient(180deg,rgb(11_11_12/0.55)_0%,rgb(11_11_12/0)_28%,rgb(11_11_12/0)_50%,rgb(11_11_12/0.6)_100%)]" aria-hidden="true"></div>
+    <div class="shell relative flex h-full flex-col justify-end pb-10 sm:pb-14">
+      <div class="grid-12 items-end gap-y-6">
+        <div class="col-span-12 lg:col-span-8">
+          <p class="label">{waterHero.byline}</p>
+          <h1 class="mt-6 text-hero">{waterHero.title}</h1>
+        </div>
+        <div class="col-span-12 flex flex-col items-start gap-5 sm:col-span-8 lg:col-span-4 lg:items-end lg:text-right">
+          <p class="max-w-[38ch] text-body text-fg/85">{waterHero.lead}</p>
           <a href={waterActions.pricing.href} class="btn">{waterActions.pricing.label}</a>
-          <button type="button" class="btn" data-spec-sheet-open>{waterActions.specSheet.label}</button>
         </div>
       </div>
     </div>
@@ -75,11 +78,32 @@ const schemas = [
     </CardRow>
   </section>
 
+  <!-- The product (the "what"): a full-height stone stage with the system on the right; the heading at the top of the
+       left column and the description and spec sheet action at its foot, as the hero sets its type -->
+  <section id="the-system" data-theme="light" class="scroll-mt-header">
+    <div class="shell grid min-h-[100svh] grid-cols-12 gap-x-gap-sm gap-y-10 py-section lg:h-[100svh] lg:grid-rows-1 lg:py-gap-sm">
+      <div class="water-product relative col-span-12 min-h-[28rem] lg:min-h-0 lg:col-span-7 lg:col-start-6 lg:row-start-1" aria-hidden="true">
+        <!-- the system rendered from its model (src/lib/water/system.ts) -->
+        <img src="/trade/water/system.webp" alt="" width="1600" height="1600" loading="lazy" decoding="async" class="water-product-img" />
+      </div>
+      <div class="col-span-12 flex flex-col justify-between gap-10 lg:col-span-4 lg:row-start-1 lg:py-10">
+        <div>
+          <p class="label">{waterSpotlight.label}</p>
+          <h2 class="mt-6 text-h2">{waterSpotlight.title}</h2>
+        </div>
+        <div>
+          <p class="max-w-[40ch] text-body text-fg-muted">{waterSpotlight.body}</p>
+          <button type="button" class="btn mt-8" data-spec-sheet-open>{waterActions.specSheet.label}</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <WaterSequence
     id="how-it-works"
     label="How it works"
     title="Three stages, one path"
-    intro="Every drop that comes into the house passes through three cartridges in turn, each with its own job."
+    intro="On its way into the house, the water passes through three cartridges in turn."
     steps={waterSequence}
   />
 
@@ -90,7 +114,6 @@ const schemas = [
     intro={waterRemoval.intro}
     stages={waterRemoval.stages}
     contaminants={waterRemoval.contaminants}
-    figures={waterRemoval.figures}
   />
 
   <!-- The two models, then their specifications side by side -->
@@ -102,7 +125,7 @@ const schemas = [
       <ul class="mt-10 grid gap-x-gap-sm gap-y-12 sm:mt-12 md:grid-cols-2">
         {waterModels.map((model, index) => (
           <li data-reveal style={`--reveal-delay:${index * 80}ms`}>
-            <MediaCard alt={`The ${model.model}`} meta={model.model} title={model.name} description={model.summary} size="compact" ratio="aspect-[4/3]" />
+            <MediaCard image={`/trade/water/model-${index ? "cabinet" : "frame"}.webp`} width={1600} height={1200} alt={`The ${model.model}`} meta={model.model} title={model.name} description={model.summary} size="compact" ratio="aspect-[4/3]" />
           </li>
         ))}
       </ul>
@@ -127,6 +150,20 @@ const schemas = [
     </div>
   </section>
 
+  <!-- Looking after it: how long the cartridges last, in the stat split from Why Cloud Modular -->
+  <SplitSection id="looking-after-it" label={waterCare.label}>
+    <p class="text-about">{waterCare.intro}</p>
+    <dl class="mt-10 grid w-full grid-cols-2 gap-x-gap-sm">
+      {waterCare.stats.map((stat) => (
+        <div class="flex flex-col border-t border-line/[var(--rule-alpha)] pt-5">
+          <dt class="order-2 mt-3 max-w-[24ch] text-small text-fg-muted">{stat.label}</dt>
+          <dd class="order-1 text-h1 tabular-nums">{stat.value}</dd>
+        </div>
+      ))}
+    </dl>
+    <p class="mt-10 max-w-measure text-body text-fg-muted">{waterCare.body}</p>
+  </SplitSection>
+
   <SplitSection id="faq" label="Questions">
     <Accordion items={waterFaqs} name="water-faq" />
   </SplitSection>
@@ -141,14 +178,30 @@ const schemas = [
 </RefreshLayout>
 
 <style>
-  /* The product's stage until the render is made: warm stone, as the Trade range renders */
-  .water-hero-product {
+  /* Stand-ins until the lifestyle image and the product render are made */
+  .water-hero-media {
     display: flex;
-    min-height: 24rem;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(80% 70% at 60% 40%, rgb(64 60 54), rgb(22 21 20));
+  }
+
+  .water-product {
+    display: flex;
     align-items: center;
     justify-content: center;
     border-radius: var(--radius-media);
     background: radial-gradient(70% 60% at 50% 55%, rgb(var(--stone)), rgb(var(--stone) / 0.55));
+  }
+
+  /* contained in the stage, so the render never pushes the section past the viewport */
+  .water-product-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    padding: 4%;
+    object-fit: contain;
   }
 
   .water-specs {
