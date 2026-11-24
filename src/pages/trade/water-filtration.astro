@@ -16,8 +16,8 @@ import { waterActions, waterBenefits, waterCare, waterFaqs, waterHero, waterMode
  * Cloud whole-house water filtration, a product page that branches off Cloud Trade (as Cloud Homes does off Modular).
  * It sells the product first: the system itself in the hero, what it does for the household, how it works, what it
  * takes out, the two models and the questions people ask, then trade pricing as the one form. The spec sheet opens in
- * a modal. Images are placeholders until the 3D model and renders are made, and the drawn schematic stands in for the
- * 3D sequence. Copy is in src/data/water.ts.
+ * a modal. The product images are rendered from the system's model (src/lib/water/), the lifestyle images made in
+ * Off Piste Ad Studio. Copy is in src/data/water.ts.
  */
 const title = "Whole-House Water Filtration | Cloud Trade";
 const description =
@@ -42,17 +42,16 @@ const schemas = [
 ];
 ---
 
-<RefreshLayout title={title} description={description} canonical="/trade/water-filtration/" structuredData={schemas} brand="trade" overlayHeader>
+<RefreshLayout title={title} description={description} canonical="/trade/water-filtration/" structuredData={schemas} brand="trade" image="/trade/water/og-image.webp" overlayHeader>
   <!-- Hero (as the other landing pages): a lifestyle image full bleed under the header, the display line bottom-left
-       and the lead and the one main action bottom-right. The image is a placeholder until the render is made. -->
+       and the lead and the one main action bottom-right. -->
   <section data-hero data-theme="dark" class="relative h-[100svh] min-h-[560px] overflow-hidden">
     <img src="/trade/water/hero.webp" alt="" width="2560" height="1445" fetchpriority="high" decoding="async" class="absolute inset-0 h-full w-full object-cover object-[74%_50%]" />
     <div class="absolute inset-0 bg-[linear-gradient(180deg,rgb(11_11_12/0.55)_0%,rgb(11_11_12/0)_28%,rgb(11_11_12/0)_50%,rgb(11_11_12/0.6)_100%)]" aria-hidden="true"></div>
     <div class="shell relative flex h-full flex-col justify-end pb-10 sm:pb-14">
       <div class="grid-12 items-end gap-y-6">
         <div class="col-span-12 lg:col-span-8">
-          <p class="label">{waterHero.byline}</p>
-          <h1 class="mt-6 text-hero">{waterHero.title}</h1>
+          <h1 class="text-hero">{waterHero.title}</h1>
         </div>
         <div class="col-span-12 flex flex-col items-start gap-5 sm:col-span-8 lg:col-span-4 lg:items-end lg:text-right">
           <p class="max-w-[38ch] text-body text-fg/85">{waterHero.lead}</p>
@@ -176,14 +175,6 @@ const schemas = [
 </RefreshLayout>
 
 <style>
-  /* Stand-ins until the lifestyle image and the product render are made */
-  .water-hero-media {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: radial-gradient(80% 70% at 60% 40%, rgb(64 60 54), rgb(22 21 20));
-  }
-
   .water-product {
     display: flex;
     align-items: center;

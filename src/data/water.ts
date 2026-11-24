@@ -3,11 +3,9 @@ import { site } from "@/data/site";
 // Cloud whole-house water filtration (/trade/water-filtration/), from the supplier deck and poster in
 // Design-Docs/Water Filters/. The page sells the product first, in terms of what it does for the people who live with
 // it, then shows how it works and what it takes out, then the models, questions and trade pricing. Supply and trade
-// pricing never appear on the page. Removal claims are the supplier's until a test report arrives. Images are
-// placeholders until the 3D model and renders are made.
+// pricing never appear on the page. Removal claims are the supplier's until a test report arrives.
 
 export const waterHero = {
-  byline: "Cloud by MVP",
   title: "Filtered water for the whole home",
   lead: "One system where the water comes in, and every tap, shower and appliance in the house runs on cleaner, better-tasting water.",
 };
@@ -23,7 +21,7 @@ export const waterActions = {
   specSheet: { label: "Download Spec Sheet" },
 };
 
-/** What it does for the household, the reasons people buy it. Portraits to come. */
+/** What it does for the household, the reasons people buy it, each with its lifestyle image. */
 export const waterBenefits = [
   {
     title: "Water you want to drink",
@@ -33,7 +31,7 @@ export const waterBenefits = [
   {
     title: "Kinder on skin and hair",
     image: "/trade/water/skin.webp",
-    body: "Your shower runs through the same filters as the kitchen tap, so the water you wash in has much less chlorine in it too.",
+    body: "Your shower runs through the same filters as the kitchen tap, so the water you wash in has up to 99% less chlorine in it too.",
   },
   {
     title: "Looks after the house",
@@ -74,7 +72,7 @@ export const waterSequence = [
     stage: 2,
     label: "Stage 2 · CTO20BB",
     title: "A coconut carbon block",
-    body: "The second cartridge is a solid block of compressed coconut carbon. Water passes through it from the outside in, and it takes out most of the chlorine along with chloramines and organic compounds. It also filters out particles down to 5 microns, far finer than a human hair.",
+    body: "The second cartridge is a solid block of compressed coconut carbon. Water passes through it from the outside in, and it takes out up to 99% of the chlorine along with chloramines and organic compounds. It also filters out particles down to 5 microns, far finer than a human hair.",
     facts: [
       { value: "5 microns", label: "The finest particles it filters" },
       { value: "6 months", label: "Between changes" },
@@ -212,10 +210,6 @@ export const waterFaqs = [
   {
     title: "How are the cartridges changed?",
     body: "Turn off the water, release the pressure with the red pressure-release valve, then undo the housing with the wrench that comes with the system. Swap the cartridge, refit the housing and turn the water back on.",
-  },
-  {
-    title: "Will it affect the water pressure?",
-    body: "The system is rated for a flow rate of 55 litres a minute at a working pressure of 689 kPa. The pressure gauge on each housing shows how the system is running, and a growing difference between stages is the sign that a cartridge is due for a change.",
   },
   {
     title: "What is the difference between the two models?",
