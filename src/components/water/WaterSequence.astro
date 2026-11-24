@@ -88,26 +88,44 @@ const d = (points: number[][]) => points.map(([x, y], i) => `${i ? "L" : "M"}${x
     opacity: 1;
   }
 
-  /* Phones and tablets: the renders' column pinned under the header (it is a grid item, so it sticks for the
-     height of the whole grid), the steps scrolling beneath it */
+  /* Phones and tablets: the renders hold the top 45% of the screen (the column is a grid item, so it sticks for
+     the height of the whole grid) and the steps scroll beneath them. The panel starts at the very top and keeps
+     the header's height clear inside it, so nothing shows through whether the header is in view or hidden. */
   .water-stage-col {
     position: sticky;
-    top: var(--header-h);
+    top: 0;
     z-index: 1;
     align-self: start;
   }
 
   .water-stage {
-    padding: 1.25rem 0.5rem 1rem;
+    position: relative;
+    display: flex;
+    height: 45svh;
+    align-items: center;
+    justify-content: center;
+    padding: calc(var(--header-h) + 0.5rem) 0.5rem 0.75rem;
     background: rgb(var(--surface));
+  }
+
+  /* a short fade under the panel, so the steps slide in beneath it */
+  .water-stage::after {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    height: 2.5rem;
+    background: linear-gradient(rgb(var(--surface)), rgb(var(--surface) / 0));
+    content: "";
+    pointer-events: none;
   }
 
   /* The renders stacked in one frame; the active stage's shows */
   .water-renders {
     display: grid;
-    max-height: 34svh;
+    height: 100%;
+    max-width: 100%;
     aspect-ratio: 1600 / 1300;
-    margin-inline: auto;
   }
 
   .water-render {
@@ -190,7 +208,13 @@ const d = (points: number[][]) => points.map(([x, y], i) => `${i ? "L" : "M"}${x
       background: rgb(var(--surface-alt));
     }
 
+    .water-stage::after {
+      display: none;
+    }
+
     .water-renders {
+      width: 100%;
+      height: auto;
       max-height: 100%;
     }
   }
