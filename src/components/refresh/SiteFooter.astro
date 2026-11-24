@@ -96,8 +96,8 @@ const groups = brand.footer.groups;
     </div>
 
     <!-- Row 4: An MVP Group company, then copyright, Privacy Policy, Terms and the credit on columns 3–6. On phones the
-         copyright and credit share a line, and Privacy Policy and Terms the next -->
-    <div class="footer-rule grid grid-cols-2 items-center gap-x-gap-sm gap-y-6 pb-8 pt-6 md:grid-cols-6">
+         credit sits beside the MVP Group lockup, and the copyright, Privacy Policy and Terms share the line below -->
+    <div class="footer-rule grid grid-cols-[auto_1fr_auto] items-center gap-x-3 gap-y-6 pb-8 pt-6 md:grid-cols-6 md:gap-x-gap-sm">
       <p class="footer-parent label label-muted col-span-2">
         <span>An</span>
         <a href={parent.href} target="_blank" rel="noopener" class="footer-parent-logo" aria-label={`${parent.name} website`}>
@@ -105,11 +105,11 @@ const groups = brand.footer.groups;
         </a>
         <span>company</span>
       </p>
-      <p class="label label-muted order-1 md:order-none">{new Date().getFullYear()} © {brand.name}</p>
-      <a href="/privacy-policy/" class="label label-muted footer-legal order-3 md:order-none">Privacy Policy</a>
-      <a href="/terms/" class="label label-muted footer-legal order-4 md:order-none">Terms</a>
+      <p class="label label-muted order-2 whitespace-nowrap md:order-none">{new Date().getFullYear()} © {brand.name}</p>
+      <a href="/privacy-policy/" class="label label-muted footer-legal order-3 justify-self-center whitespace-nowrap md:order-none md:justify-self-auto">Privacy Policy</a>
+      <a href="/terms/" class="label label-muted footer-legal order-4 justify-self-end whitespace-nowrap md:order-none md:justify-self-auto">Terms</a>
       <!-- Site credit: the studio's icon, which winks on hover, its name shown above -->
-      <a href="https://offpistestudio.com" target="_blank" rel="noopener" class="site-by label label-muted order-2 justify-self-end md:order-none" aria-label="Site by Off Piste Studio">
+      <a href="https://offpistestudio.com" target="_blank" rel="noopener" class="site-by label label-muted order-1 justify-self-end md:order-none" aria-label="Site by Off Piste Studio">
         <span aria-hidden="true">Site by</span>
         <svg class="site-by-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
           <rect x="16" y="11" width="10" height="10" /><rect class="site-by-eye" x="38" y="11" width="10" height="10" />
