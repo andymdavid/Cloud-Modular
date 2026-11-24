@@ -27,18 +27,22 @@ export const waterActions = {
 export const waterBenefits = [
   {
     title: "Water you want to drink",
+    image: "/trade/water/drink.webp",
     body: "Every tap pours fresh, clean-tasting water without the chlorine taste and smell of the mains. Fill a glass from any tap in the house.",
   },
   {
     title: "Kinder on skin and hair",
+    image: "/trade/water/skin.webp",
     body: "Your shower runs through the same filters as the kitchen tap, so the water you wash in has much less chlorine in it too.",
   },
   {
     title: "Looks after the house",
+    image: "/trade/water/house.webp",
     body: "Sand, silt and rust are stopped where the water comes in, before they can wear on the hot water system, the washing machine or your tapware.",
   },
   {
     title: "Made to last",
+    image: "/trade/water/made-to-last.webp",
     body: "The housings are food-grade polypropylene, rated to a working pressure of 689 kPa, and the stainless steel model locks them behind a 1.5 mm steel cover.",
   },
 ];

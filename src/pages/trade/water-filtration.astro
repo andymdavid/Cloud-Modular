@@ -46,9 +46,7 @@ const schemas = [
   <!-- Hero (as the other landing pages): a lifestyle image full bleed under the header, the display line bottom-left
        and the lead and the one main action bottom-right. The image is a placeholder until the render is made. -->
   <section data-hero data-theme="dark" class="relative h-[100svh] min-h-[560px] overflow-hidden">
-    <div class="water-hero-media absolute inset-0" aria-hidden="true">
-      <span class="label label-muted">Lifestyle image to come</span>
-    </div>
+    <img src="/trade/water/hero.webp" alt="" width="2560" height="1445" fetchpriority="high" decoding="async" class="absolute inset-0 h-full w-full object-cover object-[74%_50%]" />
     <div class="absolute inset-0 bg-[linear-gradient(180deg,rgb(11_11_12/0.55)_0%,rgb(11_11_12/0)_28%,rgb(11_11_12/0)_50%,rgb(11_11_12/0.6)_100%)]" aria-hidden="true"></div>
     <div class="shell relative flex h-full flex-col justify-end pb-10 sm:pb-14">
       <div class="grid-12 items-end gap-y-6">
@@ -72,7 +70,7 @@ const schemas = [
     <CardRow label="What it does at home" columns={4} class="mt-10 sm:mt-12">
       {waterBenefits.map((benefit, index) => (
         <li data-reveal style={`--reveal-delay:${index * 80}ms`}>
-          <MediaCard alt="" title={benefit.title} description={benefit.body} size="compact" ratio="aspect-[4/5]" />
+          <MediaCard image={"image" in benefit ? benefit.image : undefined} width={1280} height={1600} alt="" title={benefit.title} description={benefit.body} size="compact" ratio="aspect-[4/5]" />
         </li>
       ))}
     </CardRow>
