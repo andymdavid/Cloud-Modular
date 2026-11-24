@@ -1,21 +1,25 @@
 ---
 import SectionHead from "@/components/refresh/SectionHead.astro";
-import FilterSchematic from "@/components/water/FilterSchematic.astro";
+import flow from "@/data/water-flow.json";
 
 /**
- * Follow the water (after PlatformSequence): the steps run down the left while the schematic on the right stays in
- * view, and the water fills it up to the step at the middle of the page. Below lg the schematic sits pinned under the
- * header above the steps. The schematic stands in until the 3D model is built.
+ * Follow the water (after PlatformSequence): the steps run down the left while the system on the right stays in view,
+ * showing the render for the step at the middle of the page. Below lg the renders sit pinned under the header above
+ * the steps.
  */
 interface Props {
   id?: string;
   label: string;
   title: string;
   intro?: string;
-  steps: readonly { stage: number; label: string; title: string; body: string }[];
+  steps: readonly { stage: number; label: string; title: string; body: string; facts?: readonly { value: string; label: string }[] }[];
 }
 
 const { id, label, title, intro, steps } = Astro.props;
+
+// The water's paths for each stage, projected into the renders' pixels by the render page (src/pages/zz-system.astro)
+const paths = flow as Record<string, { outside: boolean; points: number[][] }[]>;
+const d = (points: number[][]) => points.map(([x, y], i) => `${i ? "L" : "M"}${x} ${y}`).join("");
 ---
 
 <section id={id} data-theme="light" class="scroll-mt-header pb-section" data-water-sequence>
@@ -25,7 +29,21 @@ const { id, label, title, intro, steps } = Astro.props;
     <div class="grid-12 mt-12 sm:mt-16">
       <div class="water-stage-col col-span-12 lg:col-span-7 lg:col-start-6 lg:row-start-1" aria-hidden="true">
         <div class="water-stage">
-          <FilterSchematic active={steps[0].stage} />
+          <!-- One render of the system per stage (from src/lib/water/system.ts): the water arriving, each housing cut
+               away in turn with the water's path through it, then the water leaving. They crossfade with the steps. -->
+          <div class="water-renders" data-renders data-active={steps[0].stage}>
+            {steps.map((step) => (
+              <div class:list={["water-render", { "is-showing": step.stage === steps[0].stage }]} data-render={step.stage}>
+                <img src={`/trade/water/flow-${step.stage}.webp`} alt="" width="1600" height="1300" loading="lazy" decoding="async" />
+                <!-- the water flowing along its path, drawn over the render's faint track -->
+                <svg viewBox="0 0 1600 1300" class="water-flow">
+                  {(paths[step.stage] ?? []).map((path) => (
+                    <path d={d(path.points)} class:list={["water-flow-line", { "is-outside": path.outside }]} />
+                  ))}
+                </svg>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -35,7 +53,17 @@ const { id, label, title, intro, steps } = Astro.props;
             <div class="water-copy">
               <p class="label">{step.label}</p>
               <h3 class="mt-4 text-about font-medium">{step.title}</h3>
-              <p class="mt-3 max-w-[42ch] text-body text-fg-muted">{step.body}</p>
+              <p class="mt-3 max-w-[46ch] text-body text-fg-muted">{step.body}</p>
+              {step.facts && (
+                <dl class="mt-8 grid max-w-[46ch] grid-cols-2 gap-x-8">
+                  {step.facts.map((fact) => (
+                    <div class="flex flex-col border-t border-line/[var(--rule-alpha)] pt-4">
+                      <dt class="order-2 mt-1 text-small text-fg-muted">{fact.label}</dt>
+                      <dd class="order-1 text-about font-medium tabular-nums">{fact.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              )}
             </div>
           </li>
         ))}
@@ -60,7 +88,7 @@ const { id, label, title, intro, steps } = Astro.props;
     opacity: 1;
   }
 
-  /* Phones and tablets: the schematic's column pinned under the header (it is a grid item, so it sticks for the
+  /* Phones and tablets: the renders' column pinned under the header (it is a grid item, so it sticks for the
      height of the whole grid), the steps scrolling beneath it */
   .water-stage-col {
     position: sticky;
@@ -74,11 +102,71 @@ const { id, label, title, intro, steps } = Astro.props;
     background: rgb(var(--surface));
   }
 
-  .water-stage :global(.schematic) {
+  /* The renders stacked in one frame; the active stage's shows */
+  .water-renders {
+    display: grid;
     max-height: 34svh;
+    aspect-ratio: 1600 / 1300;
+    margin-inline: auto;
   }
 
-  /* lg up: each step takes most of a screen, and the schematic stays in the middle of the view beside them */
+  .water-render {
+    position: relative;
+    grid-area: 1 / 1;
+    opacity: 0;
+    transition: opacity var(--dur-slow) var(--ease-standard);
+  }
+
+  .water-render img,
+  .water-flow {
+    width: 100%;
+    height: 100%;
+  }
+
+  .water-flow {
+    position: absolute;
+    inset: 0;
+    overflow: visible;
+  }
+
+  /* Short dashes running along each path, white with a blue glow inside the housing, solid blue outside it. They
+     only run on the stage that is showing. */
+  .water-flow-line {
+    fill: none;
+    stroke: #fff;
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-dasharray: 10 24;
+    filter: drop-shadow(0 0 5px rgb(47 180 242 / 0.9));
+    animation: water-flow 0.85s linear infinite paused;
+  }
+
+  .water-flow-line.is-outside {
+    stroke: #2fb4f2;
+    stroke-width: 9;
+    stroke-dasharray: 14 26;
+    filter: none;
+  }
+
+  @keyframes water-flow {
+    to {
+      stroke-dashoffset: -34;
+    }
+  }
+
+  .water-render.is-showing .water-flow-line {
+    animation-play-state: running;
+  }
+
+  .water-renders[data-active="0"] [data-render="0"],
+  .water-renders[data-active="1"] [data-render="1"],
+  .water-renders[data-active="2"] [data-render="2"],
+  .water-renders[data-active="3"] [data-render="3"],
+  .water-renders[data-active="4"] [data-render="4"] {
+    opacity: 1;
+  }
+
+  /* lg up: each step takes most of a screen, and the renders stay in the middle of the view beside them */
   @media (min-width: 64rem) {
     .water-step {
       min-height: 72svh;
@@ -102,24 +190,30 @@ const { id, label, title, intro, steps } = Astro.props;
       background: rgb(var(--surface-alt));
     }
 
-    .water-stage :global(.schematic) {
+    .water-renders {
       max-height: 100%;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .water-copy {
+    .water-copy,
+    .water-render {
       transition: none;
+    }
+
+    /* without motion the render's own track and arrowheads show the way */
+    .water-flow {
+      display: none;
     }
   }
 </style>
 
 <script>
-  // The step crossing the middle of the viewport is the active one: it lights up and the water fills the schematic
-  // up to its stage
+  // The step crossing the middle of the viewport is the active one: it lights up and its render of the
+  // system shows
   document.querySelectorAll<HTMLElement>("[data-water-sequence]").forEach((section) => {
     const steps = [...section.querySelectorAll<HTMLElement>("[data-step]")];
-    const schematic = section.querySelector<SVGElement>("[data-schematic]");
+    const renders = section.querySelector<HTMLElement>("[data-renders]");
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -127,7 +221,8 @@ const { id, label, title, intro, steps } = Astro.props;
           if (!entry.isIntersecting) continue;
           const step = entry.target as HTMLElement;
           steps.forEach((s) => s.classList.toggle("is-active", s === step));
-          schematic?.setAttribute("data-active", step.dataset.stage ?? "0");
+          renders?.setAttribute("data-active", step.dataset.stage ?? "0");
+          renders?.querySelectorAll<HTMLElement>("[data-render]").forEach((r) => r.classList.toggle("is-showing", r.dataset.render === step.dataset.stage));
         }
       },
       { rootMargin: "-50% 0px -50% 0px" },
