@@ -105,7 +105,7 @@ export const gmxSequence = [
 ] as const;
 
 /** The four models, smallest to largest. `image` (front) and `inside` (opened up) are GMX's product photographs on
- * the site's stone. Sizes and weights are GMX's, converted from inches and pounds. */
+ * the site's stone. Sizes, weights, magnets and finishes are GMX's published specifications, converted from inches and pounds. */
 export const gmxModels = [
   {
     model: "Model 400",
@@ -132,7 +132,7 @@ export const gmxModels = [
       units: "Three or four on the main, plus two on the hot water outlet",
       fixing: "Magnet unit and backing plate, bolts and wing nuts",
       size: "133 × 121 × 44 mm, 0.9 kg",
-      finish: "Black",
+      finish: "Black vinyl-coated steel",
     },
   },
   {
@@ -146,7 +146,7 @@ export const gmxModels = [
       units: "Two on DN32, four on DN40 and DN50",
       fixing: "Magnet unit and backing plate, bolts and wing nuts",
       size: "133 × 121 × 44 mm, 0.9 kg",
-      finish: "Blue",
+      finish: "Blue vinyl-coated steel",
     },
   },
   {
@@ -160,7 +160,7 @@ export const gmxModels = [
       units: "Four sets up to DN100, seven on DN125 and DN150, seven to fifteen on larger pipe",
       fixing: "Heavy two-piece sets on stainless steel banding",
       size: "127 × 127 × 121 mm, 3.6 kg",
-      finish: "Black",
+      finish: "Black vinyl-coated steel",
     },
   },
 ] as const;
@@ -175,7 +175,7 @@ export const gmxSpecRows = {
     { key: "finish", label: "Finish" },
   ],
   shared: [
-    { label: "Magnets", value: "Permanent ceramic magnets, with opposing poles across the pipe" },
+    { label: "Magnets", value: "Strontium ferrite permanent ceramic magnets, with opposing poles across the pipe" },
     { label: "Suitable pipe", value: "Copper, PVC, PE, HDPE, PEX and stainless steel. Not steel or galvanised pipe." },
     { label: "Pressure and flow", value: "No change, and silent in use" },
     { label: "Power", value: "None" },
