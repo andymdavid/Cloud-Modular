@@ -6,6 +6,9 @@ import flow from "@/data/water-flow.json";
  * Follow the water (after PlatformSequence): the steps run down the left while the system on the right stays in view,
  * showing the render for the step at the middle of the page. Below lg the renders sit pinned under the header above
  * the steps.
+ *
+ * Another product can put its own stage in the "stage" slot (the GMX page's live scene); the section then tells it
+ * which step is showing with a "sequencestage" event carrying the step's `stage`.
  */
 interface Props {
   id?: string;
@@ -16,6 +19,7 @@ interface Props {
 }
 
 const { id, label, title, intro, steps } = Astro.props;
+const customStage = Astro.slots.has("stage");
 
 // The water's paths for each stage, projected into the renders' pixels by the render page (src/pages/zz-system.astro)
 const paths = flow as Record<string, { outside: boolean; points: number[][] }[]>;
@@ -28,9 +32,10 @@ const d = (points: number[][]) => points.map(([x, y], i) => `${i ? "L" : "M"}${x
 
     <div class="grid-12 mt-12 sm:mt-16">
       <div class="water-stage-col col-span-12 lg:col-span-7 lg:col-start-6 lg:row-start-1" aria-hidden="true">
-        <div class="water-stage">
+        <div class:list={["water-stage", { "is-custom": customStage }]}>
           <!-- One render of the system per stage (from src/lib/water/system.ts): the water arriving, each housing cut
                away in turn with the water's path through it, then the water leaving. They crossfade with the steps. -->
+          {customStage ? <slot name="stage" /> : (
           <div class="water-renders" data-renders data-active={steps[0].stage}>
             {steps.map((step) => (
               <div class:list={["water-render", { "is-showing": step.stage === steps[0].stage }]} data-render={step.stage}>
@@ -44,6 +49,7 @@ const d = (points: number[][]) => points.map(([x, y], i) => `${i ? "L" : "M"}${x
               </div>
             ))}
           </div>
+          )}
         </div>
       </div>
 
@@ -106,6 +112,10 @@ const d = (points: number[][]) => points.map(([x, y], i) => `${i ? "L" : "M"}${x
     justify-content: center;
     padding: calc(var(--header-h) + 0.5rem) 0.5rem 0.75rem;
     background: rgb(var(--surface));
+  }
+
+  .water-stage.is-custom {
+    padding: var(--header-h) 0 0;
   }
 
   /* a short fade under the panel, so the steps slide in beneath it */
@@ -214,6 +224,12 @@ const d = (points: number[][]) => points.map(([x, y], i) => `${i ? "L" : "M"}${x
       display: none;
     }
 
+    /* a live stage runs to the panel's edges */
+    .water-stage.is-custom {
+      padding: 0;
+      overflow: hidden;
+    }
+
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -244,6 +260,7 @@ const d = (points: number[][]) => points.map(([x, y], i) => `${i ? "L" : "M"}${x
           steps.forEach((s) => s.classList.toggle("is-active", s === step));
           renders?.setAttribute("data-active", step.dataset.stage ?? "0");
           renders?.querySelectorAll<HTMLElement>("[data-render]").forEach((r) => r.classList.toggle("is-showing", r.dataset.render === step.dataset.stage));
+          section.dispatchEvent(new CustomEvent("sequencestage", { detail: Number(step.dataset.stage ?? 0) }));
         }
       },
       { rootMargin: "-50% 0px -50% 0px" },

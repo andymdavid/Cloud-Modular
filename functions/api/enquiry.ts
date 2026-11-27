@@ -19,7 +19,7 @@ interface Env {
   TURNSTILE_SECRET_KEY?: string;
 }
 
-type Kind = "project" | "general" | "design" | "trade" | "water" | "specsheet";
+type Kind = "project" | "general" | "design" | "trade" | "water" | "gmx" | "specsheet";
 
 const FIELDS: Record<Kind, [name: string, label: string][]> = {
   project: [
@@ -64,6 +64,19 @@ const FIELDS: Record<Kind, [name: string, label: string][]> = {
     ["quantity", "Systems a year"],
     ["message", "Anything else"],
   ],
+  gmx: [
+    ["name", "Name"],
+    ["email", "Email"],
+    ["phone", "Phone"],
+    ["organisation", "Organisation"],
+    ["role", "Role"],
+    ["location", "Location"],
+    ["model", "Model"],
+    ["quantity", "Installs a year"],
+    ["licence", "Licence number"],
+    ["abn", "ABN"],
+    ["message", "Anything else"],
+  ],
   specsheet: [
     ["name", "Name"],
     ["email", "Email"],
@@ -93,10 +106,11 @@ const REQUIRED: Record<Kind, string[]> = {
   design: ["first_name", "email", "address", "suburb", "state", "home"],
   trade: ["name", "email", "role", "location"],
   water: ["name", "email", "role", "location"],
+  gmx: ["name", "email", "role", "location"],
   specsheet: ["name", "email", "role"],
 };
 
-const ANCHOR: Record<Kind, string> = { project: "enquiry", general: "message", design: "design", trade: "trade-enquiry", water: "trade-pricing", specsheet: "spec-sheet" };
+const ANCHOR: Record<Kind, string> = { project: "enquiry", general: "message", design: "design", trade: "trade-enquiry", water: "trade-pricing", gmx: "trade-pricing", specsheet: "spec-sheet" };
 
 const escapeHtml = (text: string) =>
   text.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
@@ -111,7 +125,7 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
   }
 
   const form = data.get("form");
-  const kind: Kind = form === "general" || form === "design" || form === "trade" || form === "water" || form === "specsheet" ? form : "project";
+  const kind: Kind = form === "general" || form === "design" || form === "trade" || form === "water" || form === "gmx" || form === "specsheet" ? form : "project";
   const rawPage = String(data.get("page") ?? "/");
   const page = rawPage.startsWith("/") && !rawPage.startsWith("//") ? rawPage : "/";
   const reply = (ok: boolean, status: number, error?: string) =>
@@ -146,7 +160,7 @@ export const onRequestPost = async ({ request, env }: { request: Request; env: E
   if (!env.RESEND_API_KEY || !env.ENQUIRY_FROM) return reply(false, 503, "Email sending is not set up");
 
   const rows = FIELDS[kind].filter(([name]) => values[name]);
-  const subject = `${{ project: "Project enquiry", general: page.startsWith("/trade/") ? "Cloud Trade message" : page.startsWith("/living/") ? "Cloud Living message" : "Website message", design: `Cloud Home design (${values.home})`, trade: "Cloud Trade request", water: "Water filtration pricing request", specsheet: "Water filtration spec sheet download" }[kind]} from ${values.name}${values.organisation ? `, ${values.organisation}` : ""}`;
+  const subject = `${{ project: "Project enquiry", general: page.startsWith("/trade/") ? "Cloud Trade message" : page.startsWith("/living/") ? "Cloud Living message" : "Website message", design: `Cloud Home design (${values.home})`, trade: "Cloud Trade request", water: "Water filtration pricing request", gmx: "GMX pricing request", specsheet: `${data.get("product") === "gmx" ? "GMX" : "Water filtration"} spec sheet download` }[kind]} from ${values.name}${values.organisation ? `, ${values.organisation}` : ""}`;
   const text = `${rows.map(([name, label]) => `${label}: ${values[name]}`).join("\n")}\n\nSent from ${new URL(page, request.url).toString()}`;
   const html = `<table cellpadding="6" style="font-family:Arial,sans-serif;font-size:14px;border-collapse:collapse">${rows
     .map(

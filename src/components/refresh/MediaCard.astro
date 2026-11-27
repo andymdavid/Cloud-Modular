@@ -8,6 +8,10 @@ interface Props {
   /** Without an image the card shows its stone placeholder (Trade range, until the catalogue has photography). */
   image?: string;
   alt: string;
+  /** A second view of the same thing (GMX's range: the unit opened up). Hover crossfades to it, a tap toggles it on
+   * touch, and two dots under the image show there are two. Unlinked cards only. */
+  altImage?: string;
+  altImageAlt?: string;
   width?: number;
   height?: number;
   imagePosition?: string;
@@ -25,6 +29,8 @@ interface Props {
 const {
   image,
   alt,
+  altImage,
+  altImageAlt = "",
   width,
   height,
   imagePosition = "center",
@@ -40,9 +46,15 @@ const Tag = href ? "a" : "figure";
 const Title = href ? "h3" : "p";
 ---
 
-<Tag href={href} class="media-card group block" data-media-card={href ? "" : undefined}>
+<Tag href={href} class:list={["media-card group block", { "has-alt": altImage }]} data-media-card={href ? "" : undefined} data-media-alt={altImage ? "" : undefined}>
   <div class:list={["media-card-image relative overflow-hidden bg-stone", ratio]}>
     {image && <img src={image} alt={alt} width={width} height={height} loading="lazy" class="h-full w-full object-cover transition-transform duration-slow ease-cm-out group-hover:scale-[1.03]" style={`object-position:${imagePosition}`} />}
+    {altImage && (
+      <Fragment>
+        <img src={altImage} alt={altImageAlt} width={width} height={height} loading="lazy" class="media-card-alt absolute inset-0 h-full w-full object-cover" style={`object-position:${imagePosition}`} />
+        <span class="media-card-dots" aria-hidden="true"><span></span><span></span></span>
+      </Fragment>
+    )}
     {tag && <span class="media-card-tag absolute left-4 top-4 sm:left-5 sm:top-5">{tag}</span>}
     {href && (
       <span class="media-card-cursor" aria-hidden="true" data-media-cursor>
@@ -86,6 +98,46 @@ const Title = href ? "h3" : "p";
     pointer-events: none;
   }
 
+  /* The second view: over the first, shown on hover or once tapped (.is-alt), with a dot for each view */
+  .media-card-alt {
+    opacity: 0;
+    transition: opacity var(--dur-slow) var(--ease-standard);
+  }
+
+  .media-card.is-alt .media-card-alt {
+    opacity: 1;
+  }
+
+  .media-card-dots {
+    position: absolute;
+    bottom: 0.875rem;
+    left: 50%;
+    display: flex;
+    gap: 0.375rem;
+    transform: translateX(-50%);
+  }
+
+  .media-card-dots span {
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: 50%;
+    background: rgb(var(--ink) / 0.2);
+    transition: background-color var(--dur-base) var(--ease-standard);
+  }
+
+  .media-card-dots span:first-child,
+  .media-card.is-alt .media-card-dots span:last-child {
+    background: rgb(var(--ink) / 0.6);
+  }
+
+  .media-card.is-alt .media-card-dots span:first-child {
+    background: rgb(var(--ink) / 0.2);
+  }
+
+  .media-card.has-alt {
+    cursor: pointer;
+  }
+
   /* Outlined mono tag on the image (olympic.no "Insight" tag) */
   .media-card-tag {
     display: inline-flex;
@@ -115,6 +167,18 @@ const Title = href ? "h3" : "p";
       color: rgb(var(--label-gold));
     }
 
+    .media-card.has-alt:hover .media-card-alt {
+      opacity: 1;
+    }
+
+    .media-card.has-alt:hover .media-card-dots span:first-child {
+      background: rgb(var(--ink) / 0.2);
+    }
+
+    .media-card.has-alt:hover .media-card-dots span:last-child {
+      background: rgb(var(--ink) / 0.6);
+    }
+
     .media-card:hover .media-card-cursor {
       opacity: 1;
       transform: translate(var(--x, 50%), var(--y, 50%)) translate(-50%, -50%) scale(1);
@@ -124,13 +188,21 @@ const Title = href ? "h3" : "p";
   @media (prefers-reduced-motion: reduce) {
     .media-card-image,
     .media-card-title,
-    .media-card-cursor {
+    .media-card-cursor,
+    .media-card-alt {
       transition: none;
     }
   }
 </style>
 
 <script>
+  // A tap toggles a card's second view on touch screens (hover shows it with a mouse)
+  document.querySelectorAll<HTMLElement>("[data-media-alt]").forEach((card) =>
+    card.addEventListener("pointerup", (event) => {
+      if (event.pointerType !== "mouse") card.classList.toggle("is-alt");
+    }),
+  );
+
   // The hover arrow sits where the pointer enters the image, then follows it; keyboard focus and touch never show it
   document.querySelectorAll<HTMLElement>("[data-media-card]").forEach((card) => {
     const cursor = card.querySelector<HTMLElement>("[data-media-cursor]");

@@ -1,0 +1,103 @@
+---
+import { gmxSizing } from "@/data/gmx";
+
+/**
+ * Which model and how many: choose what you are protecting, then the pipe size, and the GMX recommendation for that
+ * pipe shows below. The pipe list follows the use. Without JavaScript the first use's first answer shows.
+ */
+const first = gmxSizing[0].pipes[0];
+---
+
+<div class="gmx-sizer w-full" data-gmx-sizer>
+  <div class="grid gap-x-gap-sm gap-y-8 sm:grid-cols-2">
+    <label class="gmx-field">
+      <span class="gmx-field-label">You are protecting</span>
+      <select data-gmx-use>
+        {gmxSizing.map((item, index) => <option value={index}>{item.use}</option>)}
+      </select>
+    </label>
+    <label class="gmx-field">
+      <span class="gmx-field-label">Pipe size</span>
+      <select data-gmx-pipe>
+        {gmxSizing[0].pipes.map((item, index) => <option value={index}>{item.pipe}</option>)}
+      </select>
+    </label>
+  </div>
+
+  <div class="mt-10 grid grid-cols-2 gap-x-gap-sm border-t border-line/[var(--rule-alpha)] pt-6" aria-live="polite">
+    <div>
+      <p class="label label-muted">Model</p>
+      <p class="mt-3 text-h3" data-gmx-model>{first.model}</p>
+    </div>
+    <div>
+      <p class="label label-muted">How many</p>
+      <p class="mt-3 text-body" data-gmx-units>{first.units}</p>
+    </div>
+  </div>
+</div>
+
+<script is:inline type="application/json" data-gmx-sizing set:html={JSON.stringify(gmxSizing)} />
+
+<style>
+  .gmx-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  /* as EnquiryForm's fields */
+  .gmx-field-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: rgb(var(--fg-muted));
+  }
+
+  .gmx-field select {
+    width: 100%;
+    padding-block: 0.625rem;
+    padding-right: 1.5rem;
+    border: 0;
+    border-bottom: var(--rule) solid rgb(var(--line) / 0.35);
+    border-radius: 0;
+    appearance: none;
+    background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none'%3E%3Cpath d='m2.5 4.5 3.5 3.5 3.5-3.5' stroke='%238a8a8a' stroke-width='1.2'/%3E%3C/svg%3E") no-repeat right 0.125rem center;
+    color: rgb(var(--fg));
+    font: inherit;
+    font-size: 1rem;
+    transition: border-color var(--dur-base) var(--ease-standard);
+  }
+
+  .gmx-field select:focus {
+    outline: none;
+    border-color: rgb(var(--line));
+  }
+</style>
+
+<script>
+  type Sizing = { use: string; pipes: { pipe: string; model: string; units: string }[] }[];
+
+  const root = document.querySelector<HTMLElement>("[data-gmx-sizer]");
+  const data = document.querySelector("[data-gmx-sizing]")?.textContent;
+  if (root && data) {
+    const sizing = JSON.parse(data) as Sizing;
+    const use = root.querySelector<HTMLSelectElement>("[data-gmx-use]")!;
+    const pipe = root.querySelector<HTMLSelectElement>("[data-gmx-pipe]")!;
+    const model = root.querySelector<HTMLElement>("[data-gmx-model]")!;
+    const units = root.querySelector<HTMLElement>("[data-gmx-units]")!;
+
+    const show = () => {
+      const answer = sizing[+use.value].pipes[+pipe.value];
+      model.textContent = answer.model;
+      units.textContent = answer.units;
+    };
+
+    use.addEventListener("change", () => {
+      pipe.replaceChildren(...sizing[+use.value].pipes.map((item, index) => new Option(item.pipe, String(index))));
+      show();
+    });
+    pipe.addEventListener("change", show);
+  }
+</script>

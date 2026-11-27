@@ -4,7 +4,8 @@
  * to the site address. "project" is the full project enquiry on /partner-with-us/; "general" is the short message
  * form on /contact/; "design" sends a Cloud Homes design from /cloud-homes/design/, whose hidden home, selections
  * and link fields the page fills in; "trade" is the Cloud Trade request on /trade/start/; "water" asks for trade pricing
- * and "specsheet" trades an email address for the spec sheet download, both on /trade/water-filtration/. With JavaScript
+ * and "specsheet" trades an email address for the spec sheet download, both on /trade/water-filtration/ ("gmx" is the
+ * trade pricing form on /trade/gmx/, and `product` picks whose spec sheet "specsheet" hands out). With JavaScript
  * the form sends in place and swaps to a thank-you note; without it the function
  * redirects back to `#<id>-sent` or `#<id>-failed`, which CSS reveals. A hidden "website" field catches bots, and
  * Cloudflare Turnstile is added when PUBLIC_TURNSTILE_SITE_KEY is set at build time.
@@ -13,22 +14,28 @@ import { engagementModels, enquiryOptions, sectors, site } from "@/data/site";
 import { australianStates } from "@/data/cloud-homes";
 import { tradeEnquiry } from "@/data/trade";
 import { waterEnquiry, waterSpecSheet } from "@/data/water";
+import { gmxEnquiry, gmxSpecSheet } from "@/data/gmx";
 
 interface Props {
-  variant?: "project" | "general" | "design" | "trade" | "water" | "specsheet";
+  variant?: "project" | "general" | "design" | "trade" | "water" | "gmx" | "specsheet";
+  /** The product a "water", "gmx" or "specsheet" form is about. */
+  product?: "water" | "gmx";
   /** Anchor for the form; the thank-you and error notes use `<id>-sent` and `<id>-failed`. */
   id?: string;
   class?: string;
 }
 
-const { variant = "project", id = { project: "enquiry", general: "message", design: "design", trade: "trade-enquiry", water: "trade-pricing", specsheet: "spec-sheet" }[variant], class: className } = Astro.props;
+const { variant = "project", id = { project: "enquiry", general: "message", design: "design", trade: "trade-enquiry", water: "trade-pricing", gmx: "trade-pricing", specsheet: "spec-sheet" }[variant], product = variant === "gmx" ? "gmx" : "water", class: className } = Astro.props;
 const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 const project = variant === "project";
 const design = variant === "design";
 const trade = variant === "trade";
-const water = variant === "water";
+// "water" and "gmx" are the same trade pricing form for different products
+const water = variant === "water" || variant === "gmx";
+const productEnquiry = product === "gmx" ? gmxEnquiry : waterEnquiry;
+const specSheet = product === "gmx" ? gmxSpecSheet : waterSpecSheet;
 const specsheet = variant === "specsheet";
-const noun = { project: "enquiry", general: "message", design: "design", trade: "request", water: "request", specsheet: "request" }[variant];
+const noun = { project: "enquiry", general: "message", design: "design", trade: "request", water: "request", gmx: "request", specsheet: "request" }[variant];
 const routes = [...engagementModels.items.map((item) => item.title), "Not sure yet"];
 ---
 
@@ -36,6 +43,7 @@ const routes = [...engagementModels.items.map((item) => item.title), "Not sure y
   <form id={id} class="enquiry-form scroll-mt-header" action="/api/enquiry" method="post" data-enquiry-form>
     <input type="hidden" name="form" value={variant} />
     <input type="hidden" name="page" value={Astro.url.pathname} />
+    {(water || specsheet) && <input type="hidden" name="product" value={product} />}
     {design && (
       <Fragment>
         <input type="hidden" name="home" data-design-field="home" />
@@ -152,7 +160,7 @@ const routes = [...engagementModels.items.map((item) => item.title), "Not sure y
           <span class="field-label">You are a</span>
           <select name="role" required>
             <option value="" selected disabled>Choose one</option>
-            {waterEnquiry.roles.map((role) => <option>{role}</option>)}
+            {productEnquiry.roles.map((role) => <option>{role}</option>)}
           </select>
         </label>
       )}
@@ -167,16 +175,28 @@ const routes = [...engagementModels.items.map((item) => item.title), "Not sure y
             <span class="field-label">Model</span>
             <select name="model">
               <option value="" selected>Choose one</option>
-              {waterEnquiry.models.map((model) => <option>{model}</option>)}
+              {productEnquiry.models.map((model) => <option>{model}</option>)}
             </select>
           </label>
           <label class="field">
-            <span class="field-label">Systems a year</span>
+            <span class="field-label">{product === "gmx" ? "Installs a year" : "Systems a year"}</span>
             <select name="quantity">
               <option value="" selected>Choose one</option>
-              {waterEnquiry.quantities.map((quantity) => <option>{quantity}</option>)}
+              {productEnquiry.quantities.map((quantity) => <option>{quantity}</option>)}
             </select>
           </label>
+          {product === "gmx" && (
+            <Fragment>
+              <label class="field">
+                <span class="field-label">Licence number</span>
+                <input type="text" name="licence" maxlength="50" />
+              </label>
+              <label class="field">
+                <span class="field-label">ABN</span>
+                <input type="text" name="abn" inputmode="numeric" maxlength="20" />
+              </label>
+            </Fragment>
+          )}
         </Fragment>
       )}
 
@@ -232,7 +252,7 @@ const routes = [...engagementModels.items.map((item) => item.title), "Not sure y
       {!specsheet && (
         <label class="field sm:col-span-2">
           <span class="field-label">{project || trade ? "About the project" : design || water ? "Anything else" : "Message"}{!(variant === "general") && <span class="field-optional">Optional</span>}</span>
-          <textarea name="message" rows={design || water ? 3 : 5} maxlength="5000" required={variant === "general"} placeholder={project ? "What you want to build, and anything else we should know" : trade ? "The products and quantities you need, and anything else we should know" : design ? "For example how you plan to use the home" : water ? "For example the homes or projects you have in mind" : undefined}></textarea>
+          <textarea name="message" rows={design || water ? 3 : 5} maxlength="5000" required={variant === "general"} placeholder={project ? "What you want to build, and anything else we should know" : trade ? "The products and quantities you need, and anything else we should know" : design ? "For example how you plan to use the home" : water ? (product === "gmx" ? "For example the jobs or sites you have in mind" : "For example the homes or projects you have in mind") : undefined}></textarea>
         </label>
       )}
     </div>
@@ -240,16 +260,16 @@ const routes = [...engagementModels.items.map((item) => item.title), "Not sure y
     {siteKey && <div class="cf-turnstile mt-8" data-sitekey={siteKey} data-size="flexible" data-theme="light"></div>}
 
     <div class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
-      <button type="submit" class="btn" data-enquiry-submit>{{ project: "Send enquiry", general: "Send message", design: "Send your design", trade: "Send request", water: "Get trade pricing", specsheet: "Get the spec sheet" }[variant]}</button>
+      <button type="submit" class="btn" data-enquiry-submit>{{ project: "Send enquiry", general: "Send message", design: "Send your design", trade: "Send request", water: "Get trade pricing", gmx: "Get trade pricing", specsheet: "Get the spec sheet" }[variant]}</button>
       <p class="text-caption text-fg-subtle">We use your details to reply to you and as set out in our <a href="/privacy-policy/" class="underline underline-offset-2 hover:text-fg">Privacy Policy</a>.</p>
     </div>
     <p class="enquiry-error mt-6 text-body" role="alert" data-enquiry-error hidden></p>
   </form>
 
   <div id={`${id}-sent`} class="enquiry-note scroll-mt-header" tabindex="-1" data-enquiry-sent>
-    <p class="label">{{ project: "Enquiry sent", general: "Message sent", design: "Design sent", trade: "Request sent", water: "Request sent", specsheet: "Spec sheet ready" }[variant]}</p>
-    <p class="mt-4 text-about">Thank you. {{ project: "We will come back to you to arrange a first conversation.", general: "We will get back to you.", design: "We will check your site and come back to you to talk through your design.", trade: "Our team will be in touch to talk through what your project needs.", water: "Our team will be in touch with trade pricing.", specsheet: "The spec sheet is ready to download." }[variant]}</p>
-    {specsheet && <a href={waterSpecSheet.href} class="btn mt-8" download>Download the spec sheet</a>}
+    <p class="label">{{ project: "Enquiry sent", general: "Message sent", design: "Design sent", trade: "Request sent", water: "Request sent", gmx: "Request sent", specsheet: "Spec sheet ready" }[variant]}</p>
+    <p class="mt-4 text-about">Thank you. {{ project: "We will come back to you to arrange a first conversation.", general: "We will get back to you.", design: "We will check your site and come back to you to talk through your design.", trade: "Our team will be in touch to talk through what your project needs.", water: "Our team will be in touch with trade pricing.", gmx: "Our team will be in touch with trade pricing.", specsheet: "The spec sheet is ready to download." }[variant]}</p>
+    {specsheet && <a href={specSheet.href} class="btn mt-8" download>Download the spec sheet</a>}
   </div>
   <div id={`${id}-failed`} class="enquiry-note scroll-mt-header" tabindex="-1">
     <p class="label">Not sent</p>
