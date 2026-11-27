@@ -46,8 +46,11 @@ const schemas = [
   <!-- Hero (as the other landing pages): a lifestyle image full bleed under the header, the display line bottom-left
        and the lead and the one main action bottom-right. -->
   <section data-hero data-theme="dark" class="relative h-[100svh] min-h-[560px] overflow-hidden">
-    <img src="/trade/water/hero.webp" alt="" width="2560" height="1445" fetchpriority="high" decoding="async" class="absolute inset-0 h-full w-full object-cover object-[74%_50%]" />
+    <img src="/trade/water/hero.webp" alt="" width="2560" height="1445" fetchpriority="high" decoding="async" class="absolute inset-0 h-full w-full object-cover object-[74%_50%] max-sm:origin-[76%_100%] max-sm:scale-[1.15] max-sm:object-[76%_50%]" />
     <div class="absolute inset-0 bg-[linear-gradient(180deg,rgb(11_11_12/0.55)_0%,rgb(11_11_12/0)_28%,rgb(11_11_12/0)_50%,rgb(11_11_12/0.6)_100%)]" aria-hidden="true"></div>
+    <!-- on phones the image centres on the tap and glass and is enlarged from its foot, lifting them above the text;
+         the headline, lead and button stack up from about 40% of the height, so a deeper scrim sits behind them -->
+    <div class="absolute inset-0 bg-[linear-gradient(180deg,rgb(11_11_12/0)_25%,rgb(11_11_12/0.45)_45%,rgb(11_11_12/0.75)_100%)] sm:hidden" aria-hidden="true"></div>
     <div class="shell relative flex h-full flex-col justify-end pb-10 sm:pb-14">
       <div class="grid-12 items-end gap-y-6">
         <div class="col-span-12 lg:col-span-8">

@@ -269,7 +269,7 @@ export const gmxFaqs = [
   },
   {
     title: "Does magnetic water treatment really work?",
-    body: "Laboratory work, including a blind trial at Trinity College Dublin, has shown that a magnetic field changes the way calcium carbonate crystallises, towards a softer deposit. Results in the field depend on the water, the flow and how carefully the units are fitted, and some trials of other brands found no benefit. That is why we size every job to GMX's installation rules. Ask us for our science and technical sheet, which sets out the research on both sides.",
+    body: "Laboratory work, including a blind trial at Trinity College Dublin, has shown that a magnetic field changes the way calcium carbonate crystallises, towards a softer deposit. Results in the field depend on the water, the flow and how carefully the units are fitted, and some trials of other brands found no benefit. That is why we size every job to GMX's installation rules. The spec sheet sets out the research on both sides.",
   },
   {
     title: "What pipe does it fit?",
@@ -326,9 +326,9 @@ export const gmxEnquiry = {
   quantities: ["Fewer than 10", "10 to 25", "25 to 50", "50 to 100", "More than 100"],
 };
 
-/** The spec sheet PDF, made once the dimensions are measured. */
+/** The spec sheet PDF, to be made: the one GMX document, with the models, install rules and the research summary. */
 export const gmxSpecSheet = {
   href: "/trade/gmx/gmx-spec-sheet.pdf",
   title: "Download the spec sheet",
-  intro: "Pipe sizes, placement and sizing for all four GMX models in one PDF. Tell us who you are and the download is yours.",
+  intro: "Pipe sizes, placement and sizing for all four GMX models, and the research behind magnetic conditioning, in one PDF. Tell us who you are and the download is yours.",
 };
