@@ -10,7 +10,7 @@ import WaterSequence from "@/components/water/WaterSequence.astro";
 import FiltrationExplorer from "@/components/water/FiltrationExplorer.astro";
 import SpecSheetModal from "@/components/water/SpecSheetModal.astro";
 import { site } from "@/data/site";
-import { waterActions, waterBenefits, waterCare, waterFaqs, waterHero, waterModels, waterPricing, waterRemoval, waterSequence, waterSpotlight } from "@/data/water";
+import { waterActions, waterBenefits, waterCare, waterFaqs, waterHero, waterModels, waterPairing, waterPricing, waterRemoval, waterSequence, waterSpotlight } from "@/data/water";
 
 /**
  * Cloud whole-house water filtration, a product page that branches off Cloud Trade (as Cloud Homes does off Modular).
@@ -159,6 +159,15 @@ const schemas = [
       ))}
     </dl>
     <p class="mt-10 max-w-measure text-body text-fg-muted">{waterCare.body}</p>
+  </SplitSection>
+
+  <!-- Better together: filtration leaves hardness in, so GMX is offered for scale (as GMX's page offers the filter) -->
+  <SplitSection id="with-gmx" label={waterPairing.label}>
+    <h2 class="text-h3">{waterPairing.title}</h2>
+    <p class="mt-4 max-w-[52ch] text-body text-fg-muted">{waterPairing.body}</p>
+    <div class="mt-10 w-full max-w-[28rem]">
+      <MediaCard image={waterPairing.link.image} width={1200} height={1200} alt="The GMX Model 800" href={waterPairing.link.href} meta="Cloud Trade" title={waterPairing.link.label} size="compact" ratio="aspect-square" />
+    </div>
   </SplitSection>
 
   <SplitSection id="faq" label="Questions">

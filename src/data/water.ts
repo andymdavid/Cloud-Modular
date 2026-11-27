@@ -201,7 +201,7 @@ export const waterFaqs = [
   },
   {
     title: "Will it soften my water?",
-    body: "No. The system takes out sediment, chlorine, taste and odour. It is not a water softener and does not remove the minerals that cause hardness.",
+    body: "No. The system takes out sediment, chlorine, taste and odour. It is not a water softener and does not remove the minerals that cause hardness. For scale, a set of GMX conditioners can go on the same main.",
   },
   {
     title: "How do I know when to change the cartridges?",
@@ -231,6 +231,15 @@ export const waterFaqs = [
 
 /** Looking after it: how long the cartridges last, from the supplier's service-life figures, in the stat split used
  * on Why Cloud Modular and Quality. */
+/** Pairs with GMX: the filter can't take out hardness, so GMX is offered for scale. Its claims stay as hedged as on
+ * the GMX page (src/data/gmx.ts). */
+export const waterPairing = {
+  label: "Better together",
+  title: "Pair it with GMX for hard water",
+  body: "A filter takes out chlorine, sediment and taste, but the minerals that cause hardness pass straight through it. GMX clamps onto the same main and is designed to help keep those minerals from setting as scale, with no salt and no power. Fit both in one visit.",
+  link: { label: "GMX scale conditioners", href: "/trade/gmx/", image: "/trade/gmx/model-800.webp" },
+};
+
 export const waterCare = {
   label: "Looking after it",
   intro: "Clean water comes down to fresh cartridges, and they are easy to stay on top of. Most homes need new ones about twice a year.",
